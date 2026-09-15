@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { HashRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { ToastProvider } from './components/Toast';
 import { useDossier } from './hooks/useDossier';
 import Home from './pages/Home';
@@ -30,7 +30,7 @@ function Barra() {
           </button>
         </div>
         <div className="spacer" />
-        <button id="ayuda" onClick={() => navigate('/')}>¿Por dónde empiezo?</button>
+        <button id="ayuda" onClick={() => navigate('/dos-puertas')}>¿Por dónde empiezo?</button>
       </div>
     </div>
   );
@@ -38,7 +38,7 @@ function Barra() {
 
 function Shell({ dossierCtl }) {
   const loc = useLocation();
-  const esPortada = loc.pathname === '/';
+  const esPortada = loc.pathname === '/dos-puertas';
   const enHoja = loc.pathname.startsWith('/ia-lab');
 
   // Port de ver()/verPortada() — guia-ai-first-src/index.html:3444-3451,
@@ -56,7 +56,11 @@ function Shell({ dossierCtl }) {
       {!esPortada && <Barra />}
       <main>
         <Routes>
-          <Route path="/" element={<Home dossierCtl={dossierCtl} />} />
+          {/* La entrada del sitio es el método. La portada de dos puertas
+              sigue existiendo en /dos-puertas (el botón «¿Por dónde
+              empiezo?» lleva ahí). */}
+          <Route path="/" element={<Navigate to="/metodo" replace />} />
+          <Route path="/dos-puertas" element={<Home dossierCtl={dossierCtl} />} />
           <Route path="/ia-lab" element={<IaLabList dossierCtl={dossierCtl} />} />
           <Route path="/ia-lab/:n" element={<IaLabHoja dossierCtl={dossierCtl} />} />
           <Route path="/metodo" element={<MetodoPortada />} />
