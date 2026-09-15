@@ -371,14 +371,17 @@ body{padding-top:0}
 .cifra b{display:block;font-size:clamp(22px,5vw,30px);font-weight:700;letter-spacing:-.03em;line-height:1}
 .cifra span{display:block;font-size:11px;color:var(--gray);line-height:1.3;margin-top:6px}
 .pasos{border-left:2px solid var(--line);margin:8px 0 6px;padding-left:0}
-.paso{position:relative;padding:0 0 18px 22px}
-.paso::before{content:'';position:absolute;left:-6px;top:5px;width:10px;height:10px;border-radius:50%;
+/* Timeline de la portada antigua. Acotado a .pasos: sitio.py usa .paso para
+   la columna izquierda del taller y estas reglas la rompían (spans en bloque
+   y un círculo delante del rótulo). */
+.pasos .paso{position:relative;padding:0 0 18px 22px}
+.pasos .paso::before{content:'';position:absolute;left:-6px;top:5px;width:10px;height:10px;border-radius:50%;
   background:#fff;border:2px solid var(--blue)}
-.paso b{font-size:15px;display:inline-block}
-.paso i{font-style:normal;font-family:var(--mono);font-size:10.5px;color:var(--mid);
+.pasos .paso b{font-size:15px;display:inline-block}
+.pasos .paso i{font-style:normal;font-family:var(--mono);font-size:10.5px;color:var(--mid);
   text-transform:uppercase;letter-spacing:.1em;margin-left:9px}
-.paso span{display:block;font-size:14px;color:var(--gray);line-height:1.45;margin-top:2px}
-.paso a{color:var(--blue);text-decoration:none;font-size:12.5px}
+.pasos .paso span{display:block;font-size:14px;color:var(--gray);line-height:1.45;margin-top:2px}
+.pasos .paso a{color:var(--blue);text-decoration:none;font-size:12.5px}
 
 /* imágenes de parte */
 .pimg{width:100%;border-radius:10px;display:block;margin:0 0 18px;aspect-ratio:1.92;object-fit:cover;background:var(--soft)}
@@ -796,3 +799,193 @@ body.en-entrada .tabs,body.en-entrada #hbits,body.en-entrada #burger,body.en-ent
 #cursow .pl-ref:hover{border-style:solid}
 body.en-entrada #cursow{display:none}
 #cursow .btn,#cursow .btn-2{font-family:var(--sans)}
+
+
+/* ==========================================================================
+   El asistente del método (sesión 1) — portado 1:1 de dist/sitio/estilo.css.
+   Las clases de abajo son las mismas que usa sitio.py (.taller, .vista, .op,
+   .chip, .frase-viva, .pliegue, .semilla, .reparto, .pista, .fichero) y no
+   colisionan con ninguna del motor antiguo de hojas (.blk/.field/.qc/...),
+   que sigue en uso para el resto de sesiones.
+   ========================================================================== */
+
+/* estructura: página ancha con el paso a la izquierda y su fichero a la derecha */
+.pagina{max-width:720px;margin:0 auto;padding:var(--e6) var(--e5) var(--e9)}
+.pagina.ancha{max-width:1120px}
+.paso{max-width:640px}
+.taller{display:grid;gap:var(--e6)}
+@media (min-width:1040px){
+  .taller{grid-template-columns:minmax(0,640px) minmax(300px,1fr);gap:var(--e7);align-items:start}
+  .vista>summary{cursor:default}
+  .vista{position:sticky;top:var(--e8)}
+}
+
+/* progreso del recorrido */
+.progreso{display:flex;align-items:center}
+.progreso-fila{display:flex;align-items:center;gap:var(--e3);flex-wrap:wrap;
+  padding:var(--e3) 0 var(--e5);border-bottom:1px solid var(--linea);margin-bottom:var(--e6)}
+.punto{display:flex;align-items:center;justify-content:center;width:28px;min-width:44px;height:44px;
+  padding:0;border:0;background:none;cursor:default}
+.punto span{width:20px;height:4px;border-radius:2px;background:var(--linea);display:block}
+button.punto{cursor:pointer}
+button.punto:hover span,button.punto:focus-visible span{background:var(--acento)}
+.punto.hecho span{background:var(--regla)}
+.punto.aqui span{background:var(--acento)}
+.progreso-txt{font-family:var(--familia-mono);font-size:13px;color:var(--texto-2);
+  white-space:nowrap;margin:0}
+
+/* el paso: rótulo, título, campos */
+.paso .rotulo{font-family:var(--familia-mono);font-size:12px;line-height:1.4;font-weight:500;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--texto-2);margin:0 0 var(--e2)}
+.paso h1{margin:0 0 var(--e5)}
+.paso>p{color:var(--texto);max-width:var(--medida);margin:0 0 var(--e5)}
+.campo{margin-bottom:var(--e5)}
+.campo label{display:block;font-weight:600;font-size:17px;margin-bottom:var(--e2)}
+.ayuda{font-size:15px;color:var(--texto-2);margin:0 0 var(--e3);max-width:var(--medida)}
+.campo input[type=text],.campo input[type=date],.campo textarea{width:100%;max-width:var(--medida)}
+.campo textarea{min-height:110px}
+.cuerpo-2{font-size:15px;line-height:1.55}
+
+.fila{display:flex;gap:var(--e3);flex-wrap:wrap}
+select{min-height:44px;padding:var(--e2) var(--e3);font-family:var(--familia-cuerpo);font-size:17px;
+  color:var(--texto);background:var(--fondo);border:2px solid var(--linea-fuerte);
+  border-radius:var(--radio-chico)}
+
+.acciones{display:flex;gap:var(--e3);flex-wrap:wrap;margin-top:var(--e6);
+  padding-top:var(--e5);border-top:1px solid var(--linea)}
+/* Los botones del asistente son los de sitio.py (.btn primario, .btn-2
+   secundario). Van acotados a .pagina para no pisar .btn-p/.btn-g/.btn-d
+   del motor antiguo de hojas, que sigue vivo en el resto de sesiones. */
+.pagina .btn{background:var(--acento);color:var(--fondo);border-color:transparent;
+  font-size:17px;padding:var(--e3) var(--e5)}
+.pagina .btn:hover{filter:brightness(1.15)}
+.pagina .btn-2{background:var(--fondo);color:var(--texto);border-color:var(--linea-fuerte)}
+.pagina .btn-2:hover{border-color:var(--acento);color:var(--acento);filter:none}
+.pagina .btn.chico{min-height:44px;padding:var(--e2) var(--e4);font-size:15px}
+.pagina .btn[disabled]{background:var(--linea);color:var(--texto-2);cursor:not-allowed;
+  filter:none;border-color:transparent}
+
+/* paso 1: la frase montándose sola */
+.frase-viva{padding:var(--e4);border-left:2px solid var(--acento);background:var(--acento-sup);
+  border-radius:0 var(--radio) var(--radio) 0;margin:0 0 var(--e4);max-width:var(--medida)}
+.frase-viva p{margin:0}
+.frase-viva p:last-child{font-size:19px;line-height:1.5}
+.frase-viva .rotulo{color:var(--acento);margin-bottom:var(--e2)}
+.hueco{color:var(--texto-2);border-bottom:2px dotted var(--linea-fuerte)}
+.lleno{font-weight:600}
+.reaccion{padding:var(--e3) var(--e4);border-left:2px solid var(--accion);background:var(--accion-sup);
+  border-radius:0 var(--radio-chico) var(--radio-chico) 0;margin:0 0 var(--e5);
+  max-width:var(--medida);font-size:15px;line-height:1.55;color:var(--accion)}
+
+/* desplegables de apoyo */
+.pliegue{border:1px solid var(--linea);border-radius:var(--radio);margin:0 0 var(--e5);max-width:var(--medida)}
+.pliegue>summary{padding:var(--e3) var(--e4);min-height:44px;display:flex;align-items:center;
+  cursor:pointer;font-weight:600}
+.pliegue-en{padding:0 var(--e4) var(--e4)}
+.pliegue-en p{font-size:16px}
+.pliegue-en blockquote{margin:var(--e4) 0;padding:var(--e3) var(--e4);border-left:2px solid var(--acento);
+  background:var(--acento-sup);border-radius:0 var(--radio) var(--radio) 0;font-size:17px;line-height:1.5;font-weight:500}
+.pliegue-en blockquote p{margin-bottom:var(--e2)}
+.pliegue-en blockquote p:last-child{margin-bottom:0}
+
+/* paso 2: elegir columna, y lo que se monta con ella */
+.ops{display:grid;gap:var(--e3);margin:0 0 var(--e5)}
+.op{display:flex;gap:var(--e3);align-items:flex-start;padding:var(--e4);
+  border:2px solid var(--linea-fuerte);border-radius:var(--radio);background:var(--fondo);
+  cursor:pointer;min-height:44px;text-align:left;font:inherit;color:inherit;width:100%}
+.op:hover{border-color:var(--acento);background:var(--acento-sup)}
+.op[aria-pressed="true"]{border-color:var(--acento);background:var(--acento-sup)}
+.op .letra{flex:none;width:32px;height:32px;border-radius:50%;border:2px solid var(--linea-fuerte);
+  display:grid;place-items:center;font-family:var(--familia-mono);font-weight:500}
+.op[aria-pressed="true"] .letra{background:var(--acento);color:var(--fondo);border-color:var(--acento)}
+.reparto{margin:var(--e5) 0}
+.marcas{list-style:none;padding:0;margin:var(--e2) 0 var(--e3)}
+.marcas li{display:flex;gap:var(--e3);align-items:baseline;padding:var(--e2) 0;
+  border-bottom:1px solid var(--linea);font-size:15px;line-height:1.55}
+.marcas li:last-child{border-bottom:0}
+.marcas .marca{font-family:var(--familia-mono);flex:none;width:1.2em}
+.marcas li.si{color:var(--texto)}
+.marcas li.si .marca{color:var(--regla);font-weight:500}
+.marcas li.no{color:var(--texto-2)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* paso 3: el ejemplo que se mete en el campo de un clic */
+.semilla{margin-top:var(--e3);padding:var(--e3) var(--e4);background:var(--superficie);
+  border-left:2px solid var(--linea-fuerte);border-radius:0 var(--radio-chico) var(--radio-chico) 0;
+  max-width:var(--medida)}
+.semilla p{color:var(--texto-2);margin:0 0 var(--e3);font-size:15px;line-height:1.55}
+
+/* paso 4: lo que el asesor no decide */
+.chips{display:flex;flex-wrap:wrap;gap:var(--e2);margin:0 0 var(--e4)}
+.chip{min-height:44px;padding:var(--e2) var(--e4);border:2px solid var(--linea-fuerte);
+  border-radius:var(--radio);background:var(--fondo);color:var(--texto-2);
+  font:inherit;font-size:15px;cursor:pointer;text-align:left}
+.chip::before{content:"+ ";font-family:var(--familia-mono)}
+.chip[aria-pressed="true"]{background:var(--acento-sup);color:var(--acento);
+  border-color:var(--acento);font-weight:600}
+.chip[aria-pressed="true"]::before{content:"✓ "}
+.chip:hover{border-color:var(--acento)}
+.chip.fija{cursor:default}
+
+/* paso 5: qué le falta a cada regla */
+.pista{margin:var(--e2) 0 0;font-size:15px;line-height:1.55;max-width:var(--medida);
+  min-height:1.5em;color:var(--texto-2)}
+.pista.avisa{color:var(--accion)}
+.pista.avisa::before{content:"→ ";font-family:var(--familia-mono)}
+.pista.bien{color:var(--regla)}
+.pista.bien::before{content:"✓ ";font-family:var(--familia-mono)}
+
+/* el panel del fichero, escribiéndose solo */
+.vista{border:1px solid var(--linea);border-radius:var(--radio);background:var(--superficie);overflow:hidden}
+.vista>summary{display:flex;align-items:center;justify-content:space-between;gap:var(--e3);
+  padding:var(--e3) var(--e4);min-height:44px;cursor:pointer;border-bottom:1px solid var(--linea)}
+.vista .mono{font-family:var(--familia-mono);font-size:13px}
+.vista pre{margin:0;padding:var(--e4);max-height:58vh;overflow:auto;
+  font-family:var(--familia-mono);font-size:13px;line-height:1.55;
+  white-space:pre-wrap;word-break:break-word;color:var(--texto-2)}
+.vista mark{background:var(--acento-sup);color:var(--texto);font-weight:500;
+  box-shadow:0 0 0 2px var(--acento-sup)}
+.vista .pendiente{color:var(--texto-2);border-bottom:2px dotted var(--linea-fuerte)}
+
+/* avisos con estado */
+.aviso .rotulo{color:var(--accion);margin-bottom:var(--e2);font-family:var(--familia-mono);
+  font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+.aviso p{margin:0 0 var(--e2);font-size:15px;line-height:1.55}
+.aviso p:last-child{margin-bottom:0}
+.aviso.bien{border-left-color:var(--regla);background:var(--regla-sup)}
+.aviso.bien .rotulo{color:var(--regla)}
+.aviso.mal{border-left-color:var(--coste);background:var(--coste-sup)}
+.aviso.mal .rotulo{color:var(--coste)}
+
+/* los ficheros que te llevas */
+.fichero{border:1px solid var(--linea);border-radius:var(--radio);margin-bottom:var(--e4);overflow:hidden}
+.fichero>summary{padding:var(--e3) var(--e4);background:var(--superficie);cursor:pointer;
+  font-family:var(--familia-mono);font-size:13px;min-height:44px;
+  display:flex;align-items:center;justify-content:space-between;gap:var(--e3)}
+.fichero pre{margin:0;padding:var(--e4);overflow-x:auto;font-family:var(--familia-mono);
+  font-size:13px;line-height:1.55;white-space:pre-wrap;word-break:break-word}
+.fichero .pie{padding:0 var(--e4) var(--e4)}
+
+@media (max-width:480px){
+  .pagina{padding:var(--e5) var(--e4) var(--e8)}
+  .acciones .btn{flex:1 1 100%}
+  .punto{min-width:26px;height:32px}
+  .punto span{width:14px}
+}
+
+/* Los desplegables del asistente no llevan los triángulos ni la tipografía
+   mono del <summary> global (que es para el «ejemplo terminado» del motor
+   viejo de hojas). */
+.pliegue>summary::before,.vista>summary::before,.fichero>summary::before,
+details.pliegue[open]>summary::before,details.vista[open]>summary::before,
+details.fichero[open]>summary::before{content:none;display:none}
+.pliegue,.vista,.fichero{margin-top:0}
+.pliegue{background:var(--fondo)}
+.pliegue>summary{font-family:var(--familia-cuerpo);font-size:17px;font-weight:600;
+  background:var(--fondo);color:var(--texto)}
+.pliegue-en ul,.pliegue-en ol{font-size:16px;line-height:1.6}
+.vista>summary{font-family:var(--familia-cuerpo);background:var(--superficie)}
+.vista>summary .mono{font-family:var(--familia-mono);font-size:13px;color:var(--texto);font-weight:500}
+.vista>summary .rotulo{font-family:var(--familia-mono);color:var(--texto-2);font-weight:500}
+.fichero>summary span:first-child{font-family:var(--familia-mono);color:var(--texto);font-weight:500}
+.copiable{max-width:none}

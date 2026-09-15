@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { HashRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { HashRouter, Routes, Route, useNavigate, useLocation, useParams } from 'react-router-dom';
 import { ToastProvider } from './components/Toast';
 import { useDossier } from './hooks/useDossier';
 import Home from './pages/Home';
@@ -7,6 +7,17 @@ import IaLabList from './pages/IaLabList';
 import IaLabHoja from './pages/IaLabHoja';
 import GuiaIndex from './pages/GuiaIndex';
 import GuiaCapitulo from './pages/GuiaCapitulo';
+import ProtocoloIA from './pages/ProtocoloIA';
+
+// La sesión 1 («Mi protocolo de IA») es el asistente del Método AI-First
+// portado de sitio.py: otra estructura de página (taller + fichero en vivo),
+// no el motor de bloques de hojas.json. El resto de sesiones siguen con
+// IaLabHoja.
+function HojaRuta({ dossierCtl }) {
+  const { n } = useParams();
+  if (Number(n) === 1) return <ProtocoloIA dossierCtl={dossierCtl} sesionN={1} />;
+  return <IaLabHoja dossierCtl={dossierCtl} />;
+}
 
 function Barra() {
   const navigate = useNavigate();
@@ -55,7 +66,7 @@ function Shell({ dossierCtl }) {
         <Routes>
           <Route path="/" element={<Home dossierCtl={dossierCtl} />} />
           <Route path="/ia-lab" element={<IaLabList dossierCtl={dossierCtl} />} />
-          <Route path="/ia-lab/:n" element={<IaLabHoja dossierCtl={dossierCtl} />} />
+          <Route path="/ia-lab/:n" element={<HojaRuta dossierCtl={dossierCtl} />} />
           <Route path="/guia" element={<GuiaIndex />} />
           <Route path="/guia/:ident" element={<GuiaCapitulo />} />
         </Routes>
