@@ -1,0 +1,58 @@
+{
+ "edicion": "mmdd31",
+ "titulo": "IA-Lab · MMDD31",
+ "lede": "Seis sesiones, cada una con una pieza que puedes reutilizar en el TFM, y una hoja opcional al principio para quien todavía no tiene idea de proyecto.",
+ "sesiones": [
+  {
+   "n": 10,
+   "etiqueta": "0",
+   "_nota": "n=10 y no 0 a propósito: el motor comprueba «if (SESION)» en seis sitios y un 0 es falsy — no guardaría ni cargaría. La etiqueta es lo que se ve.",
+   "titulo": "Si todavía no tienes idea",
+   "asignatura": "Antes de empezar · opcional",
+   "salida": "Tus ideas de TFM, filtradas y puntuadas, y una elegida con precio y fechas",
+   "fichero": "hojas/mmdd31/0.json"
+  },
+  {
+   "n": 1,
+   "titulo": "Mi protocolo de IA",
+   "asignatura": "Habilidades Digitales y Management",
+   "salida": "Un protocolo personal de trabajo con IA",
+   "fichero": "hojas/mmdd31/1.json"
+  },
+  {
+   "n": 2,
+   "titulo": "Mapa de inteligencia",
+   "asignatura": "Estrategia de Marca y Marketing Relacional",
+   "salida": "Mercado, consumidor, competencia · con lo que sabes y lo que supones separado",
+   "fichero": null
+  },
+  {
+   "n": 3,
+   "titulo": "Sistema de contenidos",
+   "asignatura": "Gestión de Canales Propios",
+   "salida": "Propuesta de valor, mensajes y contenidos por etapa del journey",
+   "fichero": null
+  },
+  {
+   "n": 4,
+   "titulo": "Matriz de captación",
+   "asignatura": "Estrategias de Captación y Medios Pagados",
+   "salida": "Audiencia, insight, oferta, ángulo, canal, métrica y aprendizaje esperado",
+   "fichero": null
+  },
+  {
+   "n": 5,
+   "titulo": "Blueprint de fidelización",
+   "asignatura": "Estrategias de Fidelización",
+   "salida": "Ciclo de vida, segmentos, automatizaciones y sus riesgos",
+   "fichero": null
+  },
+  {
+   "n": 6,
+   "titulo": "Pack de mejora del TFM",
+   "asignatura": "TFM",
+   "salida": "Auditoría de coherencia, huecos críticos y preguntas de defensa",
+   "fichero": null
+  }
+ ]
+}
