@@ -55,7 +55,7 @@ export default function Mapa() {
           <h3>Esta web</h3>
           <p>Rellena esa carpeta contigo, paso a paso. Cuando terminas el
             recorrido no vuelves aquí — usas los ficheros directamente.</p>
-          <p><a href="#/ia-lab/1" onClick={ir('/ia-lab/1')}>Empezar el recorrido →</a></p>
+          <p><a href="#/metodo/recorrido" onClick={ir('/metodo/recorrido')}>Empezar el recorrido →</a></p>
         </div>
       </div>
 
@@ -133,8 +133,8 @@ export default function Mapa() {
           'Tu primer encargo',
         ].map((t, i) => (
           <li key={t}>
-            <a href={`#/ia-lab/1?paso=${i + 1}`}
-              onClick={(e) => { e.preventDefault(); navigate(`/ia-lab/1?paso=${i + 1}`); }}>
+            <a href={`#/metodo/recorrido?paso=${i + 1}`}
+              onClick={(e) => { e.preventDefault(); navigate(`/metodo/recorrido?paso=${i + 1}`); }}>
               <span className="num">{i + 1}</span><span>{t}</span>
             </a>
           </li>
@@ -157,7 +157,7 @@ export default function Mapa() {
       </ul>
 
       <div className="acciones">
-        <button className="btn" onClick={() => navigate('/ia-lab/1')}>Montar el mío · 15 minutos</button>
+        <button className="btn" onClick={() => navigate('/metodo/recorrido')}>Montar el mío · 15 minutos</button>
         <button className="btn btn-2" onClick={() => navigate('/guia')}>Ver el método completo</button>
       </div>
     </div>
