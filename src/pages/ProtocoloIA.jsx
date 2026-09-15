@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useToast } from '../components/Toast';
 import { alPortapapeles, bajar } from '../lib/portapapeles';
 import {
@@ -36,11 +36,17 @@ const FICHERO_DE = {
 export default function ProtocoloIA({ dossierCtl, sesionN = 1 }) {
   const navigate = useNavigate();
   const toast = useToast();
+  const [query] = useSearchParams();
   const { dossier, guardaHoja } = dossierCtl;
   const guardadas = dossier.hojas[sesionN] || {};
 
   const [d, setD] = useState(() => ({ fecha: hoy(), ...guardadas }));
-  const [paso, setPaso] = useState(() => guardadas._paso || 1);
+  // El mapa enlaza a un paso concreto (?paso=N), como paso-N.html en el sitio.
+  const [paso, setPaso] = useState(() => {
+    const p = Number(query.get('paso'));
+    if (p >= 1 && p <= N_PASOS) return p;
+    return guardadas._paso || 1;
+  });
   const [verGate, setVerGate] = useState(false);
   const debounce = useRef(null);
 
@@ -99,7 +105,10 @@ export default function ProtocoloIA({ dossierCtl, sesionN = 1 }) {
 
   return (
     <div className={'pagina' + (enPaso ? ' ancha' : '')}>
-      <button className="lnk volver" onClick={() => navigate('/ia-lab')}>← Todas mis hojas</button>
+      <div className="volver-fila">
+        <button className="lnk volver" onClick={() => navigate('/ia-lab')}>← Todas mis hojas</button>
+        <button className="lnk volver" onClick={() => navigate('/mapa')}>Ver el mapa completo →</button>
+      </div>
 
       {enPaso && <Progreso paso={paso} onIr={irPaso} />}
 
