@@ -37,11 +37,6 @@ export default function IaLabList({ dossierCtl }) {
         <div className="kicker">{SES.titulo}</div>
         <h1>Mis hojas de IA-Lab</h1>
         <p className="lede">{SES.lede}</p>
-        <p style={{ marginTop: 14 }}>
-          <a href="#/mapa" onClick={(e) => { e.preventDefault(); navigate('/mapa'); }}>
-            Ver el mapa completo: piezas, roles, pasos y qué te llevas →
-          </a>
-        </p>
       </header>
       <div className="ses">
         {SES.sesiones.map((s) => {

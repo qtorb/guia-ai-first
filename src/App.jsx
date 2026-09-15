@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { HashRouter, Routes, Route, useNavigate, useLocation, useParams } from 'react-router-dom';
+import { HashRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { ToastProvider } from './components/Toast';
 import { useDossier } from './hooks/useDossier';
 import Home from './pages/Home';
@@ -9,16 +9,7 @@ import GuiaIndex from './pages/GuiaIndex';
 import GuiaCapitulo from './pages/GuiaCapitulo';
 import ProtocoloIA from './pages/ProtocoloIA';
 import Mapa from './pages/Mapa';
-
-// La sesión 1 («Mi protocolo de IA») es el asistente del Método AI-First
-// portado de sitio.py: otra estructura de página (taller + fichero en vivo),
-// no el motor de bloques de hojas.json. El resto de sesiones siguen con
-// IaLabHoja.
-function HojaRuta({ dossierCtl }) {
-  const { n } = useParams();
-  if (Number(n) === 1) return <ProtocoloIA dossierCtl={dossierCtl} sesionN={1} />;
-  return <IaLabHoja dossierCtl={dossierCtl} />;
-}
+import MetodoPortada from './pages/MetodoPortada';
 
 function Barra() {
   const navigate = useNavigate();
@@ -27,12 +18,12 @@ function Barra() {
   return (
     <div id="bar" className={enHoja ? 'ctx-hoja' : 'ctx-guia'}>
       <div className="in">
-        <div className="brand" onClick={() => navigate('/guia')} style={{ cursor: 'pointer' }}>
+        <div className="brand" onClick={() => navigate('/metodo')} style={{ cursor: 'pointer' }}>
           Guía AI-First<small>IA-Lab · MMDD31</small>
         </div>
         <div className="tabs">
-          <button className={'tab' + (!enHoja ? ' on' : '')} onClick={() => navigate('/guia')}>
-            <b>El método</b><small>apuntes cortos</small>
+          <button className={'tab' + (!enHoja ? ' on' : '')} onClick={() => navigate('/metodo')}>
+            <b>El método</b><small>montarlo y consultarlo</small>
           </button>
           <button className={'tab' + (enHoja ? ' on' : '')} onClick={() => navigate('/ia-lab')}>
             <b>IA-Lab</b><small>Hacer los ejercicios</small>
@@ -67,8 +58,10 @@ function Shell({ dossierCtl }) {
         <Routes>
           <Route path="/" element={<Home dossierCtl={dossierCtl} />} />
           <Route path="/ia-lab" element={<IaLabList dossierCtl={dossierCtl} />} />
-          <Route path="/ia-lab/:n" element={<HojaRuta dossierCtl={dossierCtl} />} />
-          <Route path="/mapa" element={<Mapa />} />
+          <Route path="/ia-lab/:n" element={<IaLabHoja dossierCtl={dossierCtl} />} />
+          <Route path="/metodo" element={<MetodoPortada />} />
+          <Route path="/metodo/mapa" element={<Mapa />} />
+          <Route path="/metodo/recorrido" element={<ProtocoloIA />} />
           <Route path="/guia" element={<GuiaIndex />} />
           <Route path="/guia/:ident" element={<GuiaCapitulo />} />
         </Routes>

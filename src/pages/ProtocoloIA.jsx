@@ -33,12 +33,20 @@ const FICHERO_DE = {
   7: { f: 'metodo/encargos/primera-tanda.md', campos: ['pieza', 'acepto'] },
 };
 
-export default function ProtocoloIA({ dossierCtl, sesionN = 1 }) {
+// El recorrido guarda donde guardaba el sitio estático: una sola clave de
+// localStorage con las respuestas en plano. No toca el dossier de IA-Lab —
+// son dos cosas distintas y no deben mezclarse.
+const LLAVE = 'metodo-ai-first';
+
+function leerGuardado() {
+  try { return JSON.parse(localStorage.getItem(LLAVE)) || {}; } catch (e) { return {}; }
+}
+
+export default function ProtocoloIA() {
   const navigate = useNavigate();
   const toast = useToast();
   const [query] = useSearchParams();
-  const { dossier, guardaHoja } = dossierCtl;
-  const guardadas = dossier.hojas[sesionN] || {};
+  const guardadas = useMemo(leerGuardado, []);
 
   const [d, setD] = useState(() => ({ fecha: hoy(), ...guardadas }));
   // El mapa enlaza a un paso concreto (?paso=N), como paso-N.html en el sitio.
@@ -50,7 +58,7 @@ export default function ProtocoloIA({ dossierCtl, sesionN = 1 }) {
   const [verGate, setVerGate] = useState(false);
   const debounce = useRef(null);
 
-  // autosave con el mismo debounce que el resto de hojas (700 ms)
+  // autosave con el mismo debounce que el resto de la app (700 ms)
   useEffect(() => {
     clearTimeout(debounce.current);
     debounce.current = setTimeout(() => guarda(d, paso), 700);
@@ -59,12 +67,9 @@ export default function ProtocoloIA({ dossierCtl, sesionN = 1 }) {
   }, [d]);
 
   function guarda(datos, p, extra = {}) {
-    const limpio = {};
-    Object.keys(datos).forEach((k) => { if (k[0] !== '_') limpio[k] = datos[k]; });
-    guardaHoja(sesionN, {
-      ...guardadas, ...limpio, ...extra,
-      _paso: Math.min(p, N_PASOS), _total: N_PASOS,
-    });
+    try {
+      localStorage.setItem(LLAVE, JSON.stringify({ ...datos, ...extra, _paso: Math.min(p, N_PASOS) }));
+    } catch (e) { /* almacenamiento no disponible */ }
   }
 
   function set(k, v) {
@@ -74,7 +79,7 @@ export default function ProtocoloIA({ dossierCtl, sesionN = 1 }) {
   function irPaso(n) {
     setVerGate(false);
     setPaso(n);
-    guarda(d, n, n >= PASO_LISTO ? { _fin: hoy() } : {});
+    guarda(d, n);
     window.scrollTo(0, 0);
   }
 
@@ -106,8 +111,8 @@ export default function ProtocoloIA({ dossierCtl, sesionN = 1 }) {
   return (
     <div className={'pagina' + (enPaso ? ' ancha' : '')}>
       <div className="volver-fila">
-        <button className="lnk volver" onClick={() => navigate('/ia-lab')}>← Todas mis hojas</button>
-        <button className="lnk volver" onClick={() => navigate('/mapa')}>Ver el mapa completo →</button>
+        <button className="lnk volver" onClick={() => navigate('/metodo')}>← Método AI-First</button>
+        <button className="lnk volver" onClick={() => navigate('/metodo/mapa')}>Ver el mapa completo →</button>
       </div>
 
       {enPaso && <Progreso paso={paso} onIr={irPaso} />}
@@ -131,7 +136,7 @@ export default function ProtocoloIA({ dossierCtl, sesionN = 1 }) {
               >
                 {paso === 7 ? 'Ver lo que me llevo' : 'Siguiente'}
               </button>
-              <button className="btn btn-2" onClick={() => (paso === 1 ? navigate('/ia-lab') : irPaso(paso - 1))}>
+              <button className="btn btn-2" onClick={() => (paso === 1 ? navigate('/metodo') : irPaso(paso - 1))}>
                 {paso === 1 ? 'Volver' : 'Atrás'}
               </button>
             </div>
