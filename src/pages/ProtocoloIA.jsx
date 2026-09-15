@@ -20,8 +20,10 @@ import {
 // (.progreso/.punto) — para no apilar dos cabeceras.
 
 // El repositorio plantilla que el alumno copia con «Use this template».
-// Si cambia de nombre, se cambia aquí y en ningún sitio más.
-const URL_PLANTILLA = 'https://github.com/qtorb/metodo-ai-first-plantilla';
+// Mientras esté vacío, la pantalla de GitHub no enseña el botón ni habla de
+// él: antes un enlace inventado llevaba a un 404, que es peor que no tenerlo.
+// Poner aquí la URL real es lo único que hace falta para activarlo.
+const URL_PLANTILLA = '';
 
 const N_PASOS = 7;
 const PASO_LISTO = 8;
@@ -838,17 +840,25 @@ function AGithub({ onIr }) {
       <p>El motivo de pasar por aquí y no quedarte con la descarga es el historial.
         Cada vez que cambies algo, la versión anterior sigue estando, y poder cambiar
         de opinión sin perder por qué pensabas lo otro es la mitad del valor del método.</p>
-      <div className="acciones acciones-arriba">
-        <a className="btn" href={URL_PLANTILLA} target="_blank" rel="noopener noreferrer">
-          Abrir la plantilla en GitHub ↗
-        </a>
-      </div>
+      {URL_PLANTILLA && (
+        <div className="acciones acciones-arriba">
+          <a className="btn" href={URL_PLANTILLA} target="_blank" rel="noopener noreferrer">
+            Abrir la plantilla en GitHub ↗
+          </a>
+        </div>
+      )}
 
       <ol>
-        <li><strong>Crea tu copia de la plantilla.</strong> Con el botón de arriba se
-          abre en una pestaña nueva. Allí pulsa el botón verde
-          <em> Use this template</em> → <em>Create a new repository</em>. Ponle nombre y
-          márcala <em>Private</em>.</li>
+        {URL_PLANTILLA ? (
+          <li><strong>Crea tu copia de la plantilla.</strong> Con el botón de arriba se
+            abre en una pestaña nueva. Allí pulsa el botón verde
+            <em> Use this template</em> → <em>Create a new repository</em>. Ponle nombre y
+            márcala <em>Private</em>.</li>
+        ) : (
+          <li><strong>Crea tu copia de la plantilla.</strong> Ábrela en GitHub y pulsa
+            el botón verde <em>Use this template</em> → <em>Create a new repository</em>.
+            Ponle nombre y márcala <em>Private</em>.</li>
+        )}
         <li><strong>Copia cada fichero.</strong> Vuelve aquí, pulsa el botón de copiar
           de cada uno.</li>
         <li><strong>Pégalo en su sitio.</strong> En tu repositorio, abre el fichero con
