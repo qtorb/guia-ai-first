@@ -8,6 +8,7 @@ import IaLabHoja from './pages/IaLabHoja';
 import GuiaIndex from './pages/GuiaIndex';
 import GuiaCapitulo from './pages/GuiaCapitulo';
 import ProtocoloIA from './pages/ProtocoloIA';
+import Mapa from './pages/Mapa';
 
 // La sesión 1 («Mi protocolo de IA») es el asistente del Método AI-First
 // portado de sitio.py: otra estructura de página (taller + fichero en vivo),
@@ -67,6 +68,7 @@ function Shell({ dossierCtl }) {
           <Route path="/" element={<Home dossierCtl={dossierCtl} />} />
           <Route path="/ia-lab" element={<IaLabList dossierCtl={dossierCtl} />} />
           <Route path="/ia-lab/:n" element={<HojaRuta dossierCtl={dossierCtl} />} />
+          <Route path="/mapa" element={<Mapa />} />
           <Route path="/guia" element={<GuiaIndex />} />
           <Route path="/guia/:ident" element={<GuiaCapitulo />} />
         </Routes>
