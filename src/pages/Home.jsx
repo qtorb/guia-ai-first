@@ -26,12 +26,12 @@ export default function Home({ dossierCtl }) {
             {hojasEmpezadas > 0 && <span className="p-est">Tienes una hoja empezada</span>}
             <span className="gpgo">Ver el recorrido →</span>
           </a>
-          <a className="gp gp-guia" href="#/guia" onClick={(e) => { e.preventDefault(); navigate('/guia'); }}>
-            <span className="gpk">El método que hay debajo</span><b>Los apuntes del método</b>
+          <a className="gp gp-guia" href="#/metodo" onClick={(e) => { e.preventDefault(); navigate('/metodo'); }}>
+            <span className="gpk">El método que hay debajo</span><b>El Método AI-First</b>
             <span className="gpd">
-              {totalCapitulos} capítulos cortos: la mitad se leen en cinco minutos. Cada uno es algo
-              que pasó, la decisión que hubo que tomar, lo que costó equivocarse y qué haces tú con
-              eso.
+              Móntalo en quince minutos y sal con los ficheros de tu método escritos. Debajo,
+              {' '}{totalCapitulos} capítulos cortos: cada uno es algo que pasó, la decisión que hubo
+              que tomar y lo que costó equivocarse.
             </span>
             <span className="gpgo">Empezar →</span>
           </a>
