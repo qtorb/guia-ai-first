@@ -1,0 +1,35 @@
+/* Clases propias del contenido del manual (antes generado por sitio.py:
+   pagina_metodo/pagina_capitulo/ficha()), adaptadas a los tokens de diseño
+   de guia-ai-first (--ink/--blue/--green/--amber/--plum/--line/--soft) para
+   que #guia se vea como una sola web, no dos sistemas distintos pegados. */
+
+.grupo { border-top: 1px solid var(--line); padding-top: 28px; margin-top: 36px; }
+.grupo h2 { font-size: 15px; text-transform: uppercase; letter-spacing: .04em; color: var(--gray); margin: 0 0 14px; }
+
+.lista { list-style: none; margin: 0; padding: 0; }
+.lista li { border-bottom: 1px solid var(--line); }
+.lista a { display: flex; gap: 12px; align-items: baseline; padding: 12px 4px; text-decoration: none; color: var(--ink); }
+.lista a:hover { color: var(--blue); }
+.lista .num { font-family: var(--mono); font-size: 12px; color: var(--mid); min-width: 34px; }
+
+.rotulo { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--mid); margin: 0 0 6px; }
+.rotulo a { color: var(--mid); }
+
+.tira { border-left: 3px solid var(--ink); background: var(--soft); border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 18px 0; }
+.tira .rotulo { margin-bottom: 4px; }
+.tira p:last-child { margin: 0; }
+.tira.hecho { border-left-color: var(--green); background: var(--gbg); }
+.tira.queda { border-left-color: var(--plum); background: var(--pbg); }
+
+.tiempo { font-family: var(--mono); font-size: 11px; color: var(--mid); margin-left: 10px; font-weight: 400; }
+
+.copiable { position: relative; background: #1E293B; border-radius: 8px; padding: 16px 18px; margin: 18px 0; }
+.copiable pre { color: #E2E8F0; font-family: var(--mono); font-size: 12.5px; white-space: pre-wrap; word-break: break-word; margin: 0 0 10px; }
+.copiable .copiar { font-family: var(--sans); }
+
+table { border-collapse: collapse; width: 100%; margin: 18px 0; font-size: 14px; }
+th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+th { background: var(--soft); font-weight: 600; }
+.tabla-scroll { overflow-x: auto; }
+
+.acciones { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 32px; }

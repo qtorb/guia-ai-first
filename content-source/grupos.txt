@@ -1,0 +1,39 @@
+# Cómo se agrupa el manual en la web.
+#
+# Veintidós entradas son un índice; siete grupos son un sitio donde encontrar
+# cosas. El orden es el de uso, no el del documento.
+#
+# formato:  grupo | rótulo
+#           > id-de-capítulo | qué resuelve, en una línea
+
+grupo | Empieza aquí
+> plan-vs-proyecto | Lo tienes escrito y quieres que exista de verdad
+> ejes | Algo no avanza y no sabes si es el proyecto o la IA
+> dia-cero | Montar lo mínimo, una vez
+
+grupo | El trabajo de cada día
+> ciclo | Abrir un trozo de trabajo y llevarlo hasta el final
+> escribir-encargo | Pedirle algo a una IA sin que decida ella
+> recibir | Te han entregado algo y hay que aceptarlo o no
+> cierre-dia | Cerrar la jornada en cinco líneas
+
+grupo | Pedir bien y no creerte de más
+> modelos | Pedir criterio a una IA sin tragarte sus cautelas
+> hipotesis-tarea | Tienes mil ideas y ninguna prioridad
+> escribir-informe | Escribir algo sin afirmar más de lo que sabes
+
+grupo | Comprobar
+> checkpoint | El rato semanal para saber si sigues en lo correcto
+> revision | La revisión de fondo, cada dos o cuatro semanas
+> fallo | Algo ha salido mal y hay que ponerle nombre
+> contrastar | Una decisión grande y no quieres decidirla solo
+
+grupo | Parar a tiempo
+> parar | No sabes si seguir o dejarlo
+> operador | Produces igual pero decides peor
+
+grupo | Herramientas
+> stack | Qué montar, cuándo, cuánto cuesta y cómo
+
+grupo | Para copiar
+> plantillas | Las plantillas y bloques listos para pegar

@@ -1,0 +1,70 @@
+# Mapa de referencias permanentes
+#
+# id-permanente = capítulo actual del manual
+#
+# En cualquier fichero se escribe [[cap:id-permanente]] y el generador lo
+# sustituye por el número. Si mañana renumeras el manual, cambias una línea
+# aquí y todas las referencias del sistema —repo, web, skills— siguen bien.
+#
+# Regla: el id NO cambia nunca. El número de la derecha sí.
+
+plan-vs-proyecto    = 1
+que-no-dice-un-plan  = 1.2
+lo-mas-pequeno      = 1.3
+por-dentro          = 1.4
+que-haces-con-esto  = 1.5
+ejes                = 2.1
+fase                = 2.2
+necesitas           = 2.3
+dia-cero            = 3
+roles               = 3.1
+instalar-roles      = 3.2
+lineas-rojas        = 3.3
+ficheros-vacios     = 3.4
+checkpoint-cita     = 3.5
+realidad-externa    = 3.6
+primer-gate         = 3.7
+condiciones-medida  = 3.8
+ciclo               = 4
+abrir-tanda         = 4.1
+leer-antes          = 4.2
+escribir-encargo    = 4.3
+ejecutar            = 4.4
+recibir             = 4.5
+resultado-gate      = 4.6
+decidir             = 4.7
+cerrar-tanda        = 4.8
+ejemplo-ciclo       = 4.9
+cierre-dia          = 5
+modelos             = 6
+modelos-asumir      = 6.1
+consulta-preparar   = 6.2
+consulta-recibir    = 6.3
+consulta-salida     = 6.4
+hipotesis-tarea     = 7
+escribir-informe    = 8
+checkpoint          = 9
+revision            = 10
+retirar-controles   = 10.3
+fallo               = 11
+nombrar-fallo       = 11.1
+cual-de-tres        = 11.2
+arreglar-mecanismo  = 11.3
+comprobar-controles = 11.4
+comprobar-cifra     = 11.5
+contrastar          = 12
+parar               = 13
+lista-revision      = 10.2
+parar-pregunta      = 13.1
+parar-condiciones   = 13.2
+parar-firmar        = 13.3
+parar-gasto         = 13.4
+operador            = 14
+stack               = 15
+stack-a             = 15.1
+stack-b             = 15.2
+stack-c             = 15.3
+stack-instalar      = 15.4
+stack-criterios     = 15.5
+stack-movimientos   = 15.6
+stack-coste         = 15.7
