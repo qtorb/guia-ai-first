@@ -28,7 +28,7 @@ export default function IaLabHoja({ dossierCtl }) {
   const sesion = sesionesData.sesiones.find((s) => s.n === sesionN);
   const hoja = sesion?.fichero ? hojasData[sesion.fichero] : null;
 
-  const { dossier, guardaHoja, guardaNombre } = dossierCtl;
+  const { dossier, guardaHoja, guardaNombre, borraHoja, reemplazar, dossierRef } = dossierCtl;
   const guardadas = dossier.hojas[sesionN] || {};
 
   const checkKeys = useMemo(() => (hoja ? recolectarCheckKeys(hoja) : new Set()), [hoja]);
@@ -117,6 +117,62 @@ export default function IaLabHoja({ dossierCtl }) {
       .catch(() => toast('Selecciónalo a mano y cópialo con Ctrl+C'));
   }
 
+  // Port de guardar()/cargar()/borrar() — L3020-3049. Trabajan sobre el
+  // DOSSIER completo (todas las hojas), no solo la actual, así que leen y
+  // escriben vía dossierRef/reemplazar en vez del estado local de esta hoja.
+  function guardarAvance() {
+    persistirYa();
+    const base = dossierRef.current;
+    const dCompleto = {
+      ...base,
+      proyecto: { ...base.proyecto, _nombre: nombre },
+      hojas: { ...base.hojas, [sesionN]: { ...datos, _paso: paso, _total: NPASOS, _salida: texto } },
+    };
+    bajar(
+      JSON.stringify({ v: 2, fecha: new Date().toISOString().slice(0, 10), d: dCompleto }, null, 1),
+      'mi-dossier-ialab.json',
+      'application/json'
+    );
+    toast('Avance descargado');
+  }
+
+  function cargarDesdeFichero(file) {
+    const r = new FileReader();
+    r.onload = (e) => {
+      let j;
+      try {
+        j = JSON.parse(e.target.result);
+      } catch (err) {
+        toast('Ese fichero no se puede leer');
+        return;
+      }
+      let hojaNueva;
+      if (j.d) {
+        reemplazar(j.d);
+        hojaNueva = j.d.hojas?.[sesionN] || {};
+        setNombre(j.d.proyecto?._nombre ?? nombre);
+      } else {
+        hojaNueva = j.datos || j;
+        guardaHoja(sesionN, hojaNueva);
+      }
+      setDatos({ ...hojaNueva });
+      setPaso(hojaNueva._paso || 1);
+      setTexto(hojaNueva._salida || '');
+      toast('Avance recuperado' + (j.fecha ? ' · guardado el ' + j.fecha : ''));
+    };
+    r.readAsText(file);
+  }
+
+  function borrarTodo() {
+    if (!window.confirm('¿Seguro? Se borra lo que has escrito en esta hoja.')) return;
+    borraHoja(sesionN);
+    setDatos({});
+    setNombre('');
+    setTexto('');
+    setPaso(1);
+    window.scrollTo(0, 0);
+  }
+
   if (!sesion || !hoja) {
     return (
       <div className="wrap">
@@ -179,6 +235,9 @@ export default function IaLabHoja({ dossierCtl }) {
                 onGenerar={generar}
                 onEntregar={entregar}
                 onCopiarTexto={() => copiarCampo(texto)}
+                onGuardarAvance={guardarAvance}
+                onCargarAvance={cargarDesdeFichero}
+                onBorrarTodo={borrarTodo}
               />
             )}
             {!verTodo && (
@@ -271,7 +330,11 @@ function PasoContraste({ hoja, datos, onChange }) {
   );
 }
 
-function PasoSalida({ hoja, nombre, setNombre, onNombreBlur, texto, onGenerar, onEntregar, onCopiarTexto }) {
+function PasoSalida({
+  hoja, nombre, setNombre, onNombreBlur, texto, onGenerar, onEntregar, onCopiarTexto,
+  onGuardarAvance, onCargarAvance, onBorrarTodo,
+}) {
+  const fileRef = useRef(null);
   return (
     <div id="out">
       <div className="num">ÚLTIMO PASO</div>
@@ -311,6 +374,26 @@ function PasoSalida({ hoja, nombre, setNombre, onNombreBlur, texto, onGenerar, o
           <span>Un protocolo que no relees es un documento más. Imprímelo o guarda el PDF.</span>
           <button className="btn btn-g" onClick={() => window.print()}>Imprimir / PDF</button>
         </div>
+      </div>
+      <h3 style={{ marginTop: 36 }}>Cambiar de ordenador</h3>
+      <p className="que">
+        Tu avance se guarda en <b>este</b> navegador. Si vas a seguir en otro sitio, descarga el fichero y cárgalo allí.
+      </p>
+      <div className="acts">
+        <button className="btn btn-g" onClick={onGuardarAvance}>Guardar mi avance</button>
+        <button className="btn btn-g" onClick={() => fileRef.current?.click()}>Retomar desde un fichero</button>
+        <button className="btn btn-g" onClick={onBorrarTodo}>Empezar de cero</button>
+        <input
+          type="file"
+          ref={fileRef}
+          accept=".json,application/json"
+          style={{ display: 'none' }}
+          onChange={(e) => {
+            const f = e.target.files[0];
+            if (f) onCargarAvance(f);
+            e.target.value = '';
+          }}
+        />
       </div>
     </div>
   );

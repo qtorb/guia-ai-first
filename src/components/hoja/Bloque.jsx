@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import Grupo from './Grupo';
 import TextoInline from '../TextoInline';
 import { esc } from '../../lib/inline';
@@ -6,8 +5,11 @@ import { alPortapapeles } from '../../lib/portapapeles';
 import { useToast } from '../Toast';
 
 // Port de bloque() — guia-ai-first-src/index.html:2689-2708.
+// El enlace "Leer en la guía →" (b.link) se omite a propósito: apuntaba a
+// ids del guia.md antiguo (p.ej. "s-4-2") que no existen en el manual
+// nuevo (manual.json usa idents como "plan-vs-proyecto"). Decisión de
+// Albert 2026-09-15: quitarlo en vez de mapearlo a mano.
 export default function Bloque({ b, datos, onChange }) {
-  const navigate = useNavigate();
   const toast = useToast();
 
   function copiarPregunta() {
@@ -22,11 +24,6 @@ export default function Bloque({ b, datos, onChange }) {
         <span>Bloque {+b.n} de 7</span>
         <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <em>{b.min}</em>
-          {b.link && (
-            <button className="verg" title={b.linkTxt || ''} onClick={() => navigate('/guia/' + b.link)}>
-              Leer en la guía →
-            </button>
-          )}
         </span>
       </div>
       <h2>{b.titulo}</h2>
