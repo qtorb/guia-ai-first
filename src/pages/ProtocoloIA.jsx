@@ -4,7 +4,7 @@ import { useToast } from '../components/Toast';
 import { alPortapapeles, bajar } from '../lib/portapapeles';
 import {
   DISPARA, GENERICO, PIEZAS, REPARTO, VAGO,
-  ficheros, hoy, lleno, partesVista, pega,
+  fechaLarga, ficheros, hoy, lleno, partesVista, pega, soloEncargo,
 } from '../lib/protocoloAiFirst';
 
 // Asistente del método (sesión 1), portado 1:1 de dist/sitio/*.html + app.js
@@ -19,9 +19,23 @@ import {
 // que los puntos van en una fila propia debajo, con las mismas clases
 // (.progreso/.punto) — para no apilar dos cabeceras.
 
+// El repositorio plantilla que el alumno copia con «Use this template».
+// Si cambia de nombre, se cambia aquí y en ningún sitio más.
+const URL_PLANTILLA = 'https://github.com/qtorb/metodo-ai-first-plantilla';
+
 const N_PASOS = 7;
 const PASO_LISTO = 8;
 const PASO_GITHUB = 9;
+
+const CABECERA = {
+  1: { titulo: 'Tu frase de valor', intro: 'Rellena los dos huecos. La frase se escribe sola debajo.' },
+  2: { titulo: 'En qué fase está tu proyecto', intro: 'Elige la que describe hoy, no la que te gustaría. La lista de abajo cambia con lo que elijas: es el método que te toca montar.' },
+  3: { titulo: 'Tus tres líneas rojas', intro: 'Tres frases en primera persona. Debajo de cada una tienes un ejemplo que puedes meter en el campo de un clic y reescribir.' },
+  4: { titulo: 'Quién decide qué', intro: 'Dos conversaciones distintas con una IA: una pide criterio, la otra ejecuta. Quien construye algo no puede ser quien juzga si está bien.' },
+  5: { titulo: 'Cuándo usas IA y cuándo no', intro: 'Tres reglas. Cada una necesita una condición que la active y algo que se pueda observar. Según escribes, debajo del campo te digo qué le falta a la tuya para poder incumplirse.' },
+  6: { titulo: 'Lo que vas a poner a prueba esta semana', intro: 'Tu método ya está montado. Ahora lo que falta es que pase algo fuera de tu mesa. Tres campos y sales de aquí con una cita.' },
+  7: { titulo: 'Tu primer encargo', intro: 'Esto es lo que le vas a pedir a una IA para llegar a esa conversación con algo en la mano. Está escrito con tus respuestas; rellena los dos huecos y ya se puede enviar.' },
+};
 
 const FICHERO_DE = {
   1: { f: 'metodo/00_VALOR.md', campos: ['quien', 'que'] },
@@ -37,6 +51,19 @@ const FICHERO_DE = {
 // localStorage con las respuestas en plano. No toca el dossier de IA-Lab —
 // son dos cosas distintas y no deben mezclarse.
 const LLAVE = 'metodo-ai-first';
+
+function useEsAncho() {
+  const [ancho, setAncho] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(min-width: 1040px)').matches
+  );
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1040px)');
+    const cambia = (e) => setAncho(e.matches);
+    mq.addEventListener('change', cambia);
+    return () => mq.removeEventListener('change', cambia);
+  }, []);
+  return ancho;
+}
 
 function leerGuardado() {
   try { return JSON.parse(localStorage.getItem(LLAVE)) || {}; } catch (e) { return {}; }
@@ -57,6 +84,20 @@ export default function ProtocoloIA() {
   });
   const [verGate, setVerGate] = useState(false);
   const debounce = useRef(null);
+  const tituloRef = useRef(null);
+  const esAncho = useEsAncho();
+
+  // al cambiar de paso el foco va al título, no al <body>: con teclado, si no,
+  // hay que tabular otra vez desde la cabecera
+  useEffect(() => {
+    if (paso <= N_PASOS) tituloRef.current?.focus();
+  }, [paso]);
+
+  // el mapa enlaza a ?paso=N estando ya dentro del recorrido
+  useEffect(() => {
+    const p = Number(query.get('paso'));
+    if (p >= 1 && p <= N_PASOS) setPaso(p);
+  }, [query]);
 
   // autosave con el mismo debounce que el resto de la app (700 ms)
   useEffect(() => {
@@ -84,6 +125,11 @@ export default function ProtocoloIA() {
   }
 
   function siguiente() {
+    if (paso === 2 && !d.columna) {
+      setVerGate(true);
+      setTimeout(() => document.getElementById('gate')?.scrollIntoView({ block: 'center' }), 0);
+      return;
+    }
     if (paso === 1) {
       const vacio = !(d.quien || '').trim() || !(d.que || '').trim();
       if (vacio) {
@@ -100,7 +146,7 @@ export default function ProtocoloIA() {
 
   function copiar(texto, etiqueta = 'Copiado') {
     alPortapapeles(texto).then(() => toast(etiqueta))
-      .catch(() => toast('Selecciónalo a mano y cópialo con Ctrl+C'));
+      .catch(() => toast('No he podido copiarlo: selecciónalo y cópialo a mano'));
   }
 
   const fs = useMemo(() => ficheros(d, false), [d]);
@@ -120,29 +166,37 @@ export default function ProtocoloIA() {
       {enPaso ? (
         <div className="taller">
           <div className="paso">
+            <p className="rotulo">Paso {paso} de {N_PASOS}</p>
+            <h1 tabIndex={-1} ref={tituloRef}>{CABECERA[paso].titulo}</h1>
+            <p>{CABECERA[paso].intro}</p>
+
+            {!esAncho && <Vista d={d} fichero={vista.f} campos={vista.campos} ancho={false} />}
+
             {paso === 1 && <Paso1 d={d} set={set} verGate={verGate} />}
-            {paso === 2 && <Paso2 d={d} set={set} guarda={guarda} paso={paso} />}
+            {paso === 2 && <Paso2 d={d} set={set} verGate={verGate} />}
             {paso === 3 && <Paso3 d={d} set={set} />}
             {paso === 4 && <Paso4 d={d} set={set} />}
             {paso === 5 && <Paso5 d={d} set={set} />}
             {paso === 6 && <Paso6 d={d} set={set} />}
-            {paso === 7 && <Paso7 d={d} set={set} texto={fs['metodo/encargos/primera-tanda.md']} onCopiar={copiar} />}
+            {paso === 7 && (
+              <Paso7
+                d={d} set={set} esAncho={esAncho}
+                texto={soloEncargo(fs['metodo/encargos/primera-tanda.md'])}
+                onCopiar={copiar}
+              />
+            )}
 
             <div className="acciones">
-              <button
-                className="btn"
-                onClick={siguiente}
-                disabled={paso === 2 && !d.columna}
-              >
+              <button className="btn" onClick={siguiente}>
                 {paso === 7 ? 'Ver lo que me llevo' : 'Siguiente'}
               </button>
               <button className="btn btn-2" onClick={() => (paso === 1 ? navigate('/metodo') : irPaso(paso - 1))}>
-                {paso === 1 ? 'Volver' : 'Atrás'}
+                Atrás
               </button>
             </div>
           </div>
 
-          <Vista d={d} fichero={vista.f} campos={vista.campos} />
+          {esAncho && <Vista d={d} fichero={vista.f} campos={vista.campos} ancho />}
         </div>
       ) : paso === PASO_LISTO ? (
         <Listo d={d} fs={fs} onCopiar={copiar} onIr={irPaso} navigate={navigate} toast={toast} />
@@ -186,15 +240,14 @@ function Progreso({ paso, onIr }) {
   );
 }
 
-function Vista({ d, fichero, campos }) {
+function Vista({ d, fichero, campos, ancho }) {
   const texto = ficheros(d, true)[fichero] || '';
   const partes = partesVista(texto);
   const hechos = campos.filter((k) => lleno(k, d)).length;
-  const [abierta, setAbierta] = useState(
-    () => typeof window !== 'undefined' && window.matchMedia('(min-width: 1040px)').matches
-  );
+  const [abierta, setAbierta] = useState(ancho);
   return (
-    <details className="vista" open={abierta} onToggle={(e) => setAbierta(e.target.open)}>
+    <details className={'vista' + (ancho ? '' : ' vista-movil')} open={abierta}
+      onToggle={(e) => setAbierta(e.target.open)}>
       <summary>
         <span className="mono">{fichero}</span>
         <span className="rotulo" role="status">{hechos} de {campos.length}</span>
@@ -217,24 +270,25 @@ function Paso1({ d, set, verGate }) {
   const reaccion = pega(q, GENERICO.quien) || pega(w, GENERICO.que);
   return (
     <>
-      <p className="rotulo">Paso 1 de 7</p>
-      <h1>Tu frase de valor</h1>
-      <p>Rellena los dos huecos. La frase se escribe sola debajo.</p>
 
       <div className="campo">
         <label htmlFor="quien">Quién</label>
         <p className="ayuda" id="ayuda-quien">Una persona concreta, no «los usuarios».</p>
         <input type="text" id="quien" aria-describedby="ayuda-quien" autoComplete="off"
-          placeholder="una responsable de marketing sin equipo técnico"
+          placeholder="una persona, con su oficio"
+          aria-invalid={verGate && !q ? true : undefined}
           value={d.quien || ''} onChange={(e) => set('quien', e.target.value)} />
+        <p className="ejemplo">Por ejemplo: una responsable de marketing sin equipo técnico.</p>
       </div>
 
       <div className="campo">
         <label htmlFor="que">Qué decide</label>
         <p className="ayuda" id="ayuda-que">Algo que alguien decide un martes por la mañana.</p>
         <input type="text" id="que" aria-describedby="ayuda-que" autoComplete="off"
-          placeholder="qué cambiar en su web antes de pagar un rediseño"
+          placeholder="una decisión concreta"
+          aria-invalid={verGate && !w ? true : undefined}
           value={d.que || ''} onChange={(e) => set('que', e.target.value)} />
+        <p className="ejemplo">Por ejemplo: qué cambiar en su web antes de pagar un rediseño.</p>
       </div>
 
       <div className="frase-viva">
@@ -276,7 +330,7 @@ function Paso1({ d, set, verGate }) {
       </div>
 
       {verGate && (
-        <div className="aviso" id="gate" role="status">
+        <div className="aviso" id="gate" role="status" aria-live="polite">
           <p className="rotulo">Para aquí</p>
           <p>Sin esa frase, lo que viene después no tiene contra qué compararse.
             No es que lo estés haciendo mal: es que todavía no sabes para quién es, y eso
@@ -296,14 +350,12 @@ const COLUMNAS = [
   ['C', 'Funciona, y hay gente usándolo', 'Personas que no eres tú lo usan sin que tú estés delante. A partir de aquí, cada error lo paga alguien más.'],
 ];
 
-function Paso2({ d, set }) {
+function Paso2({ d, set, verGate }) {
   const r = d.columna ? REPARTO[d.columna] : null;
+  const hoy = r ? PIEZAS.slice(0, r.hasta) : [];
+  const luego = r ? PIEZAS.slice(r.hasta) : [];
   return (
     <>
-      <p className="rotulo">Paso 2 de 7</p>
-      <h1>En qué fase está tu proyecto</h1>
-      <p>Elige la que describe hoy, no la que te gustaría. La lista de abajo cambia
-        con lo que elijas: es el método que te toca montar.</p>
 
       <div className="ops" role="group" aria-label="Elige tu columna">
         {COLUMNAS.map(([letra, tit, txt]) => (
@@ -315,22 +367,58 @@ function Paso2({ d, set }) {
         ))}
       </div>
 
-      {r && (
-        <div className="reparto">
-          <p className="rotulo">Con esta columna montas</p>
-          <ul className="marcas">
-            {PIEZAS.map((p, i) => {
-              const dentro = i < r.hasta;
-              return (
-                <li className={dentro ? 'si' : 'no'} key={p}>
-                  <span className="marca" aria-hidden="true">{dentro ? '✓' : '·'}</span>
-                  <span>{p}<span className="sr">{dentro ? ' — lo montas ahora' : ' — todavía no'}</span></span>
-                </li>
-              );
-            })}
-          </ul>
-          <p className="cuerpo-2">{r.nota}</p>
+      {!r && verGate && (
+        <div className="aviso" id="gate" role="status" aria-live="polite">
+          <p className="rotulo">Elige una</p>
+          <p>Lo que montas y lo que le pides a una IA cambia con la fase en la
+            que estás. Si dudas entre dos, quédate con la de menos: se sube de
+            columna cuando aparece la prueba, no antes.</p>
         </div>
+      )}
+
+      {r && (
+        <>
+          <div className="reparto">
+            <p className="rotulo">Lo que montas hoy, aquí mismo</p>
+            <ul className="marcas">
+              {hoy.map((p) => (
+                <li className="si" key={p}>
+                  <span className="marca" aria-hidden="true">✓</span>
+                  <span>{p}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="cuerpo-2">No tienes que crearlos tú: los va escribiendo
+              este recorrido con lo que contestes, y te los llevas al final.</p>
+          </div>
+
+          <div className="reparto reparto-luego">
+            <p className="rotulo">Lo que llega más adelante</p>
+            <ul className="marcas">
+              {luego.map((p) => (
+                <li className="no" key={p}>
+                  <span className="marca" aria-hidden="true">·</span>
+                  <span>{p}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="cuerpo-2">{r.nota}</p>
+          </div>
+
+          <details className="pliegue">
+            <summary>Tres palabras que vas a ver y no son de tu oficio</summary>
+            <div className="pliegue-en">
+              <p><strong>.md</strong> — un fichero de texto normal, sin formato.
+                Se abre con cualquier editor y lo lee cualquier IA. Nada que
+                instalar.</p>
+              <p><strong>encargos/</strong> — la barra final significa carpeta:
+                dentro va un encargo por cada tanda de trabajo.</p>
+              <p><strong>gate</strong> — un control de sí o no sobre lo que te
+                entregan, escrito antes de pedirlo. Se prueba con un caso que
+                tiene que rechazar: si no salta, el gate no existe todavía.</p>
+            </div>
+          </details>
+        </>
       )}
     </>
   );
@@ -359,10 +447,6 @@ function Paso3({ d, set }) {
   }
   return (
     <>
-      <p className="rotulo">Paso 3 de 7</p>
-      <h1>Tus tres líneas rojas</h1>
-      <p>Tres frases en primera persona. Debajo de cada una tienes un ejemplo que
-        puedes meter en el campo de un clic y reescribir.</p>
 
       {ROJAS.map(([k, label, ayuda, semilla]) => (
         <div className="campo" key={k}>
@@ -421,10 +505,6 @@ function Paso4({ d, set }) {
 
   return (
     <>
-      <p className="rotulo">Paso 4 de 7</p>
-      <h1>Quién decide qué</h1>
-      <p>Dos conversaciones distintas con una IA: una pide criterio, la otra ejecuta.
-        Quien construye algo no puede ser quien juzga si está bien.</p>
 
       <div className="campo">
         <label id="rot-asesor">Tu asesor NO decide…</label>
@@ -483,11 +563,6 @@ function pistaDe(v) {
 function Paso5({ d, set }) {
   return (
     <>
-      <p className="rotulo">Paso 5 de 7</p>
-      <h1>Cuándo usas IA y cuándo no</h1>
-      <p>Tres reglas. Cada una necesita una condición que la active y algo que se
-        pueda observar. Según escribes, debajo del campo te digo qué le falta a la tuya
-        para poder incumplirse.</p>
 
       {REGLAS.map(([k, label, ayuda]) => {
         const p = pistaDe(d[k]);
@@ -523,10 +598,6 @@ function Paso6({ d, set }) {
 
   return (
     <>
-      <p className="rotulo">Paso 6 de 7</p>
-      <h1>Lo que vas a poner a prueba esta semana</h1>
-      <p>Tu método ya está montado. Ahora lo que falta es que pase algo fuera de tu
-        mesa. Tres campos y sales de aquí con una cita.</p>
 
       <div className="campo">
         <label htmlFor="suposicion">Si esto resultara falso, se cae tu plan entero</label>
@@ -581,14 +652,15 @@ function Paso6({ d, set }) {
 
 /* --------------------------- paso 7 --------------------------- */
 
-function Paso7({ d, set, texto, onCopiar }) {
+function Paso7({ d, set, texto, onCopiar, esAncho }) {
+  const [copiado, setCopiado] = useState(false);
+  function copiar() {
+    onCopiar(texto, 'Encargo copiado');
+    setCopiado(true);
+    setTimeout(() => setCopiado(false), 2500);
+  }
   return (
     <>
-      <p className="rotulo">Paso 7 de 7</p>
-      <h1>Tu primer encargo</h1>
-      <p>Esto es lo que le vas a pedir a una IA para llegar a esa conversación con
-        algo en la mano. Está escrito con tus respuestas; rellena los dos huecos y ya
-        se puede enviar.</p>
 
       <div className="campo">
         <label htmlFor="pieza">Qué necesitas tener listo para ese día</label>
@@ -608,11 +680,23 @@ function Paso7({ d, set, texto, onCopiar }) {
           value={d.acepto || ''} onChange={(e) => set('acepto', e.target.value)} />
       </div>
 
+      <p className="ayuda">Esto se pega entero en una conversación nueva, en
+        blanco, con la IA que uses. Sin historial previo y sin nada más.</p>
+
       <div className="copiable">
-        <pre>{texto}</pre>
-        <button className="btn btn-2 copiar" onClick={() => onCopiar(texto, 'Encargo copiado')}>
-          Copiar el encargo
-        </button>
+        <div className="copiable-acciones">
+          <button className="btn btn-2 copiar" onClick={copiar}>
+            {copiado ? 'Copiado' : 'Copiar el encargo'}
+          </button>
+        </div>
+        {esAncho ? (
+          <pre>{texto}</pre>
+        ) : (
+          <details className="pliegue pliegue-encargo">
+            <summary>Ver el texto que se va a pegar</summary>
+            <pre>{texto}</pre>
+          </details>
+        )}
       </div>
     </>
   );
@@ -624,12 +708,31 @@ function Listo({ d, fs, onCopiar, onIr, navigate, toast }) {
   const quien = (d.persona || '').trim(), dia = (d.cuando || '').trim();
   const columna = d.columna || 'A';
 
-  function descargar() {
-    const texto = Object.entries(fs)
-      .map(([n, c]) => `${'='.repeat(70)}\n${n}\n${'='.repeat(70)}\n\n${c}`)
-      .join('\n\n');
-    bajar(texto, 'metodo-ai-first.txt', 'text/plain;charset=utf-8');
-    toast('Carpeta descargada');
+  const [bajando, setBajando] = useState(false);
+
+  // Una carpeta de verdad: los ficheros .md con su estructura, no un txt con
+  // todo pegado. JSZip se carga sólo cuando se pulsa.
+  async function descargar() {
+    setBajando(true);
+    try {
+      const { default: JSZip } = await import('jszip');
+      const zip = new JSZip();
+      Object.entries(fs).forEach(([nombre, contenido]) => zip.file(nombre, contenido));
+      const blob = await zip.generateAsync({ type: 'blob' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'metodo.zip';
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+      toast('Carpeta descargada');
+    } catch (e) {
+      const texto = Object.entries(fs)
+        .map(([n, c]) => `${'='.repeat(70)}\n${n}\n${'='.repeat(70)}\n\n${c}`)
+        .join('\n\n');
+      bajar(texto, 'metodo-ai-first.txt', 'text/plain;charset=utf-8');
+      toast('Descargado en un solo fichero de texto');
+    }
+    setBajando(false);
   }
 
   return (
@@ -640,7 +743,7 @@ function Listo({ d, fs, onCopiar, onIr, navigate, toast }) {
       {quien && dia && (
         <div className="tira queda">
           <p className="rotulo">Lo primero que va a pasar</p>
-          <p>El {dia} hablas con {quien}. Llevas {(d.pieza || 'lo que pide tu encargo').trim()}.</p>
+          <p>El {fechaLarga(dia)} hablas con {quien}. Llevas {(d.pieza || 'lo que pide tu encargo').trim()}.</p>
         </div>
       )}
 
@@ -661,7 +764,9 @@ function Listo({ d, fs, onCopiar, onIr, navigate, toast }) {
       </div>
 
       <div className="acciones">
-        <button className="btn" onClick={descargar}>Descargar la carpeta</button>
+        <button className="btn" onClick={descargar} disabled={bajando}>
+          {bajando ? 'Preparando…' : 'Descargar la carpeta'}
+        </button>
         {columna !== 'A' && (
           <button className="btn btn-2" onClick={() => onIr(PASO_GITHUB)}>Llevarlos a GitHub</button>
         )}
@@ -672,7 +777,8 @@ function Listo({ d, fs, onCopiar, onIr, navigate, toast }) {
         <div className="aviso bien">
           <p className="rotulo">GitHub, todavía no</p>
           <p>En tu fase basta con esa carpeta en un sitio que se sincronice y que no
-            sea un chat. El repositorio entra más adelante, antes de que un agente de
+            sea un chat: Drive, Dropbox, iCloud o el que ya uses. Descomprime el zip
+            y déjala ahí. El repositorio entra más adelante, antes de que un agente de
             código pueda escribir en tus ficheros: entonces el historial deja de ser
             cómodo y pasa a ser necesario.</p>
         </div>
@@ -732,8 +838,15 @@ function AGithub({ onIr }) {
       <p>El motivo de pasar por aquí y no quedarte con la descarga es el historial.
         Cada vez que cambies algo, la versión anterior sigue estando, y poder cambiar
         de opinión sin perder por qué pensabas lo otro es la mitad del valor del método.</p>
+      <div className="acciones acciones-arriba">
+        <a className="btn" href={URL_PLANTILLA} target="_blank" rel="noopener noreferrer">
+          Abrir la plantilla en GitHub ↗
+        </a>
+      </div>
+
       <ol>
-        <li><strong>Crea tu copia de la plantilla.</strong> Abre la plantilla y pulsa
+        <li><strong>Crea tu copia de la plantilla.</strong> Con el botón de arriba se
+          abre en una pestaña nueva. Allí pulsa el botón verde
           <em> Use this template</em> → <em>Create a new repository</em>. Ponle nombre y
           márcala <em>Private</em>.</li>
         <li><strong>Copia cada fichero.</strong> Vuelve aquí, pulsa el botón de copiar

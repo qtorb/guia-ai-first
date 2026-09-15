@@ -1023,3 +1023,42 @@ details.fichero[open]>summary::before{content:none;display:none}
 .pagina ul,.pagina ol{max-width:var(--medida)}
 .pagina .mapa-caja code,.pagina p code{font-family:var(--familia-mono);font-size:13px}
 .volver-fila{display:flex;justify-content:space-between;gap:var(--e4);flex-wrap:wrap;align-items:baseline}
+
+/* ---- revisión de alumnos, 2026-09-15 ---- */
+
+/* los ejemplos salen del placeholder: en móvil se cortaban a media palabra */
+.ejemplo{margin:var(--e2) 0 0;font-size:15px;line-height:1.55;color:var(--texto-2);
+  max-width:var(--medida)}
+
+/* el campo de fecha iba sin estilar: 21px al lado de campos de 48 */
+.campo input[type=date]{min-height:44px;padding:12px 13px;border:2px solid var(--linea-fuerte);
+  border-radius:var(--radio-chico);font-family:var(--sans);font-size:16px;color:var(--ink);
+  background:var(--fondo)}
+.campo input[type=date]:focus{border-color:var(--acento)}
+[aria-invalid="true"]{border-color:var(--accion)}
+
+/* el panel del fichero, arriba en móvil y con el contador a la vista */
+.vista-movil{margin:0 0 var(--e5)}
+.vista-movil>summary{background:var(--superficie)}
+
+/* paso 2: los dos grupos de la lista, separados de verdad */
+.reparto-luego{margin-top:var(--e5);padding-top:var(--e4);border-top:1px solid var(--linea)}
+.reparto-luego .marcas li{color:var(--texto-2)}
+
+/* paso 7: el botón de copiar por encima del texto, no sepultado debajo */
+.copiable-acciones{padding:var(--e3) var(--e4) 0}
+.copiable .pliegue-encargo{border:0;margin:0;max-width:none}
+.copiable .pliegue-encargo>summary{font-size:16px;padding:var(--e3) var(--e4)}
+.copiable .pliegue-encargo pre{padding:0 var(--e4) var(--e4)}
+.acciones-arriba{margin-top:var(--e5);padding-top:0;border-top:0}
+
+/* objetivos táctiles que se quedaban cortos */
+#ayuda{min-height:44px;display:inline-flex;align-items:center}
+@media (max-width:480px){
+  .punto{min-width:32px;height:44px}
+  .punto span{width:16px}
+  .volver-fila .volver:last-child{display:none}
+}
+/* el título recibe el foco al cambiar de paso: sin contorno cuando el foco es
+   programático, con él cuando se llega por teclado */
+.paso h1[tabindex="-1"]:focus,.paso h1[tabindex="-1"]:focus-visible{outline:none}

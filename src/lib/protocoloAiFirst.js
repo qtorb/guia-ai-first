@@ -13,18 +13,22 @@ export const AB = '<<<m', CE = 'm>>>', AP = '<<<p', CP = 'p>>>';
 
 export const FIJAS_ASESOR = ['Qué está prohibido.', 'Qué cautelas asume el proyecto.'];
 
+// `hasta` marca dónde acaba lo que se monta hoy. Los seis primeros son
+// exactamente los ficheros que este recorrido escribe con tus respuestas: la
+// lista y lo que te llevas tienen que coincidir.
 export const REPARTO = {
-  A: { hasta: 4, nota: 'Sin gates de resultado: todavía no hay nada comprobado que congelar.' },
-  B: { hasta: 7, nota: 'Por primera vez hay un gate: un control de sí/no sobre lo que entregas. Lo compruebas con un caso que tiene que rechazar, para saber que funciona de verdad.' },
-  C: { hasta: 9, nota: 'Cada error lo paga alguien de fuera: entra el método entero.' },
+  A: { hasta: 6, nota: 'Sin gates de resultado: todavía no hay nada comprobado que congelar.' },
+  B: { hasta: 8, nota: 'Por primera vez hay un gate: un control de sí/no sobre lo que entregas. Lo compruebas con un caso que tiene que rechazar, para saber que funciona de verdad.' },
+  C: { hasta: 10, nota: 'Cada error lo paga alguien de fuera: entra el método entero.' },
 };
 
 export const PIEZAS = [
-  '00_VALOR.md — la frase y la fase',
+  '00_VALOR.md — para quién es esto y en qué fase estás',
   '01_ROLES.md — quién decide qué',
-  '02_LINEAS_ROJAS.md — tus tres líneas',
+  '02_LINEAS_ROJAS.md — tus tres líneas y cuándo usas IA',
+  '03_HIPOTESIS.md — lo que supones y quién puede desmentirlo',
+  'encargos/primera-tanda.md — lo que le pides a una IA esta semana',
   '07_CIERRE.md — cinco líneas al acabar el día',
-  'encargos/ — un encargo por tanda, con sus gates',
   '05_VISTO_NO_TOCADO.md — lo que aparece y no se toca',
   '06_CATALOGO.md — los fallos que ya te han pasado, con nombre',
   '08_DECISIONES.md — qué decidiste y qué lo hizo cambiar',
@@ -69,6 +73,39 @@ export function pega(txt, lista) {
 
 export function hoy() {
   return new Date().toISOString().slice(0, 10);
+}
+
+const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio',
+  'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+const DIAS_SEMANA = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+
+// Las fechas que lee una persona van en castellano; el ISO se queda dentro de
+// los ficheros, como metadato.
+export function fechaLarga(iso) {
+  const t = (iso || '').trim();
+  const m = t.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!m) return t;
+  const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+  if (Number.isNaN(d.getTime())) return t;
+  return `${DIAS_SEMANA[d.getDay()]} ${d.getDate()} de ${MESES[d.getMonth()]}`;
+}
+
+// Deja la frase apta para ir dentro de otra: sin mayúscula inicial heredada y
+// sin el punto final que la cerraba.
+export function enlazable(txt) {
+  const t = (txt || '').trim().replace(/[.;]+$/, '');
+  if (!t) return t;
+  const inicial = t.slice(0, 1);
+  const resto = t.slice(1);
+  if (inicial === inicial.toLowerCase()) return t;
+  return resto === resto.toLowerCase() ? inicial.toLowerCase() + resto : t;
+}
+
+// El bloque del encargo, sin las comillas de apertura y cierre del markdown:
+// es lo que se ve en pantalla y lo que se copia.
+export function soloEncargo(texto) {
+  const m = (texto || '').match(/```\n([\s\S]*?)\n```/);
+  return m ? m[1] : (texto || '');
 }
 
 export function listaAsesor(d) {
@@ -125,6 +162,37 @@ Este trabajo produce valor cuando ${q} puede tomar mejor la decisión de ${w}.
 | Fecha | Qué cambió | Qué lo hizo cambiar |
 |---|---|---|
 | | | |
+`,
+    'metodo/01_ROLES.md':
+`# Roles
+
+Quién decide qué. Y sobre todo: qué no decide cada uno.
+La columna de la derecha vale más que la de la izquierda.
+
+## Fundador — tú
+
+Decide: intención, criterio, prioridad, restricciones, trade-offs,
+qué está prohibido, y todo lo que no esté delegado por escrito.
+NO decide: nada queda fuera de tu decisión — esa es la diferencia entre
+delegar y desaparecer.
+
+## Asesor
+
+NO decide:
+
+${asesorTxt}
+
+## Ejecutor
+
+Decide: nada. Ejecuta encargos cerrados.
+Lo no previsto va a 05_VISTO_NO_TOCADO.md, en una línea.
+
+## Checkpoint
+
+Decide: cuándo se mira si hay que parar.
+NO decide: qué se construye, ni parar. El STOP lo firmas tú.
+
+**Cita en el calendario:** ${M(d.checkpoint, '[por poner]')}
 `,
     'metodo/02_LINEAS_ROJAS.md':
 `# Líneas rojas y protocolo de uso
@@ -183,7 +251,7 @@ ${M(d.suposicion, '[por escribir]')}
 
 **Estado:** supuesto. No comprobado.
 **Quién puede decir si es verdad:** ${M(d.persona, '[un nombre]')}
-**Cuándo se lo pregunto:** ${M(d.cuando, '[una fecha de esta semana]')}
+**Cuándo se lo pregunto:** ${M(fechaLarga(d.cuando), '[una fecha de esta semana]')}
 
 ## Lo que salga de esa conversación
 
@@ -210,11 +278,11 @@ si no hay ninguna, o preguntaste mal o te dijeron lo que querías oír.
 ## Apertura
 
 **Decisión que tiene que poder tomarse al final:**
-Si ${M(d.suposicion, '[la suposición que sostiene el plan]')} es cierto o no.
+Si ${M(enlazable(d.suposicion), '[la suposición que sostiene el plan]')} es cierto o no.
 
 **Sabemos:** poco. Este trabajo no lo ha usado nadie todavía.
 **Suponemos:** justo eso de arriba.
-**Contacto externo que produce esta tanda:** ${M(d.persona, '[un nombre]')}, el ${M(d.cuando, '[fecha]')}.
+**Contacto externo que produce esta tanda:** ${M(d.persona, '[un nombre]')}, el ${M(fechaLarga(d.cuando), '[fecha]')}.
 
 ---
 
@@ -259,60 +327,58 @@ STOP
   Total si: cumplir esto exige construir algo que haya que mantener.
   Parcial si: una parte no se puede hacer (se entrega el resto y se
   declara cuál cayó).
-  Condiciones: 2 (una prueba refuta el supuesto principal)
-               4 (exige cambiar algo fuera del alcance)
+  Para también si una prueba refuta el supuesto principal, o si cumplir
+  esto exige cambiar algo que está fuera del alcance.
 
 NO ABRIR FRENTES NUEVOS
-  Lo que aparezca y no esté previsto va a metodo/05_VISTO_NO_TOCADO.md,
-  en una línea. No se arregla de paso.
+  Lo que aparezca y no esté previsto se anota en una línea${(d.columna || 'A') === 'A' ? ' aparte' : ' en metodo/05_VISTO_NO_TOCADO.md'}.
+  No se arregla de paso.
 
 ENTREGA
-  ${M(d.pieza, '[la pieza]')}, donde yo pueda verla como la verá ella.
+  ${M(d.pieza, '[la pieza]')}, donde yo pueda verlo tal como lo verá
+  ${M(d.persona, '[esa persona]')}.
 
   Termina obligatoriamente, sin opción a "ninguno", con:
   MODO_DE_FALLO_NO_PREVISTO — cómo puede esto estar mal de una forma
   que este encargo no anticipa. Aunque todo lo de arriba cumpla, ¿qué
-  podría hacer que ${M(d.persona, '[esa persona]')} no le sirviera?
+  podría hacer que no le sirviera a ${M(d.persona, '[esa persona]')}?
   Si no encuentras ninguna, di qué buscaste para descartarlo.
 \`\`\`
 
 ---
 
+*Los tres huecos de abajo los rellenas tú cuando recibas la entrega. No
+forman parte de lo que se le pide a la IA.*
+
 **Veredicto:** ________
-**Decisión:** aceptar · iterar · revertir · aparcar → \`08_DECISIONES.md\`
+**Decisión:** aceptar · iterar · revertir · aparcar${(d.columna || 'A') === 'A' ? '' : ' → \`08_DECISIONES.md\`'}
 **Coste:** ________
 `,
-    'metodo/01_ROLES.md':
-`# Roles
+    'metodo/07_CIERRE.md':
+`# Cierre del día
 
-Quién decide qué. Y sobre todo: qué no decide cada uno.
-La columna de la derecha vale más que la de la izquierda.
+Cinco líneas al terminar la jornada. No al empezar la siguiente.
 
-## Fundador — tú
+De todo el método es lo que más rinde por minuto invertido: sin esto, cada
+mañana se va en reconstruir dónde te quedaste.
 
-Decide: intención, criterio, prioridad, restricciones, trade-offs,
-qué está prohibido, y todo lo que no esté delegado por escrito.
-NO decide: nada queda fuera de tu decisión — esa es la diferencia entre
-delegar y desaparecer.
+Si hoy decides algo que cuesta deshacer, y lo decides tarde o después de una
+jornada larga, márcalo **REVISAR MAÑANA**. Y si lo que decides es NO hacer
+algo, márcalo igual: las renuncias no dejan rastro y no se echan de menos.
 
-## Asesor
+---
 
-NO decide:
+Entradas nuevas arriba. Copia el bloque de abajo.
 
-${asesorTxt}
+## ${fe}
 
-## Ejecutor
-
-Decide: nada. Ejecuta encargos cerrados.
-Lo no previsto va a 05_VISTO_NO_TOCADO.md, en una línea.
-
-## Checkpoint
-
-Decide: cuándo se mira si hay que parar.
-NO decide: qué se construye, ni parar. El STOP lo firmas tú.
-
-**Cita en el calendario:** ${M(d.checkpoint, '[por poner]')}
-`,
+**Decidí:**
+**Por qué:**
+**Descarté:**
+**Abierto:**
+**Mañana empiezo por:**
+**Coste del día:**
+`
   };
 }
 
