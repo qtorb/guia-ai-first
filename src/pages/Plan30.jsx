@@ -232,11 +232,11 @@ export default function Plan30() {
             <button className="btn btn-2" onClick={() => navigate('/metodo')}>← El método</button>
           </div>
 
-          <p className="ayuda pie-plan">Las fechas son tuyas y se mueven, y el mes se
-            estira: si la conversación cae tarde, la semana 1 se alarga para contenerla y
-            las demás la siguen. Un mes es la medida, no la regla. Lo que no se mueve es
-            el orden — y la conversación de la semana 1, que se reserva con antelación o
-            no ocurre, y es la única pieza de todo esto que no se puede sustituir por nada.</p>
+          <p className="ayuda pie-plan">Las fechas son tuyas y se mueven. Si la
+            conversación cae tarde, la semana 1 se alarga hasta contenerla y las demás la
+            siguen: no son treinta días clavados. Lo que no se mueve es el orden. Y la
+            conversación: esa se reserva con antelación o no ocurre. Es la única pieza que
+            no se puede sustituir por nada.</p>
 
           <p className="ayuda">Lo que marcas aquí lo guarda tu navegador, no un servidor nuestro.</p>
         </>
