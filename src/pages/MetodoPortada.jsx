@@ -99,13 +99,18 @@ export default function MetodoPortada() {
 
       <hr />
 
-      <h2>De dónde sale</h2>
-      <p>Conviene que lo sepas antes de fiarte de nada de esto: sale de <b>un solo proyecto</b>,
-        construido por una persona entre mayo y agosto de 2026. No hay estudio, ni muestra,
-        ni comparación con nadie que trabaje de otra manera. Es la mejor evidencia que hay y
-        a la vez la peor.</p>
-      <p>Lo que sí puedo decir es que cada regla de aquí dentro costó dinero o tiempo antes de
-        estar escrita.</p>
+      <h2>Beta permanente</h2>
+      <p>Esto no está terminado, y no lo va a estar. Lo que tienes delante es la versión de
+        hoy: sale antes de estar redonda, se usa, y lo que no funciona se cambia. Un método
+        que espera a estar perfecto para salir no es un método mejor: es uno que nadie ha
+        probado.</p>
+      <p>Vale igual para lo tuyo, y es la parte incómoda. La página que vas a hacer no tiene
+        que estar bien: tiene que existir, para que alguien que no eres tú te diga qué no se
+        entiende. Publicar pronto no es descuido. Es la única forma de que algo se corrija
+        mientras corregirlo todavía es barato.</p>
+      <p>Así que trabaja en beta permanente: versiones, no lanzamientos. Nada de esperar al
+        momento bueno, que no llega. Lo que sacas hoy es peor que lo que sacarás en tres
+        meses, y a la vez es lo único que hace posible lo de dentro de tres meses.</p>
     </div>
   );
 }
