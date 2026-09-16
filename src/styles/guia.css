@@ -520,7 +520,11 @@ body.ctx-guia .tab[data-v="guia"].on,body.ctx-hoja .tab[data-v="hoja"].on{
   background:#fff;border-color:var(--ctx);box-shadow:inset 0 -2px 0 var(--ctx)}
 /* el cromo de la hoja toma el color de contexto */
 body.ctx-hoja .pdot.on i{background:var(--red);border-color:var(--red)}
-body.ctx-hoja .pdot:hover i{border-color:var(--red);color:var(--red)}
+/* El hover NO se aplica al paso actual ni a los ya hechos: en el barrio de
+   IA-Lab esta regla tiene más peso que .pdot.on i, así que al pasar el ratón
+   por encima del paso en el que estás, el número se pintaba del mismo rojo
+   que su fondo y desaparecía (contraste 1:1). */
+body.ctx-hoja .pdot:not(.on):not(.done):hover i{border-color:var(--red);color:var(--red)}
 body.ctx-hoja .btn-p{background:var(--red)}
 body.ctx-hoja .btn-p:hover{background:#6E1523}
 body.ctx-hoja .btn-g:hover{border-color:var(--red);color:var(--red)}
@@ -624,7 +628,7 @@ body.en-entrada .tabs,body.en-entrada #hbits,body.en-entrada #burger,body.en-ent
 .pdot u{text-decoration:none;font-size:10px;color:var(--mid);max-width:66px;overflow:hidden;
   text-overflow:ellipsis;white-space:nowrap;display:none}
 @media(min-width:760px){.pdot{min-width:74px}.pdot u{display:block}}
-.pdot:hover i{border-color:var(--blue);color:var(--blue)}
+.pdot:not(.on):not(.done):hover i{border-color:var(--blue);color:var(--blue)}
 .pdot.done i{background:var(--gbg);border-color:var(--green);color:var(--green)}
 .pdot.on i{background:var(--blue);border-color:var(--blue);color:var(--fondo);font-weight:700}
 .pdot.on u{color:var(--ink);font-weight:600}
