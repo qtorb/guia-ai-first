@@ -687,11 +687,15 @@ function Paso6({ d, set, verGate }) {
       {verGate && (
         <div className="aviso" id="gate" role="status" aria-live="polite">
           <p className="rotulo">Para aquí</p>
-          <p>Los cuatro campos sostienen lo que viene después: el encargo del paso 7
-            se escribe con ellos, y el mes entero se cuelga de esa conversación. Sin
-            un nombre y un día, lo que sale de aquí es una carpeta con huecos.
-            Si no se te ocurre a quién preguntar, ese es el hallazgo de hoy: vuelve
-            cuando tengas el nombre.</p>
+          {/* Mismo gesto que el gate del paso 1, que es el único sitio del sitio
+              donde se absuelve a alguien: no es que lo hagas mal, es que todavía no
+              sabes algo — y eso se arregla fuera de aquí. La empatía va donde se
+              bloquea, no repartida por todas partes. */}
+          <p>El encargo del paso 7 se escribe con estos cuatro campos, y el mes se
+            cuelga de esa conversación. Sin un nombre y sin un día, lo que te llevas es
+            una carpeta con huecos. Si no se te ocurre a quién preguntar, no es que te
+            falte método: es que todavía no tienes a quién, y eso se resuelve fuera de
+            aquí. Ese es el hallazgo de hoy. Vuelve cuando tengas el nombre.</p>
         </div>
       )}
 

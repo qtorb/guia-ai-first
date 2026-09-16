@@ -75,15 +75,19 @@ export default function MetodoPortada() {
       {terminado ? (
         <>
           <h2>Tu método ya está montado</h2>
-          <p>Lo escribiste en siete pasos y está guardado en este navegador. Desde aquí
-            puedes volver a cualquiera de ellos, descargarte otra vez la carpeta, o
-            empezar de cero si tu proyecto ha cambiado lo bastante.</p>
+          {/* La lista de lo que puedes hacer la dicen los botones. Decirla además en
+              prosa prometía volver a un paso sin que hubiera botón para hacerlo. */}
+          <p>Lo escribiste en siete pasos y está en este navegador, no en un servidor
+            nuestro.</p>
 
           {/* «Ver mi plan» ya está arriba, en el recuadro de situación: aquí
               sería el mismo botón dos veces en la misma pantalla. */}
           <div className="acciones">
             <button className="btn" onClick={() => navigate('/metodo/recorrido?paso=7')}>
               Descargar la carpeta otra vez
+            </button>
+            <button className="btn btn-2" onClick={() => navigate('/metodo/recorrido?paso=1')}>
+              Repasar el recorrido
             </button>
             <button className="btn btn-2" onClick={() => navigate('/guia')}>Ir al manual</button>
           </div>
