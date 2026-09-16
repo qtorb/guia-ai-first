@@ -53,7 +53,10 @@ export default function Plan30() {
   // Cómo cerró la conversación de la semana 1: sigue · cambia · cae. Son las
   // mismas tres con las que cierra el texto 4; aquí solo se anotan, y «cae»
   // apaga lo que venía después.
-  const cierre1 = m.s1cierre || '';
+  // El veredicto cuelga de la casilla: al desmarcarla desaparece con ella.
+  // Antes solo colgaba de s1cierre, así que deshacer dejaba la página
+  // afirmando que la suposición no había aguantado.
+  const cierre1 = m.s1 ? (m.s1cierre || '') : '';
   const seCayo = cierre1 === 'cae';
   const cambios = Number(m.cambios || 0);
   const sup = Number(m.sup || 0);
@@ -72,24 +75,29 @@ export default function Plan30() {
     const blob = new Blob([ics(d, p)], { type: 'text/calendar;charset=utf-8' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'metodo-30-dias.ics';
+    a.download = 'metodo-mi-mes.ics';
     a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 2000);
     toast('Fechas descargadas: ábrelo y tu calendario las añade');
   }
 
-  const sinRecorrido = !d.quien && !d.persona;
+  // El plan se cuelga entero de la conversación del paso 6: sin nombre y sin
+  // día no hay semana 1, y las otras tres cuelgan de ella. Antes bastaba con
+  // haber escrito la frase de valor del paso 1 para que se pintaran cuatro
+  // semanas sobre una cita que no existía.
+  const sinRecorrido = !(d.persona || '').trim() || !(d.cuando || '').trim();
 
   return (
     <div className="pagina">
-      <p className="rotulo">El método · tu plan</p>
+      <p className="rotulo">El método · tu mes</p>
       <h1 className="plan-titular">En dos semanas tienes algo fuera.<br />En cuatro sabes qué cambiar.</h1>
 
       {sinRecorrido ? (
         <div className="aviso">
           <p className="rotulo">Todavía no hay plan</p>
-          <p>Este plan se hace con lo que escribes en el recorrido: con quién hablas,
-            qué día, y tu momento de parar a pensar. Sin eso son cuatro fechas vacías.</p>
+          <p>Este plan se hace con lo que escribes en el paso 6 del recorrido: con
+            quién hablas, qué día, y qué harás si esa conversación te tumba la
+            suposición. Sin un nombre y un día son cuatro fechas vacías.</p>
           <div className="acciones">
             <button className="btn" onClick={() => navigate('/metodo/recorrido')}>Hacer el recorrido</button>
           </div>
@@ -131,7 +139,7 @@ export default function Plan30() {
           </div>
 
           {aqui && !aqui.pasado && (
-            <p className="donde">Vas por el día {aqui.dia} de 30 · semana {aqui.semana}.</p>
+            <p className="donde">Vas por el día {aqui.dia} de {aqui.total} · semana {aqui.semana}.</p>
           )}
 
           {seCayo && (
@@ -155,7 +163,7 @@ export default function Plan30() {
                 <button className="btn" onClick={() => copiar(TEXTO_DE['Cerrar la tanda'], 'Texto copiado')}>
                   Copiar «Cerrar la tanda»
                 </button>
-                <button className="btn btn-2" onClick={() => navigate('/metodo/recorrido')}>
+                <button className="btn btn-2" onClick={() => navigate('/metodo/recorrido?paso=6')}>
                   Reescribir la suposición
                 </button>
               </div>
@@ -220,9 +228,11 @@ export default function Plan30() {
             <button className="btn btn-2" onClick={() => navigate('/metodo')}>← El método</button>
           </div>
 
-          <p className="ayuda pie-plan">Las fechas son tuyas y se mueven. La conversación de la
-            semana 1, no: esa se reserva con antelación o no ocurre, y es la única pieza de
-            todo esto que no se puede sustituir por nada.</p>
+          <p className="ayuda pie-plan">Las fechas son tuyas y se mueven, y el mes se
+            estira: si la conversación cae tarde, la semana 1 se alarga para contenerla y
+            las demás la siguen. Un mes es la medida, no la regla. Lo que no se mueve es
+            el orden — y la conversación de la semana 1, que se reserva con antelación o
+            no ocurre, y es la única pieza de todo esto que no se puede sustituir por nada.</p>
 
           <p className="ayuda">Lo que marcas aquí lo guarda tu navegador, no un servidor nuestro.</p>
         </>

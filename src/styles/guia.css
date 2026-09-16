@@ -1398,5 +1398,10 @@ body.ctx-hoja .puerta-motivo input:focus-visible { outline-color:var(--lab) }
 .loescrito{font-family:var(--familia-titulo);font-size:21px;line-height:1.35;font-weight:500;
   margin:0 0 var(--e4);padding:0 0 0 var(--e4);border-left:3px solid var(--acento);
   color:var(--texto);max-width:var(--medida)}
-.semana.apagada{opacity:.45}
-@media (prefers-reduced-motion:no-preference){.semana{transition:opacity .2s}}
+/* Apagar con opacity bajaba el texto a 2,96:1 y AAA pide 7. El estado se
+   marca con el rótulo y con el fondo, no atenuando lo que hay que poder leer. */
+.semana.apagada{background:var(--superficie);border-radius:var(--radio);
+  padding-left:var(--e4);padding-right:var(--e4)}
+.semana.apagada .quegano > h2,.semana.apagada .quegano > h3{font-weight:500}
+.semana.apagada .rotulo::after{content:' · en pausa';color:var(--texto-2)}
+@media (prefers-reduced-motion:no-preference){.semana{transition:background .2s}}

@@ -52,7 +52,7 @@ export default function MetodoPortada() {
               ))}
             </ul>
           )}
-          <h2>Día {sit.aqui.dia} de 30 · esta semana sales con: {sit.s.gano}</h2>
+          <h2>Día {sit.aqui.dia} de {sit.aqui.total} · esta semana sales con: {sit.s.gano}</h2>
           <p>{sit.s.como}</p>
           <p className="ayuda">Cierras el {fechaLarga(sit.s.cierre)} a las {sit.s.hora}.
             {sit.cambios > 0 && ` Llevas ${sit.cambios} ${sit.cambios === 1 ? 'cosa cambiada' : 'cosas cambiadas'} por lo que te han dicho.`}</p>

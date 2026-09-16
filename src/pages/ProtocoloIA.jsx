@@ -134,6 +134,21 @@ export default function ProtocoloIA() {
       setTimeout(() => document.getElementById('gate')?.scrollIntoView({ block: 'center' }), 0);
       return;
     }
+    // El paso 6 para igual que el 1 y el 2. Sin sus cuatro campos, el paso 7
+    // escribe un encargo con huecos «[por escribir]» y el plan de 30 días se
+    // monta sobre una conversación que no existe: hasta hoy se podía llegar
+    // al final del recorrido sin contestar nada del 3 al 7.
+    if (paso === 6) {
+      const falta = ['suposicion', 'siNo', 'persona', 'cuando'].find((k) => !(d[k] || '').trim());
+      if (falta) {
+        setVerGate(true);
+        setTimeout(() => {
+          document.getElementById('gate')?.scrollIntoView({ block: 'center' });
+          document.getElementById(falta)?.focus();
+        }, 0);
+        return;
+      }
+    }
     if (paso === 1) {
       const vacio = !(d.quien || '').trim() || !(d.que || '').trim();
       if (vacio) {
@@ -181,7 +196,7 @@ export default function ProtocoloIA() {
             {paso === 3 && <Paso3 d={d} set={set} />}
             {paso === 4 && <Paso4 d={d} set={set} />}
             {paso === 5 && <Paso5 d={d} set={set} />}
-            {paso === 6 && <Paso6 d={d} set={set} />}
+            {paso === 6 && <Paso6 d={d} set={set} verGate={verGate} />}
             {paso === 7 && (
               <Paso7
                 d={d} set={set} esAncho={esAncho}
@@ -333,7 +348,7 @@ function Paso1({ d, set, verGate }) {
         <input type="date" id="fecha" value={d.fecha || hoy()} onChange={(e) => set('fecha', e.target.value)} />
       </div>
 
-      {verGate && (
+      {verGate && (!q || !w) && (
         <div className="aviso" id="gate" role="status" aria-live="polite">
           <p className="rotulo">Para aquí</p>
           <p>Sin esa frase, lo que viene después no tiene contra qué compararse.
@@ -589,7 +604,7 @@ function Paso5({ d, set }) {
 const GENERICOS_PERSONA = ['gente', 'usuarios', 'clientes', 'empresas', 'alguien',
   'personas', 'el sector', 'mi target', 'mi público', 'la gente'];
 
-function Paso6({ d, set }) {
+function Paso6({ d, set, verGate }) {
   const per = (d.persona || '').trim().toLowerCase();
   let reaccion = '';
   if (per && GENERICOS_PERSONA.some((g) => per === g || per.indexOf(g + ' ') === 0)) {
@@ -600,6 +615,8 @@ function Paso6({ d, set }) {
     reaccion = 'Falta el nombre de quien puede decirte si eso es verdad.';
   } else if (per && !(d.cuando || '').trim()) {
     reaccion = 'Falta el día. Lo que no tiene fecha no ocurre.';
+  } else if ((d.cuando || '').trim() && d.cuando < hoy()) {
+    reaccion = 'Ese día ya pasó. La conversación es la que abre el mes, así que tiene que estar por delante.';
   }
 
   return (
@@ -643,11 +660,22 @@ function Paso6({ d, set }) {
         <label htmlFor="cuando">Qué día de esta semana</label>
         <p className="ayuda" id="ayuda-cuando">Una fecha, no «pronto». Lo que no tiene
           día no ocurre.</p>
-        <input type="date" id="cuando" aria-describedby="ayuda-cuando"
+        <input type="date" id="cuando" aria-describedby="ayuda-cuando" min={hoy()}
           value={d.cuando || ''} onChange={(e) => set('cuando', e.target.value)} />
       </div>
 
       {reaccion && <div className="reaccion" role="status">{reaccion}</div>}
+
+      {verGate && (
+        <div className="aviso" id="gate" role="status" aria-live="polite">
+          <p className="rotulo">Para aquí</p>
+          <p>Los cuatro campos sostienen lo que viene después: el encargo del paso 7
+            se escribe con ellos, y el mes entero se cuelga de esa conversación. Sin
+            un nombre y un día, lo que sale de aquí es una carpeta con huecos.
+            Si no se te ocurre a quién preguntar, ese es el hallazgo de hoy: vuelve
+            cuando tengas el nombre.</p>
+        </div>
+      )}
 
       <details className="pliegue">
         <summary>Cómo va esa conversación, en cinco líneas</summary>
@@ -735,7 +763,7 @@ function Listo({ d, fs, onCopiar, onIr, navigate, toast }) {
     const blob = new Blob([ics(d, p30)], { type: 'text/calendar;charset=utf-8' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'metodo-30-dias.ics';
+    a.download = 'metodo-mi-mes.ics';
     a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 2000);
     toast('Fechas descargadas: ábrelo y tu calendario las añade');
@@ -755,7 +783,7 @@ function Listo({ d, fs, onCopiar, onIr, navigate, toast }) {
       Object.entries(TEXTOS).forEach(([nombre, contenido]) => zip.file(nombre, contenido));
       zip.file('LEEME.md', leemeMd(d, p30));
       zip.file('PLAN.md', planMd(d, p30));
-      zip.file('metodo-30-dias.ics', ics(d, p30));
+      zip.file('metodo-mi-mes.ics', ics(d, p30));
       const blob = await zip.generateAsync({ type: 'blob' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
@@ -813,7 +841,7 @@ function Listo({ d, fs, onCopiar, onIr, navigate, toast }) {
           está en tu cabeza y en un documento, dentro de un mes esté fuera, lo haya visto
           gente de verdad, y tú sepas algo que hoy no sabes.</p>
         <div className="acciones">
-          <button className="btn" onClick={() => navigate('/metodo/plan')}>Ver mi plan de 30 días</button>
+          <button className="btn" onClick={() => navigate('/metodo/plan')}>Ver mi plan</button>
           <button className="btn btn-2" onClick={bajarIcs}>Añadir las fechas a mi calendario</button>
         </div>
         <p className="ayuda">Las fechas salen de lo que ya has escrito en los pasos 4 y 6.
