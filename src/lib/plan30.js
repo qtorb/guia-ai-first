@@ -234,3 +234,97 @@ reserva con antelación o no ocurre, y es la única pieza de todo esto que no se
 puede sustituir por nada.
 `;
 }
+
+// --------------------------------------------------------------------------
+// El LEEME de la raíz. Es lo primero que se ve al abrir el zip, y hasta ahora
+// lo primero que se veía eran ficheros sueltos sin orden. Va escrito con sus
+// datos: la conversación que tiene puesta, la pieza que lleva, sus fechas.
+// --------------------------------------------------------------------------
+export function leemeMd(d, p) {
+  const l = (s) => fechaLarga(s);
+  const persona = (d.persona || '').trim();
+  const pieza = (d.pieza || '').trim();
+  const cita = persona && d.cuando
+    ? `**${l(d.cuando)} hablas con ${persona}.** Llevas ${pieza || 'lo que pide tu encargo'}.`
+    : '**Tu primera conversación con alguien de fuera.** Ponle día y hora si todavía no lo has hecho.';
+
+  return `# Empieza por aquí
+
+Esto es tu método. No hay nada que instalar y no hace falta leérselo entero.
+
+---
+
+## Lo primero que va a pasar
+
+${cita}
+
+Escribe mientras te habla, o grábalo con su permiso. Las frases literales solo
+existen si las apuntas en el momento: luego te acuerdas de lo que te gustó, no
+de lo que dijeron.
+
+Lo que le enseñas ya lo tienes escrito: está en \`metodo/encargos/primera-tanda.md\`.
+Ese fichero se pega entero en una conversación nueva con la IA que uses.
+
+---
+
+## Al volver de esa conversación
+
+Abres un chat nuevo, adjuntas \`metodo/00_VALOR.md\`, \`metodo/03_HIPOTESIS.md\`,
+el encargo y tus notas, y pegas \`textos/4_cerrar_la_tanda.md\`.
+
+Sales de ahí con tres frases suyas, una decisión —sigue, cambia o se cae— y la
+siguiente tanda ya empezada. Es el rato más valioso del mes.
+
+---
+
+## Tu mes
+
+Está en \`PLAN.md\`, con las fechas. En corto:
+
+| | |
+|---|---|
+| Semana 1 | Tres frases de alguien de fuera, tal cual las dijo |
+| Semana 2 | Una dirección que puedas mandar por WhatsApp |
+| Semana 3 | Saber qué no se entiende sin ti delante |
+| Semana 4 | Publicado, y escrito qué cambiaste |
+
+El ${l(p.lanzamiento)} deberías tener: una página en internet que explica qué
+ofreces y a quién, cinco personas de ese «a quién» que la han mirado, y algo que
+has cambiado por lo que te dijeron.
+
+Las fechas están también en \`metodo-30-dias.ics\`: lo abres y tu calendario las
+añade. Cada evento lleva dentro el texto que toca esa semana.
+
+---
+
+## Qué hay en cada sitio
+
+\`metodo/\` — tus ficheros. Para quién es esto, quién decide qué, lo que no se
+toca, lo que supones y todavía no sabes, y dónde te quedaste.
+
+\`metodo/encargos/\` — lo que le vas pidiendo a una IA. El primero ya está escrito.
+
+\`metodo/activos/\` — **lo que te entreguen, con la fecha en el nombre.** Se olvida
+siempre y luego no puedes saber por qué algo quedó como quedó.
+
+\`textos/\` — los cuatro textos que se pegan en cualquier chat. Empieza por su
+\`LEEME.md\`: dice cuál usar en cada momento.
+
+\`PLAN.md\` y \`metodo-30-dias.ics\` — tu mes.
+
+---
+
+## Tres cosas que conviene saber
+
+**Deja la carpeta en un sitio que se sincronice** —Drive, Dropbox, iCloud— y que
+no sea un chat. Nada de esto vive en ninguna web: es tuyo y está en tu disco.
+
+**Para revisar, abre conversación nueva.** Quien construye no puede ser quien
+revisa, y eso vale también para una IA: en el mismo chat va a defender lo que
+acaba de hacer.
+
+**Si tu IA te da la razón en todo a la primera, no te está ayudando.** Los cuatro
+textos le piden explícitamente que te diga qué es lo más flojo. Eso es lo que no
+vas a conseguir pidiéndole las cosas de la forma normal.
+`;
+}

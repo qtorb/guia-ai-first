@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useToast } from '../components/Toast';
 import { alPortapapeles, bajar } from '../lib/portapapeles';
-import { plan, ics, planMd } from '../lib/plan30';
+import { plan, ics, planMd, leemeMd } from '../lib/plan30';
 import { TEXTOS } from '../lib/textos';
 import {
   DISPARA, GENERICO, PIEZAS, REPARTO, VAGO,
@@ -737,6 +737,7 @@ function Listo({ d, fs, onCopiar, onIr, navigate, toast }) {
       // del mes con sus fechas y el .ics. Sin esto la carpeta es el día cero
       // y nada más.
       Object.entries(TEXTOS).forEach(([nombre, contenido]) => zip.file(nombre, contenido));
+      zip.file('LEEME.md', leemeMd(d, p30));
       zip.file('PLAN.md', planMd(d, p30));
       zip.file('metodo-30-dias.ics', ics(d, p30));
       const blob = await zip.generateAsync({ type: 'blob' });
