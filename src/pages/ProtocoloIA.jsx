@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useToast } from '../components/Toast';
 import { alPortapapeles, bajar } from '../lib/portapapeles';
+import { plan, ics, planMd } from '../lib/plan30';
+import { TEXTOS } from '../lib/textos';
 import {
   DISPARA, GENERICO, PIEZAS, REPARTO, VAGO,
   fechaLarga, ficheros, hoy, lleno, partesVista, pega, soloEncargo,
@@ -709,8 +711,19 @@ function Paso7({ d, set, texto, onCopiar, esAncho }) {
 function Listo({ d, fs, onCopiar, onIr, navigate, toast }) {
   const quien = (d.persona || '').trim(), dia = (d.cuando || '').trim();
   const columna = d.columna || 'A';
+  const p30 = useMemo(() => plan(d), [d]);
 
   const [bajando, setBajando] = useState(false);
+
+  function bajarIcs() {
+    const blob = new Blob([ics(d, p30)], { type: 'text/calendar;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'metodo-30-dias.ics';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    toast('Fechas descargadas: ábrelo y tu calendario las añade');
+  }
 
   // Una carpeta de verdad: los ficheros .md con su estructura, no un txt con
   // todo pegado. JSZip se carga sólo cuando se pulsa.
@@ -720,6 +733,12 @@ function Listo({ d, fs, onCopiar, onIr, navigate, toast }) {
       const { default: JSZip } = await import('jszip');
       const zip = new JSZip();
       Object.entries(fs).forEach(([nombre, contenido]) => zip.file(nombre, contenido));
+      // Lo que acompaña a los ficheros: los cuatro textos pegables, el plan
+      // del mes con sus fechas y el .ics. Sin esto la carpeta es el día cero
+      // y nada más.
+      Object.entries(TEXTOS).forEach(([nombre, contenido]) => zip.file(nombre, contenido));
+      zip.file('PLAN.md', planMd(d, p30));
+      zip.file('metodo-30-dias.ics', ics(d, p30));
       const blob = await zip.generateAsync({ type: 'blob' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
@@ -763,6 +782,26 @@ function Listo({ d, fs, onCopiar, onIr, navigate, toast }) {
             </div>
           </details>
         ))}
+      </div>
+
+      <div className="bloque30">
+        <p className="rotulo">Tu mes</p>
+        <h2>En dos semanas tienes algo fuera. En cuatro sabes qué cambiar.</h2>
+        <ul className="destino">
+          <li><b>Día 14:</b> una página en internet que explica qué ofreces y a quién.</li>
+          <li><b>Día 21:</b> cinco personas de ese «a quién» la han mirado.</li>
+          <li><b>Día 30:</b> publicado, y escrito qué cambiaste por lo que te dijeron.</li>
+        </ul>
+        <p className="glosa">No es tener la empresa montada. No es facturar. Es que lo que hoy
+          está en tu cabeza y en un documento, dentro de un mes esté fuera, lo haya visto
+          gente de verdad, y tú sepas algo que hoy no sabes.</p>
+        <div className="acciones">
+          <button className="btn" onClick={() => navigate('/metodo/plan')}>Ver mi plan de 30 días</button>
+          <button className="btn btn-2" onClick={bajarIcs}>Añadir las fechas a mi calendario</button>
+        </div>
+        <p className="ayuda">Las fechas salen de lo que ya has escrito en los pasos 4 y 6.
+          Son tuyas: se mueven. Y en la carpeta van los cuatro textos que te acompañan
+          después, en <code>textos/</code>.</p>
       </div>
 
       <div className="acciones">

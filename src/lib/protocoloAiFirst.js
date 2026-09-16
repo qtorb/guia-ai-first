@@ -17,9 +17,9 @@ export const FIJAS_ASESOR = ['Qué está prohibido.', 'Qué cautelas asume el pr
 // exactamente los ficheros que este recorrido escribe con tus respuestas: la
 // lista y lo que te llevas tienen que coincidir.
 export const REPARTO = {
-  A: { hasta: 6, nota: 'Sin gates de resultado: todavía no hay nada comprobado que congelar.' },
-  B: { hasta: 8, nota: 'Por primera vez hay un gate: un control de sí/no sobre lo que entregas. Lo compruebas con un caso que tiene que rechazar, para saber que funciona de verdad.' },
-  C: { hasta: 10, nota: 'Cada error lo paga alguien de fuera: entra el método entero.' },
+  A: { hasta: 7, nota: 'Sin gates de resultado: todavía no hay nada comprobado que congelar.' },
+  B: { hasta: 9, nota: 'Por primera vez hay un gate: un control de sí/no sobre lo que entregas. Lo compruebas con un caso que tiene que rechazar, para saber que funciona de verdad.' },
+  C: { hasta: 11, nota: 'Cada error lo paga alguien de fuera: entra el método entero.' },
 };
 
 export const PIEZAS = [
@@ -29,6 +29,7 @@ export const PIEZAS = [
   '03_HIPOTESIS.md — lo que supones y quién puede desmentirlo',
   'encargos/primera-tanda.md — lo que le pides a una IA esta semana',
   '07_CIERRE.md — cinco líneas al acabar el día',
+  'activos/ — lo que te van entregando, con fecha',
   '05_VISTO_NO_TOCADO.md — lo que aparece y no se toca',
   '06_CATALOGO.md — los fallos que ya te han pasado, con nombre',
   '08_DECISIONES.md — qué decidiste y qué lo hizo cambiar',
@@ -353,6 +354,19 @@ forman parte de lo que se le pide a la IA.*
 **Veredicto:** ________
 **Decisión:** aceptar · iterar · revertir · aparcar${(d.columna || 'A') === 'A' ? '' : ' → \`08_DECISIONES.md\`'}
 **Coste:** ________
+`,
+    'metodo/activos/_LEEME.md':
+`# Activos
+
+Aquí va **lo que te entreguen**, con la fecha en el nombre:
+\`2026-09-24_pagina.md\`, \`2026-10-02_correo.md\`.
+
+Parece burocracia hasta el día en que quieres saber por qué algo quedó como
+quedó y ya no existe en ninguna parte. Una decisión escrita sobre un artefacto
+que has perdido no vale nada: no puedes releerlo, no puedes ver de dónde salió
+la frase que no funcionó, y la siguiente vez lo reescribes desde cero.
+
+Regla: cada vez que aceptes una entrega, cópiala aquí antes de anotar nada.
 `,
     'metodo/07_CIERRE.md':
 `# Cierre del día
