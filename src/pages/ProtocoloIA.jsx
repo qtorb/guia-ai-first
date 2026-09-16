@@ -571,12 +571,30 @@ const REGLAS = [
   ['validar', 'Antes de aceptar una respuesta comprobaré…', 'Qué miras antes de dar algo por bueno. Si la respuesta es «que suene bien», ahí tienes el problema.'],
 ];
 
-function pistaDe(v) {
+// Esta pista dejó de dar el visto bueno, y es a propósito. Decía «Se puede
+// incumplir. Vale.» en cuanto encontraba una conjunción, así que aprobaba
+// «cuando sea importante» y «si me apetece» igual que una regla de verdad —
+// cuatro revisores externos lo cazaron y la prueba es fácil de repetir. Un
+// regex puede detectar que FALTA algo; no puede saber que una regla vale, y
+// decirlo enseñaba justo lo contrario de lo que enseña el método.
+//
+// Lo que queda son los dos diagnósticos que sí detectan algo real, y el
+// tercer campo tiene el suyo: su etiqueta ya dice «antes de aceptar una
+// respuesta», así que el disparador se lo da la pregunta y lo que le puede
+// faltar es qué se mira.
+function pistaDe(v, campo) {
   const t = (v || '').trim();
   if (!t) return { txt: '', cls: 'pista' };
-  if (VAGO.test(t)) return { txt: 'Eso no se puede incumplir: nadie sabría decir si la has roto. Escribe qué harías o qué no.', cls: 'pista avisa' };
-  if (!DISPARA.test(t)) return { txt: 'Falta el cuándo. Tal como está, no dice qué la activa.', cls: 'pista avisa' };
-  return { txt: 'Se puede incumplir. Vale.', cls: 'pista bien' };
+  if (VAGO.test(t)) {
+    return { txt: 'Eso no se puede incumplir: nadie sabría decir si la has roto. Escribe qué harías o qué no.', cls: 'pista avisa' };
+  }
+  if (campo === 'validar') {
+    return { txt: '', cls: 'pista' };
+  }
+  if (!DISPARA.test(t)) {
+    return { txt: 'Falta el cuándo. Tal como está, no dice qué la activa.', cls: 'pista avisa' };
+  }
+  return { txt: '', cls: 'pista' };
 }
 
 function Paso5({ d, set }) {
@@ -584,7 +602,7 @@ function Paso5({ d, set }) {
     <>
 
       {REGLAS.map(([k, label, ayuda]) => {
-        const p = pistaDe(d[k]);
+        const p = pistaDe(d[k], k);
         return (
           <div className="campo" key={k}>
             <label htmlFor={k}>{label}</label>

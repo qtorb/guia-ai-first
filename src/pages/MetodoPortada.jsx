@@ -38,6 +38,9 @@ export default function MetodoPortada() {
   const navigate = useNavigate();
   const paso = pasoGuardado();
   const sit = situacion();
+  // «Terminado» no es haber llegado al paso 7: es haber contestado el 6, que
+  // es lo que produce la carpeta y el plan. Se puede estar en el 7 sin nada.
+  const terminado = paso >= 7 && !!sit;
   return (
     <div className="pagina">
       <h1>Método AI-First</h1>
@@ -66,21 +69,44 @@ export default function MetodoPortada() {
           cómo se pide, qué se comprueba antes de darlo por bueno y cuándo hay que parar.</p>
       </div>
 
-      <h2>Empieza por montar el tuyo</h2>
-      <p>Quince minutos, siete pasos. Al terminar te llevas, en una carpeta, los
-        ficheros de tu método escritos con tus respuestas. Si tu proyecto ya ha
-        salido a la calle, además tienes los cuatro pasos para dejar esa carpeta
-        en un repositorio —una carpeta tuya en internet que guarda el historial
-        de todo lo que cambies.</p>
-      <p>No hace falta instalar nada ni saber programar. Nada de lo que escribas
-        sale de tu navegador: no hay cuentas ni contraseñas.</p>
+      {/* Con el recorrido terminado esta pantalla decía «Empieza por montar el
+          tuyo» encima de un plan ya en marcha, y no decía en ningún sitio que
+          estuviera hecho. Ahora el bloque cambia de oficio con el estado. */}
+      {terminado ? (
+        <>
+          <h2>Tu método ya está montado</h2>
+          <p>Lo escribiste en siete pasos y está guardado en este navegador. Desde aquí
+            puedes volver a cualquiera de ellos, descargarte otra vez la carpeta, o
+            empezar de cero si tu proyecto ha cambiado lo bastante.</p>
 
-      <div className="acciones">
-        <button className="btn" onClick={() => navigate('/metodo/recorrido')}>
-          {paso > 1 ? `Seguir donde lo dejé · paso ${paso} de 7` : 'Montar el mío · 15 minutos'}
-        </button>
-        <button className="btn btn-2" onClick={() => navigate('/guia')}>Ver el método primero</button>
-      </div>
+          {/* «Ver mi plan» ya está arriba, en el recuadro de situación: aquí
+              sería el mismo botón dos veces en la misma pantalla. */}
+          <div className="acciones">
+            <button className="btn" onClick={() => navigate('/metodo/recorrido?paso=7')}>
+              Descargar la carpeta otra vez
+            </button>
+            <button className="btn btn-2" onClick={() => navigate('/guia')}>Ir al manual</button>
+          </div>
+        </>
+      ) : (
+        <>
+          <h2>Empieza por montar el tuyo</h2>
+          <p>Quince minutos, siete pasos. Al terminar te llevas, en una carpeta, los
+            ficheros de tu método escritos con tus respuestas. Si tu proyecto ya ha
+            salido a la calle, además tienes los cuatro pasos para dejar esa carpeta
+            en un repositorio —una carpeta tuya en internet que guarda el historial
+            de todo lo que cambies.</p>
+          <p>No hace falta instalar nada ni saber programar. Nada de lo que escribas
+            sale de tu navegador: no hay cuentas ni contraseñas.</p>
+
+          <div className="acciones">
+            <button className="btn" onClick={() => navigate('/metodo/recorrido')}>
+              {paso > 1 ? `Seguir donde lo dejé · paso ${paso} de 7` : 'Montar el mío · 15 minutos'}
+            </button>
+            <button className="btn btn-2" onClick={() => navigate('/guia')}>Ver el método primero</button>
+          </div>
+        </>
+      )}
       {paso > 1 && (
         <p className="ayuda" style={{ marginTop: 'var(--e3)' }}>
           Tienes el recorrido empezado en este navegador.{' '}
