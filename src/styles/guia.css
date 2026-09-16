@@ -1172,11 +1172,13 @@ details.fichero[open]>summary::before{content:none;display:none}
 .pagina .tira-avance .tramo {
   width: 62px; height: 9px; border: 1px solid var(--linea); display: block;
 }
-.pagina .tira-avance .tramo.lleno { background: #1e7a4d; border-color: #1e7a4d; }
+.pagina .tira-avance .tramo.lleno { background: var(--regla); border-color: var(--regla); }
 .pagina .marcador { display: flex; align-items: center; gap: 7px; font-size: .9rem; }
+/* 49x33 no llega a los 44px de alto que pide AAA 2.5.5 para un objetivo. */
 .pagina .marcador input[type="number"] {
-  width: 3.4em; padding: 4px 6px; font: inherit; font-weight: 600;
-  border: 1px solid var(--linea); background: var(--fondo); color: var(--texto);
+  width: 3.4em; min-height: 44px; padding: 4px 8px; font: inherit; font-weight: 600;
+  border: 2px solid var(--linea-fuerte); border-radius: var(--radio-chico);
+  background: var(--fondo); color: var(--texto);
 }
 
 .pagina .hoy-octubre {
@@ -1208,7 +1210,10 @@ details.fichero[open]>summary::before{content:none;display:none}
   padding: 10px 0; min-height: 44px; cursor: pointer;
 }
 .pagina .prueba input[type="checkbox"] { width: 20px; height: 20px; margin-top: 2px; flex: 0 0 auto; }
-.pagina .prueba input:checked + span { color: #1e7a4d; font-weight: 600; }
+/* #1E7A4D era un verde escrito a mano que se quedaba en 4,87 sobre la
+   superficie, y AAA pide 7. El verde del sistema —el mismo que significa
+   «cumple» en toda la web— da 7,51 y además deja de ser un color suelto. */
+.pagina .prueba input:checked + span { color: var(--regla); font-weight: 600; }
 
 .pagina .pie-plan { border-top: 1px solid var(--linea); padding-top: var(--e3); }
 
@@ -1220,7 +1225,8 @@ details.fichero[open]>summary::before{content:none;display:none}
 .pagina .situacion h2 { margin: 0; font-size: 1.15rem; line-height: 1.3; }
 .pagina .situacion p { margin: 0; }
 .pagina .situacion .yatienes { list-style: none; margin: 0; padding: 0; }
-.pagina .situacion .yatienes li { margin: 0 0 4px; color: #1e7a4d; }
+/* Era el mismo verde suelto, y aquí sí es texto: 4,87 sobre la superficie. */
+.pagina .situacion .yatienes li { margin: 0 0 4px; color: var(--regla); }
 .pagina .situacion .yatienes li::before { content: '✓ '; }
 .pagina .situacion .acciones { margin: var(--e2) 0 0; }
 

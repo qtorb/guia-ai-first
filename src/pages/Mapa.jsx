@@ -6,6 +6,13 @@ import { useNavigate } from 'react-router-dom';
 // paso-N.html → el asistente en /ia-lab/1.
 export default function Mapa() {
   const navigate = useNavigate();
+  // ¿hay recorrido hecho en este navegador? Mismo criterio que la portada.
+  const yaEmpezado = (() => {
+    try {
+      const d = JSON.parse(localStorage.getItem('metodo-ai-first')) || {};
+      return !!((d.persona || '').trim() && (d.cuando || '').trim());
+    } catch (e) { return false; }
+  })();
   const ir = (ruta) => (e) => { e.preventDefault(); navigate(ruta); };
 
   return (
@@ -157,7 +164,11 @@ export default function Mapa() {
       </ul>
 
       <div className="acciones">
-        <button className="btn" onClick={() => navigate('/metodo/recorrido')}>Montar el mío · 15 minutos</button>
+        {/* El mapa ofrecía montar el método aunque ya lo tuvieras montado. Lee
+            el mismo sitio que la portada y dice lo que toca. */}
+        <button className="btn" onClick={() => navigate(yaEmpezado ? '/metodo/plan' : '/metodo/recorrido')}>
+          {yaEmpezado ? 'Ver mi plan' : 'Montar el mío · 15 minutos'}
+        </button>
         <button className="btn btn-2" onClick={() => navigate('/guia')}>Ver el método completo</button>
       </div>
     </div>
