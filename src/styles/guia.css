@@ -477,7 +477,42 @@ a.sc:hover{border-color:var(--blue);background:var(--acento-sup)}
   #doc .parte,#doc .hero,#doc .oculto{display:block!important;visibility:visible!important}}
 /* ===== color de contexto: azul (acento) = leer · rojo (coste) = trabajar ===== */
 :root{--ctx:var(--blue); --red:var(--coste); --rbg2:var(--coste-sup)}
-body.ctx-hoja{--ctx:var(--red)}
+
+/* --------------------------------------------------------------------------
+   Dos barrios: el método y IA-Lab.
+   Se distinguen con DOS variables y ninguna más — la temperatura del papel y
+   el acento. Todo lo demás es idéntico, y en particular los colores que
+   SIGNIFICAN algo (verde cumple · ámbar lo escribes tú · oscuro no cumple)
+   no cambian de barrio: si cambiaran, el alumno tendría que reaprender el
+   código al pasar de uno a otro, y además son lo único que sobrevive en
+   escala de grises o sin distinguir el rojo.
+
+   Rojo de marcador de posición: #8C1D2F (9,01:1 sobre blanco, 8,09:1 sobre
+   el papel cálido). Cuando llegue el hex del manual de marca UPF-BSM se
+   cambia aquí y en ningún otro sitio — y si es un rojo claro de marca, este
+   se queda como su variante oscura para texto.
+   -------------------------------------------------------------------------- */
+body.ctx-hoja {
+  --ctx: var(--lab);
+  --lab: #8C1D2F;
+  --lab-sup: #F7EDEE;
+  --fondo: #FCF9F6;           /* papel cálido: 17,35:1 con el texto */
+  --superficie: #F4EFEA;
+  --superficie-2: #EDE7E1;
+  --linea: #DCD3CA;
+  --mid: #414C63;             /* el gris del papel frío se queda en 6,78 sobre el cálido */
+  --soft: var(--superficie);
+  --soft2: var(--superficie-2);
+  --red: var(--lab);
+  --rbg2: var(--lab-sup);
+  --foco: var(--lab);
+}
+@media (prefers-color-scheme: dark) {
+  body.ctx-hoja:not([data-tema="claro"]) {
+    --lab: #FF9C93; --lab-sup: #2B1515;
+    --fondo: #14110F; --superficie: #1E1A18; --superficie-2: #272220; --linea: #332C28;
+  }
+}
 #bar{border-bottom:3px solid var(--ctx)}
 .tab.on{background:var(--soft);border-color:var(--line)}
 body.ctx-guia .tab[data-v="guia"].on b,body.ctx-hoja .tab[data-v="hoja"].on b{color:var(--ctx)}
@@ -487,7 +522,7 @@ body.ctx-guia .tab[data-v="guia"].on,body.ctx-hoja .tab[data-v="hoja"].on{
 body.ctx-hoja .pdot.on i{background:var(--red);border-color:var(--red)}
 body.ctx-hoja .pdot:hover i{border-color:var(--red);color:var(--red)}
 body.ctx-hoja .btn-p{background:var(--red)}
-body.ctx-hoja .btn-p:hover{background:#991B1B}
+body.ctx-hoja .btn-p:hover{background:#6E1523}
 body.ctx-hoja .btn-g:hover{border-color:var(--red);color:var(--red)}
 body.ctx-hoja .lnk,body.ctx-hoja .verg{color:var(--red)}
 body.ctx-hoja .verg:hover{border-color:var(--red);background:var(--rbg2)}
@@ -1256,3 +1291,13 @@ details.fichero[open]>summary::before{content:none;display:none}
 .ask .mini, button.mini { min-height:44px; padding:0 var(--e4) }
 .chk { min-height:44px; align-items:center }
 .chk input.c, .chk .c { width:22px; height:22px; flex:0 0 22px }
+
+/* El acento del barrio en las piezas nuevas de la hoja. El ámbar de «esto lo
+   escribes tú» y el verde de «cumple» NO cambian: significan algo. */
+body.ctx-hoja .ficha-n { color:var(--lab) }
+body.ctx-hoja .ficha { border-color:var(--linea) }
+body.ctx-hoja .ficha-val:focus-visible { outline-color:var(--lab) }
+body.ctx-hoja .puerta-fila { border-left:3px solid var(--lab) }
+body.ctx-hoja .blk .num span { color:var(--lab) }
+body.ctx-hoja .resp-dijo textarea:focus-visible,
+body.ctx-hoja .puerta-motivo input:focus-visible { outline-color:var(--lab) }
