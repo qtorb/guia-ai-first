@@ -253,6 +253,10 @@ ${M(d.suposicion, '[por escribir]')}
 **Estado:** supuesto. No comprobado.
 **Quién puede decir si es verdad:** ${M(d.persona, '[un nombre]')}
 **Cuándo se lo pregunto:** ${M(fechaLarga(d.cuando), '[una fecha de esta semana]')}
+**Si resulta falso, lo que hago es:** ${M(d.siNo, '[por escribir, y antes de la conversación]')}
+
+Esa última línea se escribió antes de hablar con nadie, y por eso vale. Cuando
+vuelvas, no la renegocies: si ahora suena mal, esa reacción es el dato.
 
 ## Lo que salga de esa conversación
 

@@ -22,6 +22,14 @@ const TEXTO_DE = {
 
 // La prueba de cada semana: lo que tiene que EXISTIR para que el tramo se
 // llene. No se llena con el calendario — esa es toda la gracia.
+// Las tres con las que cierra el texto 4. No hay cuarta, y «seguimos viendo»
+// no es ninguna de ellas.
+const CIERRES = [
+  ['sigue', 'Aguanta', 'Sigue el plan.'],
+  ['cambia', 'Aguanta, pero no como lo contaba', 'Reescribes la suposición y el plan sigue.'],
+  ['cae', 'Se cae', 'Hace lo que escribiste el día que aún no sabías la respuesta.'],
+];
+
 const PRUEBA = [
   'Ya tengo tres frases literales suyas anotadas',
   'Ya existe la dirección y la he abierto en un móvil',
@@ -42,6 +50,11 @@ export default function Plan30() {
   }, [m]);
 
   const hechas = [0, 1, 2, 3].filter((i) => m['s' + (i + 1)]).length;
+  // Cómo cerró la conversación de la semana 1: sigue · cambia · cae. Son las
+  // mismas tres con las que cierra el texto 4; aquí solo se anotan, y «cae»
+  // apaga lo que venía después.
+  const cierre1 = m.s1cierre || '';
+  const seCayo = cierre1 === 'cae';
   const cambios = Number(m.cambios || 0);
   const sup = Number(m.sup || 0);
   const comp = Number(m.comp || 0);
@@ -121,10 +134,40 @@ export default function Plan30() {
             <p className="donde">Vas por el día {aqui.dia} de 30 · semana {aqui.semana}.</p>
           )}
 
+          {seCayo && (
+            <div className="secae">
+              <p className="rotulo">La conversación de la semana 1</p>
+              <h2>La suposición no aguantó.</h2>
+              {d.siNo ? (
+                <>
+                  <p className="ayuda">Lo que escribiste antes de hablar con
+                    {d.persona ? ` ${d.persona}` : ' nadie'}, cuando todavía no sabías la respuesta:</p>
+                  <blockquote className="loescrito">{d.siNo}</blockquote>
+                </>
+              ) : (
+                <p>No dejaste escrito qué harías en este caso. Escríbelo ahora,
+                  aunque ya sepas la respuesta, y la próxima vez antes.</p>
+              )}
+              <p>Que se caiga no es fracasar: es haberlo averiguado por una semana
+                en vez de por un año. Lo que viene ahora es una tanda nueva, con eso
+                de arriba como punto de partida y una suposición distinta que comprobar.</p>
+              <div className="acciones">
+                <button className="btn" onClick={() => copiar(TEXTO_DE['Cerrar la tanda'], 'Texto copiado')}>
+                  Copiar «Cerrar la tanda»
+                </button>
+                <button className="btn btn-2" onClick={() => navigate('/metodo/recorrido')}>
+                  Reescribir la suposición
+                </button>
+              </div>
+            </div>
+          )}
+
           <div className="semanas">
             {p.semanas.map((s, i) => (
               <section key={s.n}
-                className={'semana' + (aqui && !aqui.pasado && aqui.semana === s.n ? ' ahora' : '')}>
+                className={'semana'
+                  + (aqui && !aqui.pasado && aqui.semana === s.n ? ' ahora' : '')
+                  + (seCayo && s.n > 1 ? ' apagada' : '')}>
                 <div className="cuando">
                   <p className="fecha">{fechaLarga(s.desde)} – {fechaLarga(s.hasta)}</p>
                   <p className="ayuda">Cierras el {fechaLarga(s.cierre)} a las {s.hora}</p>
@@ -144,6 +187,23 @@ export default function Plan30() {
                       onChange={(e) => setM({ ...m, ['s' + s.n]: e.target.checked })} />
                     <span>{PRUEBA[i]}</span>
                   </label>
+
+                  {/* La casilla dice que la conversación existió. Esto dice qué
+                      salió de ella, que es otra cosa — se puede tener la
+                      conversación y no querer mirar lo que salió. */}
+                  {s.n === 1 && m.s1 && (
+                    <fieldset className="cierre1">
+                      <legend>Y lo que te dijeron</legend>
+                      {CIERRES.map(([k, tit, pie]) => (
+                        <label key={k} className={'op-cierre' + (cierre1 === k ? ' on' : '')}>
+                          <input type="radio" name="cierre1" value={k}
+                            checked={cierre1 === k}
+                            onChange={() => setM({ ...m, s1cierre: k })} />
+                          <span><b>{tit}</b><span className="pie">{pie}</span></span>
+                        </label>
+                      ))}
+                    </fieldset>
+                  )}
                   <div className="acciones">
                     <button className="btn btn-2"
                       onClick={() => copiar(TEXTO_DE[s.texto], `«${s.texto}» copiado`)}>
