@@ -1301,3 +1301,40 @@ body.ctx-hoja .puerta-fila { border-left:3px solid var(--lab) }
 body.ctx-hoja .blk .num span { color:var(--lab) }
 body.ctx-hoja .resp-dijo textarea:focus-visible,
 body.ctx-hoja .puerta-motivo input:focus-visible { outline-color:var(--lab) }
+
+/* ==========================================================================
+   EL ANCHO DE LA HOJA
+   La hoja de IA-Lab no es una página de lectura: es un taller. Con trece
+   pasos, trece fichas y cuatro reglas por idea, la medida de 720px que le
+   va bien a la prosa deja la barra de pasos cortada y estira el paso de
+   generación hasta casi seis mil píxeles de alto.
+   El contenedor se ensancha, pero la medida se le devuelve a cada elemento
+   que lleva texto o se escribe: lo único que gana ancho es lo que lo
+   necesitaba —la barra de pasos, las fichas y las reglas—. El resto de la
+   hoja se ve exactamente igual que antes.
+   ========================================================================== */
+.wrap.taller-lab{max-width:1160px}
+.wrap.taller-lab #pasos .wstep > *:not(.blk),
+.wrap.taller-lab #pasos .blk > *{max-width:720px}
+.wrap.taller-lab #pasos .fichas-grupo,
+.wrap.taller-lab #pasos .puertas,
+.wrap.taller-lab #pasos .respuestas{max-width:none}
+
+@media (min-width:1000px){
+  /* dos fichas por fila: el paso de generación baja de ~6000px a ~3300px */
+  .wrap.taller-lab .fichas-grupo{display:grid;align-items:start;
+    grid-template-columns:repeat(auto-fit,minmax(430px,1fr));gap:var(--e5)}
+  /* la ficha que va sola —la que se escribe antes de ver ninguna— ocuparía
+     el ancho entero: se queda en su medida */
+  .wrap.taller-lab .ficha:only-child{max-width:620px}
+  .wrap.taller-lab .ficha-et{flex:0 0 168px}
+  /* las cuatro reglas de cada puerta, en una sola fila */
+  .wrap.taller-lab .puerta-reglas{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+
+/* Cuando la tira de pasos no cabe (portátiles por debajo de 1160px), el
+   borde derecho se difumina en vez de cortarse a hueso. La clase la pone
+   IaLabHoja.jsx sólo si mide que desborda; sin ella no hay degradado. */
+#pbar.desborda .pb-in{
+  -webkit-mask-image:linear-gradient(to right,#000 calc(100% - 38px),transparent 100%);
+  mask-image:linear-gradient(to right,#000 calc(100% - 38px),transparent 100%)}

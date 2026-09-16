@@ -38,6 +38,7 @@ export default function IaLabHoja({ dossierCtl }) {
   const [texto, setTexto] = useState(guardadas._salida || '');
   const [verTodo, setVerTodo] = useState(false);
   const debounceRef = useRef(null);
+  const barraRef = useRef(null);
 
   // paso 0 + bloques + (contraste, si la hoja lo tiene) + salida.
   // La hoja 0 rediseñada mueve el contraste a un bloque, así que ya no es fijo.
@@ -59,6 +60,30 @@ export default function IaLabHoja({ dossierCtl }) {
       return next;
     });
   }
+
+  // La tira de pasos puede no caber (la hoja 0 tiene trece). Dos cosas:
+  // marcar que desborda —para que el borde derecho se difumine en vez de
+  // cortarse en seco— y traer el paso activo a la vista, que si no en el
+  // paso 11 el círculo encendido se queda fuera de la tira.
+  useEffect(() => {
+    const caja = barraRef.current;
+    const tira = caja && caja.querySelector('.pb-in');
+    if (!tira) return undefined;
+    const mide = () => {
+      const desborda = tira.scrollWidth > tira.clientWidth + 2;
+      caja.classList.toggle('desborda', desborda);
+      return desborda;
+    };
+    if (mide()) {
+      const activo = tira.querySelector('.pdot.on');
+      if (activo) {
+        const izq = activo.offsetLeft - (tira.clientWidth - activo.offsetWidth) / 2;
+        tira.scrollTo({ left: Math.max(0, izq), behavior: 'smooth' });
+      }
+    }
+    window.addEventListener('resize', mide);
+    return () => window.removeEventListener('resize', mide);
+  }, [paso, verTodo]);
 
   // autosave: debounce de 700ms tras el último cambio — igual que el
   // listener 'input' de init() (L3523).
@@ -184,17 +209,21 @@ export default function IaLabHoja({ dossierCtl }) {
     );
   }
 
+  // Los puntos de la tira tienen que ser exactamente los pasos que existen.
+  // NPASOS ya cuenta el contraste sólo si la hoja lo trae; si aquí se
+  // añadiera igualmente, la hoja 0 —que no tiene contraste— pintaría trece
+  // puntos para doce pasos y el último paso saldría rotulado «Contraste».
   const pasos = [
     { t: 'Preparar' },
     ...hoja.bloques.map((b) => ({ t: b.titulo })),
-    { t: 'Contraste' },
+    ...(hoja.contraste ? [{ t: 'Contraste' }] : []),
     { t: 'Tu protocolo' },
   ];
 
   return (
-    <div className="wrap">
+    <div className="wrap taller-lab">
       <button className="lnk volver" onClick={() => navigate('/ia-lab')}>← Todas mis hojas</button>
-      <div id="pbar">
+      <div id="pbar" ref={barraRef}>
         <div className="pb-in">
           {pasos.map((p, i) => (
             <button
