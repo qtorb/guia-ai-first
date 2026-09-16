@@ -283,7 +283,9 @@ si no hay ninguna, o preguntaste mal o te dijeron lo que querías oír.
 ## Apertura
 
 **Decisión que tiene que poder tomarse al final:**
-Si ${M(enlazable(d.suposicion), '[la suposición que sostiene el plan]')} es cierto o no.
+Si esto es cierto o no:
+
+> ${M(d.suposicion, '[la suposición que sostiene el plan]')}
 
 **Sabemos:** poco. Este trabajo no lo ha usado nadie todavía.
 **Suponemos:** justo eso de arriba.

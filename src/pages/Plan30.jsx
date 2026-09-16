@@ -213,10 +213,14 @@ export default function Plan30() {
                     </fieldset>
                   )}
                   <div className="acciones">
+                    {/* El nombre del texto no es el nombre del fichero: «Abrir la
+                        siguiente tanda» es 4_cerrar_la_tanda.md, y quien abría la
+                        carpeta buscando ese nombre no lo encontraba. */}
                     <button className="btn btn-2"
-                      onClick={() => copiar(TEXTO_DE[s.texto], `«${s.texto}» copiado`)}>
+                      onClick={() => copiar(s.fichero, `«${s.texto}» copiado`)}>
                       Copiar «{s.texto}»
                     </button>
+                    <p className="ayuda dondeesta">En tu carpeta es <code>{s.fichero}</code>.</p>
                   </div>
                 </div>
               </section>

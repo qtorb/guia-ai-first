@@ -107,19 +107,23 @@ export function plan(d) {
   s[0].pone = sup ? `Lo que se juega: ${sup}` : '';
   s[0].siNo = (d.siNo || '').trim();
   s[0].texto = 'Cerrar la tanda';
+  s[0].fichero = 'textos/4_cerrar_la_tanda.md';
 
   s[1].gano = 'Una dirección que puedes mandar por WhatsApp.';
   s[1].como = 'Antes de encargarla, escribe en tres líneas qué tiene que cumplir. Tarda un minuto y te ahorra la semana de hacer la página equivocada.';
   s[1].texto = 'Escribir el encargo';
+  s[1].fichero = 'textos/1_escribir_el_encargo.md';
 
   s[2].gano = 'Saber qué no se entiende sin ti delante.';
   s[2].como = 'Dos minutos de máquina y cinco personas de verdad. Lo que más te va a servir es dónde no coinciden.';
   s[2].texto = 'Cerrar la tanda';
+  s[2].fichero = 'textos/4_cerrar_la_tanda.md';
   s[2].uxm = true;
 
   s[3].gano = 'Está publicado, y sabes qué mirar cada semana.';
   s[3].como = 'Publicas, escribes qué cambiaste por lo que te dijeron, y te dejas una comprobación que puedas hacer tú solo el mes que viene.';
   s[3].texto = 'Abrir la siguiente tanda';
+  s[3].fichero = 'textos/4_cerrar_la_tanda.md';
 
   return {
     inicio: iso(inicio),
@@ -181,7 +185,7 @@ export function ics(d, p) {
         (s.siNo ? `Si resulta falso: ${s.siNo}\n` : '') +
         (s.pone || s.siNo ? '\n' : '') +
         `Qué pegar esta semana: «${s.texto}».\n` +
-        `Está en la carpeta, en textos/.\n\n` +
+        `Es el fichero ${s.fichero} de tu carpeta.\n\n` +
         (s.uxm
           ? 'Antes de enseñar la página a nadie, pásala por uxmachine.app: mide lo que declara, no lo que promete.\n\n'
           : '') +
@@ -264,7 +268,7 @@ ${p.semanas.map((s) => `## Semana ${s.n} · ${l(s.desde)} – ${l(s.hasta)}
 
 ${s.como}
 ${s.pone ? `\n**${s.pone}**\n` : ''}${s.siNo ? `\n**Si resulta falso:** ${s.siNo}\n` : ''}
-Texto que pegas esta semana: **${s.texto}** (en \`textos/\`).
+Texto que pegas esta semana: **${s.texto}** — abre \`${s.fichero}\`.
 Cierras el ${l(s.cierre)} a las ${s.hora}.
 `).join('\n')}
 ---
