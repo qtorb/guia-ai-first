@@ -35,7 +35,7 @@ function avanceMetodo() {
     try {
       const aqui = dondeEstoy(plan(d));
       if (aqui && !aqui.pasado) {
-        return { est: `Tu método, montado · día ${aqui.dia} de 30`, cta: 'Ver dónde vas →' };
+        return { est: `Tu método, montado · día ${aqui.dia} de ${aqui.total}`, cta: 'Ver dónde vas →' };
       }
     } catch (e) { /* sin plan legible: se cae al paso */ }
   }

@@ -59,14 +59,36 @@ export function plan(d) {
   const persona = (d.persona || '').trim();
   const pieza = (d.pieza || '').trim();
 
+  // La semana 1 la cierra la CONVERSACIÓN, no el checkpoint semanal. Antes el
+  // arco arrancaba hoy y repartía cuatro semanas de siete días con el cierre
+  // en el día del checkpoint, así que una cita el jueves 24 se quedaba fuera
+  // de una semana 1 que ya había cerrado el viernes 18: la única semana cuyo
+  // contenido entero es «tres frases de esa persona» se cerraba antes de que
+  // esa persona hablara. Ahora la semana 1 llega hasta el día siguiente a la
+  // conversación —como poco una semana— y las otras tres cuelgan de ahí con
+  // su ritmo de siete días y su cierre en el checkpoint.
+  const finS1 = conv && conv > inicio
+    ? (mas(conv, 1) > mas(inicio, 6) ? mas(conv, 1) : mas(inicio, 6))
+    : mas(inicio, 6);
+
   const semanas = [0, 1, 2, 3].map((i) => {
-    const desde = mas(inicio, i * 7);
-    const hasta = mas(inicio, i === 3 ? 29 : i * 7 + 6);
+    if (i === 0) {
+      return {
+        n: 1,
+        desde: iso(inicio),
+        hasta: iso(finS1),
+        cierre: iso(finS1),
+        hora,
+        porLaCita: !!(conv && conv > inicio),
+      };
+    }
+    const desde = mas(finS1, (i - 1) * 7 + 1);
+    const hasta = mas(finS1, i * 7);
     return {
       n: i + 1,
       desde: iso(desde),
       hasta: iso(hasta),
-      cierre: iso(proximo(mas(desde, 1), dia)),
+      cierre: iso(proximo(desde, dia)),
       hora,
     };
   });
@@ -112,11 +134,20 @@ export function plan(d) {
 export function dondeEstoy(p) {
   const hoyD = new Date();
   const ini = deIso(p.inicio);
-  if (!ini) return null;
+  const fin = deIso(p.fin);
+  if (!ini || !fin) return null;
   const dias = Math.floor((hoyD - ini) / 86400000) + 1;
   if (dias < 1) return null;
-  const semana = Math.min(4, Math.max(1, Math.ceil(dias / 7)));
-  return { dia: Math.min(30, dias), semana, pasado: dias > 30 };
+  // El arco ya no mide siempre 30 días: si la conversación cae tarde, la
+  // semana 1 se estira para contenerla. Así que el total se cuenta, no se
+  // da por supuesto, y la semana sale de los tramos reales.
+  const total = Math.floor((fin - ini) / 86400000) + 1;
+  let semana = 4;
+  for (let i = 0; i < p.semanas.length; i += 1) {
+    const h = deIso(p.semanas[i].hasta);
+    if (h && hoyD <= mas(h, 1)) { semana = i + 1; break; }
+  }
+  return { dia: Math.min(total, dias), total, semana, pasado: dias > total };
 }
 
 // --------------------------------------------------------------------------
