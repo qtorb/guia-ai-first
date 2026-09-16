@@ -20,7 +20,7 @@ function dossierVacio() {
 // para que la sesión 1 no aparezca como empezada con datos que no son suyos.
 const CLAVES_METODO = [
   'quien', 'que', 'columna', 'firma', 'roja1', 'roja2', 'roja3',
-  'usare', 'no-usare', 'validar', 'suposicion', 'persona', 'cuando',
+  'usare', 'no-usare', 'validar', 'suposicion', 'siNo', 'persona', 'cuando',
   'pieza', 'acepto', 'checkpoint', 'asesor-chips', 'no-asesor', 'fecha',
 ];
 

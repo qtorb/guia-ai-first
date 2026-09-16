@@ -37,7 +37,7 @@ const CABECERA = {
   3: { titulo: 'Tus tres líneas rojas', intro: 'Tres frases en primera persona. Debajo de cada una tienes un ejemplo que puedes meter en el campo de un clic y reescribir.' },
   4: { titulo: 'Quién decide qué', intro: 'Dos conversaciones distintas con una IA: una pide criterio, la otra ejecuta. Quien construye algo no puede ser quien juzga si está bien.' },
   5: { titulo: 'Cuándo usas IA y cuándo no', intro: 'Tres reglas. Cada una necesita una condición que la active y algo que se pueda observar. Según escribes, debajo del campo te digo qué le falta a la tuya para poder incumplirse.' },
-  6: { titulo: 'Lo que vas a poner a prueba esta semana', intro: 'Tu método ya está montado. Ahora lo que falta es que pase algo fuera de tu mesa. Tres campos y sales de aquí con una cita.' },
+  6: { titulo: 'Lo que vas a poner a prueba esta semana', intro: 'Tu método ya está montado. Ahora lo que falta es que pase algo fuera de tu mesa. Cuatro campos y sales de aquí con una cita.' },
   7: { titulo: 'Tu primer encargo', intro: 'Esto es lo que le vas a pedir a una IA para llegar a esa conversación con algo en la mano. Está escrito con tus respuestas; rellena los dos huecos y ya se puede enviar.' },
 };
 
@@ -47,7 +47,7 @@ const FICHERO_DE = {
   3: { f: 'metodo/02_LINEAS_ROJAS.md', campos: ['roja1', 'roja2', 'roja3', 'firma'] },
   4: { f: 'metodo/01_ROLES.md', campos: ['asesor', 'checkpoint'] },
   5: { f: 'metodo/02_LINEAS_ROJAS.md', campos: ['usare', 'no-usare', 'validar'] },
-  6: { f: 'metodo/03_HIPOTESIS.md', campos: ['suposicion', 'persona', 'cuando'] },
+  6: { f: 'metodo/03_HIPOTESIS.md', campos: ['suposicion', 'siNo', 'persona', 'cuando'] },
   7: { f: 'metodo/encargos/primera-tanda.md', campos: ['pieza', 'acepto'] },
 };
 
@@ -594,6 +594,8 @@ function Paso6({ d, set }) {
   let reaccion = '';
   if (per && GENERICOS_PERSONA.some((g) => per === g || per.indexOf(g + ' ') === 0)) {
     reaccion = 'Eso no es nadie a quien puedas escribir mañana. Pon un nombre.';
+  } else if ((d.suposicion || '').trim() && !(d.siNo || '').trim()) {
+    reaccion = 'Falta qué haces si resulta falso. Escrito después no vale: para entonces ya sabrás la respuesta.';
   } else if ((d.suposicion || '').trim() && !per) {
     reaccion = 'Falta el nombre de quien puede decirte si eso es verdad.';
   } else if (per && !(d.cuando || '').trim()) {
@@ -611,6 +613,20 @@ function Paso6({ d, set }) {
         <textarea id="suposicion" aria-describedby="ayuda-sup"
           placeholder="que quien paga un rediseño ya ha intentado arreglarlo por su cuenta antes"
           value={d.suposicion || ''} onChange={(e) => set('suposicion', e.target.value)} />
+      </div>
+
+      {/* Va pegado a la suposición y antes de nombrar a nadie: se escribe
+          mientras todavía no se sabe la respuesta, que es lo único que impide
+          racionalizarlo después. Mismo texto que trae la plantilla en
+          metodo/03_HIPOTESIS.md — si cambia uno, cambian los dos. */}
+      <div className="campo">
+        <label htmlFor="siNo">Y si resulta falso, ¿qué haces?</label>
+        <p className="ayuda" id="ayuda-sino">Escríbelo <b>ahora</b>, que todavía no
+          sabes la respuesta. Después de la conversación siempre aparece una manera
+          de que lo que oíste encaje con lo que ya querías hacer.</p>
+        <textarea id="siNo" aria-describedby="ayuda-sino"
+          placeholder="no monto la página de servicios y me dedico a buscar tres casos más antes de construir nada"
+          value={d.siNo || ''} onChange={(e) => set('siNo', e.target.value)} />
       </div>
 
       <div className="campo">

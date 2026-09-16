@@ -72,12 +72,18 @@ export function plan(d) {
   });
 
   const s = semanas;
+  // La semana 1 nombra la suposición. Antes pedía tres frases literales y no
+  // decía para qué eran: el arco no mencionaba en ningún sitio lo que esas
+  // frases tenían que resolver.
+  const sup = (d.suposicion || '').trim();
   s[0].gano = persona
     ? `Tres frases de ${persona}, tal cual las dijo.`
     : 'Tres frases literales de alguien de fuera.';
   s[0].como = persona && conv
     ? `La conversación que ya tienes puesta: ${fechaLarga(d.cuando)}${pieza ? `, con ${pieza}` : ''}. Escribe mientras te habla. Al volver, el texto 4.`
     : 'La conversación que pusiste en el calendario. Escribe mientras te hablen. Al volver, el texto 4.';
+  s[0].pone = sup ? `Lo que se juega: ${sup}` : '';
+  s[0].siNo = (d.siNo || '').trim();
   s[0].texto = 'Cerrar la tanda';
 
   s[1].gano = 'Una dirección que puedes mandar por WhatsApp.';
@@ -140,6 +146,9 @@ export function ics(d, p) {
       titulo: `Método · semana ${s.n}: ${s.gano}`,
       cuerpo:
         `${s.como}\n\n` +
+        (s.pone ? `${s.pone}\n` : '') +
+        (s.siNo ? `Si resulta falso: ${s.siNo}\n` : '') +
+        (s.pone || s.siNo ? '\n' : '') +
         `Qué pegar esta semana: «${s.texto}».\n` +
         `Está en la carpeta, en textos/.\n\n` +
         (s.uxm
@@ -223,7 +232,7 @@ ${p.semanas.map((s) => `## Semana ${s.n} · ${l(s.desde)} – ${l(s.hasta)}
 **Sales con:** ${s.gano}
 
 ${s.como}
-
+${s.pone ? `\n**${s.pone}**\n` : ''}${s.siNo ? `\n**Si resulta falso:** ${s.siNo}\n` : ''}
 Texto que pegas esta semana: **${s.texto}** (en \`textos/\`).
 Cierras el ${l(s.cierre)} a las ${s.hora}.
 `).join('\n')}
