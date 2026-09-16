@@ -10,6 +10,7 @@ import GuiaCapitulo from './pages/GuiaCapitulo';
 import ProtocoloIA from './pages/ProtocoloIA';
 import Mapa from './pages/Mapa';
 import MetodoPortada from './pages/MetodoPortada';
+import Plan30 from './pages/Plan30';
 
 function Barra() {
   const navigate = useNavigate();
@@ -65,6 +66,7 @@ function Shell({ dossierCtl }) {
           <Route path="/ia-lab/:n" element={<IaLabHoja dossierCtl={dossierCtl} />} />
           <Route path="/metodo" element={<MetodoPortada />} />
           <Route path="/metodo/mapa" element={<Mapa />} />
+          <Route path="/metodo/plan" element={<Plan30 />} />
           <Route path="/metodo/recorrido" element={<ProtocoloIA />} />
           <Route path="/guia" element={<GuiaIndex />} />
           <Route path="/guia/:ident" element={<GuiaCapitulo />} />

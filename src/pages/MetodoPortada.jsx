@@ -1,4 +1,6 @@
 import { useNavigate } from 'react-router-dom';
+import { plan, dondeEstoy, LLAVE_PLAN } from '../lib/plan30';
+import { fechaLarga } from '../lib/protocoloAiFirst';
 
 // Si hay avance guardado, el botón principal continúa en vez de empezar de
 // cero: volver con el botón del navegador conservaba el recorrido, pero la
@@ -14,12 +16,51 @@ function pasoGuardado() {
 // Port de dist/sitio/index.html (Método AI-First). Es la entrada del método:
 // desde aquí se monta el tuyo (el recorrido de siete pasos), se lee el manual
 // o se ve el mapa completo.
+// Si el recorrido está terminado, la portada deja de recibir desde cero: dice
+// por dónde vas del mes y qué toca esta semana. Lo sabe este navegador, no un
+// servidor.
+function situacion() {
+  try {
+    const d = JSON.parse(localStorage.getItem('metodo-ai-first')) || {};
+    if (!d.persona && !d.cuando) return null;
+    const p = plan(d);
+    const aqui = dondeEstoy(p);
+    if (!aqui || aqui.pasado) return null;
+    let m = {};
+    try { m = JSON.parse(localStorage.getItem(LLAVE_PLAN)) || {}; } catch (e) { m = {}; }
+    const s = p.semanas[aqui.semana - 1];
+    const hechas = [1, 2, 3, 4].filter((n) => m['s' + n]);
+    return { aqui, s, hechas, cambios: Number(m.cambios || 0) };
+  } catch (e) { return null; }
+}
+
 export default function MetodoPortada() {
   const navigate = useNavigate();
   const paso = pasoGuardado();
+  const sit = situacion();
   return (
     <div className="pagina">
       <h1>Método AI-First</h1>
+
+      {sit && (
+        <div className="situacion">
+          <p className="rotulo">Vas por aquí</p>
+          {sit.hechas.length > 0 && (
+            <ul className="yatienes">
+              {sit.hechas.map((n) => (
+                <li key={n}>Semana {n}, hecha.</li>
+              ))}
+            </ul>
+          )}
+          <h2>Día {sit.aqui.dia} de 30 · esta semana sales con: {sit.s.gano}</h2>
+          <p>{sit.s.como}</p>
+          <p className="ayuda">Cierras el {fechaLarga(sit.s.cierre)} a las {sit.s.hora}.
+            {sit.cambios > 0 && ` Llevas ${sit.cambios} ${sit.cambios === 1 ? 'cosa cambiada' : 'cosas cambiadas'} por lo que te han dicho.`}</p>
+          <div className="acciones">
+            <button className="btn" onClick={() => navigate('/metodo/plan')}>Ver mi plan</button>
+          </div>
+        </div>
+      )}
       <div className="entradilla">
         <p>Un sistema de trabajo para construir con agentes de IA: quién decide qué,
           cómo se pide, qué se comprueba antes de darlo por bueno y cuándo hay que parar.</p>
