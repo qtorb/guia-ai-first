@@ -4,4 +4,6 @@
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
-body { background: #fff; }
+/* El fondo lo pone guia.css con var(--fondo), que cambia de barrio:
+   frío en el método, cálido en IA-Lab. Aquí solo el reset. */
+body { background: var(--fondo, #fff); }
