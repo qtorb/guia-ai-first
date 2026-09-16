@@ -395,7 +395,15 @@ body{padding-top:0}
 #toc .tp.read > a::after{content:' ✓';color:var(--green)}
 .lprog{font-family:var(--mono);font-size:11px;color:var(--mid);margin:14px 0 0}
 
-:root{--mid:#5F6E84}   /* contraste 5,19:1 sobre blanco · antes #94A3B8 daba 2,56:1 */
+/* --mid es el gris del texto secundario: rótulos, pistas, marcas de tiempo.
+   #5F6E84 daba 5,19:1 sobre blanco — suficiente para AA, no para AAA (7:1).
+   #495366 da 7,74:1 sobre blanco y 7,08:1 sobre el gris de las tarjetas.
+   El override anterior era global y en modo oscuro dejaba el gris por debajo
+   del fondo; ahora cada esquema tiene el suyo. */
+:root{--mid:#495366}
+@media (prefers-color-scheme: dark){
+  :root:not([data-tema="claro"]){--mid:#A6B1C0}   /* 8,53:1 sobre el fondo oscuro */
+}
 #texto-print{display:none}
 @media print{
   #bar,#pbar,.pnav,.acts,#arriba,.filtros,#toc,.ask .mini,.leido{display:none!important}
@@ -501,7 +509,7 @@ body.ctx-hoja #pinfo{color:var(--gray)}
 .tab.on{background:var(--soft);border-color:var(--line);box-shadow:none}
 .tab.on b{color:var(--ink)}
 .tab:hover b{color:var(--ink)}
-@media(max-width:560px){.tab small{display:none}.tab{padding:8px 13px}.tabs{margin-left:8px;padding-left:8px}}
+@media(max-width:560px){.tab small{display:none}.tab{padding:8px 13px;min-height:44px;justify-content:center}.tabs{margin-left:8px;padding-left:8px}}
 #toc{padding-top:20px}
 #toc input{margin-bottom:14px}
 .filtros{position:static!important;background:none!important;backdrop-filter:none!important;
@@ -608,7 +616,11 @@ body.en-entrada .tabs,body.en-entrada #hbits,body.en-entrada #burger,body.en-ent
 .paso0 .sub{display:flex;gap:13px;margin:18px 0 0;align-items:flex-start}
 .paso0 .sn{flex:0 0 26px;width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;
   display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;margin-top:1px}
-.paso0 .sc{flex:1;min-width:0;background:transparent}
+/* .sc es también la tarjeta de la lista de sesiones, que es flex en fila.
+   Sin este reset, los hijos del paso 3 —título, texto, prompt y botón— se
+   reparten en cuatro columnas y el prompt queda en una tira de 180px. */
+.paso0 .sc{display:block;flex:1;min-width:0;background:transparent;
+  border:0;border-radius:0;padding:0;color:inherit}
 .paso0 .sc b{display:block;color:#fff;font-size:15px;margin-bottom:5px}
 .paso0 .sc p{font-size:13.5px;margin:0 0 9px;color:#C7D2E4}
 /* Fix: en la web en producción (qtorb.github.io/guia-ai-first) .sc trae
