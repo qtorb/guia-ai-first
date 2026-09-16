@@ -1170,3 +1170,89 @@ details.fichero[open]>summary::before{content:none;display:none}
   .pagina .tira-avance .tramos { width: 100%; }
   .pagina .tira-avance .tramo { flex: 1; width: auto; }
 }
+
+/* ==========================================================================
+   Hoja 0 rediseñada · fichas, reglas, mensaje y respuestas
+   Colores: solo tokens ya auditados a AAA. --accion (#7C3A05) marca lo que
+   escribe el alumno a mano; --acento (#3A2FA8) lo que hace el sistema.
+   ========================================================================== */
+
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
+  clip:rect(0 0 0 0); white-space:nowrap; border:0 }
+
+/* ---- fichas ---- */
+.fichas-grupo { display:flex; flex-direction:column; gap:var(--e5); margin:var(--e4) 0 }
+.ficha { border:1px solid var(--linea); border-radius:var(--radio); overflow:hidden; background:var(--fondo) }
+.ficha-cab { background:var(--superficie); padding:10px 16px; border-bottom:1px solid var(--linea) }
+.ficha-n { font-family:var(--familia-mono); font-size:12px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--texto-2) }
+.ficha-fila { display:flex; border-bottom:1px solid var(--linea) }
+.ficha-fila:last-child { border-bottom:0 }
+.ficha-et { flex:0 0 240px; background:var(--superficie); border-right:1px solid var(--linea);
+  padding:12px 14px; font-family:var(--familia-mono); font-size:12px; letter-spacing:.05em;
+  text-transform:uppercase; color:var(--texto-2); display:flex; align-items:center }
+.ficha-val { flex:1; min-width:0; border:0; background:transparent; color:var(--texto);
+  font:inherit; padding:12px 14px; min-height:52px }
+.ficha-val:focus-visible { outline:3px solid var(--foco); outline-offset:-3px }
+.ficha-fila.asa .ficha-et { background:var(--superficie-2) }
+.ficha-fila.mano { background:var(--accion-sup) }
+.ficha-fila.mano .ficha-et { background:var(--accion); color:#fff; border-right-color:var(--accion) }
+.ficha-fila.mano .ficha-val::placeholder { color:var(--accion); opacity:1 }
+.a-mano { margin-left:6px }
+
+/* ---- las reglas del máster ---- */
+.puertas { display:flex; flex-direction:column; gap:var(--e5); margin:var(--e4) 0 }
+.puerta-fila { border:1px solid var(--linea); border-radius:var(--radio); padding:var(--e4);
+  display:flex; flex-direction:column; gap:var(--e3) }
+.puerta-asa { margin:0; font-family:var(--familia-mono); font-size:14px; font-weight:600 }
+.puerta-reglas { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--e3) }
+.regla { border:1px solid var(--linea); border-radius:var(--radio-chico); margin:0; padding:10px 12px 12px }
+.regla legend { font-size:13.5px; line-height:1.35; color:var(--texto-2); padding:0 6px;
+  background:var(--fondo); max-width:calc(100% - 12px) }
+.estados { display:flex; gap:6px; flex-wrap:wrap; margin-top:6px }
+.estado { display:inline-flex; align-items:center; min-height:44px; padding:0 12px;
+  border:2px solid var(--linea-fuerte); border-radius:var(--radio-chico); cursor:pointer;
+  font-size:13.5px; background:var(--fondo); color:var(--texto) }
+.estado input { position:absolute; opacity:0; width:0; height:0 }
+.estado:focus-within { outline:3px solid var(--foco); outline-offset:2px }
+.estado.on.si { border-color:var(--regla); background:var(--regla-sup); color:var(--regla); font-weight:600 }
+.estado.on.no { border-color:var(--texto); background:var(--superficie-2); font-weight:600 }
+.estado.on.ns { border-color:var(--accion); background:var(--accion-sup); color:var(--accion); font-weight:600 }
+.puerta-motivo { display:flex; flex-direction:column; gap:6px }
+.puerta-motivo label { font-size:13.5px; color:var(--texto-2) }
+.puerta-motivo input { min-height:48px }
+
+/* ---- el mensaje ---- */
+.mensaje { border:2px solid var(--accion); border-radius:var(--radio); background:var(--accion-sup);
+  padding:var(--e4); display:flex; flex-direction:column; gap:var(--e4); margin:var(--e4) 0 }
+.msg-campo { display:flex; flex-direction:column; gap:6px }
+.msg-campo label { font-weight:600 }
+.msg-campo .ayuda { margin:0 }
+.msg-campo input { min-height:48px; background:var(--fondo) }
+.msg-borrador { background:var(--fondo); border:1px solid var(--linea); border-radius:var(--radio-chico);
+  padding:var(--e4) }
+.msg-borrador .rotulo { margin:0 0 8px }
+
+/* ---- las respuestas ---- */
+.respuestas { display:flex; flex-direction:column; gap:var(--e4); margin:var(--e4) 0 }
+.resp { border:1px solid var(--linea); border-radius:var(--radio); padding:var(--e4);
+  display:flex; gap:var(--e4); flex-wrap:wrap }
+.resp-quien { flex:0 0 220px; display:flex; flex-direction:column; gap:6px }
+.resp-dijo { flex:1 1 320px; display:flex; flex-direction:column; gap:6px }
+.resp label { font-size:13.5px; color:var(--texto-2) }
+.resp input { min-height:48px }
+
+@media (max-width:760px) {
+  .ficha-fila { flex-direction:column }
+  .ficha-et { flex:none; border-right:0; border-bottom:1px solid var(--linea) }
+  .ficha-fila.mano .ficha-et { border-bottom-color:var(--accion) }
+  .puerta-reglas { grid-template-columns:1fr }
+  .resp-quien { flex:1 1 100% }
+}
+
+/* Objetivos táctiles que quedaban por debajo de 44px (WCAG AAA 2.5.5).
+   El botón «Copiar» de las preguntas al asistente y la casilla de los
+   checks: se agrandan sin mover el texto de sitio. */
+.ask .mini, button.mini { min-height:44px; padding:0 var(--e4) }
+.chk { min-height:44px; align-items:center }
+.chk input.c, .chk .c { width:22px; height:22px; flex:0 0 22px }

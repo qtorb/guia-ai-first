@@ -39,7 +39,9 @@ export default function IaLabHoja({ dossierCtl }) {
   const [verTodo, setVerTodo] = useState(false);
   const debounceRef = useRef(null);
 
-  const NPASOS = hoja ? hoja.bloques.length + 3 : 0;
+  // paso 0 + bloques + (contraste, si la hoja lo tiene) + salida.
+  // La hoja 0 rediseñada mueve el contraste a un bloque, así que ya no es fijo.
+  const NPASOS = hoja ? hoja.bloques.length + 2 + (hoja.contraste ? 1 : 0) : 0;
 
   // datos._total se fija al abrir, igual que abrirSesion() (L2839).
   useEffect(() => {
@@ -220,12 +222,12 @@ export default function IaLabHoja({ dossierCtl }) {
               <PasoPreparar hoja={hoja} onCopiarPrompt={() => copiarCampo(hoja.paso0.prompt)} />
             )}
             {numPaso > 1 && numPaso <= hoja.bloques.length + 1 && (
-              <Bloque b={hoja.bloques[numPaso - 2]} datos={datos} onChange={onCampoChange} />
+              <Bloque b={hoja.bloques[numPaso - 2]} datos={datos} onChange={onCampoChange} total={hoja.bloques.length} />
             )}
-            {numPaso === hoja.bloques.length + 2 && (
+            {hoja.contraste && numPaso === hoja.bloques.length + 2 && (
               <PasoContraste hoja={hoja} datos={datos} onChange={onCampoChange} />
             )}
-            {numPaso === hoja.bloques.length + 3 && (
+            {numPaso === NPASOS && (
               <PasoSalida
                 hoja={hoja}
                 nombre={nombre}

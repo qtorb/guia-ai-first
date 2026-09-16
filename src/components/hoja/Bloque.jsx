@@ -9,11 +9,14 @@ import { useToast } from '../Toast';
 // ids del guia.md antiguo (p.ej. "s-4-2") que no existen en el manual
 // nuevo (manual.json usa idents como "plan-vs-proyecto"). Decisión de
 // Albert 2026-09-15: quitarlo en vez de mapearlo a mano.
-export default function Bloque({ b, datos, onChange }) {
+export default function Bloque({ b, datos, onChange, total }) {
   const toast = useToast();
 
+  // b.ask puede venir como cadena (hoja 1) o como {lab, txt} (hoja 0).
+  const ask = typeof b.ask === 'string' ? { lab: 'Pregúntale a tu asistente', txt: b.ask } : b.ask;
+
   function copiarPregunta() {
-    alPortapapeles(b.ask.trim())
+    alPortapapeles((ask?.txt || '').trim())
       .then(() => toast('Pregunta copiada'))
       .catch(() => toast('No se ha podido copiar — selecciónala a mano'));
   }
@@ -21,9 +24,9 @@ export default function Bloque({ b, datos, onChange }) {
   return (
     <div className="blk" id={`b${b.n}`}>
       <div className="num">
-        <span>Bloque {+b.n} de 7</span>
+        <span>Bloque {+b.n}{total ? ` de ${total}` : ''}</span>
         <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <em>{b.min}</em>
+          {b.min && <em>{b.min}</em>}
         </span>
       </div>
       <h2>{b.titulo}</h2>
@@ -41,13 +44,13 @@ export default function Bloque({ b, datos, onChange }) {
       )}
       {(b.grupos || []).map((g, i) => <Grupo key={i} g={g} datos={datos} onChange={onChange} />)}
       {b.aviso && <TextoInline texto={b.aviso} className="aviso" />}
-      {b.ask && (
+      {ask && (
         <div className="ask">
           <div className="lab">
-            <span>Pregúntale a tu asistente</span>
+            <span>{ask.lab || 'Pregúntale a tu asistente'}</span>
             <button className="mini" onClick={copiarPregunta}>Copiar</button>
           </div>
-          <p>{b.ask}</p>
+          <p>{ask.txt}</p>
         </div>
       )}
       {b.check && (
