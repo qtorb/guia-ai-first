@@ -16,14 +16,19 @@ function Barra() {
   const navigate = useNavigate();
   const loc = useLocation();
   const enHoja = loc.pathname.startsWith('/ia-lab');
+  // En la portada no se marca ninguna pestaña: todavía no has elegido mitad.
+  // Y la marca ya no lleva subtítulo — decía «IA-Lab · MMDD31» en todas las
+  // páginas, incluidas las del método, que no es del máster. La procedencia
+  // de cada mitad vive ahora dentro de su propia puerta.
+  const enPortada = loc.pathname === '/dos-puertas';
   return (
     <div id="bar" className={enHoja ? 'ctx-hoja' : 'ctx-guia'}>
       <div className="in">
-        <div className="brand" onClick={() => navigate('/metodo')} style={{ cursor: 'pointer' }}>
-          Guía AI-First<small>IA-Lab · MMDD31</small>
+        <div className="brand" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
+          Guía AI-First
         </div>
         <div className="tabs">
-          <button className={'tab' + (!enHoja ? ' on' : '')} onClick={() => navigate('/metodo')}>
+          <button className={'tab' + (!enHoja && !enPortada ? ' on' : '')} onClick={() => navigate('/metodo')}>
             <b>El método</b><small>montarlo y consultarlo</small>
           </button>
           <button className={'tab' + (enHoja ? ' on' : '')} onClick={() => navigate('/ia-lab')}>
@@ -31,7 +36,6 @@ function Barra() {
           </button>
         </div>
         <div className="spacer" />
-        <button id="ayuda" onClick={() => navigate('/dos-puertas')}>¿Por dónde empiezo?</button>
       </div>
     </div>
   );
@@ -54,13 +58,14 @@ function Shell({ dossierCtl }) {
 
   return (
     <>
-      {!esPortada && <Barra />}
+      <Barra />
       <main>
         <Routes>
-          {/* La entrada del sitio es el método. La portada de dos puertas
-              sigue existiendo en /dos-puertas (el botón «¿Por dónde
-              empiezo?» lleva ahí). */}
-          <Route path="/" element={<Navigate to="/metodo" replace />} />
+          {/* La entrada del sitio es la portada de dos puertas: quien llega
+              sin saber qué es esto elige mitad antes de entrar en ninguna.
+              Hasta septiembre de 2026 la raíz caía en el método y aquí solo
+              se llegaba desde un botón de la barra. */}
+          <Route path="/" element={<Navigate to="/dos-puertas" replace />} />
           <Route path="/dos-puertas" element={<Home dossierCtl={dossierCtl} />} />
           <Route path="/ia-lab" element={<IaLabList dossierCtl={dossierCtl} />} />
           <Route path="/ia-lab/:n" element={<IaLabHoja dossierCtl={dossierCtl} />} />

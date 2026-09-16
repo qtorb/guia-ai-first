@@ -589,11 +589,14 @@ body.ctx-hoja #pinfo{color:var(--gray)}
 .view:not(.on){display:none!important}
 #entrada{display:none}
 #entrada.on{display:block}
-.ent{display:flex;align-items:flex-start;justify-content:center;padding:44px 20px 80px}
-body.en-entrada .tabs,body.en-entrada #hbits,body.en-entrada #burger,body.en-entrada #ayuda{display:none}
-.ent-in{max-width:760px;width:100%}
-.ent h1{font-size:clamp(32px,8vw,48px);margin:10px 0 12px}
-.ent .lede{font-size:clamp(16px,3.8vw,18px);max-width:52ch;margin-bottom:34px}
+/* La portada es la entrada del sitio, no una habitación lateral: conserva la
+   barra, y su medida (940px) es más ancha que la de lectura porque lo que
+   tiene que caber son dos puertas, no un párrafo. */
+.ent{display:flex;align-items:flex-start;justify-content:center;padding:60px 20px 52px}
+.ent-in{max-width:940px;width:100%;display:flex;flex-direction:column;gap:var(--e6)}
+.ent h1.enth1{font-size:clamp(32px,6.4vw,48px);line-height:1.08;margin:0;max-width:17ch}
+/* La credencial va arriba: es la razón para fiarse, y se lee antes del titular. */
+.entcred{font-size:14.5px;line-height:1.6;color:var(--mid);max-width:68ch;margin:0 0 20px}
 .entq{font-family:var(--mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;
   color:var(--mid);margin:0 0 12px}
 .ent-p{grid-template-columns:1fr!important;gap:10px}
@@ -602,11 +605,19 @@ body.en-entrada .tabs,body.en-entrada #hbits,body.en-entrada #burger,body.en-ent
 .puerta.destacada .k{color:var(--blue)}
 .ent .puerta{padding:20px}
 .ent .puerta b{font-size:17px}
-.entpie{font-size:12.5px;color:var(--mid);margin-top:26px}
-
-.entorienta{font-family:var(--sans);font-size:14px;line-height:1.65;color:var(--mid);
-  max-width:56ch;margin:22px 0 0;padding:13px 15px;border-left:2px solid var(--line);background:var(--soft)}
+/* Orientación: va DEBAJO de las dos cajas — ayuda a elegir, y para eso hay
+   que haber visto antes entre qué se elige. */
+.entorienta{font-family:var(--sans);font-size:16px;line-height:1.6;color:var(--mid);
+  max-width:74ch;margin:0;padding:0;border:0;background:none}
 .entorienta b{color:var(--ink);font-weight:600}
+.entpie{display:flex;align-items:center;gap:var(--e4);margin:0;
+  border-top:1px solid var(--linea);padding-top:20px}
+.entpie p{font-size:14px;line-height:1.55;color:var(--mid);margin:0}
+.sello{display:inline-flex;align-items:center;flex:0 0 auto;font-family:var(--mono);
+  font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--mid);border:1.5px solid var(--linea-fuerte);border-radius:4px;
+  padding:7px 12px;white-space:nowrap}
+@media(max-width:560px){.entpie{flex-direction:column;align-items:flex-start;gap:var(--e3)}}
 #pbar.desborda{position:sticky}
 #pbar.desborda .pb-in{
   -webkit-mask-image:linear-gradient(to right,#000 calc(100% - 34px),transparent 100%);
@@ -705,20 +716,30 @@ body.en-entrada .tabs,body.en-entrada #hbits,body.en-entrada #burger,body.en-ent
 .tfmfin b{display:block;margin-bottom:3px}
 .ent-p{grid-template-columns:1fr!important;max-width:720px;margin-bottom:6px}
 
-/* v2.3 · dos puertas en la home, sub-home de la guía */
-.dospuertas{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:30px 0 26px;max-width:900px}
-@media(max-width:760px){.dospuertas{grid-template-columns:1fr}}
-.gp{display:block;padding:22px 22px 20px;border:2px solid var(--linea-fuerte);border-radius:var(--radio);
-  text-decoration:none;color:inherit;background:var(--fondo);transition:border-color .15s,background .15s}
-.gp:hover{border-color:var(--ctx);background:var(--acento-sup)}
-.gp b{display:block;font-size:23px;line-height:1.2;margin:4px 0 8px}
-.gpk{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--mid)}
-.gpd{display:block;font-size:14px;line-height:1.55;color:var(--gray)}
+/* Las dos puertas. Cada una lleva su barrio en dos variables y nada más: el
+   filete de arriba y el relleno. Los dos rellenos tienen casi la misma
+   luminosidad (7,51 y 7,50 con el gris del cuerpo), así que pesan igual y solo
+   cambian de temperatura — ninguna de las dos se adelanta a la otra.
+   El hover NO toca el relleno: oscurecerlo dejaba la descripción en 6,88 y AAA
+   pide 7. Lo que cambia es el borde, que en reposo es gris. */
+.dospuertas{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:0}
+@media(max-width:760px){.dospuertas{grid-template-columns:1fr;gap:16px}}
+.gp{display:block;padding:24px 24px 22px;border:2px solid var(--linea-fuerte);
+  border-radius:var(--radio);border-top:3px solid var(--barrio);background:var(--barrio-sup);
+  text-decoration:none;color:inherit;transition:border-color .15s}
+.gp:hover{border-color:var(--barrio)}
+.gp:focus-visible{outline:3px solid var(--barrio);outline-offset:2px}
+.gp-lab{--barrio:#8C1D2F;--barrio-sup:#F7EDEE}
+.gp-guia{--barrio:var(--acento);--barrio-sup:var(--acento-sup)}
+/* El rótulo va en --texto-2 y no en --mid: sobre el tinte de la caja, --mid
+   (#495366) se queda en 6,75 y AAA pide 7. Con --texto-2, 7,51. */
+.gpk{font-family:var(--mono);font-size:10px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--texto-2)}
+.gp b{display:block;font-family:var(--familia-titulo);font-size:24px;line-height:1.2;margin:6px 0 0}
+.gpd{display:block;margin-top:10px;font-size:15px;line-height:1.55;color:var(--gray)}
+.p-est{display:block;margin-top:14px;font-size:14px;font-weight:600;color:var(--barrio)}
 .d2{display:block;margin-top:8px;font-size:13px;color:var(--red);font-weight:600}
-.gpgo{display:block;margin-top:14px;font-size:13.5px;font-weight:600;color:var(--ctx)}
-.gp-lab{border-left:3px solid #B91C1C}
-.gp-lab .gpgo{color:#B91C1C}
-.gp-guia{border-left:3px solid var(--blue)}
+.gpgo{display:block;margin-top:16px;font-size:14px;font-weight:600;color:var(--barrio)}
 .volver{margin:0 0 18px}
 .volver a{font-size:13.5px;color:var(--mid);text-decoration:none}
 .volver a:hover{color:var(--ink)}
