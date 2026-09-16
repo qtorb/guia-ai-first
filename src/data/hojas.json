@@ -678,46 +678,43 @@
  "hojas/mmdd31/0.json": {
   "titulo": "Si todavía no tienes idea",
   "kicker": "IA-LAB · MMDD31 · UPF-BSM",
-  "lede": "Una manera ordenada de buscar la idea de tu TFM. No te la da: te da la materia prima, un cruce que produce muchas opciones y dos filtros que se quedan con las pocas que aguantan.",
+  "lede": "Una manera ordenada de buscar la idea de tu TFM. No te la da: te da la materia prima, la genera contigo y la filtra con las reglas del máster puestas por delante.",
   "facts": [
-   "40–50 min",
+   "Dos sentadas, con unos días en medio",
    "No es obligatoria",
    "Si ya tienes idea, empieza en el bloque 04",
    "Salida: el correo de ideas a dirección"
   ],
   "intro": {
-   "titulo": "Por qué esta hoja existe",
+   "titulo": "Antes de empezar",
    "que": [
-    "Cada año, lo más difícil del TFM no es hacerlo: es **encontrar la idea**. Y encontrarla tarde se paga en meses.",
-    "Esta hoja **no te da la idea**. Te da una forma ordenada de buscarla, y los criterios no son nuevos: son **los mismos con los que dirección valida un proyecto**, puestos en orden y por delante, para que no te enteres de que uno no se cumple cuando ya llevas tres semanas enamorado de la idea.",
-    "**No es obligatoria.** Si ya tienes una idea —o varias, o prefieres generarlas con tu asistente de siempre— sáltate los tres primeros bloques y **empieza en el 04**, que es donde se filtra y se puntúa. Esa parte funciona igual con ideas tuyas."
+    "Esto no es un formulario. **La idea que elijas aquí se va a llevar una parte importante de tus próximos ocho meses.** Ponle el tiempo que haga falta, y hazla cuando estés despejado: si la haces cansado, la va a hacer tu asistente por ti.",
+    "**Son dos sentadas.** La primera acaba con un mensaje enviado a una persona de verdad. La segunda, dos o tres días después, empieza por lo que te haya contestado — y entonces eliges. Eso es lo único que impide que la decisión salga entera de tu cabeza y de la de tu asistente.",
+    "**No es obligatoria.** Si ya tienes una idea —o varias— sáltate hasta el bloque 04, que es donde se filtra. Y si tu TFM va a ser el plan de marketing de una empresa a la que ya tienes acceso, esta hoja no es para ti: tu idea es esa empresa."
    ]
   },
   "paso0": {
    "titulo": "Prepara tu asistente",
-   "texto": "Pega esto en tu asistente antes de empezar. Le dice que **te entreviste en vez de contestarte**, y que no rellene lo que tienes que poner tú. Si no lo pegas, te va a devolver doce ideas que podrían ser de cualquiera.",
-   "prompt": "Vas a ayudarme a encontrar la idea de mi Trabajo Final de Máster.\n\nTrabajas así, y esto no es negociable:\n- No inventas mi materia prima. Si te falta algo mío, me lo pides; no lo rellenas.\n- No eliges por mí. Produces opciones; yo decido.\n- No me das tres ideas buenas: me das doce, y algunas serán malas. Necesito\n  suficientes para poder descartar.\n- Cada idea tiene que ser concreta: qué se vende, a quién, y por qué esa\n  persona pagaría. Nada de «una plataforma de sostenibilidad».\n\nTe voy a pasar tres listas mías —lo que me apasiona, los retos que me importan\ny las tendencias que veo— y una cuarta cosa: por qué me pagarían hoy.\n\nCuando las tengas, cruza las cuatro y devuélveme doce ideas de proyecto\nnumeradas, cada una en dos líneas. No las ordenes por calidad y no me digas\ncuál te gusta más.\n\nEmpieza pidiéndome la primera lista."
+   "texto": "Esto se pega antes de nada. Le dice que **te entreviste en vez de contestarte**, y le mete dentro las reglas del máster: lo que no las cumple, no te lo propone. Si no lo pegas, te devuelve doce ideas que podrían ser de cualquiera.",
+   "prompt": "Vas a ayudarme a encontrar la idea de mi Trabajo Final de Máster.\n\nCualquier idea que no cumpla LAS CUATRO no me sirve, y no quiero que me la propongas:\n\n1. El comprador es una persona o una empresa, y está nombrado. «La gente», «los usuarios» o «las empresas» no valen: no es nadie a quien se pueda preguntar.\n2. La estrategia digital es lo principal, no un añadido. Si quitando lo digital el proyecto sigue existiendo, no cumple.\n3. Hay una venta que se completa por medios digitales. No hace falta tienda propia; sí hace falta una transacción identificable.\n4. Los números se sostienen de pie: se puede decir, con un orden de magnitud, cuánto paga un cliente y cuánto cuesta conseguirlo — y de dónde sale cada cifra.\n\nMis condiciones reales: ocho meses, una persona sola, trabajando en paralelo. Si una idea no cabe ahí, dímelo en vez de proponerla.\n\nNo me propongas ideas con barniz de sostenibilidad para quedar bien. Si una idea tiene que ver con un problema social o ambiental, que sea porque ahí está el negocio, no por decoración.\n\nTrabajas así, y esto no es negociable:\n- No inventas mi materia prima. Si te falta algo mío, me lo pides; no lo rellenas.\n- No eliges por mí. Produces opciones; yo decido.\n- Trabajamos por tandas: cuatro ideas cada vez, no doce de golpe. Y cada tanda entra por una punta distinta de mi material, que yo te diré.\n- Cada idea tiene que ser concreta: qué se vende, a quién, y qué hace hoy esa persona para resolverlo. Nada de «una plataforma de sostenibilidad».\n\nTe voy a pasar cuatro listas mías. Espera a tenerlas antes de proponer nada.\n\nEmpieza pidiéndome la primera."
   },
   "bloques": [
    {
     "n": "01",
-    "min": "10 min",
     "titulo": "Tu materia prima",
     "que": [
-     "Tres listas cortas. Las escribes tú, no el asistente — y esto es lo único de la hoja que no admite atajo: **si esta parte la escribe un modelo, todo lo que venga después no es de nadie.**",
+     "Cuatro listas cortas. Las escribes tú, no el asistente — y esto es lo único de la hoja que no admite atajo: **si esta parte la escribe un modelo, todo lo que venga después no es de nadie.**",
      "No busques que suenen bien. Busca que sean verdad."
     ],
-    "cicatriz": "Estuve dos semanas produciendo para el destinatario equivocado, con un documento bien escrito. El problema no fue no tenerlo claro — es normal no tenerlo claro. El problema fue que, como no estaba escrito, no había nada contra lo que comparar cuando dejó de ser cierto.",
     "grupos": [
      {
       "tipo": "campo",
       "campos": [
        {
-        "k": "p1",
-        "label": "Lo que te apasiona",
-        "ph": "cosas a las que dedicas tiempo sin que te paguen",
-        "hint": "Tres o cuatro. Concretas, no categorías: «cerámica» y no «la artesanía».",
-        "rows": 3
+        "k": "m1",
+        "label": "1 · A lo que dedicas tiempo sin que te paguen",
+        "ph": "tres o cuatro, una por línea",
+        "rows": 4
        }
       ]
      },
@@ -725,11 +722,10 @@
       "tipo": "campo",
       "campos": [
        {
-        "k": "p2",
-        "label": "Los retos que te importan",
-        "ph": "problemas que te molestan de verdad",
-        "hint": "De tu sector, de tu ciudad o de tu vida. Vale que sean pequeños.",
-        "rows": 3
+        "k": "m2",
+        "label": "2 · Problemas que te molestan de verdad",
+        "ph": "tres o cuatro, una por línea",
+        "rows": 4
        }
       ]
      },
@@ -737,80 +733,249 @@
       "tipo": "campo",
       "campos": [
        {
-        "k": "p3",
-        "label": "Las tendencias que ves",
-        "ph": "cosas que están cambiando y tú notas antes que otros",
-        "hint": "Desde donde trabajas se ven cosas que desde fuera no. Esas.",
-        "rows": 3
+        "k": "m3",
+        "label": "3 · Cosas que están cambiando y tú notas antes que otros",
+        "ph": "tres o cuatro, una por línea",
+        "rows": 4
+       }
+      ]
+     },
+     {
+      "tipo": "campo",
+      "campos": [
+       {
+        "k": "m4",
+        "label": "4 · A qué tienes acceso que otro no tenga",
+        "ph": "personas, empresas, datos, comunidades, sitios donde ya estás dentro",
+        "hint": "No es «qué sé hacer» — eso lo contestan los treinta igual. Es a quién puedes llegar tú y los demás no. Si te sale vacía, no es que no tengas acceso: es que no lo has mirado. Tu trabajo, tus clientes, tu familia, la asociación de tu barrio, el grupo de tu sector.",
+        "rows": 4
        }
       ]
      }
     ],
-    "aviso": "Si una lista te sale en treinta segundos y las otras dos no, eso ya te dice algo sobre por dónde va tu proyecto."
+    "aviso": "Si una lista te sale en treinta segundos y las otras tres no, eso ya te dice algo sobre por dónde va tu proyecto.",
+    "plantilla": [
+     "MI MATERIA PRIMA",
+     "",
+     "Tiempo sin cobrar: {m1}",
+     "Problemas que me molestan: {m2}",
+     "Cambios que veo: {m3}",
+     "A lo que tengo acceso: {m4}"
+    ]
    },
    {
     "n": "02",
-    "min": "5 min",
-    "titulo": "Por lo que te pueden pagar",
+    "titulo": "Por lo que te pagarían hoy",
     "que": [
-     "La pregunta incómoda del ikigai, y la que más proyectos salva. No es qué sabes hacer: es **por qué alguien pondría dinero encima de la mesa hoy**."
+     "La pregunta que más proyectos salva. No es qué sabes hacer: es **por qué alguien pondría dinero encima de la mesa hoy**."
+    ],
+    "grupos": [
+     {
+      "tipo": "fila2",
+      "campos": [
+       {
+        "k": "p1",
+        "label": "Por lo que me pagarían hoy",
+        "ph": "en una línea"
+       },
+       {
+        "k": "p2",
+        "label": "Y quién, en concreto",
+        "ph": "una persona o una empresa, con nombre si lo tienes"
+       }
+      ]
+     }
+    ],
+    "plantilla": [
+     "POR LO QUE ME PAGARÍAN",
+     "",
+     "{p1} — y quien pagaría: {p2}"
+    ]
+   },
+   {
+    "n": "03",
+    "titulo": "Generar por tandas",
+    "que": [
+     "Doce ideas pedidas de una vez son casi siempre **una idea doce veces**: el modelo se queda en la zona más probable y le cambia el envoltorio. Así que se entra por tres puntas distintas.",
+     "Y la tuya va primero. Si la escribes después de leer cuatro suyas, ya no es tuya: es una variante de las suyas con tus palabras."
+    ],
+    "grupos": [
+     {
+      "tipo": "fichas",
+      "pre": "fp",
+      "n": 1,
+      "rotulo": "Tu idea, antes de ver ninguna"
+     },
+     {
+      "tipo": "fichas",
+      "pre": "fa",
+      "n": 4,
+      "rotulo": "Tanda A · desde tu acceso"
+     },
+     {
+      "tipo": "fichas",
+      "pre": "fb",
+      "n": 4,
+      "rotulo": "Tanda B · desde un problema"
+     },
+     {
+      "tipo": "fichas",
+      "pre": "fc",
+      "n": 4,
+      "rotulo": "Tanda C · desde un cambio"
+     }
+    ],
+    "ask": {
+     "lab": "Lo que le pides en cada tanda",
+     "txt": "«Tanda A: de la gente a la que puedo llegar, ¿quién paga hoy por no resolver esto? Tanda B: partiendo de este problema que me importa, ¿quién paga hoy por no tenerlo resuelto? Tanda C: partiendo de este cambio que veo venir, ¿qué se vuelve vendible cuando eso sea normal?»"
+    },
+    "aviso": "**Tres tandas y ya está. No hay contador.** Si las trece fichas acaban orbitando dos compradores, eso no es un fallo que haya que corregir generando más: es información, y se ve sola en el bloque siguiente. Lo único que haces es anotarlo — *materia prima estrecha: el acceso que me falta es ___*.",
+    "cicatriz": "La ficha no lleva «paga porque» a propósito. Era el único campo que pedía una afirmación causal, y la retórica vive ahí: «paga porque pierde clientes cada mes y ya lo ha intentado sin éxito» son tres cosas sin comprobar en una línea, y esa ficha gana. Un gasto actual no se puede narrar. Y «yo llego así» lo escribes tú: es el único campo que un modelo no puede rellenar honestamente — escribirá «a través de mi red profesional» y la idea sobrevivirá sobre un acceso inventado.",
+    "plantilla": [
+     "MI IDEA, ANTES DE VER NINGUNA",
+     "",
+     "{fp1_asa} — {fp1_vende}, para {fp1_quien}"
+    ]
+   },
+   {
+    "n": "04",
+    "titulo": "Las reglas del máster",
+    "que": [
+     "**Aquí empiezas si ya traías idea.** Da igual de dónde salga: propia, del asistente o de una conversación.",
+     "No son preferencias y no puntúan: abren o cierran la puerta. Y se pasan sobre **todas** las fichas, no sobre cuatro que hayas elegido antes — elegir antes de filtrar es justo como se cuela la que estaba mejor escrita."
+    ],
+    "grupos": [
+     {
+      "tipo": "puertas",
+      "de": [
+       {
+        "pre": "fp",
+        "n": 1
+       },
+       {
+        "pre": "fa",
+        "n": 4
+       },
+       {
+        "pre": "fb",
+        "n": 4
+       },
+       {
+        "pre": "fc",
+        "n": 4
+       }
+      ],
+      "reglas": [
+       "1 · El comprador está nombrado",
+       "2 · Lo digital es el plato, no la guarnición",
+       "3 · Hay una venta que se completa por medios digitales",
+       "4 · Los números se sostienen, y sé de dónde sale cada cifra"
+      ]
+     }
+    ],
+    "aviso": "Tres estados, no dos: **cumple · no cumple · no sé decirlo.** El tercero también para — no es un aprobado con dudas, es lo siguiente que tienes que averiguar. Y el motivo del descarte se escribe **ahora**, no al final cuando toque redactar el correo: reconstruido después no es un registro, es una coartada."
+   },
+   {
+    "n": "05",
+    "titulo": "Quién ha elegido esto",
+    "que": [
+     "Antes de quedarte con ninguna. Hazlo tú — **no se lo preguntes al asistente**, que en esto es parte interesada."
     ],
     "grupos": [
      {
       "tipo": "campo",
       "campos": [
        {
-        "k": "p4",
-        "label": "Por lo que te pagarían hoy",
-        "ph": "y quién, en concreto",
-        "hint": "Si la respuesta es «por mi capacidad de aprender», todavía no has contestado.",
+        "k": "c1",
+        "label": "¿Quién eligió: tú, o la que estaba mejor redactada?",
+        "ph": "reconstruye el momento en que decidiste",
+        "hint": "Si no puedes reconstruirlo, decidió otro.",
+        "rows": 3
+       }
+      ]
+     },
+     {
+      "tipo": "campo",
+      "campos": [
+       {
+        "k": "c2",
+        "label": "¿Cuándo dejaste de generar, y por qué justo ahí?",
+        "ph": "",
+        "hint": "Si la respuesta es «cuando me cansé» o «cuando salió una que me gustó», no tenías criterio: tenías suerte.",
+        "rows": 2
+       }
+      ]
+     },
+     {
+      "tipo": "campo",
+      "campos": [
+       {
+        "k": "c3",
+        "label": "La prueba del compañero",
+        "ph": "qué líneas podrían estar igual en la hoja de cualquier otro de clase",
+        "hint": "Esas líneas no son tuyas: son de la categoría.",
         "rows": 3
        }
       ]
      }
     ],
-    "aviso": "El ikigai tiene cuatro trampas y todas están en el diagrama: lo que amas y se te da bien pero nadie paga es **satisfacción con sensación de inutilidad**; lo que amas y el mundo necesita pero no paga es **goce sin riqueza**; lo que pagan y se te da bien pero no amas es **confortable y vacío**; y lo que pagan y el mundo necesita pero no dominas es **entusiasmo con incertidumbre**. Un TFM puede vivir en cualquiera de las cuatro — pero conviene saber en cuál estás."
+    "plantilla": [
+     "QUIÉN ELIGIÓ ESTO",
+     "",
+     "Quién eligió: {c1}",
+     "Por qué paré ahí: {c2}",
+     "Líneas que no son mías: {c3}"
+    ]
    },
    {
-    "n": "03",
-    "min": "10 min",
-    "titulo": "Cruza y genera",
+    "n": "06",
+    "titulo": "Antes de levantarte, escribe a alguien",
     "que": [
-     "Ahora sí entra el asistente. Le pasas las cuatro cosas de arriba y te devuelve **doce ideas**, no tres.",
-     "Doce es a propósito: **necesitas suficientes para poder descartar.** Con tres, te quedas con la menos mala y lo llamas criterio."
+     "Hasta aquí todo ha pasado entre tu cabeza y tu asistente. Esto es lo único que mete algo de fuera, y es lo que hace que la elección de la semana que viene no sea otra vez una opinión tuya bien ordenada.",
+     "No preguntes por la idea: preguntar por la idea produce cortesía, no información. Pregunta **por lo que hace hoy**, que es justo el hueco de tu ficha que sigue sin comprobar."
     ],
     "grupos": [
      {
-      "tipo": "campo",
-      "campos": [
-       {
-        "k": "g1",
-        "label": "Las doce, pegadas aquí",
-        "ph": "tal como te las ha dado, sin limpiar",
-        "hint": "No las ordenes todavía. Sin ordenar es como se ve cuáles se repiten.",
-        "rows": 8
-       }
-      ]
+      "tipo": "mensaje",
+      "pre": "msg",
+      "borrador": "Hola ___, estoy empezando un proyecto sobre ___ y prefiero preguntar antes de montar nada.\n\n**¿Cómo lo resolvéis ahora, y qué os cuesta?**\n\nSon quince minutos, cuando te vaya bien. Y si no es tu tema, dímelo sin problema."
      }
     ],
-    "ask": {
-     "lab": "Pregúntale a tu asistente",
-     "txt": "«De estas doce, ¿cuáles son variaciones de la misma idea? Agrúpalas y dime cuántas ideas distintas hay de verdad.»"
-    },
-    "aviso": "**Si las doce te parecen razonables, no has generado doce ideas: has generado una doce veces.** Una lista larga de cosas plausibles que nadie puede priorizar no es material: es ruido con formato."
+    "aviso": "**Y aquí se para.** Dos o tres días: es lo que tarda alguien en contestar, y de paso es dormir entre generar y decidir, que es la defensa más barata que existe contra enamorarse de una idea bien redactada. Volver te cuesta una semana de treinta y dos.",
+    "plantilla": [
+     "EL MENSAJE QUE ENVIÉ",
+     "",
+     "A: {msg_quien}",
+     "El día: {msg_dia}"
+    ]
    },
    {
-    "n": "04",
-    "min": "8 min",
-    "titulo": "Filtra por diferencia",
+    "n": "07",
+    "titulo": "Qué te contestaron",
     "que": [
-     "**Aquí empiezas si ya traías idea.** Da igual de dónde salga: propia, del asistente o de una conversación.",
-     "El filtro del máster es uno y es duro: **que sea diferente**. Y diferente tiene cuatro formas, no catorce."
+     "Segunda sentada. Antes de tocar las fichas: lo que te dijeron, **literal**, con quién lo dijo. Si lo parafraseas ya es tuyo y no suyo."
     ],
-    "thead": [
-     "Idea",
-     "En qué es diferente",
-     "Por qué lo crees"
+    "grupos": [
+     {
+      "tipo": "respuestas",
+      "pre": "r",
+      "n": 3
+     }
+    ],
+    "aviso": "Si no ha contestado nadie, no se bloquea nada: eliges igual, con una línea escrita — *elegí sin respuesta de nadie*. Es un dato sobre tu acceso, y de los buenos: significa que la parte más difícil del proyecto sigue sin resolver y ya lo sabes ahora, no en marzo.",
+    "plantilla": [
+     "LO QUE ME DIJERON",
+     "",
+     "{r1_quien}: {r1_dijo}",
+     "{r2_quien}: {r2_dijo}",
+     "{r3_quien}: {r3_dijo}"
+    ]
+   },
+   {
+    "n": "08",
+    "titulo": "Diferencia, frente a quién",
+    "que": [
+     "De las que han pasado las reglas, quedan pocas. Ahora sí: en qué eres diferente. Cuatro formas, no catorce."
     ],
     "grupos": [
      {
@@ -818,19 +983,19 @@
       "sep": true,
       "campos": [
        {
-        "k": "f1",
-        "label": "Idea 1",
-        "ph": "en una línea"
+        "k": "d1",
+        "label": "Finalista 1",
+        "ph": "su asa"
        },
        {
-        "k": "f1d",
+        "k": "d1d",
         "label": "Diferente en",
         "ph": "único / más rápido / menor coste / mejores prestaciones"
        },
        {
-        "k": "f1p",
-        "label": "Por qué",
-        "ph": "..."
+        "k": "d1q",
+        "label": "Frente a quién — tres nombres",
+        "ph": "tres alternativas concretas, con nombre"
        }
       ]
      },
@@ -839,119 +1004,19 @@
       "sep": true,
       "campos": [
        {
-        "k": "f2",
-        "label": "Idea 2",
-        "ph": "..."
-       },
-       {
-        "k": "f2d",
-        "label": "Diferente en",
-        "ph": "..."
-       },
-       {
-        "k": "f2p",
-        "label": "Por qué",
-        "ph": "..."
-       }
-      ]
-     },
-     {
-      "tipo": "fila3",
-      "sep": true,
-      "campos": [
-       {
-        "k": "f3",
-        "label": "Idea 3",
-        "ph": "..."
-       },
-       {
-        "k": "f3d",
-        "label": "Diferente en",
-        "ph": "..."
-       },
-       {
-        "k": "f3p",
-        "label": "Por qué",
-        "ph": "..."
-       }
-      ]
-     },
-     {
-      "tipo": "fila3",
-      "sep": true,
-      "campos": [
-       {
-        "k": "f4",
-        "label": "Idea 4",
-        "ph": "..."
-       },
-       {
-        "k": "f4d",
-        "label": "Diferente en",
-        "ph": "..."
-       },
-       {
-        "k": "f4p",
-        "label": "Por qué",
-        "ph": "..."
-       }
-      ]
-     }
-    ],
-    "aviso": "Las cuatro formas son **único · más rápido · menor coste (menor precio o mayor margen) · mejores prestaciones**. **Si una idea no está en ninguna de las cuatro, se cae aquí** — y se cae ahora, que es barato, en vez de en abril."
-   },
-   {
-    "n": "05",
-    "min": "7 min",
-    "titulo": "Las puertas del máster",
-    "que": [
-     "Estas no son preferencias: son los requisitos con los que dirección valida un proyecto. No puntúan — **abren o cierran la puerta.**"
-    ],
-    "thead": [
-     "Idea finalista",
-     "Qué requisito te preocupa",
-     "Se puede arreglar"
-    ],
-    "grupos": [
-     {
-      "tipo": "fila3",
-      "sep": true,
-      "campos": [
-       {
-        "k": "q1",
-        "label": "Finalista 1",
-        "ph": "..."
-       },
-       {
-        "k": "q1r",
-        "label": "Requisito en duda",
-        "ph": "..."
-       },
-       {
-        "k": "q1a",
-        "label": "Cómo se arregla",
-        "ph": "o «no se puede»"
-       }
-      ]
-     },
-     {
-      "tipo": "fila3",
-      "sep": true,
-      "campos": [
-       {
-        "k": "q2",
+        "k": "d2",
         "label": "Finalista 2",
-        "ph": "..."
+        "ph": "su asa"
        },
        {
-        "k": "q2r",
-        "label": "Requisito en duda",
-        "ph": "..."
+        "k": "d2d",
+        "label": "Diferente en",
+        "ph": "…"
        },
        {
-        "k": "q2a",
-        "label": "Cómo se arregla",
-        "ph": "..."
+        "k": "d2q",
+        "label": "Frente a quién — tres nombres",
+        "ph": "…"
        }
       ]
      },
@@ -960,32 +1025,38 @@
       "sep": true,
       "campos": [
        {
-        "k": "q3",
+        "k": "d3",
         "label": "Finalista 3",
-        "ph": "..."
+        "ph": "su asa"
        },
        {
-        "k": "q3r",
-        "label": "Requisito en duda",
-        "ph": "..."
+        "k": "d3d",
+        "label": "Diferente en",
+        "ph": "…"
        },
        {
-        "k": "q3a",
-        "label": "Cómo se arregla",
-        "ph": "..."
+        "k": "d3q",
+        "label": "Frente a quién — tres nombres",
+        "ph": "…"
        }
       ]
      }
     ],
-    "aviso": "Los requisitos: **B2C o B2B · prioridad de la estrategia digital · comercio electrónico** (que no es montar una tienda en internet) **· económicamente viable, al menos en teoría · realista y con exigencia profesional, no un ejercicio académico · alineado con un ODS, con métrica concreta.** Y lo que más se valora: **ideas e innovación**, y que sea **escalable**."
+    "aviso": "**Sin competidores nombrados no has pasado el filtro: has usado la palabra.** «Único» es casi siempre falso y «mejores prestaciones» es un cajón de sastre si no hay nadie enfrente. La pregunta no es en qué eres diferente: es frente a qué alternativa concreta, y para quién eso importa.",
+    "plantilla": [
+     "DIFERENCIA",
+     "",
+     "{d1}: {d1d}, frente a {d1q}",
+     "{d2}: {d2d}, frente a {d2q}",
+     "{d3}: {d3d}, frente a {d3q}"
+    ]
    },
    {
-    "n": "06",
-    "min": "6 min",
-    "titulo": "La que gana, con precio y con fecha",
+    "n": "09",
+    "titulo": "La que gana",
     "que": [
-     "Elige una. Y ponle las dos cosas que matan proyectos imposibles en la primera semana en vez de en la última: **cuánto cuesta y cuándo funciona.**",
-     "No hace falta una cuenta de resultados. Hace falta un orden de magnitud y tres momentos."
+     "Elige una. Y ponle lo que mata proyectos imposibles en la primera semana en vez de en la última.",
+     "El coste no es el del negocio imaginado: es **el coste de conseguir la evidencia**. Cuántas conversaciones, qué datos, cuánto dinero tuyo en herramientas o en una prueba."
     ],
     "grupos": [
      {
@@ -994,7 +1065,7 @@
        {
         "k": "w0",
         "label": "La idea elegida",
-        "ph": "qué se vende, a quién, y por qué pagarían",
+        "ph": "qué se vende, a quién, y qué hace hoy esa persona",
         "hint": "Dos líneas. Si necesitas más, todavía no la tienes.",
         "rows": 3
        }
@@ -1005,27 +1076,34 @@
       "campos": [
        {
         "k": "w1",
-        "label": "Cuánto cuesta",
-        "ph": "orden de magnitud"
+        "label": "Qué me cuesta conseguir la evidencia",
+        "ph": "conversaciones, datos, euros"
        },
        {
         "k": "w2",
-        "label": "Cuándo hay algo que enseñar",
-        "ph": "..."
+        "label": "Cuándo tengo la primera evidencia",
+        "ph": "la fecha que importa"
        },
        {
         "k": "w3",
-        "label": "Cuándo puede cobrar",
-        "ph": "..."
+        "label": "Cuándo hay algo que enseñar",
+        "ph": "…"
        }
       ]
      }
     ],
-    "aviso": "**Un elefante te lo puedes comer, pero no de un solo bocado.** Si lo que has descrito no cabe en el curso, la idea no está mal: está mal recortada. Recórtala aquí."
+    "aviso": "**Un elefante te lo puedes comer, pero no de un solo bocado.** Si lo que has descrito no cabe en ocho meses trabajando en paralelo, la idea no está mal: está mal recortada. Recórtala aquí. Y con ocho meses por delante, la fecha que importa no es la del final: es la primera, porque un proyecto largo no se muere por falta de tiempo, se muere por deriva.",
+    "plantilla": [
+     "LA QUE GANA",
+     "",
+     "{w0}",
+     "",
+     "Conseguir la evidencia me cuesta: {w1}",
+     "Primera evidencia: {w2} · Algo que enseñar: {w3}"
+    ]
    },
    {
-    "n": "07",
-    "min": "5 min",
+    "n": "10",
     "titulo": "Lo que todavía no sabes",
     "que": [
      "Toda idea elegida descansa sobre algo que has dado por cierto sin comprobar. Escríbelo ahora, mientras se ve."
@@ -1048,10 +1126,25 @@
       "campos": [
        {
         "k": "s2",
-        "label": "Y lo comprobaría así",
-        "ph": "con quién hablarías y qué le preguntarías",
-        "hint": "Una conversación de veinte minutos vale más que tres informes.",
-        "rows": 2
+        "label": "Y la pregunta que podría desmentirlo",
+        "ph": "a quién se la haces y qué le preguntas",
+        "hint": "Tiene que poder salir mal. Si tu pregunta solo puede confirmarte, no es una comprobación: es una felicitación.",
+        "rows": 3
+       }
+      ]
+     },
+     {
+      "tipo": "fila2",
+      "campos": [
+       {
+        "k": "s3",
+        "label": "Con quién",
+        "ph": "nombre"
+       },
+       {
+        "k": "s4",
+        "label": "Qué día",
+        "ph": "una fecha, no «pronto»"
        }
       ]
      }
@@ -1059,53 +1152,28 @@
     "ask": {
      "lab": "Pregúntale a tu asistente",
      "txt": "«¿Qué estoy dando por supuesto en esta idea que no he escrito en ninguna parte?» Y no aceptes la primera respuesta: pídele tres más."
-    }
+    },
+    "plantilla": [
+     "LO QUE TODAVÍA NO SÉ",
+     "",
+     "Tiene que ser cierto que: {s1}",
+     "La pregunta que podría desmentirlo: {s2}",
+     "Se la hago a {s3} el {s4}"
+    ]
    }
   ],
-  "contraste": {
-   "n": "08",
-   "min": "6 min",
-   "titulo": "Contraste crítico",
-   "que": "Antes de generar nada. Hazlo tú — **no se lo pidas al asistente**, que en esto es parte interesada.",
-   "pruebas": [
-    "**¿Quién eligió tu idea?** Repasa hacia atrás: ¿la elegiste tú entre doce, o te quedaste con la que el asistente puso mejor redactada? No es una pregunta retórica. Si no puedes reconstruir el momento en que decidiste, decidió otro.",
-    "**¿Cuándo dejaste de generar ideas, y por qué justo ahí?** Si la respuesta es «cuando me cansé» o «cuando salió una que me gustó», no tenías criterio de parada: tenías suerte.",
-    "**La prueba del compañero.** Marca cada línea que podría estar igual en la hoja de cualquier otro de clase. Esas líneas no son tuyas: son de la categoría."
-   ],
-   "grupos": [
-    {
-     "tipo": "campo",
-     "campos": [
-      {
-       "k": "c1",
-       "label": "Quién eligió, de verdad",
-       "ph": "y en qué momento",
-       "hint": "...",
-       "rows": 2
-      }
-     ]
-    },
-    {
-     "tipo": "campo",
-     "campos": [
-      {
-       "k": "c2",
-       "label": "Lo que he escrito y todavía no puedo demostrar",
-       "ph": "...",
-       "hint": "Esto no resta. Escribirlo es la mitad del trabajo.",
-       "rows": 2
-      }
-     ]
-    }
-   ]
-  },
   "salida": {
    "titulo": "Tus ideas, y el correo a dirección",
-   "que": "Esto es lo que te llevas, y es **el correo que hay que enviar a dirección con algunas ideas de proyecto**: las que consideraste, por qué se cayeron las que se cayeron, y la que eliges con su precio y sus fechas. Guárdalo también para ti: cuando dentro de unos meses dudes de por qué elegiste esto, la respuesta está aquí — y de paso es «motivaciones y punto de partida», uno de los contenidos obligatorios del TFM.",
+   "que": "Esto es lo que te llevas, y es **el correo que hay que enviar a dirección con algunas ideas de proyecto**: las que consideraste, por qué se cayeron las que se cayeron, y la que eliges. Los motivos ya están escritos desde el bloque 04 — aquí no se reconstruyen, se pegan. Guárdalo también para ti: cuando dentro de unos meses dudes de por qué elegiste esto, la respuesta está aquí — y de paso es «motivaciones y punto de partida», uno de los contenidos obligatorios del TFM.",
    "cierre": [
-    "Estas son las ideas que he considerado y la que elijo, con el motivo.",
-    "Lo que todavía no puedo demostrar está marcado como tal.",
-    "Quedo a la espera de que se valide una para preparar la definición del proyecto."
+    "Y una línea más, que es obligatoria y solo tiene dos formas:",
+    "",
+    "  [ ] Esta idea gana.",
+    "  [ ] Esta idea todavía no gana: necesito hablar con ________ antes del ________.",
+    "",
+    "La segunda solo vale con un nombre y una fecha. «Investigar más» o «validar el mercado» no cuentan: eso no es una pausa, es no haber decidido.",
+    "",
+    "No está para que te escaquees, y probablemente casi nadie la use. Está por lo que le hace a quien no la usa: convierte elegir en una decisión tomada, en vez de en lo que la hoja te obliga a hacer al final."
    ]
   },
   "pie": "IA-Lab · MMDD31 · UPF-BSM",

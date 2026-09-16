@@ -1,9 +1,17 @@
 import Campo from './Campo';
 import TextoInline from '../TextoInline';
 import { esc } from '../../lib/inline';
+import { Fichas, Puertas, Mensaje, Respuestas } from './GruposHoja0';
 
 // Port de grupo() — guia-ai-first-src/index.html:2679-2688.
 export default function Grupo({ g, datos, onChange }) {
+  // Tipos nuevos de la hoja 0 rediseñada. Van primero y salen por su lado:
+  // el motor de abajo es el port literal del viejo y no se toca.
+  if (g.tipo === 'fichas') return <Fichas g={g} datos={datos} onChange={onChange} />;
+  if (g.tipo === 'puertas') return <Puertas g={g} datos={datos} onChange={onChange} />;
+  if (g.tipo === 'mensaje') return <Mensaje g={g} datos={datos} onChange={onChange} />;
+  if (g.tipo === 'respuestas') return <Respuestas g={g} datos={datos} onChange={onChange} />;
+
   if (g.tipo === 'checks') {
     return (
       <>
