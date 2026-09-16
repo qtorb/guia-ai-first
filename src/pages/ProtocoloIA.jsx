@@ -763,7 +763,7 @@ function Listo({ d, fs, onCopiar, onIr, navigate, toast }) {
     const blob = new Blob([ics(d, p30)], { type: 'text/calendar;charset=utf-8' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'metodo-30-dias.ics';
+    a.download = 'metodo-mi-mes.ics';
     a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 2000);
     toast('Fechas descargadas: ábrelo y tu calendario las añade');
@@ -783,7 +783,7 @@ function Listo({ d, fs, onCopiar, onIr, navigate, toast }) {
       Object.entries(TEXTOS).forEach(([nombre, contenido]) => zip.file(nombre, contenido));
       zip.file('LEEME.md', leemeMd(d, p30));
       zip.file('PLAN.md', planMd(d, p30));
-      zip.file('metodo-30-dias.ics', ics(d, p30));
+      zip.file('metodo-mi-mes.ics', ics(d, p30));
       const blob = await zip.generateAsync({ type: 'blob' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
@@ -841,7 +841,7 @@ function Listo({ d, fs, onCopiar, onIr, navigate, toast }) {
           está en tu cabeza y en un documento, dentro de un mes esté fuera, lo haya visto
           gente de verdad, y tú sepas algo que hoy no sabes.</p>
         <div className="acciones">
-          <button className="btn" onClick={() => navigate('/metodo/plan')}>Ver mi plan de 30 días</button>
+          <button className="btn" onClick={() => navigate('/metodo/plan')}>Ver mi plan</button>
           <button className="btn btn-2" onClick={bajarIcs}>Añadir las fechas a mi calendario</button>
         </div>
         <p className="ayuda">Las fechas salen de lo que ya has escrito en los pasos 4 y 6.

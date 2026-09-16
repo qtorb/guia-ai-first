@@ -269,9 +269,11 @@ Cierras el ${l(s.cierre)} a las ${s.hora}.
 `).join('\n')}
 ---
 
-Las fechas son tuyas y se mueven. La conversación de la semana 1, no: esa se
-reserva con antelación o no ocurre, y es la única pieza de todo esto que no se
-puede sustituir por nada.
+Las fechas son tuyas y se mueven, y el mes se estira: si la conversación cae
+tarde, la semana 1 se alarga para contenerla y las demás la siguen. Un mes es la
+medida, no la regla. Lo que no se mueve es el orden — y la conversación de la
+semana 1, que se reserva con antelación o no ocurre, y es la única pieza de todo
+esto que no se puede sustituir por nada.
 `;
 }
 
@@ -332,7 +334,7 @@ El ${l(p.lanzamiento)} deberías tener: una página en internet que explica qué
 ofreces y a quién, cinco personas de ese «a quién» que la han mirado, y algo que
 has cambiado por lo que te dijeron.
 
-Las fechas están también en \`metodo-30-dias.ics\`: lo abres y tu calendario las
+Las fechas están también en \`metodo-mi-mes.ics\`: lo abres y tu calendario las
 añade. Cada evento lleva dentro el texto que toca esa semana.
 
 ---
@@ -350,7 +352,7 @@ siempre y luego no puedes saber por qué algo quedó como quedó.
 \`textos/\` — los cuatro textos que se pegan en cualquier chat. Empieza por su
 \`LEEME.md\`: dice cuál usar en cada momento.
 
-\`PLAN.md\` y \`metodo-30-dias.ics\` — tu mes.
+\`PLAN.md\` y \`metodo-mi-mes.ics\` — tu mes.
 
 ---
 
