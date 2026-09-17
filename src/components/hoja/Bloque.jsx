@@ -9,7 +9,7 @@ import { useToast } from '../Toast';
 // ids del guia.md antiguo (p.ej. "s-4-2") que no existen en el manual
 // nuevo (manual.json usa idents como "plan-vs-proyecto"). Decisión de
 // Albert 2026-09-15: quitarlo en vez de mapearlo a mano.
-export default function Bloque({ b, datos, onChange, total, preparar, duda, onDuda }) {
+export default function Bloque({ b, datos, onChange, total, rotulo, preparar, duda, onDuda }) {
   const toast = useToast();
 
   // b.ask puede venir como cadena (hoja 1) o como {lab, txt} (hoja 0).
@@ -31,7 +31,7 @@ export default function Bloque({ b, datos, onChange, total, preparar, duda, onDu
   return (
     <div className="blk" id={`b${b.n}`}>
       <div className="num">
-        <span>Bloque {+b.n}{total ? ` de ${total}` : ''}</span>
+        <span>{rotulo || `Bloque ${+b.n}${total ? ` de ${total}` : ''}`}</span>
         <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           {b.min && <em>{b.min}</em>}
         </span>
@@ -51,6 +51,14 @@ export default function Bloque({ b, datos, onChange, total, preparar, duda, onDu
       {b.thead && (
         <div className="thead">
           {b.thead.map((t, i) => <div key={i}>{esc(t)}</div>)}
+        </div>
+      )}
+      {/* Las tres pruebas del contraste, que antes vivían en su propio paso.
+          Ahora el contraste es un bloque más de 1A: mismo sitio, mismo molde. */}
+      {b.pruebas && (
+        <div className="contraste">
+          <h3>Tres pruebas</h3>
+          <ol>{b.pruebas.map((x, i) => <TextoInline key={i} as="li" texto={x} />)}</ol>
         </div>
       )}
       {(b.grupos || []).map((g, i) => <Grupo key={i} g={g} datos={datos} onChange={onChange} />)}

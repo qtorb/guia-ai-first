@@ -1,12 +1,12 @@
 {
  "hojas/mmdd31/1.json": {
-  "titulo": "Mi protocolo de trabajo",
+  "titulo": "Mi hoja de la sesión 1",
   "kicker": "IA-Lab 1 · MMDD31 · UPF-BSM",
-  "lede": "Siete reglas escritas por ti sobre cómo vas a trabajar con inteligencia artificial durante el máster. Ninguna pide más de tres líneas, y el valor no está en escribirlas: está en que sean tuyas.",
+  "lede": "Dos piezas, las dos de la sesión del 20 de octubre. **1A**, tu protocolo de trabajo con IA: siete reglas escritas por ti. **1B**, tu TFM en una página: tres cosas y tres fechas, cuarenta y ocho horas antes de cerrar proyecto.",
   "facts": [
-   "Nueve pasos, ninguno largo",
+   "Dos piezas, dos documentos",
    "Se puede hacer en dos ratos",
-   "Salida: un protocolo que te llevas"
+   "1B se escribe antes del 22"
   ],
   "bloques": [
    {
@@ -122,7 +122,8 @@
      "     decide     → {a3s}",
      "     NO decide  → {a3n}"
     ],
-    "encargo": "CONTEXTO\nMi TFM va de [descríbelo en dos líneas]. Trabajo solo y con un asistente de\nIA, así que pido, ejecuto y valido yo. No tengo escrito quién decide qué.\n\nOBJETIVO\nEncontrar tres decisiones que tomé esta semana sin darme cuenta de que eran\ndecisiones. Las necesito para repartir los roles.\n\nQUÉ NO ES\nNo me propongas un reparto de roles. No me des una plantilla ni una teoría.\n\nCRITERIOS\nPregúntame de una en una, sobre lo que hice esta semana, hasta sacar tres.\nDe cada una, dime quién la tomó: yo, tú, o nadie.\n\nCONDICIÓN DE PARADA\nSi no te he contado qué hice esta semana, no lo supongas: pregúntamelo y para."
+    "encargo": "CONTEXTO\nEstoy en un máster de marketing digital. Mi proyecto —o, si todavía no lo\ntengo cerrado, el trabajo del máster— es [dos líneas]. Trabajo solo y con un\nasistente de IA, así que pido, ejecuto y valido yo.\n\nOBJETIVO\nEncontrar tres decisiones que tomé esta semana sin darme cuenta de que eran\ndecisiones. Las necesito para repartir los roles.\n\nQUÉ NO ES\nNo me propongas un reparto de roles. No me des una plantilla ni una teoría.\n\nCRITERIOS\nPregúntame de una en una, sobre lo que hice esta semana, hasta sacar tres.\nDe cada una, dime quién la tomó: yo, tú, o nadie.\n\nCONDICIÓN DE PARADA\nSi no te he contado qué hice esta semana, no lo supongas: pregúntamelo y para.",
+    "parte": "1A"
    },
    {
     "n": "02",
@@ -191,7 +192,8 @@
      "     2. ¿Qué estoy haciendo por inercia y ya no sé justificar?",
      "     3. {cp}"
     ],
-    "encargo": "CONTEXTO\nMi TFM va de [dos líneas]. Mi semana es [cómo es de verdad, con horarios].\nVoy a fijar un momento semanal para parar y mirar lo que he producido.\n\nOBJETIVO\nUna tercera pregunta fija, mía, que me resulte incómoda de contestar. Las\ndos primeras ya las tengo: qué decisión ha mejorado, y qué hago por inercia.\n\nQUÉ NO ES\nNo quiero una lista de preguntas ni una rutina de productividad. Una sola.\n\nCRITERIOS\nQue sea incómoda y que solo tenga sentido en mi proyecto. Dime por qué esa\ny no otra.\n\nCONDICIÓN DE PARADA\nSi no sabes lo suficiente de mi proyecto para elegirla, pregúntame y para."
+    "encargo": "CONTEXTO\nMi trabajo del máster es [dos líneas]. Mi semana es [cómo es de verdad, con\nhorarios]. Voy a fijar un momento semanal para parar y mirar lo producido.\n\nOBJETIVO\nUna tercera pregunta fija, mía, que me resulte incómoda de contestar. Las\ndos primeras ya las tengo: qué decisión ha mejorado, y qué hago por inercia.\n\nQUÉ NO ES\nNo quiero una lista de preguntas ni una rutina de productividad. Una sola.\n\nCRITERIOS\nQue sea incómoda y que solo tenga sentido en mi proyecto. Dime por qué esa\ny no otra.\n\nCONDICIÓN DE PARADA\nSi no sabes lo suficiente de mi proyecto para elegirla, pregúntame y para.",
+    "parte": "1A"
    },
    {
     "n": "03",
@@ -259,7 +261,8 @@
      "  No comparto jamás       : {l2}",
      "  No entrego sin revisión : {l3}"
     ],
-    "encargo": "CONTEXTO\nMi TFM va de [dos líneas]. Estas son mis tres líneas rojas, escritas hoy:\n[pégalas].\n\nOBJETIVO\nEncontrar el hueco. Quiero una situación realista de mi trabajo en la que\nlas tres se cumplan y aun así yo haya hecho algo que no debía.\n\nQUÉ NO ES\nNo me digas si están bien escritas. No me propongas una cuarta.\n\nCRITERIOS\nUna situación concreta, de mi proyecto, con el mes y lo que estaría haciendo.\nSi no se te ocurre ninguna, dímelo claro: significa que son tan amplias que\nno me van a frenar nunca.\n\nCONDICIÓN DE PARADA\nSi te faltan datos sobre cómo trabajo, pídemelos antes de inventarte nada."
+    "encargo": "CONTEXTO\nTrabajo en marketing digital y estoy en un máster. Estas son mis tres líneas\nrojas, escritas hoy: [pégalas].\n\nOBJETIVO\nEncontrar el hueco. Quiero una situación realista de mi trabajo en la que\nlas tres se cumplan y aun así yo haya hecho algo que no debía.\n\nQUÉ NO ES\nNo me digas si están bien escritas. No me propongas una cuarta.\n\nCRITERIOS\nUna situación concreta, de mi proyecto, con el mes y lo que estaría haciendo.\nSi no se te ocurre ninguna, dímelo claro: significa que son tan amplias que\nno me van a frenar nunca.\n\nCONDICIÓN DE PARADA\nSi te faltan datos sobre cómo trabajo, pídemelos antes de inventarte nada.",
+    "parte": "1A"
    },
    {
     "n": "04",
@@ -308,7 +311,8 @@
      "  Mi trabajo produce valor cuando {v1}",
      "  puede tomar mejor la decisión de {v2}."
     ],
-    "encargo": "CONTEXTO\nMi frase de unidad de valor, rellenada, queda así: [pégala]. Mi proyecto es\n[dos líneas].\n\nOBJETIVO\nTres cosas que estoy haciendo en mi proyecto y que NO caben dentro de esa\nfrase.\n\nQUÉ NO ES\nNo me digas si la frase está bien. No me la reescribas.\n\nCRITERIOS\nTres actividades concretas, no categorías. Si no sabes qué estoy haciendo,\npregúntamelo primero: sin eso te lo estarías inventando.\n\nCONDICIÓN DE PARADA\nSi la frase tiene un hueco sin rellenar, no lo completes tú: dímelo y para."
+    "encargo": "CONTEXTO\nMi frase de unidad de valor, rellenada, queda así: [pégala]. Lo que tengo\nentre manos es [dos líneas: tu proyecto, o el trabajo del máster].\n\nOBJETIVO\nTres cosas que estoy haciendo en mi proyecto y que NO caben dentro de esa\nfrase.\n\nQUÉ NO ES\nNo me digas si la frase está bien. No me la reescribas.\n\nCRITERIOS\nTres actividades concretas, no categorías. Si no sabes qué estoy haciendo,\npregúntamelo primero: sin eso te lo estarías inventando.\n\nCONDICIÓN DE PARADA\nSi la frase tiene un hueco sin rellenar, no lo completes tú: dímelo y para.",
+    "parte": "1A"
    },
    {
     "n": "05",
@@ -367,7 +371,8 @@
      "",
      "  Mi sustituto habitual: {sus}"
     ],
-    "encargo": "CONTEXTO\nTrabajo en marketing digital, y en concreto en [tu terreno]. Acabo de\nadoptar una regla que dice que la aceptación se observa sobre lo real y\nnunca sobre un sustituto.\n\nOBJETIVO\nSaber cuál es el sustituto que en mi terreno se valida por comodidad en\nlugar de lo real.\n\nQUÉ NO ES\nNo quiero la definición de sustituto. No quiero ejemplos de otros sectores.\n\nCRITERIOS\nTres candidatos, de mi terreno. Después pregúntame cuál reconozco como mío,\ny no me digas cuál crees que es hasta que yo haya contestado.\n\nCONDICIÓN DE PARADA\nSi no te he dicho en qué trabajo exactamente, pregúntamelo y para."
+    "encargo": "CONTEXTO\nTrabajo en marketing digital, y en concreto en [tu terreno]. Acabo de\nadoptar una regla que dice que la aceptación se observa sobre lo real y\nnunca sobre un sustituto.\n\nOBJETIVO\nSaber cuál es el sustituto que en mi terreno se valida por comodidad en\nlugar de lo real.\n\nQUÉ NO ES\nNo quiero la definición de sustituto. No quiero ejemplos de otros sectores.\n\nCRITERIOS\nTres candidatos, de mi terreno. Después pregúntame cuál reconozco como mío,\ny no me digas cuál crees que es hasta que yo haya contestado.\n\nCONDICIÓN DE PARADA\nSi no te he dicho en qué trabajo exactamente, pregúntamelo y para.",
+    "parte": "1A"
    },
    {
     "n": "06",
@@ -434,7 +439,8 @@
      "     qué pasó   → {e1}",
      "     se arregla → {e3}"
     ],
-    "encargo": "CONTEXTO\nEste es un fallo que ya me ha pasado: [descríbelo en dos líneas]. Lo arreglé\n[dónde lo arreglaste].\n\nOBJETIVO\nSaber si lo arreglé donde lo vi o donde se produce. Y ponerle un nombre con\nel que lo reconozca cuando vuelva por otro sitio.\n\nQUÉ NO ES\nNo me consueles y no me digas que es normal.\n\nCRITERIOS\nUna sola pregunta cada vez, y no aceptes mi primera respuesta sobre dónde lo\narreglé. El nombre, en mayúsculas con guiones y feo: se recuerda mejor.\n\nCONDICIÓN DE PARADA\nSi todavía no tengo ningún fallo que contarte, no te inventes uno: dime que\ndeje el catálogo abierto y vacío, y para."
+    "encargo": "CONTEXTO\nEste es un fallo que ya me ha pasado trabajando —en el máster, en el trabajo\no donde sea—: [dos líneas]. Lo arreglé [dónde lo arreglaste].\n\nOBJETIVO\nSaber si lo arreglé donde lo vi o donde se produce. Y ponerle un nombre con\nel que lo reconozca cuando vuelva por otro sitio.\n\nQUÉ NO ES\nNo me consueles y no me digas que es normal.\n\nCRITERIOS\nUna sola pregunta cada vez, y no aceptes mi primera respuesta sobre dónde lo\narreglé. El nombre, en mayúsculas con guiones y feo: se recuerda mejor.\n\nCONDICIÓN DE PARADA\nSi todavía no tengo ningún fallo que contarte, no te inventes uno: dime que\ndeje el catálogo abierto y vacío, y para.",
+    "parte": "1A"
    },
    {
     "n": "07",
@@ -502,178 +508,83 @@
      "  Regla: si dos semanas seguidas la respuesta es «ninguno»,",
      "  la siguiente es obligatoriamente de contacto."
     ],
-    "encargo": "CONTEXTO\nMi TFM va de [dos líneas]. Llevo [cuánto tiempo] sin hablar de esto con\nnadie de fuera.\n\nOBJETIVO\nSaber qué me diría alguien de fuera que yo no me estoy diciendo.\n\nQUÉ NO ES\nNo quiero una lista de perfiles ni un guion de entrevista.\n\nCRITERIOS\nAntes de contestar, pregúntame quién es esa persona en concreto y qué sabe\nque yo no. Después, una sola cosa: la que más me costaría oír.\n\nCONDICIÓN DE PARADA\nSi no puedo nombrar a nadie concreto, no sigas: dímelo, porque ese es el\nproblema de verdad."
-   }
-  ],
-  "contraste": {
-   "n": "08",
-   "titulo": "Contraste crítico",
-   "que": "Este paso es el que separa un protocolo de un formulario relleno. Son las tres preguntas que en clase te haría un compañero. Aquí te las haces tú, que es más difícil: hazlas **antes** de generar el protocolo, y no se las pases al asistente.",
-   "pruebas": [
-    "**¿Qué línea podría estar igual en el protocolo de cualquier otro?** Relee lo que has escrito y busca la que valdría para toda la clase. Esa no te va a frenar nunca, porque no dice nada de lo tuyo. Cópiala abajo y reescríbela con algo que solo sea verdad en tu proyecto. Si encuentras varias, empieza por la peor.",
-    "**¿Qué regla te vas a saltar primero?** De las siete cosas que has escrito, cuando tengas prisa una va a caer antes que las demás. Sé honesto. No es para castigarte: es la que hay que reforzar, o rebajar hasta que puedas cumplirla.",
-    "**¿Qué has escrito que todavía no puedes demostrar?** Alguna de esas líneas es una suposición tuya sobre tu proyecto, no un hecho. Marcarla no es un fracaso — es exactamente la disciplina que enseña la guía. Lo que no vale es dejarla sin marcar."
-   ],
-   "grupos": [
-    {
-     "tipo": "fila2",
-     "campos": [
-      {
-       "k": "cc0",
-       "label": "La línea que podría ser de cualquiera",
-       "hint": "cópiala tal como la escribiste",
-       "rows": 2,
-       "ph": "Ej. Validaré siempre las respuestas de la IA antes de usarlas."
-      },
-      {
-       "k": "cc0b",
-       "label": "Reescrita, con algo que solo sea verdad en lo tuyo",
-       "rows": 2,
-       "ph": "Ej. Ninguna cifra de mercado entra en el TFM sin enlace a la fuente primaria."
-      }
-     ]
-    },
-    {
-     "tipo": "campo",
-     "campos": [
-      {
-       "k": "cc1",
-       "label": "La primera regla que me voy a saltar cuando tenga prisa es…",
-       "hint": "y qué voy a hacer para que no pase",
-       "rows": 2,
-       "ph": "Ej. El checkpoint del viernes. Lo pongo en el calendario compartido con Marc, así alguien lo ve."
-      }
-     ]
-    },
-    {
-     "tipo": "campo",
-     "campos": [
-      {
-       "k": "cc2",
-       "label": "Lo que he escrito y todavía no puedo demostrar",
-       "hint": "márcalo aquí y ya está",
-       "rows": 2,
-       "ph": "Ej. Que la decisión de los 3.000 € es la que de verdad le importa a la directora. Lo supongo; lo pregunto el jueves."
-      }
-     ]
-    }
-   ],
-   "plantilla": [
-    "8 · LO QUE YA SÉ DE MÍ",
-    "",
-    "  Una línea que podía ser de cualquiera:",
-    "     {cc0}",
-    "  Reescrita:",
-    "     {cc0b}",
-    "",
-    "  La regla que me saltaré primero:",
-    "     {cc1}",
-    "",
-    "  Lo que he escrito y todavía no puedo demostrar:",
-    "     {cc2}"
-   ]
-  },
-  "salida": {
-   "titulo": "Tu protocolo",
-   "que": "Esto es lo que te llevas. **Cópialo y pégalo en tu asistente detrás de la guía**: a partir de ahí sabe con qué reglas trabajas. Y guárdalo donde lo vuelvas a ver — un protocolo que no relees es un documento más.",
-   "entrega": "Descarga el fichero y súbelo donde se indique en clase. Va con tu nombre y la fecha en la cabecera.",
-   "tfm": [
-    "Dónde va esto en tu TFM",
-    "El protocolo no es un capítulo del TFM: es **cómo vas a trabajarlo**. Se nota en los capítulos que sí se evalúan — en qué cifras aceptas, en qué afirmaciones te atreves a sostener y en cuáles escribes «esto lo supongo». En la sesión 6 lo vuelves a abrir, con el TFM entero delante, para ver cuáles de estas siete reglas cumpliste y cuáles no."
-   ],
-   "abierto": [
-    "Qué queda abierto",
-    "Tu **catálogo de errores**, probablemente vacío. Está bien: hoy solo había que abrirlo. La primera entrada llega sola, casi siempre en la peor semana, y en cada IA-Lab volvemos a él."
-   ],
-   "siguiente": {
-    "n": 11,
-    "titulo": "Tu TFM en una página",
-    "txt": "La sesión promete dos cosas escritas. Esta era la primera. La segunda es corta —tres cosas y tres fechas— y es la que defiendes el 22."
+    "encargo": "CONTEXTO\nLo que tengo entre manos es [dos líneas]. Llevo [cuánto tiempo] sin hablar de\nesto con nadie de fuera.\n\nOBJETIVO\nSaber qué me diría alguien de fuera que yo no me estoy diciendo.\n\nQUÉ NO ES\nNo quiero una lista de perfiles ni un guion de entrevista.\n\nCRITERIOS\nAntes de contestar, pregúntame quién es esa persona en concreto y qué sabe\nque yo no. Después, una sola cosa: la que más me costaría oír.\n\nCONDICIÓN DE PARADA\nSi no puedo nombrar a nadie concreto, no sigas: dímelo, porque ese es el\nproblema de verdad.",
+    "parte": "1A"
    },
-   "cierre": [
-    "Estas son mis reglas de trabajo con IA. Tenlas en cuenta en todo",
-    "lo que hagamos juntos. Si algo que te pido las contradice, dímelo",
-    "antes de ejecutarlo. Y si te doy una respuesta genérica, pídeme",
-    "el caso concreto de mi proyecto."
-   ]
-  },
-  "pie": "IA-Lab 1 · Máster en Dirección de Marketing Digital · UPF Barcelona School of Management",
-  "nota": [
-   "Se guarda solo en este navegador. No pide cuentas ni contraseñas.",
-   "Si te atascas en un bloque, sáltalo y vuelve: el orden no es sagrado."
-  ],
-  "doc": "Mi protocolo de trabajo con IA",
-  "apertura": {
-   "titulo": "Antes de empezar",
-   "que": [
-    "Pasado mañana defiendes un proyecto al que le vas a dedicar ocho meses. Antes de escribir ninguna regla, dos preguntas de la sesión.",
-    "Contéstalas ahora, deprisa y sin pensarlas mucho. **No se corrigen y no puntúan.** Se cierran al pasar de paso y vuelven a abrirse en el último, al lado de lo que hayas escrito para entonces."
-   ],
-   "grupos": [
-    {
-     "tipo": "campo",
-     "campos": [
-      {
-       "k": "a1",
-       "label": "¿Quién eligió tu idea de TFM?",
-       "hint": "¿la elegiste tú entre varias, o te quedaste con la que estaba mejor redactada?",
-       "ph": "En una línea"
-      }
-     ]
-    },
-    {
-     "tipo": "campo",
-     "campos": [
-      {
-       "k": "a2",
-       "label": "¿Cuándo dejaste de generar ideas?",
-       "hint": "si la respuesta es «cuando me cansé», no tenías criterio de parada: tenías suerte",
-       "ph": "En una línea"
-      }
-     ]
-    }
-   ],
-   "plantilla": [
-    "0 · LO QUE CONTESTÉ A CIEGAS",
-    "",
-    "  ¿Quién eligió mi idea de TFM?",
-    "     {a1}",
-    "",
-    "  ¿Cuándo dejé de generar ideas?",
-    "     {a2}"
-   ]
-  }
- },
- "hojas/mmdd31/tfm.json": {
-  "titulo": "Tu TFM en una página",
-  "kicker": "IA-Lab 1 · MMDD31 · UPF-BSM",
-  "lede": "Tres cosas escritas y tres fechas. No es un plan económico ni un índice del TFM: es lo que tienes que poder decir en voz alta cuando te pregunten de qué va tu proyecto.",
-  "facts": [
-   "Se hace en casa, después de la sesión",
-   "Veinticinco minutos",
-   "Salida: una página que puedes defender"
-  ],
-  "intro": {
-   "titulo": "Por qué esta hoja existe",
-   "que": [
-    "Un proyecto que no se puede resumir en una página tampoco se puede defender en diez minutos. Y no porque falte trabajo: **porque todavía no hay una decisión dentro.** «Mejorar la presencia digital de una marca» no es un proyecto — es un territorio.",
-    "Esta hoja te obliga a escribir tres cosas que el TFM va a necesitar en junio y que hoy cuestan veinticinco minutos: para quién es, por dónde empiezas y cuánto cuesta. Con fechas. Escritas antes de comprometerte, no después."
-   ],
-   "cicatriz": "Sale de la sesión: tres cosas escritas y fechadas, cuarenta y ocho horas antes de que defiendas el proyecto el 22 y el 23. En junio, el capítulo de viabilidad se contrasta contra esto en vez de inventarse.",
-   "extra": [
-    [
-     "Qué necesitas",
-     "Una idea de proyecto, aunque esté verde. Si todavía no la tienes, la hoja 0 —«Si todavía no tienes idea»— es para eso y va antes que esta."
-    ],
-    [
-     "Qué no es",
-     "**No es el índice del TFM** ni un presupuesto. Nadie te va a pedir cuentas por estas cifras: su trabajo es que dentro de tres meses puedas comparar lo que pensabas con lo que pasó."
-    ]
-   ]
-  },
-  "bloques": [
    {
-    "n": "01",
+    "n": "08",
+    "parte": "1A",
+    "esContraste": true,
+    "titulo": "Contraste crítico",
+    "que": [
+     "Este paso es el que separa un protocolo de un formulario relleno. Son las tres preguntas que en clase te haría un compañero. Aquí te las haces tú, que es más difícil: hazlas **antes** de generar el protocolo, y no se las pases al asistente."
+    ],
+    "pruebas": [
+     "**¿Qué línea podría estar igual en el protocolo de cualquier otro?** Relee lo que has escrito y busca la que valdría para toda la clase. Esa no te va a frenar nunca, porque no dice nada de lo tuyo. Cópiala abajo y reescríbela con algo que solo sea verdad en tu proyecto. Si encuentras varias, empieza por la peor.",
+     "**¿Qué regla te vas a saltar primero?** De las siete cosas que has escrito, cuando tengas prisa una va a caer antes que las demás. Sé honesto. No es para castigarte: es la que hay que reforzar, o rebajar hasta que puedas cumplirla.",
+     "**¿Qué has escrito que todavía no puedes demostrar?** Alguna de esas líneas es una suposición tuya sobre tu proyecto, no un hecho. Marcarla no es un fracaso — es exactamente la disciplina que enseña la guía. Lo que no vale es dejarla sin marcar."
+    ],
+    "grupos": [
+     {
+      "tipo": "fila2",
+      "campos": [
+       {
+        "k": "cc0",
+        "label": "La línea que podría ser de cualquiera",
+        "hint": "cópiala tal como la escribiste",
+        "rows": 2,
+        "ph": "Ej. Validaré siempre las respuestas de la IA antes de usarlas."
+       },
+       {
+        "k": "cc0b",
+        "label": "Reescrita, con algo que solo sea verdad en lo tuyo",
+        "rows": 2,
+        "ph": "Ej. Ninguna cifra de mercado entra en el TFM sin enlace a la fuente primaria."
+       }
+      ]
+     },
+     {
+      "tipo": "campo",
+      "campos": [
+       {
+        "k": "cc1",
+        "label": "La primera regla que me voy a saltar cuando tenga prisa es…",
+        "hint": "y qué voy a hacer para que no pase",
+        "rows": 2,
+        "ph": "Ej. El checkpoint del viernes. Lo pongo en el calendario compartido con Marc, así alguien lo ve."
+       }
+      ]
+     },
+     {
+      "tipo": "campo",
+      "campos": [
+       {
+        "k": "cc2",
+        "label": "Lo que he escrito y todavía no puedo demostrar",
+        "hint": "márcalo aquí y ya está",
+        "rows": 2,
+        "ph": "Ej. Que la decisión de los 3.000 € es la que de verdad le importa a la directora. Lo supongo; lo pregunto el jueves."
+       }
+      ]
+     }
+    ],
+    "plantilla": [
+     "8 · LO QUE YA SÉ DE MÍ",
+     "",
+     "  Una línea que podía ser de cualquiera:",
+     "     {cc0}",
+     "  Reescrita:",
+     "     {cc0b}",
+     "",
+     "  La regla que me saltaré primero:",
+     "     {cc1}",
+     "",
+     "  Lo que he escrito y todavía no puedo demostrar:",
+     "     {cc2}"
+    ]
+   },
+   {
+    "n": "09",
     "titulo": "Para qué y para quién",
     "que": [
      "Lo primero que pregunta un tribunal, con otras palabras, es **a quién le importa esto**. Si la respuesta es «a las empresas del sector», no hay respuesta: las empresas no deciden, deciden personas con un cargo y un problema.",
@@ -716,7 +627,6 @@
       ]
      }
     ],
-    "ask": "Te voy a describir para quién es mi TFM y qué decisión mejora. Antes de opinar, hazme tres preguntas para comprobar si esa persona existe de verdad y si esa decisión es suya y no de otro. No me des alternativas todavía.",
     "check": [
      "¿Hay un cargo o un nombre? **«Las empresas» y «los usuarios» no deciden nada.**",
      "¿Lo segundo es una decisión, o un beneficio? «Mejorar su ROI» es un beneficio. «Elegir en qué dos canales concentra el presupuesto» es una decisión.",
@@ -742,10 +652,12 @@
      "  Para quién       → {t1}",
      "  Qué decide mejor → {t2}",
      "  Por qué hoy no   → {t3}"
-    ]
+    ],
+    "parte": "1B",
+    "encargo": "CONTEXTO\nEstoy definiendo mi TFM y todavía no está cerrado. La idea, en dos líneas,\nes [descríbela]. Creo que va dirigida a [quién] y que le mejora [qué\ndecisión].\n\nOBJETIVO\nComprobar si esa persona existe de verdad y si esa decisión es suya y no de\notro.\n\nQUÉ NO ES\nNo me propongas alternativas ni me reformules la idea. Todavía no.\n\nCRITERIOS\nTres preguntas, de una en una, antes de opinar nada. Y dime cuál de mis tres\nrespuestas es la más floja.\n\nCONDICIÓN DE PARADA\nSi no soy capaz de nombrar un cargo o una persona concreta, no lo rellenes\ntú: dímelo y para, porque ese es el problema."
    },
    {
-    "n": "02",
+    "n": "10",
     "titulo": "Por dónde empiezo",
     "que": [
      "Un TFM no se hace entero de una vez, y el orden en que lo empiezas decide cuánto vas a tirar. **Empieza por lo que te enseñe si estás equivocado**, no por lo que sea más fácil o más vistoso.",
@@ -788,7 +700,6 @@
       ]
      }
     ],
-    "ask": "Te he escrito por dónde pienso empezar mi TFM. Dime qué me enseñaría esa primera pieza si mi suposición principal fuera falsa. Si la respuesta es «nada», dímelo claro y propón por dónde empezarías tú.",
     "check": [
      "¿La primera pieza está acabada o es una fase? «Investigar el mercado» es una fase y no termina nunca. «Seis entrevistas» termina.",
      "¿Podría salir mal? **Si tu primera pieza no puede desmentirte, no te enseña nada.**",
@@ -814,10 +725,12 @@
      "  Primera pieza   → {t4}",
      "  Qué sabré       → {t5}",
      "  Aparcado de momento → {t6}"
-    ]
+    ],
+    "parte": "1B",
+    "encargo": "CONTEXTO\nMi idea de TFM es [dos líneas]. Pienso empezar por [la primera pieza], y de\nmomento aparco [lo que aparcas].\n\nOBJETIVO\nSaber qué me enseñaría esa primera pieza si mi suposición principal fuera\nfalsa.\n\nQUÉ NO ES\nNo me hagas un plan de trabajo ni un cronograma.\n\nCRITERIOS\nRespóndeme eso en tres líneas. Si la respuesta es «nada», dímelo claro y\npropón por dónde empezarías tú, con el mismo criterio.\n\nCONDICIÓN DE PARADA\nSi no te he dicho cuál es mi suposición principal, pregúntamela antes de\ncontestar."
    },
    {
-    "n": "03",
+    "n": "11",
     "titulo": "Cuánto cuesta y cuándo",
     "que": [
      "Tres fechas y un orden de magnitud. **Nadie te va a pedir cuentas por estas cifras**: están aquí para que en junio puedas comparar lo que creías con lo que pasó, en vez de escribir el capítulo de viabilidad desde cero y de memoria.",
@@ -861,7 +774,6 @@
      }
     ],
     "aviso": "Las tres fechas son del proyecto, no de la entrega del TFM. Si coinciden, revísalas: significa que estás planificando un documento y no un proyecto.",
-    "ask": "Te he dado un coste aproximado y tres fechas de mi TFM. No me digas si son realistas: pregúntame qué estoy dando por supuesto en cada una y qué pasaría si la segunda se retrasara un mes.",
     "check": [
      "¿Las tres fechas están en un calendario, o solo aquí? Una fecha que no está en ningún calendario no es una fecha.",
      "¿El coste tiene un orden de magnitud claro? **«Depende» no es una cifra**, y en junio no te va a servir de nada.",
@@ -889,33 +801,121 @@
      "  Empiezo a construir   → {f1}",
      "  Hay algo que enseñar  → {f2}",
      "  Puede medirse o cobrar → {f3}"
-    ]
+    ],
+    "parte": "1B",
+    "encargo": "CONTEXTO\nMi idea de TFM es [dos líneas]. Calculo que ponerlo en marcha costaría\n[orden de magnitud], y mis tres fechas son [empiezo · hay algo que enseñar ·\npuede medirse o cobrar].\n\nOBJETIVO\nVer qué estoy dando por supuesto en cada una de las tres fechas.\n\nQUÉ NO ES\nNo me digas si son realistas. Eso no lo puedes saber y yo tampoco, todavía.\n\nCRITERIOS\nUn supuesto por fecha, escrito en una línea. Y después, una sola pregunta:\nqué pasaría si la segunda se retrasara un mes.\n\nCONDICIÓN DE PARADA\nSi alguna de las tres fechas está vacía, no te la inventes: dímelo y para."
    }
   ],
-  "salida": {
-   "titulo": "Tu TFM en una página",
-   "que": "Esto es lo que defiendes. **Léelo en voz alta antes de darlo por bueno**: si al decirlo te oyes vago, todavía no está. Y guárdalo — en junio vas a querer comparar.",
-   "entrega": "Descarga el fichero y súbelo donde se indique en clase. Va con tu nombre y la fecha en la cabecera.",
-   "tfm": [
-    "Dónde va esto en tu TFM",
-    "Casi entero. El primer bloque es tu **diagnóstico y público objetivo**; el segundo, el arranque de tu **plan de acción**; el tercero, la semilla del **plan económico y el calendario**. En junio no reescribes esto: lo contrastas con lo que pasó, que es mucho más fácil de defender."
-   ],
-   "abierto": [
-    "Qué queda abierto",
-    "Las preguntas que te han salido al escribirlo. Son tus primeras **preguntas de investigación**, y la sesión 2 empieza justo ahí: mercado, consumidor y competencia, con lo que sabes separado de lo que supones."
-   ],
-   "cierre": [
-    "Este es mi proyecto en una página. Cuando trabajemos sobre él, ten en",
-    "cuenta para quién es y qué decisión mejora. Si algo de lo que te pido se",
-    "aleja de eso, dímelo antes de ejecutarlo."
-   ],
-   "pegar": "Al principio de cualquier conversación sobre el TFM. Con esto delante, el asistente deja de proponerte proyectos y empieza a trabajar sobre el tuyo.",
-   "guardar": "En junio vas a escribir el capítulo de viabilidad. Esta página es contra lo que lo vas a contrastar."
-  },
   "pie": "IA-Lab 1 · Máster en Dirección de Marketing Digital · UPF Barcelona School of Management",
   "nota": [
    "Se guarda solo en este navegador. No pide cuentas ni contraseñas.",
    "Si te atascas en un bloque, sáltalo y vuelve: el orden no es sagrado."
+  ],
+  "apertura": {
+   "titulo": "Antes de empezar",
+   "que": [
+    "Pasado mañana defiendes un proyecto al que le vas a dedicar ocho meses. Antes de escribir ninguna regla, dos preguntas de la sesión.",
+    "Contéstalas ahora, deprisa y sin pensarlas mucho. **No se corrigen y no puntúan.** Se cierran al pasar de paso y vuelven a abrirse en el último, al lado de lo que hayas escrito para entonces."
+   ],
+   "grupos": [
+    {
+     "tipo": "campo",
+     "campos": [
+      {
+       "k": "a1",
+       "label": "¿Quién eligió tu idea de TFM?",
+       "hint": "¿la elegiste tú entre varias, o te quedaste con la que estaba mejor redactada?",
+       "ph": "En una línea"
+      }
+     ]
+    },
+    {
+     "tipo": "campo",
+     "campos": [
+      {
+       "k": "a2",
+       "label": "¿Cuándo dejaste de generar ideas?",
+       "hint": "si la respuesta es «cuando me cansé», no tenías criterio de parada: tenías suerte",
+       "ph": "En una línea"
+      }
+     ]
+    }
+   ],
+   "plantilla": [
+    "0 · LO QUE CONTESTÉ A CIEGAS",
+    "",
+    "  ¿Quién eligió mi idea de TFM?",
+    "     {a1}",
+    "",
+    "  ¿Cuándo dejé de generar ideas?",
+    "     {a2}"
+   ]
+  },
+  "partes": [
+   {
+    "id": "1A",
+    "titulo": "Tu protocolo de trabajo",
+    "que": "Siete reglas sobre cómo vas a trabajar con IA durante el máster. Ninguna pide más de tres líneas, y **no hacen falta para el TFM: hacen falta para todo.** Si todavía no tienes proyecto cerrado, se escriben igual."
+   },
+   {
+    "id": "1B",
+    "titulo": "Tu TFM en una página",
+    "que": "Tres cosas escritas y tres fechas. **Esto se escribe justo cuando todavía no lo tienes claro**, que es el estado normal el 20 de octubre: el 22 cierras proyecto, y en junio vas a querer comparar con lo que pensabas hoy.",
+    "ir": {
+     "n": 10,
+     "titulo": "Si todavía no tienes idea",
+     "txt": "¿No tienes ninguna idea encima de la mesa? Hay una hoja para eso, y va antes que esta."
+    }
+   }
+  ],
+  "salidas": [
+   {
+    "parte": "1A",
+    "doc": "Mi protocolo de trabajo con IA",
+    "fichero": "protocolo",
+    "titulo": "Tu protocolo",
+    "que": "Esto es lo que te llevas. **Cópialo y pégalo en tu asistente detrás de la guía**: a partir de ahí sabe con qué reglas trabajas. Y guárdalo donde lo vuelvas a ver — un protocolo que no relees es un documento más.",
+    "entrega": "Descarga el fichero y súbelo donde se indique en clase. Va con tu nombre y la fecha en la cabecera.",
+    "pegar": "Detrás de cualquier conversación de trabajo. A partir de ahí sabe con qué reglas trabajas.",
+    "guardar": "Un protocolo que no relees es un documento más. En la sesión 6 lo vuelves a abrir.",
+    "tfm": [
+     "Dónde va esto en tu TFM",
+     "El protocolo no es un capítulo del TFM: es **cómo vas a trabajarlo**. Se nota en los capítulos que sí se evalúan — en qué cifras aceptas, en qué afirmaciones te atreves a sostener y en cuáles escribes «esto lo supongo». En la sesión 6 lo vuelves a abrir, con el TFM entero delante, para ver cuáles de estas siete reglas cumpliste y cuáles no."
+    ],
+    "abierto": [
+     "Qué queda abierto",
+     "Tu **catálogo de errores**, probablemente vacío. Está bien: hoy solo había que abrirlo. La primera entrada llega sola, casi siempre en la peor semana, y en cada IA-Lab volvemos a él."
+    ],
+    "cierre": [
+     "Estas son mis reglas de trabajo con IA. Tenlas en cuenta en todo",
+     "lo que hagamos juntos. Si algo que te pido las contradice, dímelo",
+     "antes de ejecutarlo. Y si te doy una respuesta genérica, pídeme",
+     "el caso concreto de mi proyecto."
+    ]
+   },
+   {
+    "parte": "1B",
+    "doc": "Mi TFM en una página",
+    "fichero": "tfm-en-una-pagina",
+    "titulo": "Tu TFM en una página",
+    "que": "Esto es lo que defiendes. **Léelo en voz alta antes de darlo por bueno**: si al decirlo te oyes vago, todavía no está. Y guárdalo — en junio vas a querer comparar.",
+    "entrega": "Descarga el fichero y súbelo donde se indique en clase. Va con tu nombre y la fecha en la cabecera.",
+    "pegar": "Al principio de cualquier conversación sobre el TFM. Con esto delante, el asistente deja de proponerte proyectos y empieza a trabajar sobre el tuyo.",
+    "guardar": "En junio vas a escribir el capítulo de viabilidad. Esta página es contra lo que lo vas a contrastar.",
+    "tfm": [
+     "Dónde va esto en tu TFM",
+     "Casi entero. El primer bloque es tu **diagnóstico y público objetivo**; el segundo, el arranque de tu **plan de acción**; el tercero, la semilla del **plan económico y el calendario**. En junio no reescribes esto: lo contrastas con lo que pasó, que es mucho más fácil de defender."
+    ],
+    "abierto": [
+     "Qué pasa el 22",
+     "Pasado mañana cierras proyecto. Lo que acabas de escribir **no tiene que acertar**: tiene que estar fechado, para que dentro de ocho meses puedas ver el día en que dejó de ser cierto. Si el 22 cambias de idea, vuelve aquí y reescríbelo — la hoja sigue abierta."
+    ],
+    "cierre": [
+     "Este es mi proyecto en una página. Cuando trabajemos sobre él, ten en",
+     "cuenta para quién es y qué decisión mejora. Si algo de lo que te pido se",
+     "aleja de eso, dímelo antes de ejecutarlo."
+    ]
+   }
   ]
  },
  "hojas/mmdd31/0.json": {

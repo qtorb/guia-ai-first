@@ -1549,3 +1549,33 @@ details.p0f > summary span{font-weight:400;color:var(--mid)}
 .cicf>summary{cursor:pointer;font-size:15px;font-weight:600;min-height:24px}
 .cicf .cicb{margin-top:10px;padding-top:12px;border-top:1px solid var(--line);font-size:15px;
   line-height:1.6;color:var(--texto-2)}
+
+/* ─── Las dos piezas de la hoja 1 ─────────────────────────────────────
+   La sesión deja dos cosas escritas: 1A el protocolo y 1B el TFM en una
+   página. Son una sola hoja —misma sesión, mismo día— pero conviene que se
+   vea dónde acaba una y empieza la otra. */
+.pbanda{margin:0 0 26px;padding:22px 24px;border-radius:12px;background:var(--soft);
+  border:1px solid var(--line);border-left:4px solid var(--red, var(--acento));
+  display:grid;grid-template-columns:auto 1fr;gap:6px 18px;align-items:start}
+.pbanda .pb-id{grid-row:1/3;font-family:var(--mono);font-size:22px;font-weight:600;
+  color:var(--red, var(--acento));line-height:1.1;padding-top:2px}
+.pbanda .pb-t h2{margin:0 0 6px;font-size:22px}
+.pbanda .pb-t p{margin:0}
+.pbanda .pb-ir{grid-column:2;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line);
+  display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.pbanda .pb-ir p{margin:0;font-size:15px;color:var(--mid)}
+@media(min-width:720px){
+  .pbanda .pb-ir{flex-direction:row;align-items:center;justify-content:space-between;gap:20px}
+  .pbanda .pb-ir .btn{flex:0 0 auto}
+}
+@media(max-width:560px){
+  .pbanda{padding:18px;gap:6px 12px}
+  .pbanda .pb-id{font-size:18px}
+}
+
+/* Cada pieza del último paso, con su documento y su cierre. */
+#out .pieza.varias{margin-top:34px;padding-top:30px;border-top:2px solid var(--line)}
+#out .pieza.varias:first-of-type{border-top:0;padding-top:0}
+#out .pz-h{display:flex;align-items:baseline;gap:12px;margin-bottom:10px}
+#out .pz-id{font-family:var(--mono);font-size:18px;font-weight:600;color:var(--red, var(--acento))}
+#out .pz-h h3{margin:0;font-size:24px}

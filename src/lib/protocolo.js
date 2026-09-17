@@ -16,6 +16,7 @@ export function recolectarCheckKeys(hoja) {
     });
   };
   (hoja.bloques || []).forEach((b) => visitarGrupos(b.grupos));
+  (hoja.apertura ? [hoja.apertura] : []).forEach((b) => visitarGrupos(b.grupos));
   if (hoja.contraste) visitarGrupos(hoja.contraste.grupos);
   return set;
 }
@@ -40,20 +41,28 @@ function tiene(datos, checkKeys, k) {
 // El contraste entra en la cuenta: es un paso más de la hoja, imprime su
 // propia sección del fichero y hasta hoy la puerta lo ignoraba — se podía
 // entregar sin haberlo mirado y la puerta decía que estaba todo.
-export function seccionesConPlantilla(hoja) {
-  return [...(hoja.bloques || []), hoja.contraste].filter(Boolean).filter((b) => b.plantilla);
+// `parte` acota a 1A o 1B cuando la hoja tiene dos piezas: cada una genera su
+// documento y cada puerta mira sólo lo suyo.
+function deLaParte(b, parte) {
+  return !parte || !b.parte || b.parte === parte;
 }
 
-export function bloquesSinEscribir(hoja, datos, checkKeys) {
-  return seccionesConPlantilla(hoja).filter((b) => {
+export function seccionesConPlantilla(hoja, parte) {
+  return [...(hoja.bloques || []), hoja.contraste]
+    .filter(Boolean)
+    .filter((b) => b.plantilla && deLaParte(b, parte));
+}
+
+export function bloquesSinEscribir(hoja, datos, checkKeys, parte) {
+  return seccionesConPlantilla(hoja, parte).filter((b) => {
     const ks = b.plantilla.flatMap(claves);
     return !ks.some((k) => tiene(datos, checkKeys, k));
   });
 }
 
-export function dudasApuntadas(hoja, datos) {
+export function dudasApuntadas(hoja, datos, parte) {
   return (hoja.bloques || [])
-    .filter((b) => typeof datos['duda' + b.n] === 'string')
+    .filter((b) => deLaParte(b, parte) && typeof datos['duda' + b.n] === 'string')
     .map((b) => ({ n: b.n, titulo: b.titulo, txt: String(datos['duda' + b.n]).trim() }));
 }
 
@@ -64,17 +73,26 @@ function claves(linea) {
 // Genera el texto final del protocolo — mismo algoritmo que generar()
 // L2919-2947, sin efectos secundarios de DOM (el llamador decide qué hacer
 // con el texto resultante: pintarlo, guardarlo, descargarlo).
-export function generarProtocolo(hoja, datos, checkKeys, nombre, kicker) {
+export function generarProtocolo(hoja, datos, checkKeys, nombre, kicker, salida) {
   const L = '─'.repeat(58);
+  const parte = salida?.parte;
   // El título del documento era literal —'MI PROTOCOLO DE IA'— en todas las
   // hojas. La hoja 0 salía titulada como el protocolo, y la del TFM también.
-  const cabecera = (hoja.doc || hoja.titulo || 'Mi hoja').toUpperCase();
+  const cabecera = (salida?.doc || hoja.doc || hoja.titulo || 'Mi hoja').toUpperCase();
+  // La fecha, porque el sentido de la pieza 1B es poder compararla en junio
+  // con lo que se pensaba el día que se escribió.
+  const hoy = new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
   let t = cabecera + '\n' + (nombre.trim() ? nombre.trim() + ' · ' : '') +
-    (kicker || '') + '\n' + L + '\n\n';
+    (kicker || '') + '\nEscrito el ' + hoy + '\n' + L + '\n\n';
 
   // La apertura entra en el documento pero NO en la puerta: son dos preguntas
-  // de arranque, no un bloque que se pueda «dejar sin hacer».
-  const secs = [hoja.apertura, ...(hoja.bloques || []), hoja.contraste].filter(Boolean);
+  // de arranque, no un bloque que se pueda «dejar sin hacer». Y sólo en 1A,
+  // que es la pieza que abre la sesión.
+  const secs = [
+    (!parte || parte === '1A') ? hoja.apertura : null,
+    ...(hoja.bloques || []).filter((b) => deLaParte(b, parte)),
+    (!parte || !hoja.contraste) ? hoja.contraste : null,
+  ].filter(Boolean);
   secs.forEach((b) => {
     if (!b.plantilla) return;
     const todas = b.plantilla.flatMap(claves);
@@ -100,7 +118,7 @@ export function generarProtocolo(hoja, datos, checkKeys, nombre, kicker) {
     t += lineas.join('\n') + '\n\n' + L + '\n\n';
   });
 
-  const dudas = dudasApuntadas(hoja, datos);
+  const dudas = dudasApuntadas(hoja, datos, parte);
   if (dudas.length) {
     t += 'LO QUE TODAVÍA NO ENTIENDO\n\n';
     dudas.forEach((d) => {
@@ -110,7 +128,7 @@ export function generarProtocolo(hoja, datos, checkKeys, nombre, kicker) {
     t += '\n' + L + '\n\n';
   }
 
-  t += (hoja.salida?.cierre || []).join('\n') + '\n';
+  t += ((salida || hoja.salida)?.cierre || []).join('\n') + '\n';
   t = t.replace(/\n{4,}/g, '\n\n\n');
   return t;
 }
