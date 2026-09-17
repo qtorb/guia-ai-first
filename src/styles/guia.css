@@ -1425,17 +1425,6 @@ body.ctx-hoja .puerta-motivo input:focus-visible { outline-color:var(--lab) }
    clase, el aviso de vuelta y la puerta antes de generar.
    -------------------------------------------------------------------------- */
 
-/* La reacción que no se equivoca: ámbar, nunca rojo. No es un error, es un
-   dato que falta. 8,1:1 sobre el papel cálido. */
-.field .reac{margin:6px 0 0;font-size:13.5px;line-height:1.45;color:var(--accion);font-weight:600}
-
-/* La prueba del compañero, a petición. Sólo habla cuando se pulsa. */
-.field .gen{margin:6px 0 0;font-size:13.5px;line-height:1.5;display:flex;
-  flex-wrap:wrap;align-items:baseline;gap:10px}
-.field .gen .lnk{font-size:13px;min-height:auto;padding:2px 0}
-.field .gen .g-avisa{color:var(--accion)}
-.field .gen .g-vale{color:var(--regla)}
-
 /* Lo que me llevo a la sesión. Cerrada es un enlace; abierta, una caja. */
 .duda{margin:18px 0 0}
 .duda > .lnk{font-size:13.5px}

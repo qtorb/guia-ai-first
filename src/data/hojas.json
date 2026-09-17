@@ -65,11 +65,7 @@
        {
         "k": "a1n",
         "label": "NO decide",
-        "ph": "...",
-        "chk": {
-         "regla": "frontera",
-         "dep": "a1"
-        }
+        "ph": "..."
        }
       ]
      },
@@ -90,11 +86,7 @@
        {
         "k": "a2n",
         "label": "NO decide",
-        "ph": "...",
-        "chk": {
-         "regla": "frontera",
-         "dep": "a2"
-        }
+        "ph": "..."
        }
       ]
      },
@@ -115,11 +107,7 @@
        {
         "k": "a3n",
         "label": "NO decide",
-        "ph": "...",
-        "chk": {
-         "regla": "frontera",
-         "dep": "a3"
-        }
+        "ph": "..."
        }
       ]
      }
@@ -179,10 +167,7 @@
         "k": "cw",
         "label": "Cuándo",
         "hint": "día y hora concretos",
-        "ph": "Ej. Viernes a las 17:00, 20 minutos",
-        "chk": {
-         "regla": "hora"
-        }
+        "ph": "Ej. Viernes a las 17:00, 20 minutos"
        },
        {
         "k": "cq",
@@ -199,8 +184,7 @@
         "label": "Mi tercera pregunta fija",
         "hint": "las dos primeras te las doy; la tercera tiene que ser tuya",
         "rows": 2,
-        "ph": "1. ¿Qué decisión ha mejorado esta semana?   2. ¿Qué hago por inercia y ya no sé justificar?   3. ...",
-        "gen": true
+        "ph": "1. ¿Qué decisión ha mejorado esta semana?   2. ¿Qué hago por inercia y ya no sé justificar?   3. ..."
        }
       ]
      }
@@ -253,8 +237,7 @@
        {
         "k": "l1",
         "label": "Nunca voy a afirmar esto sin evidencia",
-        "ph": "Ej. Ningún dato de mercado del que no pueda enseñar la fuente original",
-        "gen": true
+        "ph": "Ej. Ningún dato de mercado del que no pueda enseñar la fuente original"
        }
       ]
      },
@@ -264,8 +247,7 @@
        {
         "k": "l2",
         "label": "Nunca voy a compartir estos datos con una IA",
-        "ph": "Ej. Datos de clientes reales, entrevistas con nombres, nada bajo NDA",
-        "gen": true
+        "ph": "Ej. Datos de clientes reales, entrevistas con nombres, nada bajo NDA"
        }
       ]
      },
@@ -275,8 +257,7 @@
        {
         "k": "l3",
         "label": "Nunca voy a publicar o entregar esto sin que lo mire alguien",
-        "ph": "Ej. Nada que lleve el nombre de un cliente ni el mío",
-        "gen": true
+        "ph": "Ej. Nada que lleve el nombre de un cliente ni el mío"
        }
       ]
      }
@@ -395,8 +376,7 @@
         "k": "sus",
         "label": "En mi trabajo, el sustituto que uso habitualmente es…",
         "hint": "lo que valido en lugar de lo real, porque es más cómodo",
-        "ph": "Ej. Doy por buena una campaña por el brief aprobado, no por lo que se publicó",
-        "gen": true
+        "ph": "Ej. Doy por buena una campaña por el brief aprobado, no por lo que se publicó"
        }
       ]
      }
@@ -508,8 +488,7 @@
         "k": "g1",
         "label": "Esta semana, mi contacto externo es…",
         "hint": "una conversación, un envío, una publicación o un cobro. Una de las cuatro",
-        "ph": "Ej. Hablar 20 minutos con alguien del público al que dice servir mi TFM",
-        "gen": true
+        "ph": "Ej. Hablar 20 minutos con alguien del público al que dice servir mi TFM"
        }
       ]
      },
@@ -519,18 +498,12 @@
        {
         "k": "g2",
         "label": "Con quién, en concreto",
-        "ph": "Un nombre, no un perfil",
-        "chk": {
-         "regla": "nombre"
-        }
+        "ph": "Un nombre, no un perfil"
        },
        {
         "k": "g3",
         "label": "Qué día",
-        "ph": "Un día de esta semana",
-        "chk": {
-         "regla": "dia"
-        }
+        "ph": "Un día de esta semana"
        }
       ]
      }
