@@ -7,18 +7,13 @@ import Grupo from '../components/hoja/Grupo';
 import TextoInline from '../components/TextoInline';
 import { useToast } from '../components/Toast';
 import { useDossier } from '../hooks/useDossier';
-import { recolectarCheckKeys, generarProtocolo, algoRellenado, slug } from '../lib/protocolo';
+import { recolectarCheckKeys, generarProtocolo, algoRellenado, slug, bloquesSinEscribir } from '../lib/protocolo';
+import { guiaEntera } from '../lib/guiaTexto';
 import { bajar, alPortapapeles } from '../lib/portapapeles';
 
 // Port de pintarHoja()/irPaso()/auto()/generar()/entregar() —
 // guia-ai-first-src/index.html L2712-2947. Contenido y comportamiento se
 // mantienen; el motor de estado pasa de manipulación de DOM a React.
-
-const ASISTENTES = [
-  { nombre: 'ChatGPT ↗', url: 'https://chatgpt.com' },
-  { nombre: 'Claude ↗', url: 'https://claude.ai' },
-  { nombre: 'Gemini ↗', url: 'https://gemini.google.com' },
-];
 
 export default function IaLabHoja({ dossierCtl }) {
   const { n } = useParams();
@@ -37,6 +32,10 @@ export default function IaLabHoja({ dossierCtl }) {
   const [paso, setPaso] = useState(guardadas._paso || 1);
   const [texto, setTexto] = useState(guardadas._salida || '');
   const [verTodo, setVerTodo] = useState(false);
+  const [faltan, setFaltan] = useState(null);
+  // Si al abrir ya hay avance, se entra donde se dejó —eso ya pasaba— pero
+  // sin decirlo: el alumno aparecía en mitad de la hoja sin saber por qué.
+  const [volviendo, setVolviendo] = useState(() => (guardadas._paso || 1) > 1);
   const debounceRef = useRef(null);
   const barraRef = useRef(null);
 
@@ -118,7 +117,15 @@ export default function IaLabHoja({ dossierCtl }) {
     guardaNombre(nombre);
   }
 
-  function generar() {
+  // La puerta. No impide entregar: impide entregar sin enterarse.
+  function generar(forzando) {
+    const sin = bloquesSinEscribir(hoja, datos, checkKeys);
+    if (sin.length && !forzando) {
+      setFaltan(sin);
+      setTimeout(() => document.getElementById('antesgen')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
+      return;
+    }
+    setFaltan(null);
     const kicker = sesion.asignatura ? `IA-Lab ${sesion.etiqueta || sesion.n} · MMDD31 · UPF-BSM` : '';
     const t = generarProtocolo(hoja, datos, checkKeys, nombre, kicker);
     setTexto(t);
@@ -129,13 +136,26 @@ export default function IaLabHoja({ dossierCtl }) {
   }
 
   function entregar() {
-    let t = texto;
-    if (!t.trim()) {
-      const kicker = sesion.asignatura ? `IA-Lab ${sesion.etiqueta || sesion.n} · MMDD31 · UPF-BSM` : '';
-      t = generarProtocolo(hoja, datos, checkKeys, nombre, kicker);
-      setTexto(t);
-    }
-    bajar(t, 'protocolo-' + (slug(nombre) || 'sin-nombre') + '.txt', 'text/plain;charset=utf-8');
+    if (!texto.trim()) { generar(); return; }
+    bajar(texto, 'protocolo-' + (slug(nombre) || 'sin-nombre') + '.txt', 'text/plain;charset=utf-8');
+  }
+
+  // duda<n>: sin la clave, el bloque no está marcado. Con la clave —aunque
+  // esté vacía— sí, y sale en el protocolo al final.
+  function onDuda(nBloque, valor) {
+    setDatos((d) => {
+      const next = { ...d };
+      if (valor === null) delete next['duda' + nBloque];
+      else next['duda' + nBloque] = valor;
+      guardaHoja(sesionN, { ...next, _paso: paso, _total: NPASOS });
+      return next;
+    });
+  }
+
+  function copiarGuia() {
+    alPortapapeles(guiaEntera())
+      .then(() => toast('Guía copiada — pégasela al asistente'))
+      .catch(() => toast('No se ha podido copiar'));
   }
 
   function copiarCampo(valorTexto) {
@@ -238,20 +258,44 @@ export default function IaLabHoja({ dossierCtl }) {
         </div>
         <div className="pb-r">
           <span id="pinfo">{`Paso ${paso} de ${NPASOS}`}</span>
-          <button className="lnk" onClick={() => setVerTodo((v) => !v)}>
+          <button
+            className="lnk"
+            title={verTodo ? 'Volver a un paso cada vez' : 'Los diez pasos en una sola página: para repasar o imprimir'}
+            onClick={() => setVerTodo((v) => !v)}
+          >
             {verTodo ? 'Ver paso a paso' : 'Ver todo de una vez'}
           </button>
         </div>
       </div>
 
+      {volviendo && !verTodo && (
+        <Vuelta
+          hoja={hoja}
+          datos={datos}
+          checkKeys={checkKeys}
+          onCerrar={() => setVolviendo(false)}
+          onPrincipio={() => { setVolviendo(false); irPaso(1); }}
+        />
+      )}
+
       <div id="pasos" className={verTodo ? 'todos' : ''}>
         {(verTodo ? pasos.map((_, i) => i + 1) : [paso]).map((numPaso) => (
           <section className={'wstep' + (numPaso === paso ? ' on' : '')} data-p={numPaso} key={numPaso}>
             {numPaso === 1 && (
-              <PasoPreparar hoja={hoja} onCopiarPrompt={() => copiarCampo(hoja.paso0.prompt)} />
+              <PasoPreparar hoja={hoja} />
             )}
             {numPaso > 1 && numPaso <= hoja.bloques.length + 1 && (
-              <Bloque b={hoja.bloques[numPaso - 2]} datos={datos} onChange={onCampoChange} total={hoja.bloques.length} />
+              <Bloque
+                b={hoja.bloques[numPaso - 2]}
+                datos={datos}
+                onChange={onCampoChange}
+                total={hoja.bloques.length}
+                duda={datos['duda' + hoja.bloques[numPaso - 2].n]}
+                onDuda={onDuda}
+                preparar={numPaso === 2 && hoja.paso0
+                  ? { paso0: hoja.paso0, onCopiarPrompt: () => copiarCampo(hoja.paso0.prompt), onCopiarGuia: copiarGuia }
+                  : null}
+              />
             )}
             {hoja.contraste && numPaso === hoja.bloques.length + 2 && (
               <PasoContraste hoja={hoja} datos={datos} onChange={onCampoChange} />
@@ -263,7 +307,10 @@ export default function IaLabHoja({ dossierCtl }) {
                 setNombre={setNombre}
                 onNombreBlur={onNombreBlur}
                 texto={texto}
-                onGenerar={generar}
+                faltan={faltan}
+                onIrABloque={(nb) => { setFaltan(null); irPaso(Number(nb) + 1); }}
+                onGenerarIgual={() => generar(true)}
+                onGenerar={() => generar()}
                 onEntregar={entregar}
                 onCopiarTexto={() => copiarCampo(texto)}
                 onGuardarAvance={guardarAvance}
@@ -287,7 +334,7 @@ export default function IaLabHoja({ dossierCtl }) {
   );
 }
 
-function PasoPreparar({ hoja, onCopiarPrompt }) {
+function PasoPreparar({ hoja }) {
   return (
     <>
       <header>
@@ -295,6 +342,9 @@ function PasoPreparar({ hoja, onCopiarPrompt }) {
         <h1>{hoja.titulo}</h1>
         <p className="lede">{hoja.lede}</p>
         <div className="facts">{hoja.facts.map((f, i) => <span className="fact" key={i}>{f}</span>)}</div>
+        {(hoja.nota || []).length > 0 && (
+          <ul className="permisos">{hoja.nota.map((t, i) => <li key={i}>{t}</li>)}</ul>
+        )}
       </header>
       {hoja.intro.que.map((p, i) => <TextoInline key={i} texto={p} className="que" />)}
       <div className="cic">
@@ -307,39 +357,34 @@ function PasoPreparar({ hoja, onCopiarPrompt }) {
           <TextoInline texto={txt} className="que" />
         </div>
       ))}
-      <div className="paso0">
-        <h3>{hoja.paso0.titulo}</h3>
-        <TextoInline texto={hoja.paso0.texto} />
-        <div className="sub">
-          <div className="sn">1</div>
-          <div className="sc">
-            <b>Abre tu asistente</b>
-            <div className="abrir">
-              {ASISTENTES.map((a) => (
-                <a key={a.url} className="btn btn-g" href={a.url} target="_blank" rel="noopener noreferrer">{a.nombre}</a>
-              ))}
-            </div>
-          </div>
-        </div>
-        <div className="sub">
-          <div className="sn">2</div>
-          <div className="sc">
-            <b>Pégale la guía entera</b>
-            <p>Son unas cuarenta páginas. Se pega de una vez y el asistente la lee sola.</p>
-          </div>
-        </div>
-        <div className="sub">
-          <div className="sn">3</div>
-          <div className="sc">
-            <b>Y después, estas instrucciones</b>
-            <p>Es lo que hace que deje de contestar por ti y empiece a preguntarte.</p>
-            <div className="snip">{hoja.paso0.prompt}</div>
-            <button className="btn btn-g mt" onClick={onCopiarPrompt}>Copiar las instrucciones</button>
-          </div>
-        </div>
-        <p className="p0n">¿Sin asistente a mano? Puedes hacer la hoja igual — solo perderás las preguntas verdes.</p>
-      </div>
+      <p className="que p0ref">
+        Va mejor con tu asistente preparado. Te digo cómo en el primer bloque, y son dos minutos.
+      </p>
     </>
+  );
+}
+
+// Vuelves a una hoja que dejaste a medias. Antes aparecías en mitad del
+// recorrido sin explicación; ahora se dice dónde estás y por qué, y se
+// ofrece la salida por si lo que querías era empezar de nuevo.
+function Vuelta({ hoja, datos, checkKeys, onCerrar, onPrincipio }) {
+  const sin = bloquesSinEscribir(hoja, datos, checkKeys);
+  const total = (hoja.bloques || []).length;
+  const hechos = total - sin.length;
+  const ultimo = [...(hoja.bloques || [])].reverse().find((b) => !sin.includes(b));
+  return (
+    <div className="vuelta">
+      <p>
+        <b>Vuelves donde lo dejaste.</b>{' '}
+        {hechos > 0
+          ? `Llevas ${hechos} de ${total} bloques. El último que escribiste fue «${ultimo.titulo}».`
+          : 'Todavía no has escrito nada: sigues donde estabas mirando.'}
+      </p>
+      <div className="va">
+        <button className="lnk" onClick={onPrincipio}>Empezar por el principio</button>
+        <button className="mini" onClick={onCerrar}>Seguir aquí</button>
+      </div>
+    </div>
   );
 }
 
@@ -363,7 +408,7 @@ function PasoContraste({ hoja, datos, onChange }) {
 
 function PasoSalida({
   hoja, nombre, setNombre, onNombreBlur, texto, onGenerar, onEntregar, onCopiarTexto,
-  onGuardarAvance, onCargarAvance, onBorrarTodo,
+  onGuardarAvance, onCargarAvance, onBorrarTodo, faltan, onIrABloque, onGenerarIgual,
 }) {
   const fileRef = useRef(null);
   return (
@@ -387,6 +432,36 @@ function PasoSalida({
       <div className="acts">
         <button className="btn btn-p" onClick={onGenerar}>Generar mi protocolo</button>
       </div>
+      {faltan && faltan.length > 0 && (
+        <div className="antesgen" id="antesgen">
+          {faltan.length === (hoja.bloques || []).length ? (
+            <>
+              <p><b>Todavía no hay nada que generar.</b> La hoja está entera por escribir, y un fichero con los siete huecos no te sirve de nada ni a ti ni a quien lo lea.</p>
+              <p>Empieza por el bloque que quieras: el orden no es sagrado.</p>
+            </>
+          ) : (
+            <>
+              <p>
+                <b>Te {faltan.length === 1 ? 'falta un bloque' : `faltan ${faltan.length} bloques`}.</b>{' '}
+                No pasa nada por dejar{faltan.length === 1 ? 'lo' : 'los'}: lo que pasa es que el fichero que entregas
+                no dirá nada sobre {faltan.length === 1 ? 'eso' : 'ellos'}, y son de los que más falta te van a hacer
+                dentro de tres meses.
+              </p>
+              <p>Si te has atascado en alguno, sáltalo y vuelve — el orden no es sagrado.</p>
+            </>
+          )}
+          <div className="agl">
+            {faltan.map((b) => (
+              <button key={b.n} className="btn btn-g" onClick={() => onIrABloque(b.n)}>
+                {+b.n} · {b.titulo}
+              </button>
+            ))}
+          </div>
+          {faltan.length < (hoja.bloques || []).length && (
+            <button className="lnk sig" onClick={onGenerarIgual}>Generar con lo que hay</button>
+          )}
+        </div>
+      )}
       <textarea id="texto" value={texto} readOnly placeholder="Pulsa «Generar mi protocolo» y aparecerá aquí." />
       <h3 style={{ marginTop: 36 }}>Y ahora, tres cosas que hacer con él</h3>
       <div className="final">

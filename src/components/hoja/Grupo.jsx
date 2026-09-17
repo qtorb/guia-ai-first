@@ -61,7 +61,7 @@ export default function Grupo({ g, datos, onChange }) {
   const inner = (
     <div className={cls}>
       {g.campos.map((c) => (
-        <Campo key={c.k} c={c} valor={datos[c.k]} onChange={onChange} />
+        <Campo key={c.k} c={c} valor={datos[c.k]} datos={datos} onChange={onChange} />
       ))}
     </div>
   );

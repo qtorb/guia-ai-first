@@ -1416,3 +1416,72 @@ body.ctx-hoja .puerta-motivo input:focus-visible { outline-color:var(--lab) }
 .pagina .dondeesta{margin:6px 0 0;font-size:13.5px;color:var(--texto-2)}
 .pagina .dondeesta code{font-family:var(--familia-mono);font-size:13px;
   background:var(--superficie);padding:1px 5px;border-radius:var(--radio-chico)}
+
+/* --------------------------------------------------------------------------
+   Capa de autogestión de las hojas de IA-Lab
+   La hoja se usa sobre todo sola, después de la sesión. Estas cinco piezas
+   son las que contestan cuando no hay nadie delante: la reacción que habla
+   sola, la pista que espera a que le pregunten, la duda que se lleva a
+   clase, el aviso de vuelta y la puerta antes de generar.
+   -------------------------------------------------------------------------- */
+
+/* La reacción que no se equivoca: ámbar, nunca rojo. No es un error, es un
+   dato que falta. 8,1:1 sobre el papel cálido. */
+.field .reac{margin:6px 0 0;font-size:13.5px;line-height:1.45;color:var(--accion);font-weight:600}
+
+/* La prueba del compañero, a petición. Sólo habla cuando se pulsa. */
+.field .gen{margin:6px 0 0;font-size:13.5px;line-height:1.5;display:flex;
+  flex-wrap:wrap;align-items:baseline;gap:10px}
+.field .gen .lnk{font-size:13px;min-height:auto;padding:2px 0}
+.field .gen .g-avisa{color:var(--accion)}
+.field .gen .g-vale{color:var(--regla)}
+
+/* Lo que me llevo a la sesión. Cerrada es un enlace; abierta, una caja. */
+.duda{margin:18px 0 0}
+.duda > .lnk{font-size:13.5px}
+.duda.on{background:var(--soft);border-left:2px solid var(--linea-fuerte);
+  border-radius:0 var(--radio-chico) var(--radio-chico) 0;padding:12px 16px}
+.duda .lab{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--mid);margin:0 0 8px}
+.duda .n{margin:6px 0 0;font-size:12.5px;color:var(--mid)}
+
+/* Preparar el asistente: plegado, dentro del primer bloque. */
+details.p0f{margin:0 0 22px}
+details.p0f > summary{cursor:pointer;font-weight:600;font-size:15px;color:var(--texto)}
+details.p0f > summary span{font-weight:400;color:var(--mid)}
+.p0b{margin:14px 0 0;background:var(--soft);border-radius:var(--radio);padding:18px 20px}
+.p0b > p{font-size:15px;color:var(--texto);margin:0 0 12px;line-height:1.55}
+.p0l{margin:0;padding-left:20px}
+.p0l li{font-size:15px;color:var(--texto);line-height:1.55;margin-bottom:14px}
+.p0l li:last-child{margin-bottom:0}
+.p0a{margin:10px 0 0}
+.p0b .snip{margin:10px 0 0}
+.p0nota{margin:14px 0 0;font-size:13px;color:var(--mid)}
+.p0ref{color:var(--mid)}
+
+/* Las dos frases de permiso, bajo la ficha de entrada. */
+.permisos{list-style:none;margin:14px 0 0;padding:0}
+.permisos li{font-size:13.5px;color:var(--mid);line-height:1.5;margin:0 0 4px;padding-left:14px;position:relative}
+.permisos li::before{content:'·';position:absolute;left:4px;color:var(--red)}
+
+/* Vuelves a una hoja a medias: dónde estás y por qué. */
+.vuelta{margin:0 0 24px;background:var(--rbg2);border-left:3px solid var(--red);
+  border-radius:0 var(--radio) var(--radio) 0;padding:16px 20px}
+.vuelta p{margin:0;font-size:15px;color:var(--texto);line-height:1.55}
+.vuelta .va{display:flex;flex-wrap:wrap;align-items:center;gap:18px;margin:10px 0 0}
+.vuelta .va .lnk{font-size:14px}
+
+/* La puerta antes de generar. Avisa y enseña la salida; no encierra. */
+.antesgen{margin:0 0 20px;background:var(--rbg2);border:2px solid var(--red);
+  border-radius:var(--radio);padding:20px 22px}
+.antesgen p{margin:0 0 10px;font-size:15.5px;color:var(--texto);line-height:1.6}
+.antesgen p:last-of-type{margin-bottom:0}
+.antesgen .agl{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 0}
+.antesgen .agl .btn{font-size:14px}
+.antesgen .sig{margin:16px 0 0;display:inline-block;font-size:14px}
+
+@media (max-width:640px){
+  .antesgen .agl{flex-direction:column;align-items:stretch}
+  .duda .lab{flex-direction:row}
+}
