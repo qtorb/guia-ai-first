@@ -4,7 +4,6 @@
   "kicker": "IA-Lab 1 · MMDD31 · UPF-BSM",
   "lede": "Siete decisiones sobre cómo vas a trabajar con inteligencia artificial durante el máster. No son las mías: son las tuyas, y solo sirven si las escribes con tu proyecto delante.",
   "facts": [
-   "50–60 min",
    "Se puede hacer en dos ratos",
    "No hace falta haber ido a clase",
    "Salida: un protocolo que te llevas"
@@ -35,7 +34,6 @@
   "bloques": [
    {
     "n": "01",
-    "min": "7 min",
     "titulo": "Reparte los roles",
     "link": "s-4-2",
     "linkTxt": "4.2 · Cinco roles, con frontera escrita",
@@ -67,7 +65,11 @@
        {
         "k": "a1n",
         "label": "NO decide",
-        "ph": "..."
+        "ph": "...",
+        "chk": {
+         "regla": "frontera",
+         "dep": "a1"
+        }
        }
       ]
      },
@@ -88,7 +90,11 @@
        {
         "k": "a2n",
         "label": "NO decide",
-        "ph": "..."
+        "ph": "...",
+        "chk": {
+         "regla": "frontera",
+         "dep": "a2"
+        }
        }
       ]
      },
@@ -109,7 +115,11 @@
        {
         "k": "a3n",
         "label": "NO decide",
-        "ph": "..."
+        "ph": "...",
+        "chk": {
+         "regla": "frontera",
+         "dep": "a3"
+        }
        }
       ]
      }
@@ -153,7 +163,6 @@
    },
    {
     "n": "02",
-    "min": "5 min",
     "titulo": "Nombra el Checkpoint y ponle hora",
     "link": "s-4-4",
     "linkTxt": "4.4 · El Checkpoint: el rol cuya función es no producir",
@@ -170,7 +179,10 @@
         "k": "cw",
         "label": "Cuándo",
         "hint": "día y hora concretos",
-        "ph": "Ej. Viernes a las 17:00, 20 minutos"
+        "ph": "Ej. Viernes a las 17:00, 20 minutos",
+        "chk": {
+         "regla": "hora"
+        }
        },
        {
         "k": "cq",
@@ -187,7 +199,8 @@
         "label": "Mi tercera pregunta fija",
         "hint": "las dos primeras te las doy; la tercera tiene que ser tuya",
         "rows": 2,
-        "ph": "1. ¿Qué decisión ha mejorado esta semana?   2. ¿Qué hago por inercia y ya no sé justificar?   3. ..."
+        "ph": "1. ¿Qué decisión ha mejorado esta semana?   2. ¿Qué hago por inercia y ya no sé justificar?   3. ...",
+        "gen": true
        }
       ]
      }
@@ -225,7 +238,6 @@
    },
    {
     "n": "03",
-    "min": "6 min",
     "titulo": "Escribe tus líneas rojas",
     "link": "s-9-6",
     "linkTxt": "9.6 · Los límites se escriben antes de necesitarlos",
@@ -241,7 +253,8 @@
        {
         "k": "l1",
         "label": "Nunca voy a afirmar esto sin evidencia",
-        "ph": "Ej. Ningún dato de mercado del que no pueda enseñar la fuente original"
+        "ph": "Ej. Ningún dato de mercado del que no pueda enseñar la fuente original",
+        "gen": true
        }
       ]
      },
@@ -251,7 +264,8 @@
        {
         "k": "l2",
         "label": "Nunca voy a compartir estos datos con una IA",
-        "ph": "Ej. Datos de clientes reales, entrevistas con nombres, nada bajo NDA"
+        "ph": "Ej. Datos de clientes reales, entrevistas con nombres, nada bajo NDA",
+        "gen": true
        }
       ]
      },
@@ -261,7 +275,8 @@
        {
         "k": "l3",
         "label": "Nunca voy a publicar o entregar esto sin que lo mire alguien",
-        "ph": "Ej. Nada que lleve el nombre de un cliente ni el mío"
+        "ph": "Ej. Nada que lleve el nombre de un cliente ni el mío",
+        "gen": true
        }
       ]
      }
@@ -296,7 +311,6 @@
    },
    {
     "n": "04",
-    "min": "6 min",
     "titulo": "Define tu unidad de valor",
     "link": "s-1-4",
     "linkTxt": "1.4 · Define la unidad de valor",
@@ -348,7 +362,6 @@
    },
    {
     "n": "05",
-    "min": "5 min",
     "titulo": "Adopta las tres reglas del encargo",
     "link": "s-5-3",
     "linkTxt": "5.3 · Las tres reglas, y el fallo que produjo cada una",
@@ -382,7 +395,8 @@
         "k": "sus",
         "label": "En mi trabajo, el sustituto que uso habitualmente es…",
         "hint": "lo que valido en lugar de lo real, porque es más cómodo",
-        "ph": "Ej. Doy por buena una campaña por el brief aprobado, no por lo que se publicó"
+        "ph": "Ej. Doy por buena una campaña por el brief aprobado, no por lo que se publicó",
+        "gen": true
        }
       ]
      }
@@ -410,7 +424,6 @@
    },
    {
     "n": "06",
-    "min": "6 min",
     "titulo": "Estrena tu catálogo de errores",
     "link": "s-10-2",
     "linkTxt": "10.2 · El catálogo, a finales de agosto de 2026",
@@ -479,7 +492,6 @@
    },
    {
     "n": "07",
-    "min": "5 min",
     "titulo": "Instala el gate de realidad externa",
     "link": "s-13-3",
     "linkTxt": "13.3 · El gate de realidad externa",
@@ -496,7 +508,8 @@
         "k": "g1",
         "label": "Esta semana, mi contacto externo es…",
         "hint": "una conversación, un envío, una publicación o un cobro. Una de las cuatro",
-        "ph": "Ej. Hablar 20 minutos con alguien del público al que dice servir mi TFM"
+        "ph": "Ej. Hablar 20 minutos con alguien del público al que dice servir mi TFM",
+        "gen": true
        }
       ]
      },
@@ -506,12 +519,18 @@
        {
         "k": "g2",
         "label": "Con quién, en concreto",
-        "ph": "Un nombre, no un perfil"
+        "ph": "Un nombre, no un perfil",
+        "chk": {
+         "regla": "nombre"
+        }
        },
        {
         "k": "g3",
         "label": "Qué día",
-        "ph": "Un día de esta semana"
+        "ph": "Un día de esta semana",
+        "chk": {
+         "regla": "dia"
+        }
        }
       ]
      }
@@ -551,7 +570,6 @@
   ],
   "contraste": {
    "n": "08",
-   "min": "8 min",
    "titulo": "Contraste crítico",
    "que": "Este paso es el que separa un protocolo de un formulario relleno. Hazlo **antes** de generar tu protocolo, y hazlo tú — no se lo pidas al asistente.",
    "pruebas": [
@@ -673,7 +691,11 @@
     ]
    ],
    "cierrePasos": "Ninguno de los seis lo inventé. Los seis me los salté yo, y costaron dinero."
-  }
+  },
+  "nota": [
+   "Se guarda solo en este navegador. No pide cuentas ni contraseñas.",
+   "Si te atascas en un bloque, sáltalo y vuelve: el orden no es sagrado."
+  ]
  },
  "hojas/mmdd31/0.json": {
   "titulo": "Si todavía no tienes idea",
