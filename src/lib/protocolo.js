@@ -32,6 +32,25 @@ function tiene(datos, checkKeys, k) {
   return String(datos[k] ?? '').trim().length > 0;
 }
 
+// Un bloque cuenta como escrito cuando alguna de las claves de su
+// plantilla tiene algo. Es el mismo criterio que usa generarProtocolo()
+// para decidir si imprime la sección, así que la puerta y el fichero no
+// pueden discrepar: lo que la puerta dice que falta es exactamente lo que
+// el fichero no diría.
+export function bloquesSinEscribir(hoja, datos, checkKeys) {
+  return (hoja.bloques || []).filter((b) => {
+    if (!b.plantilla) return false;
+    const ks = b.plantilla.flatMap(claves);
+    return !ks.some((k) => tiene(datos, checkKeys, k));
+  });
+}
+
+export function dudasApuntadas(hoja, datos) {
+  return (hoja.bloques || [])
+    .filter((b) => typeof datos['duda' + b.n] === 'string')
+    .map((b) => ({ n: b.n, titulo: b.titulo, txt: String(datos['duda' + b.n]).trim() }));
+}
+
 function claves(linea) {
   return (linea.match(/\{(\w+)\}/g) || []).map((x) => x.slice(1, -1));
 }
@@ -69,6 +88,16 @@ export function generarProtocolo(hoja, datos, checkKeys, nombre, kicker) {
     while (lineas.length && !lineas[lineas.length - 1].trim()) lineas.pop();
     t += lineas.join('\n') + '\n\n' + L + '\n\n';
   });
+
+  const dudas = dudasApuntadas(hoja, datos);
+  if (dudas.length) {
+    t += 'LO QUE TODAVÍA NO ENTIENDO\n\n';
+    dudas.forEach((d) => {
+      t += '  Bloque ' + (+d.n) + ' · ' + d.titulo + '\n';
+      if (d.txt) t += '     ' + d.txt + '\n';
+    });
+    t += '\n' + L + '\n\n';
+  }
 
   t += (hoja.salida?.cierre || []).join('\n') + '\n';
   t = t.replace(/\n{4,}/g, '\n\n\n');
