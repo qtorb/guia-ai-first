@@ -7,13 +7,19 @@ import Grupo from '../components/hoja/Grupo';
 import TextoInline from '../components/TextoInline';
 import { useToast } from '../components/Toast';
 import { useDossier } from '../hooks/useDossier';
-import { recolectarCheckKeys, generarProtocolo, algoRellenado, slug, bloquesSinEscribir } from '../lib/protocolo';
+import { recolectarCheckKeys, generarProtocolo, algoRellenado, slug, bloquesSinEscribir, seccionesConPlantilla } from '../lib/protocolo';
 import { guiaEntera } from '../lib/guiaTexto';
 import { bajar, alPortapapeles } from '../lib/portapapeles';
 
 // Port de pintarHoja()/irPaso()/auto()/generar()/entregar() —
 // guia-ai-first-src/index.html L2712-2947. Contenido y comportamiento se
 // mantienen; el motor de estado pasa de manipulación de DOM a React.
+
+function hayApertura(hoja, datos) {
+  return (hoja.apertura?.grupos || [])
+    .flatMap((g) => g.campos)
+    .some((c) => String(datos[c.k] ?? '').trim().length > 0);
+}
 
 export default function IaLabHoja({ dossierCtl }) {
   const { n } = useParams();
@@ -109,7 +115,15 @@ export default function IaLabHoja({ dossierCtl }) {
   function irPaso(nuevo) {
     const clamp = Math.max(1, Math.min(NPASOS, nuevo));
     setPaso(clamp);
-    persistirYa();
+    // persistirYa() leía `paso` del cierre anterior, así que guardaba el paso
+    // del que venías: al volver, la hoja te dejaba uno antes.
+    // Y al salir del paso 1 hacia delante, lo escrito a ciegas se cierra —sólo
+    // si hay algo escrito, para que nadie se quede fuera por haber pulsado
+    // «siguiente» sin querer.
+    const cerrar = hoja.apertura && paso === 1 && clamp > 1 && hayApertura(hoja, datos);
+    const extra = cerrar ? { _cerrada: 1 } : {};
+    setDatos((d) => ({ ...d, ...extra }));
+    guardaHoja(sesionN, { ...datos, ...extra, _paso: clamp, _total: NPASOS });
     window.scrollTo(0, 0);
   }
 
@@ -126,7 +140,9 @@ export default function IaLabHoja({ dossierCtl }) {
       return;
     }
     setFaltan(null);
-    const kicker = sesion.asignatura ? `IA-Lab ${sesion.etiqueta || sesion.n} · MMDD31 · UPF-BSM` : '';
+    // La hoja del TFM se rotula «TFM» en la lista, pero en la cabecera del
+    // documento eso daría «IA-Lab TFM»: es la segunda pieza de la sesión 1.
+    const kicker = sesion.kicker || (sesion.asignatura ? `IA-Lab ${sesion.etiqueta || sesion.n} · MMDD31 · UPF-BSM` : '');
     const t = generarProtocolo(hoja, datos, checkKeys, nombre, kicker);
     setTexto(t);
     const hoy = new Date().toISOString().slice(0, 10);
@@ -137,7 +153,8 @@ export default function IaLabHoja({ dossierCtl }) {
 
   function entregar() {
     if (!texto.trim()) { generar(); return; }
-    bajar(texto, 'protocolo-' + (slug(nombre) || 'sin-nombre') + '.txt', 'text/plain;charset=utf-8');
+    const base = slug(hoja.fichero || hoja.titulo) || 'hoja';
+    bajar(texto, base + '-' + (slug(nombre) || 'sin-nombre') + '.txt', 'text/plain;charset=utf-8');
   }
 
   // duda<n>: sin la clave, el bloque no está marcado. Con la clave —aunque
@@ -234,7 +251,7 @@ export default function IaLabHoja({ dossierCtl }) {
   // añadiera igualmente, la hoja 0 —que no tiene contraste— pintaría trece
   // puntos para doce pasos y el último paso saldría rotulado «Contraste».
   const pasos = [
-    { t: 'Preparar' },
+    { t: hoja.apertura ? 'Antes de empezar' : 'Preparar' },
     ...hoja.bloques.map((b) => ({ t: b.titulo })),
     ...(hoja.contraste ? [{ t: 'Contraste' }] : []),
     { t: 'Tu protocolo' },
@@ -282,7 +299,9 @@ export default function IaLabHoja({ dossierCtl }) {
         {(verTodo ? pasos.map((_, i) => i + 1) : [paso]).map((numPaso) => (
           <section className={'wstep' + (numPaso === paso ? ' on' : '')} data-p={numPaso} key={numPaso}>
             {numPaso === 1 && (
-              <PasoPreparar hoja={hoja} />
+              hoja.apertura
+                ? <PasoApertura hoja={hoja} datos={datos} onChange={onCampoChange} cerrada={!!datos._cerrada} />
+                : <PasoPreparar hoja={hoja} />
             )}
             {numPaso > 1 && numPaso <= hoja.bloques.length + 1 && (
               <Bloque
@@ -316,6 +335,8 @@ export default function IaLabHoja({ dossierCtl }) {
                 onGuardarAvance={guardarAvance}
                 onCargarAvance={cargarDesdeFichero}
                 onBorrarTodo={borrarTodo}
+                onIrAHoja={(nh) => navigate('/ia-lab/' + nh)}
+                datos={datos}
               />
             )}
             {!verTodo && (
@@ -331,6 +352,46 @@ export default function IaLabHoja({ dossierCtl }) {
       </div>
       <footer>{hoja.pie}<br />Guía AI-First · Albert Garcia Pujadas · @qtorb</footer>
     </div>
+  );
+}
+
+// El paso 1 de una ficha de IA-Lab: las dos preguntas con las que abre la
+// sesión, contestadas a ciegas. Se cierran al avanzar y se vuelven a abrir en
+// el último paso, al lado de lo que haya escrito para entonces. Cerrado no es
+// perdido: lo escrito sigue a la vista, sólo deja de poder editarse.
+function PasoApertura({ hoja, datos, onChange, cerrada }) {
+  const a = hoja.apertura;
+  return (
+    <>
+      <header>
+        <div className="kicker">{hoja.kicker}</div>
+        <h1>{hoja.titulo}</h1>
+        <p className="lede">{hoja.lede}</p>
+        <div className="facts">{hoja.facts.map((f, i) => <span className="fact" key={i}>{f}</span>)}</div>
+        {(hoja.nota || []).length > 0 && (
+          <ul className="permisos">{hoja.nota.map((t, i) => <li key={i}>{t}</li>)}</ul>
+        )}
+      </header>
+      <div className={'aciegas' + (cerrada ? ' cerrada' : '')}>
+        <h2>{a.titulo}</h2>
+        {(a.que || []).map((p, i) => <TextoInline key={i} texto={p} className="que" />)}
+        {cerrada ? (
+          <>
+            <p className="acav">Esto es lo que contestaste. Se abre otra vez en el último paso.</p>
+            <dl className="acal">
+              {(a.grupos || []).flatMap((g) => g.campos).map((c) => (
+                <div key={c.k}>
+                  <dt>{c.label}</dt>
+                  <dd>{String(datos[c.k] ?? '').trim() || '— lo dejaste en blanco'}</dd>
+                </div>
+              ))}
+            </dl>
+          </>
+        ) : (
+          (a.grupos || []).map((g, i) => <Grupo key={i} g={g} datos={datos} onChange={onChange} />)
+        )}
+      </div>
+    </>
   );
 }
 
@@ -409,8 +470,14 @@ function PasoContraste({ hoja, datos, onChange }) {
 function PasoSalida({
   hoja, nombre, setNombre, onNombreBlur, texto, onGenerar, onEntregar, onCopiarTexto,
   onGuardarAvance, onCargarAvance, onBorrarTodo, faltan, onIrABloque, onGenerarIgual,
+  onIrAHoja, datos,
 }) {
   const fileRef = useRef(null);
+  const sal = hoja.salida;
+  const ap = hoja.apertura;
+  const camposAp = ap ? (ap.grupos || []).flatMap((g) => g.campos) : [];
+  const hayAp = camposAp.some((c) => String(datos?.[c.k] ?? '').trim());
+  const totalSecciones = seccionesConPlantilla(hoja).length;
   return (
     <div id="out">
       <div className="num">ÚLTIMO PASO</div>
@@ -429,14 +496,28 @@ function PasoSalida({
           />
         </div>
       </div>
+      {hayAp && (
+        <div className="abre">
+          <div className="lab">Se abre lo que escribiste al empezar</div>
+          <dl className="acal">
+            {camposAp.map((c) => (
+              <div key={c.k}>
+                <dt>{c.label}</dt>
+                <dd>{String(datos[c.k] ?? '').trim() || '— lo dejaste en blanco'}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className="n">Nadie corrige esto. Está aquí para que veas la distancia con lo que acabas de escribir, que es la única prueba de que la sesión ha servido.</p>
+        </div>
+      )}
       <div className="acts">
         <button className="btn btn-p" onClick={onGenerar}>Generar mi protocolo</button>
       </div>
       {faltan && faltan.length > 0 && (
         <div className="antesgen" id="antesgen">
-          {faltan.length === (hoja.bloques || []).length ? (
+          {faltan.length === totalSecciones ? (
             <>
-              <p><b>Todavía no hay nada que generar.</b> La hoja está entera por escribir, y un fichero con los siete huecos no te sirve de nada ni a ti ni a quien lo lea.</p>
+              <p><b>Todavía no hay nada que generar.</b> La hoja está entera por escribir, y un fichero con todos los huecos no te sirve de nada ni a ti ni a quien lo lea.</p>
               <p>Empieza por el bloque que quieras: el orden no es sagrado.</p>
             </>
           ) : (
@@ -457,7 +538,7 @@ function PasoSalida({
               </button>
             ))}
           </div>
-          {faltan.length < (hoja.bloques || []).length && (
+          {faltan.length < totalSecciones && (
             <button className="lnk sig" onClick={onGenerarIgual}>Generar con lo que hay</button>
           )}
         </div>
@@ -467,20 +548,47 @@ function PasoSalida({
       <div className="final">
         <div className="fcard">
           <b>1 · Pégalo en tu asistente</b>
-          <span>Detrás de la guía. A partir de ahí sabe con qué reglas trabajas.</span>
+          <span>{sal.pegar || 'Detrás de la guía. A partir de ahí sabe con qué reglas trabajas.'}</span>
           <button className="btn btn-g" onClick={onCopiarTexto}>Copiar mi protocolo</button>
         </div>
         <div className="fcard">
           <b>2 · Entrégalo</b>
-          <span>Descarga el fichero y súbelo a Aula Global como entrega de la sesión.</span>
+          {/* El sitio de entrega —Aula Global, Drive— está sin decidir. Vive en
+              hojas.json y no en el código, para cambiarlo en las seis hojas a la
+              vez el día que se cierre. */}
+          <span>{sal.entrega || 'Descarga el fichero y súbelo donde se indique en clase.'}</span>
           <button className="btn btn-d" onClick={onEntregar}>Descargar para entregar</button>
         </div>
         <div className="fcard">
           <b>3 · Guárdalo para dentro de tres meses</b>
-          <span>Un protocolo que no relees es un documento más. Imprímelo o guarda el PDF.</span>
+          <span>{sal.guardar || 'Un protocolo que no relees es un documento más. Imprímelo o guarda el PDF.'}</span>
           <button className="btn btn-g" onClick={() => window.print()}>Imprimir / PDF</button>
         </div>
       </div>
+      {(sal.tfm || sal.abierto || sal.siguiente) && (
+        <div className="cierra">
+          {sal.tfm && (
+            <div className="cbloq">
+              <h3>{sal.tfm[0]}</h3>
+              <TextoInline texto={sal.tfm[1]} className="que" />
+            </div>
+          )}
+          {sal.abierto && (
+            <div className="cbloq">
+              <h3>{sal.abierto[0]}</h3>
+              <TextoInline texto={sal.abierto[1]} className="que" />
+            </div>
+          )}
+          {sal.siguiente && (
+            <div className="csig">
+              <TextoInline texto={sal.siguiente.txt} />
+              <button className="btn btn-p" onClick={() => onIrAHoja(sal.siguiente.n)}>
+                {sal.siguiente.titulo} →
+              </button>
+            </div>
+          )}
+        </div>
+      )}
       <h3 style={{ marginTop: 36 }}>Cambiar de ordenador</h3>
       <p className="que">
         Tu avance se guarda en <b>este</b> navegador. Si vas a seguir en otro sitio, descarga el fichero y cárgalo allí.

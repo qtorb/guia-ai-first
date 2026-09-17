@@ -511,6 +511,15 @@ body.ctx-hoja {
   body.ctx-hoja:not([data-tema="claro"]) {
     --lab: #FF9C93; --lab-sup: #2B1515;
     --fondo: #14110F; --superficie: #1E1A18; --superficie-2: #272220; --linea: #332C28;
+    /* Faltaba --mid, y era el agujero AAA más caro del sitio: el barrio de
+       IA-Lab redefine el papel en cálido pero se dejaba el gris del papel
+       frío (#414C63), pensado para fondo claro. En oscuro quedaba en 2,18:1
+       sobre #14110F — por debajo incluso de AA— y se lo comía todo lo que
+       usa --mid: los hint de los campos, los números de la tira de pasos,
+       las asignaturas de la lista y el pie de todas las hojas.
+       #B9AFA8 es el mismo gris cálido en su versión oscura: 8,65:1 sobre el
+       papel y 7,93:1 sobre la superficie. */
+    --mid: #B9AFA8;
   }
 }
 #bar{border-bottom:3px solid var(--ctx)}
@@ -1474,3 +1483,69 @@ details.p0f > summary span{font-weight:400;color:var(--mid)}
   .antesgen .agl{flex-direction:column;align-items:stretch}
   .duda .lab{flex-direction:row}
 }
+
+/* El cierre de una hoja de IA-Lab: dónde va la pieza en el TFM, qué queda
+   abierto para la siguiente sesión, y el salto a la hoja que continúa. Antes
+   la hoja terminaba en el botón de descargar y no decía para qué servía lo
+   que acababas de escribir. */
+#out .cierra{margin-top:40px;padding-top:30px;border-top:1px solid var(--line)}
+#out .cbloq{margin-bottom:26px}
+#out .cbloq h3{margin:0 0 8px}
+#out .csig{margin-top:30px;padding:22px;border:1px solid var(--line);border-radius:10px;
+  background:var(--soft);display:flex;flex-direction:column;gap:16px;align-items:flex-start}
+#out .csig p{margin:0}
+@media(min-width:720px){
+  #out .csig{flex-direction:row;align-items:center;justify-content:space-between;gap:24px}
+  #out .csig .btn{flex:0 0 auto}
+}
+
+/* ─── La ficha de IA-Lab ──────────────────────────────────────────────
+   Tres piezas nuevas: el paso a ciegas del principio, el encargo de cinco
+   partes dentro de cada bloque, y la cicatriz plegada. */
+
+/* El paso 1: se escribe deprisa, se cierra al avanzar, se abre al final. */
+.aciegas{margin-top:30px;padding:26px 28px;border:1px solid var(--line);border-radius:12px;background:var(--soft)}
+.aciegas h2{margin:0 0 10px;font-size:22px}
+.aciegas .que{margin:0 0 14px}
+.aciegas .field{margin-bottom:18px}
+.aciegas .field:last-child{margin-bottom:0}
+.aciegas.cerrada{background:var(--soft2);border-style:dashed}
+.aciegas .acav{margin:6px 0 16px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--acento)}
+.acal{margin:0}
+.acal>div{margin-bottom:16px}
+.acal>div:last-child{margin-bottom:0}
+.acal dt{font-size:14px;font-weight:600;color:var(--texto-2);margin-bottom:5px}
+.acal dd{margin:0;padding:12px 14px;border-radius:8px;background:var(--fondo);
+  border:1px solid var(--line);font-size:15px;line-height:1.55}
+
+/* El cierre abre otra vez lo de arriba. */
+#out .abre{margin:26px 0 30px;padding:22px 24px;border:1px solid var(--acento);border-radius:12px;
+  background:var(--fondo)}
+#out .abre .lab{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--acento);margin-bottom:14px}
+#out .abre .n{margin:14px 0 0;font-size:14px;color:var(--texto-2)}
+
+/* El encargo. Mismo sitio que ocupaba la pregunta de una línea, pero con las
+   cinco partes de la sesión a la vista y listo para pegar. */
+.encargo{margin-top:24px;border-radius:12px;background:#12241C;padding:20px 22px}
+.encargo .lab{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:12px;
+  letter-spacing:.06em;text-transform:uppercase;color:#9FE3C4;margin-bottom:12px}
+.encargo .lab span{flex:1 1 auto}
+.encargo .lab .mini{flex:0 0 auto;background:transparent;color:#fff;border:1px solid #6E9E8A;
+  border-radius:6px;padding:9px 15px;font-size:13px;cursor:pointer;min-height:44px}
+.encargo .lab .mini:hover{background:#1C3A2C}
+.encargo pre{margin:0;font-family:var(--mono);font-size:13px;line-height:1.7;color:#EAF4EE;
+  white-space:pre-wrap;word-break:break-word}
+.encargo .n{margin:12px 0 0;padding-top:12px;border-top:1px solid #2B4A3A;font-size:13px;color:#BBD6C8}
+@media(max-width:560px){
+  .encargo{padding:16px}
+  .encargo pre{font-size:12px}
+}
+
+/* La cicatriz, plegada: la cuenta Albert en clase. */
+.cicf{margin:18px 0 0;border:1px solid var(--line);border-radius:10px;background:var(--soft);
+  padding:12px 16px}
+.cicf>summary{cursor:pointer;font-size:15px;font-weight:600;min-height:24px}
+.cicf .cicb{margin-top:10px;padding-top:12px;border-top:1px solid var(--line);font-size:15px;
+  line-height:1.6;color:var(--texto-2)}

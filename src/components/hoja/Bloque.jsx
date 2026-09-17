@@ -22,6 +22,12 @@ export default function Bloque({ b, datos, onChange, total, preparar, duda, onDu
       .catch(() => toast('No se ha podido copiar — selecciónala a mano'));
   }
 
+  function copiarEncargo() {
+    alPortapapeles((b.encargo || '').trim())
+      .then(() => toast('Encargo copiado — pégaselo a tu asistente'))
+      .catch(() => toast('No se ha podido copiar — selecciónalo a mano'));
+  }
+
   return (
     <div className="blk" id={`b${b.n}`}>
       <div className="num">
@@ -33,11 +39,14 @@ export default function Bloque({ b, datos, onChange, total, preparar, duda, onDu
       <h2>{b.titulo}</h2>
       {preparar && <Preparar {...preparar} />}
       {(b.que || []).map((p, i) => <TextoInline key={i} texto={p} className="que" />)}
+      {/* La cicatriz se pliega. Albert la cuenta en clase, en el bloque 3 del
+          deck; desplegada aquí repetía por escrito lo que acababa de decir en
+          voz alta y empujaba los campos media pantalla hacia abajo. */}
       {b.cicatriz && (
-        <div className="cic">
-          <div className="lab">De dónde sale</div>
-          <TextoInline texto={b.cicatriz} />
-        </div>
+        <details className="cicf">
+          <summary>De dónde sale esta regla</summary>
+          <div className="cicb"><TextoInline texto={b.cicatriz} /></div>
+        </details>
       )}
       {b.thead && (
         <div className="thead">
@@ -46,6 +55,19 @@ export default function Bloque({ b, datos, onChange, total, preparar, duda, onDu
       )}
       {(b.grupos || []).map((g, i) => <Grupo key={i} g={g} datos={datos} onChange={onChange} />)}
       {b.aviso && <TextoInline texto={b.aviso} className="aviso" />}
+      {/* El encargo, con las cinco partes de la diapositiva 18 a la vista.
+          Sustituye a la pregunta suelta de una línea: el alumno no lo
+          redacta, lo ejecuta. */}
+      {b.encargo && (
+        <div className="encargo">
+          <div className="lab">
+            <span>El encargo · listo para ejecutar</span>
+            <button className="mini" onClick={copiarEncargo}>Copiar</button>
+          </div>
+          <pre>{b.encargo}</pre>
+          <p className="n">Las cinco partes son las de la sesión. Tú lo ejecutas y decides qué aceptas.</p>
+        </div>
+      )}
       {ask && (
         <div className="ask">
           <div className="lab">

@@ -37,9 +37,15 @@ function tiene(datos, checkKeys, k) {
 // para decidir si imprime la sección, así que la puerta y el fichero no
 // pueden discrepar: lo que la puerta dice que falta es exactamente lo que
 // el fichero no diría.
+// El contraste entra en la cuenta: es un paso más de la hoja, imprime su
+// propia sección del fichero y hasta hoy la puerta lo ignoraba — se podía
+// entregar sin haberlo mirado y la puerta decía que estaba todo.
+export function seccionesConPlantilla(hoja) {
+  return [...(hoja.bloques || []), hoja.contraste].filter(Boolean).filter((b) => b.plantilla);
+}
+
 export function bloquesSinEscribir(hoja, datos, checkKeys) {
-  return (hoja.bloques || []).filter((b) => {
-    if (!b.plantilla) return false;
+  return seccionesConPlantilla(hoja).filter((b) => {
     const ks = b.plantilla.flatMap(claves);
     return !ks.some((k) => tiene(datos, checkKeys, k));
   });
@@ -60,10 +66,15 @@ function claves(linea) {
 // con el texto resultante: pintarlo, guardarlo, descargarlo).
 export function generarProtocolo(hoja, datos, checkKeys, nombre, kicker) {
   const L = '─'.repeat(58);
-  let t = 'MI PROTOCOLO DE IA\n' + (nombre.trim() ? nombre.trim() + ' · ' : '') +
+  // El título del documento era literal —'MI PROTOCOLO DE IA'— en todas las
+  // hojas. La hoja 0 salía titulada como el protocolo, y la del TFM también.
+  const cabecera = (hoja.doc || hoja.titulo || 'Mi hoja').toUpperCase();
+  let t = cabecera + '\n' + (nombre.trim() ? nombre.trim() + ' · ' : '') +
     (kicker || '') + '\n' + L + '\n\n';
 
-  const secs = [...(hoja.bloques || []), hoja.contraste].filter(Boolean);
+  // La apertura entra en el documento pero NO en la puerta: son dos preguntas
+  // de arranque, no un bloque que se pueda «dejar sin hacer».
+  const secs = [hoja.apertura, ...(hoja.bloques || []), hoja.contraste].filter(Boolean);
   secs.forEach((b) => {
     if (!b.plantilla) return;
     const todas = b.plantilla.flatMap(claves);

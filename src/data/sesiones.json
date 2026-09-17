@@ -1,7 +1,7 @@
 {
  "edicion": "mmdd31",
  "titulo": "IA-Lab · MMDD31",
- "lede": "Seis sesiones, cada una con una pieza que puedes reutilizar en el TFM, y una hoja opcional al principio para quien todavía no tiene idea de proyecto.",
+ "lede": "Seis sesiones, cada una con una pieza que puedes reutilizar en el TFM. Más dos hojas sueltas: una al principio para quien todavía no tiene idea de proyecto, y la segunda pieza de la sesión 1.",
  "sesiones": [
   {
    "n": 10,
@@ -18,6 +18,16 @@
    "asignatura": "Habilidades Digitales y Management",
    "salida": "Un protocolo personal de trabajo con IA",
    "fichero": "hojas/mmdd31/1.json"
+  },
+  {
+   "n": 11,
+   "etiqueta": "TFM",
+   "_nota": "Segunda pieza de la sesión 1, en hoja propia. n=11 para no ocupar el 2, que es la sesión 2.",
+   "titulo": "Tu TFM en una página",
+   "asignatura": "Sesión 1 · segunda pieza",
+   "salida": "Para quién es, por dónde empiezas y cuánto cuesta · con tres fechas",
+   "fichero": "hojas/mmdd31/tfm.json",
+   "kicker": "IA-Lab 1 · MMDD31 · UPF-BSM"
   },
   {
    "n": 2,
