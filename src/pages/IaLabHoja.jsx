@@ -347,7 +347,7 @@ function PasoContraste({ hoja, datos, onChange }) {
   const c = hoja.contraste;
   return (
     <div className="blk" id="b08">
-      <div className="num"><span>{c.n}</span><em>{c.min}</em></div>
+      <div className="num"><span>{c.n}</span>{c.min && <em>{c.min}</em>}</div>
       <h2>{c.titulo}</h2>
       <TextoInline texto={c.que} className="que" />
       <div className="contraste">
