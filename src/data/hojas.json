@@ -4,7 +4,6 @@
   "kicker": "IA-Lab 1 · MMDD31 · UPF-BSM",
   "lede": "Siete decisiones sobre cómo vas a trabajar con inteligencia artificial durante el máster. No son las mías: son las tuyas, y solo sirven si las escribes con tu proyecto delante.",
   "facts": [
-   "50–60 min",
    "Se puede hacer en dos ratos",
    "No hace falta haber ido a clase",
    "Salida: un protocolo que te llevas"
@@ -35,7 +34,6 @@
   "bloques": [
    {
     "n": "01",
-    "min": "7 min",
     "titulo": "Reparte los roles",
     "link": "s-4-2",
     "linkTxt": "4.2 · Cinco roles, con frontera escrita",
@@ -153,7 +151,6 @@
    },
    {
     "n": "02",
-    "min": "5 min",
     "titulo": "Nombra el Checkpoint y ponle hora",
     "link": "s-4-4",
     "linkTxt": "4.4 · El Checkpoint: el rol cuya función es no producir",
@@ -225,7 +222,6 @@
    },
    {
     "n": "03",
-    "min": "6 min",
     "titulo": "Escribe tus líneas rojas",
     "link": "s-9-6",
     "linkTxt": "9.6 · Los límites se escriben antes de necesitarlos",
@@ -296,7 +292,6 @@
    },
    {
     "n": "04",
-    "min": "6 min",
     "titulo": "Define tu unidad de valor",
     "link": "s-1-4",
     "linkTxt": "1.4 · Define la unidad de valor",
@@ -348,7 +343,6 @@
    },
    {
     "n": "05",
-    "min": "5 min",
     "titulo": "Adopta las tres reglas del encargo",
     "link": "s-5-3",
     "linkTxt": "5.3 · Las tres reglas, y el fallo que produjo cada una",
@@ -410,7 +404,6 @@
    },
    {
     "n": "06",
-    "min": "6 min",
     "titulo": "Estrena tu catálogo de errores",
     "link": "s-10-2",
     "linkTxt": "10.2 · El catálogo, a finales de agosto de 2026",
@@ -479,7 +472,6 @@
    },
    {
     "n": "07",
-    "min": "5 min",
     "titulo": "Instala el gate de realidad externa",
     "link": "s-13-3",
     "linkTxt": "13.3 · El gate de realidad externa",
@@ -551,7 +543,6 @@
   ],
   "contraste": {
    "n": "08",
-   "min": "8 min",
    "titulo": "Contraste crítico",
    "que": "Este paso es el que separa un protocolo de un formulario relleno. Hazlo **antes** de generar tu protocolo, y hazlo tú — no se lo pidas al asistente.",
    "pruebas": [
