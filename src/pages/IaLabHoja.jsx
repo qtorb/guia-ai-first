@@ -36,16 +36,19 @@ export default function IaLabHoja({ dossierCtl }) {
   const [datos, setDatos] = useState(() => ({ ...guardadas }));
   const [nombre, setNombre] = useState(dossier.proyecto._nombre || '');
   const [paso, setPaso] = useState(guardadas._paso || 1);
-  const [texto, setTexto] = useState(guardadas._salida || '');
+  // Una hoja puede tener más de una pieza —la 1 tiene dos: 1A el protocolo y
+  // 1B el TFM en una página—, y cada una genera su documento.
+  const salidas = useMemo(() => (hoja ? (hoja.salidas || (hoja.salida ? [hoja.salida] : [])) : []), [hoja]);
+  const [textos, setTextos] = useState(() => guardadas._salidas || (guardadas._salida ? { _: guardadas._salida } : {}));
   const [verTodo, setVerTodo] = useState(false);
-  const [faltan, setFaltan] = useState(null);
+  const [faltan, setFaltan] = useState(null);   // { parte, lista }
   // Si al abrir ya hay avance, se entra donde se dejó —eso ya pasaba— pero
   // sin decirlo: el alumno aparecía en mitad de la hoja sin saber por qué.
   const [volviendo, setVolviendo] = useState(() => (guardadas._paso || 1) > 1);
   const debounceRef = useRef(null);
   const barraRef = useRef(null);
 
-  // paso 0 + bloques + (contraste, si la hoja lo tiene) + salida.
+  // paso 0 + bloques + (contraste, si la hoja lo tiene aparte) + salida.
   // La hoja 0 rediseñada mueve el contraste a un bloque, así que ya no es fijo.
   const NPASOS = hoja ? hoja.bloques.length + 2 + (hoja.contraste ? 1 : 0) : 0;
 
@@ -131,30 +134,33 @@ export default function IaLabHoja({ dossierCtl }) {
     guardaNombre(nombre);
   }
 
-  // La puerta. No impide entregar: impide entregar sin enterarse.
-  function generar(forzando) {
-    const sin = bloquesSinEscribir(hoja, datos, checkKeys);
+  // La puerta. No impide entregar: impide entregar sin enterarse. Con dos
+  // piezas, cada una tiene la suya y mira sólo sus bloques.
+  function generar(sal, forzando) {
+    const clave = sal.parte || '_';
+    const sin = bloquesSinEscribir(hoja, datos, checkKeys, sal.parte);
     if (sin.length && !forzando) {
-      setFaltan(sin);
+      setFaltan({ parte: clave, lista: sin });
       setTimeout(() => document.getElementById('antesgen')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
       return;
     }
     setFaltan(null);
-    // La hoja del TFM se rotula «TFM» en la lista, pero en la cabecera del
-    // documento eso daría «IA-Lab TFM»: es la segunda pieza de la sesión 1.
     const kicker = sesion.kicker || (sesion.asignatura ? `IA-Lab ${sesion.etiqueta || sesion.n} · MMDD31 · UPF-BSM` : '');
-    const t = generarProtocolo(hoja, datos, checkKeys, nombre, kicker);
-    setTexto(t);
+    const t = generarProtocolo(hoja, datos, checkKeys, nombre, kicker, sal);
+    const nuevos = { ...textos, [clave]: t };
+    setTextos(nuevos);
     const hoy = new Date().toISOString().slice(0, 10);
-    guardaHoja(sesionN, { ...datos, _paso: paso, _total: NPASOS, _salida: t, _fin: hoy });
-    toast('Protocolo generado');
-    setTimeout(() => document.getElementById('texto')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
+    guardaHoja(sesionN, { ...datos, _paso: paso, _total: NPASOS, _salidas: nuevos, _fin: hoy });
+    toast((sal.parte ? sal.parte + ' · ' : '') + 'documento generado');
+    setTimeout(() => document.getElementById('texto-' + clave)?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
   }
 
-  function entregar() {
-    if (!texto.trim()) { generar(); return; }
-    const base = slug(hoja.fichero || hoja.titulo) || 'hoja';
-    bajar(texto, base + '-' + (slug(nombre) || 'sin-nombre') + '.txt', 'text/plain;charset=utf-8');
+  function entregar(sal) {
+    const clave = sal.parte || '_';
+    const t = textos[clave] || '';
+    if (!t.trim()) { generar(sal); return; }
+    const base = slug(sal.fichero || sal.doc || hoja.titulo) || 'hoja';
+    bajar(t, base + '-' + (slug(nombre) || 'sin-nombre') + '.txt', 'text/plain;charset=utf-8');
   }
 
   // duda<n>: sin la clave, el bloque no está marcado. Con la clave —aunque
@@ -190,7 +196,7 @@ export default function IaLabHoja({ dossierCtl }) {
     const dCompleto = {
       ...base,
       proyecto: { ...base.proyecto, _nombre: nombre },
-      hojas: { ...base.hojas, [sesionN]: { ...datos, _paso: paso, _total: NPASOS, _salida: texto } },
+      hojas: { ...base.hojas, [sesionN]: { ...datos, _paso: paso, _total: NPASOS, _salidas: textos } },
     };
     bajar(
       JSON.stringify({ v: 2, fecha: new Date().toISOString().slice(0, 10), d: dCompleto }, null, 1),
@@ -221,7 +227,7 @@ export default function IaLabHoja({ dossierCtl }) {
       }
       setDatos({ ...hojaNueva });
       setPaso(hojaNueva._paso || 1);
-      setTexto(hojaNueva._salida || '');
+      setTextos(hojaNueva._salidas || (hojaNueva._salida ? { _: hojaNueva._salida } : {}));
       toast('Avance recuperado' + (j.fecha ? ' · guardado el ' + j.fecha : ''));
     };
     r.readAsText(file);
@@ -232,7 +238,7 @@ export default function IaLabHoja({ dossierCtl }) {
     borraHoja(sesionN);
     setDatos({});
     setNombre('');
-    setTexto('');
+    setTextos({});
     setPaso(1);
     window.scrollTo(0, 0);
   }
@@ -250,11 +256,34 @@ export default function IaLabHoja({ dossierCtl }) {
   // NPASOS ya cuenta el contraste sólo si la hoja lo trae; si aquí se
   // añadiera igualmente, la hoja 0 —que no tiene contraste— pintaría trece
   // puntos para doce pasos y el último paso saldría rotulado «Contraste».
+  // Cada bloque sabe de qué parte es y qué número hace dentro de ella. El
+  // contraste no numera: no es una regla más, es el paso que las repasa.
+  const partes = hoja.partes || [];
+  const rotulos = (() => {
+    const cuenta = {};
+    (hoja.bloques || []).forEach((b) => {
+      if (b.esContraste) return;
+      const k = b.parte || '_';
+      cuenta[k] = (cuenta[k] || 0) + 1;
+    });
+    const va = {};
+    let ultima = null;
+    return (hoja.bloques || []).map((b) => {
+      const k = b.parte || '_';
+      const banda = b.parte && b.parte !== ultima ? partes.find((x) => x.id === b.parte) : null;
+      ultima = b.parte || ultima;
+      if (b.esContraste) return { txt: (b.parte ? b.parte + ' · ' : '') + 'Repasa lo escrito', banda };
+      va[k] = (va[k] || 0) + 1;
+      const n = `Bloque ${va[k]} de ${cuenta[k]}`;
+      return { txt: (b.parte ? b.parte + ' · ' : '') + n, banda };
+    });
+  })();
+
   const pasos = [
     { t: hoja.apertura ? 'Antes de empezar' : 'Preparar' },
-    ...hoja.bloques.map((b) => ({ t: b.titulo })),
+    ...hoja.bloques.map((b) => ({ t: (b.parte ? b.parte + ' · ' : '') + b.titulo })),
     ...(hoja.contraste ? [{ t: 'Contraste' }] : []),
-    { t: 'Tu protocolo' },
+    { t: salidas.length > 1 ? 'Tus dos piezas' : 'Tu protocolo' },
   ];
 
   return (
@@ -304,17 +333,23 @@ export default function IaLabHoja({ dossierCtl }) {
                 : <PasoPreparar hoja={hoja} />
             )}
             {numPaso > 1 && numPaso <= hoja.bloques.length + 1 && (
-              <Bloque
-                b={hoja.bloques[numPaso - 2]}
-                datos={datos}
-                onChange={onCampoChange}
-                total={hoja.bloques.length}
-                duda={datos['duda' + hoja.bloques[numPaso - 2].n]}
-                onDuda={onDuda}
-                preparar={numPaso === 2 && hoja.paso0
-                  ? { paso0: hoja.paso0, onCopiarPrompt: () => copiarCampo(hoja.paso0.prompt), onCopiarGuia: copiarGuia }
-                  : null}
-              />
+              <>
+                {rotulos[numPaso - 2].banda && (
+                  <ParteBanda parte={rotulos[numPaso - 2].banda} onIrAHoja={(nh) => navigate('/ia-lab/' + nh)} />
+                )}
+                <Bloque
+                  b={hoja.bloques[numPaso - 2]}
+                  datos={datos}
+                  onChange={onCampoChange}
+                  total={hoja.bloques.length}
+                  rotulo={rotulos[numPaso - 2].txt}
+                  duda={datos['duda' + hoja.bloques[numPaso - 2].n]}
+                  onDuda={onDuda}
+                  preparar={numPaso === 2 && hoja.paso0
+                    ? { paso0: hoja.paso0, onCopiarPrompt: () => copiarCampo(hoja.paso0.prompt), onCopiarGuia: copiarGuia }
+                    : null}
+                />
+              </>
             )}
             {hoja.contraste && numPaso === hoja.bloques.length + 2 && (
               <PasoContraste hoja={hoja} datos={datos} onChange={onCampoChange} />
@@ -325,13 +360,14 @@ export default function IaLabHoja({ dossierCtl }) {
                 nombre={nombre}
                 setNombre={setNombre}
                 onNombreBlur={onNombreBlur}
-                texto={texto}
+                salidas={salidas}
+                textos={textos}
                 faltan={faltan}
-                onIrABloque={(nb) => { setFaltan(null); irPaso(Number(nb) + 1); }}
-                onGenerarIgual={() => generar(true)}
-                onGenerar={() => generar()}
+                onIrABloque={(nb) => { setFaltan(null); irPaso(hoja.bloques.findIndex((x) => x.n === nb) + 2); }}
+                onGenerarIgual={(sal) => generar(sal, true)}
+                onGenerar={(sal) => generar(sal)}
                 onEntregar={entregar}
-                onCopiarTexto={() => copiarCampo(texto)}
+                onCopiarTexto={(t) => copiarCampo(t)}
                 onGuardarAvance={guardarAvance}
                 onCargarAvance={cargarDesdeFichero}
                 onBorrarTodo={borrarTodo}
@@ -467,22 +503,44 @@ function PasoContraste({ hoja, datos, onChange }) {
   );
 }
 
+// La banda que abre una parte: la 1 tiene dos piezas —1A el protocolo, 1B el
+// TFM en una página— y conviene que se note dónde empieza cada una, igual que
+// en el deck. Lleva también la salida a la hoja 0 para quien llega sin idea:
+// la diapositiva 30 de la sesión lo dice en voz alta y la hoja no lo decía.
+function ParteBanda({ parte, onIrAHoja }) {
+  return (
+    <div className="pbanda">
+      <div className="pb-id">{parte.id}</div>
+      <div className="pb-t">
+        <h2>{parte.titulo}</h2>
+        {parte.que && <TextoInline texto={parte.que} />}
+      </div>
+      {parte.ir && (
+        <div className="pb-ir">
+          <TextoInline texto={parte.ir.txt} />
+          <button className="btn btn-g" onClick={() => onIrAHoja(parte.ir.n)}>{parte.ir.titulo} →</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function PasoSalida({
-  hoja, nombre, setNombre, onNombreBlur, texto, onGenerar, onEntregar, onCopiarTexto,
+  hoja, nombre, setNombre, onNombreBlur, salidas, textos, onGenerar, onEntregar, onCopiarTexto,
   onGuardarAvance, onCargarAvance, onBorrarTodo, faltan, onIrABloque, onGenerarIgual,
   onIrAHoja, datos,
 }) {
   const fileRef = useRef(null);
-  const sal = hoja.salida;
   const ap = hoja.apertura;
   const camposAp = ap ? (ap.grupos || []).flatMap((g) => g.campos) : [];
   const hayAp = camposAp.some((c) => String(datos?.[c.k] ?? '').trim());
-  const totalSecciones = seccionesConPlantilla(hoja).length;
   return (
     <div id="out">
       <div className="num">ÚLTIMO PASO</div>
-      <h2>{hoja.salida.titulo}</h2>
-      <TextoInline texto={hoja.salida.que} className="que" />
+      <h2>{salidas.length > 1 ? 'Lo que te llevas' : salidas[0]?.titulo}</h2>
+      {salidas.length > 1 && (
+        <p className="que">Dos documentos, uno por pieza. Se generan y se descargan por separado.</p>
+      )}
       <div className="nombre">
         <div className="field">
           <label>Tu nombre <span className="hint">para el fichero de entrega</span></label>
@@ -496,6 +554,7 @@ function PasoSalida({
           />
         </div>
       </div>
+
       {hayAp && (
         <div className="abre">
           <div className="lab">Se abre lo que escribiste al empezar</div>
@@ -510,14 +569,70 @@ function PasoSalida({
           <p className="n">Nadie corrige esto. Está aquí para que veas la distancia con lo que acabas de escribir, que es la única prueba de que la sesión ha servido.</p>
         </div>
       )}
+
+      {salidas.map((sal) => (
+        <Pieza
+          key={sal.parte || '_'}
+          sal={sal}
+          hoja={hoja}
+          texto={textos[sal.parte || '_'] || ''}
+          faltan={faltan && faltan.parte === (sal.parte || '_') ? faltan.lista : null}
+          onGenerar={() => onGenerar(sal)}
+          onGenerarIgual={() => onGenerarIgual(sal)}
+          onEntregar={() => onEntregar(sal)}
+          onCopiarTexto={() => onCopiarTexto(textos[sal.parte || '_'] || '')}
+          onIrABloque={onIrABloque}
+          onIrAHoja={onIrAHoja}
+          varias={salidas.length > 1}
+        />
+      ))}
+
+      <h3 style={{ marginTop: 36 }}>Cambiar de ordenador</h3>
+      <p className="que">
+        Tu avance se guarda en <b>este</b> navegador. Si vas a seguir en otro sitio, descarga el fichero y cárgalo allí.
+      </p>
       <div className="acts">
-        <button className="btn btn-p" onClick={onGenerar}>Generar mi protocolo</button>
+        <button className="btn btn-g" onClick={onGuardarAvance}>Guardar mi avance</button>
+        <button className="btn btn-g" onClick={() => fileRef.current?.click()}>Retomar desde un fichero</button>
+        <button className="btn btn-g" onClick={onBorrarTodo}>Empezar de cero</button>
+        <input
+          type="file"
+          ref={fileRef}
+          accept=".json,application/json"
+          style={{ display: 'none' }}
+          onChange={(e) => {
+            const f = e.target.files[0];
+            if (f) onCargarAvance(f);
+            e.target.value = '';
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
+// Una pieza del último paso: su texto, su puerta, sus tres cosas que hacer y
+// su cierre. La hoja 1 pinta dos.
+function Pieza({ sal, hoja, texto, faltan, onGenerar, onGenerarIgual, onEntregar, onCopiarTexto, onIrABloque, onIrAHoja, varias }) {
+  const clave = sal.parte || '_';
+  const totalSecciones = seccionesConPlantilla(hoja, sal.parte).length;
+  return (
+    <div className={'pieza' + (varias ? ' varias' : '')}>
+      {varias && (
+        <div className="pz-h">
+          <span className="pz-id">{sal.parte}</span>
+          <h3>{sal.titulo}</h3>
+        </div>
+      )}
+      <TextoInline texto={sal.que} className="que" />
+      <div className="acts">
+        <button className="btn btn-p" onClick={onGenerar}>Generar {varias ? sal.parte : 'mi protocolo'}</button>
       </div>
       {faltan && faltan.length > 0 && (
         <div className="antesgen" id="antesgen">
           {faltan.length === totalSecciones ? (
             <>
-              <p><b>Todavía no hay nada que generar.</b> La hoja está entera por escribir, y un fichero con todos los huecos no te sirve de nada ni a ti ni a quien lo lea.</p>
+              <p><b>Todavía no hay nada que generar.</b> Esta pieza está entera por escribir, y un fichero con todos los huecos no te sirve de nada ni a ti ni a quien lo lea.</p>
               <p>Empieza por el bloque que quieras: el orden no es sagrado.</p>
             </>
           ) : (
@@ -534,7 +649,7 @@ function PasoSalida({
           <div className="agl">
             {faltan.map((b) => (
               <button key={b.n} className="btn btn-g" onClick={() => onIrABloque(b.n)}>
-                {+b.n} · {b.titulo}
+                {b.titulo}
               </button>
             ))}
           </div>
@@ -543,13 +658,12 @@ function PasoSalida({
           )}
         </div>
       )}
-      <textarea id="texto" value={texto} readOnly placeholder="Pulsa «Generar mi protocolo» y aparecerá aquí." />
-      <h3 style={{ marginTop: 36 }}>Y ahora, tres cosas que hacer con él</h3>
+      <textarea id={'texto-' + clave} value={texto} readOnly placeholder="Pulsa «Generar» y aparecerá aquí." />
       <div className="final">
         <div className="fcard">
           <b>1 · Pégalo en tu asistente</b>
           <span>{sal.pegar || 'Detrás de la guía. A partir de ahí sabe con qué reglas trabajas.'}</span>
-          <button className="btn btn-g" onClick={onCopiarTexto}>Copiar mi protocolo</button>
+          <button className="btn btn-g" onClick={onCopiarTexto}>Copiar</button>
         </div>
         <div className="fcard">
           <b>2 · Entrégalo</b>
@@ -557,11 +671,11 @@ function PasoSalida({
               hojas.json y no en el código, para cambiarlo en las seis hojas a la
               vez el día que se cierre. */}
           <span>{sal.entrega || 'Descarga el fichero y súbelo donde se indique en clase.'}</span>
-          <button className="btn btn-d" onClick={onEntregar}>Descargar para entregar</button>
+          <button className="btn btn-d" onClick={onEntregar}>Descargar</button>
         </div>
         <div className="fcard">
-          <b>3 · Guárdalo para dentro de tres meses</b>
-          <span>{sal.guardar || 'Un protocolo que no relees es un documento más. Imprímelo o guarda el PDF.'}</span>
+          <b>3 · Guárdalo</b>
+          <span>{sal.guardar || 'Un documento que no relees es un documento más.'}</span>
           <button className="btn btn-g" onClick={() => window.print()}>Imprimir / PDF</button>
         </div>
       </div>
@@ -589,26 +703,6 @@ function PasoSalida({
           )}
         </div>
       )}
-      <h3 style={{ marginTop: 36 }}>Cambiar de ordenador</h3>
-      <p className="que">
-        Tu avance se guarda en <b>este</b> navegador. Si vas a seguir en otro sitio, descarga el fichero y cárgalo allí.
-      </p>
-      <div className="acts">
-        <button className="btn btn-g" onClick={onGuardarAvance}>Guardar mi avance</button>
-        <button className="btn btn-g" onClick={() => fileRef.current?.click()}>Retomar desde un fichero</button>
-        <button className="btn btn-g" onClick={onBorrarTodo}>Empezar de cero</button>
-        <input
-          type="file"
-          ref={fileRef}
-          accept=".json,application/json"
-          style={{ display: 'none' }}
-          onChange={(e) => {
-            const f = e.target.files[0];
-            if (f) onCargarAvance(f);
-            e.target.value = '';
-          }}
-        />
-      </div>
     </div>
   );
 }
