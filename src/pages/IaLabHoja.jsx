@@ -9,6 +9,7 @@ import { useToast } from '../components/Toast';
 import { useDossier } from '../hooks/useDossier';
 import { recolectarCheckKeys, generarProtocolo, algoRellenado, slug, bloquesSinEscribir, seccionesConPlantilla, cuerpoDeSalida } from '../lib/protocolo';
 import Comparacion from '../components/hoja/Comparacion';
+import Donde from '../components/hoja/Donde';
 import { guiaEntera } from '../lib/guiaTexto';
 import { bajar, alPortapapeles } from '../lib/portapapeles';
 
@@ -45,6 +46,7 @@ export default function IaLabHoja({ dossierCtl }) {
   const salidas = useMemo(() => (hoja ? (hoja.salidas || (hoja.salida ? [hoja.salida] : [])) : []), [hoja]);
   const [textos, setTextos] = useState(() => guardadas._salidas || (guardadas._salida ? { _: guardadas._salida } : {}));
   const [verTodo, setVerTodo] = useState(false);
+  const [verDonde, setVerDonde] = useState(false);
   const [faltan, setFaltan] = useState(null);   // { parte, lista }
   // Si al abrir ya hay avance, se entra donde se dejó —eso ya pasaba— pero
   // sin decirlo: el alumno aparecía en mitad de la hoja sin saber por qué.
@@ -290,33 +292,70 @@ export default function IaLabHoja({ dossierCtl }) {
     { t: salidas.length > 1 ? 'Tus dos piezas' : (salidas[0]?.titulo || 'Tu protocolo') },
   ];
 
+  // Lo que orienta ya no son los rótulos de la tira —truncados a sesenta y
+  // seis píxeles, ilegibles y ocupando el ancho entero— sino esta línea y el
+  // botón «i» que tiene al lado.
+  const posicion = paso === 1
+    ? (hoja.apertura ? 'Antes de empezar' : 'Preparar')
+    : paso <= hoja.bloques.length + 1
+      ? rotulos[paso - 2].txt
+      : paso === NPASOS ? 'Último paso' : 'Contraste';
+  const sitio = `${posicion}. Es el paso ${paso} de ${NPASOS}.`
+    + (partes.length > 1
+      ? ` Esta hoja tiene ${partes.length} piezas: ${partes.map((p) => `${p.id} (${p.titulo})`).join(' y ')}.`
+      : '');
+
   return (
     <div className="wrap taller-lab">
-      <button className="lnk volver" onClick={() => navigate('/ia-lab')}>← Todas mis hojas</button>
       <div id="pbar" ref={barraRef}>
-        <div className="pb-in">
-          {pasos.map((p, i) => (
-            <button
-              key={i}
-              className={'pdot' + (i + 1 < paso ? ' done' : i + 1 === paso ? ' on' : '')}
-              onClick={() => irPaso(i + 1)}
-              title={p.t}
-            >
-              <i>{i + 1}</i><u>{p.t}</u>
-            </button>
-          ))}
-        </div>
-        <div className="pb-r">
-          <span id="pinfo">{`Paso ${paso} de ${NPASOS}`}</span>
-          <button
-            className="lnk"
-            title={verTodo ? 'Volver a un paso cada vez' : 'Los diez pasos en una sola página: para repasar o imprimir'}
-            onClick={() => setVerTodo((v) => !v)}
-          >
-            {verTodo ? 'Ver paso a paso' : 'Ver todo de una vez'}
+        <div className="pb-top">
+          <button className="volver" onClick={() => navigate('/ia-lab')} aria-label="Todas mis hojas">
+            ←<span> Todas mis hojas</span>
           </button>
+          <div className="pb-in">
+            {pasos.map((p, i) => (
+              <button
+                key={i}
+                className={'pdot' + (i + 1 < paso ? ' done' : i + 1 === paso ? ' on' : '')}
+                onClick={() => irPaso(i + 1)}
+                title={p.t}
+                aria-label={`Paso ${i + 1}: ${p.t}`}
+                aria-current={i + 1 === paso ? 'step' : undefined}
+              >
+                <i>{i + 1}</i>
+              </button>
+            ))}
+          </div>
+          <div className="pb-r">
+            <span id="pinfo">{posicion}</span>
+            <button
+              className={'dndb' + (verDonde ? ' on' : '')}
+              onClick={() => setVerDonde((v) => !v)}
+              aria-expanded={verDonde}
+              aria-controls="dnd"
+              aria-label="Dónde estoy"
+              title="Dónde estoy"
+            >
+              <span aria-hidden="true">i</span>
+            </button>
+          </div>
         </div>
       </div>
+
+      {verDonde && (
+        <Donde
+          hoja={hoja}
+          sitio={sitio}
+          salidas={salidas}
+          verTodo={verTodo}
+          onCerrar={() => setVerDonde(false)}
+          onPrincipio={() => { setVerDonde(false); irPaso(1); }}
+          onVerTodo={() => { setVerTodo((v) => !v); setVerDonde(false); }}
+          onGuardarAvance={guardarAvance}
+          onCargarAvance={cargarDesdeFichero}
+          onBorrarTodo={borrarTodo}
+        />
+      )}
 
       {volviendo && !verTodo && (
         <Vuelta
@@ -379,9 +418,6 @@ export default function IaLabHoja({ dossierCtl }) {
                 onGenerar={(sal) => generar(sal)}
                 onEntregar={entregar}
                 onCopiarTexto={(t) => copiarCampo(t)}
-                onGuardarAvance={guardarAvance}
-                onCargarAvance={cargarDesdeFichero}
-                onBorrarTodo={borrarTodo}
                 onIrAHoja={(nh) => navigate('/ia-lab/' + nh)}
                 datos={datos}
               />
@@ -542,25 +578,35 @@ function ParteBanda({ parte, onIrAHoja }) {
   );
 }
 
+// El último paso. Medía 2.953 px, 639 palabras, 29 botones y 39 cajas, y
+// repetía el bloque entero para 1A y 1B —dos veces el mismo título «Dónde va
+// esto en tu TFM»—. Ahora: el nombre una vez, las dos piezas en paralelo,
+// las acciones en texto, y un solo cierre compartido.
 function PasoSalida({
   hoja, nombre, setNombre, onNombreBlur, salidas, textos, onGenerar, onEntregar, onCopiarTexto,
-  onGuardarAvance, onCargarAvance, onBorrarTodo, faltan, onIrABloque, onGenerarIgual,
-  onIrAHoja, datos,
+  faltan, onIrABloque, onGenerarIgual, onIrAHoja, datos,
 }) {
-  const fileRef = useRef(null);
   const ap = hoja.apertura;
   const camposAp = ap ? (ap.grupos || []).flatMap((g) => g.campos) : [];
   const hayAp = camposAp.some((c) => String(datos?.[c.k] ?? '').trim());
+  const varias = salidas.length > 1;
+  const cTfm = hoja.cierra?.tfm || salidas[0]?.tfm?.[0];
+  const cAb = hoja.cierra?.abierto || salidas[0]?.abierto?.[0];
+  const sig = salidas.map((s) => s.siguiente).find(Boolean);
+
   return (
     <div id="out">
-      <div className="num">ÚLTIMO PASO</div>
-      <h2>{salidas.length > 1 ? 'Lo que te llevas' : salidas[0]?.titulo}</h2>
-      {salidas.length > 1 && (
-        <p className="que">Dos documentos, uno por pieza. Se generan y se descargan por separado.</p>
-      )}
+      <div className="bk">Último paso</div>
+      <h2>{varias ? 'Lo que te llevas' : (salidas[0]?.titulo || 'Tu documento')}</h2>
+      <p className="tarea">
+        {varias
+          ? `${salidas.length} documentos. Ponle tu nombre una vez y genera cada uno.`
+          : 'Ponle tu nombre y genera tu documento.'}
+      </p>
+
       <div className="nombre">
         <div className="field">
-          <label>Tu nombre <span className="hint">para el fichero de entrega</span></label>
+          <label htmlFor="nombre">Tu nombre <span className="hint">va en la cabecera de {varias ? 'los dos ficheros' : 'tu fichero'}</span></label>
           <input
             type="text"
             id="nombre"
@@ -572,9 +618,27 @@ function PasoSalida({
         </div>
       </div>
 
+      <div className={'piezas' + (varias ? ' dos' : '')}>
+        {salidas.map((sal) => (
+          <Pieza
+            key={sal.parte || '_'}
+            sal={sal}
+            hoja={hoja}
+            texto={textos[sal.parte || '_'] || ''}
+            faltan={faltan && faltan.parte === (sal.parte || '_') ? faltan.lista : null}
+            onGenerar={() => onGenerar(sal)}
+            onGenerarIgual={() => onGenerarIgual(sal)}
+            onEntregar={() => onEntregar(sal)}
+            onCopiarTexto={() => onCopiarTexto(textos[sal.parte || '_'] || '')}
+            onIrABloque={onIrABloque}
+            varias={varias}
+          />
+        ))}
+      </div>
+
       {hayAp && (
         <div className="abre">
-          <div className="lab">Se abre lo que escribiste al empezar</div>
+          <div className="lab">Lo que escribiste al empezar</div>
           <dl className="acal">
             {camposAp.map((c) => (
               <div key={c.k}>
@@ -583,91 +647,78 @@ function PasoSalida({
               </div>
             ))}
           </dl>
-          <p className="n">Nadie corrige esto. Está aquí para que veas la distancia con lo que acabas de escribir, que es la única prueba de que la sesión ha servido.</p>
+          <p className="n">Nadie corrige esto. Está para que veas la distancia con lo que acabas de escribir, que es la única prueba de que la sesión ha servido.</p>
         </div>
       )}
 
-      {salidas.map((sal) => (
-        <Pieza
-          key={sal.parte || '_'}
-          sal={sal}
-          hoja={hoja}
-          texto={textos[sal.parte || '_'] || ''}
-          faltan={faltan && faltan.parte === (sal.parte || '_') ? faltan.lista : null}
-          onGenerar={() => onGenerar(sal)}
-          onGenerarIgual={() => onGenerarIgual(sal)}
-          onEntregar={() => onEntregar(sal)}
-          onCopiarTexto={() => onCopiarTexto(textos[sal.parte || '_'] || '')}
-          onIrABloque={onIrABloque}
-          onIrAHoja={onIrAHoja}
-          varias={salidas.length > 1}
-        />
-      ))}
+      {(cTfm || cAb) && (
+        <div className="cierra">
+          {cTfm && (
+            <div className="cbloq">
+              <h3>{cTfm}</h3>
+              {salidas.filter((s) => s.tfm).map((s) => (
+                <TextoInline
+                  key={s.parte || '_'}
+                  texto={(varias ? `**${s.parte}** — ` : '') + s.tfm[1]}
+                  className="que"
+                />
+              ))}
+            </div>
+          )}
+          {cAb && (
+            <div className="cbloq">
+              <h3>{cAb}</h3>
+              {salidas.filter((s) => s.abierto).map((s) => (
+                <TextoInline
+                  key={s.parte || '_'}
+                  texto={(varias ? `**${s.parte}** — ` : '') + s.abierto[1]}
+                  className="que"
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
-      <h3 style={{ marginTop: 36 }}>Cambiar de ordenador</h3>
-      <p className="que">
-        Tu avance se guarda en <b>este</b> navegador. Si vas a seguir en otro sitio, descarga el fichero y cárgalo allí.
-      </p>
-      <div className="acts">
-        <button className="btn btn-g" onClick={onGuardarAvance}>Guardar mi avance</button>
-        <button className="btn btn-g" onClick={() => fileRef.current?.click()}>Retomar desde un fichero</button>
-        <button className="btn btn-g" onClick={onBorrarTodo}>Empezar de cero</button>
-        <input
-          type="file"
-          ref={fileRef}
-          accept=".json,application/json"
-          style={{ display: 'none' }}
-          onChange={(e) => {
-            const f = e.target.files[0];
-            if (f) onCargarAvance(f);
-            e.target.value = '';
-          }}
-        />
-      </div>
+      {sig && (
+        <div className="csig">
+          <TextoInline texto={sig.txt} />
+          <button className="btn btn-p" onClick={() => onIrAHoja(sig.n)}>{sig.titulo} →</button>
+        </div>
+      )}
     </div>
   );
 }
 
-// Una pieza del último paso: su texto, su puerta, sus tres cosas que hacer y
-// su cierre. La hoja 1 pinta dos.
-function Pieza({ sal, hoja, texto, faltan, onGenerar, onGenerarIgual, onEntregar, onCopiarTexto, onIrABloque, onIrAHoja, varias }) {
+// Una pieza: su texto, su puerta y sus tres acciones en una línea. Las tres
+// tarjetas de antes decían en sesenta palabras lo que dice el párrafo de
+// arriba; lo que hacía falta era el botón, no la tarjeta.
+function Pieza({ sal, hoja, texto, faltan, onGenerar, onGenerarIgual, onEntregar, onCopiarTexto, onIrABloque, varias }) {
   const clave = sal.parte || '_';
   const totalSecciones = seccionesConPlantilla(hoja, sal.parte).length;
+  const hay = !!texto.trim();
   return (
-    <div className={'pieza' + (varias ? ' varias' : '')}>
-      {varias && (
-        <div className="pz-h">
-          <span className="pz-id">{sal.parte}</span>
-          <h3>{sal.titulo}</h3>
-        </div>
-      )}
-      <TextoInline texto={sal.que} className="que" />
-      <div className="acts">
-        <button className="btn btn-p" onClick={onGenerar}>{sal.accion || `Generar ${varias ? sal.parte : 'mi protocolo'}`}</button>
+    <div className="pieza">
+      <div className="pz-h">
+        {varias && <span className="pz-id">{sal.parte}</span>}
+        <h3>{sal.titulo}</h3>
       </div>
+      <TextoInline texto={sal.que} className="pz-q" />
+      <button className="btn btn-p" onClick={onGenerar}>{sal.accion || (varias ? `Generar ${sal.parte}` : 'Generar')}</button>
+
       {faltan && faltan.length > 0 && (
         <div className="antesgen" id="antesgen">
           {faltan.length === totalSecciones ? (
-            <>
-              <p><b>Todavía no hay nada que generar.</b> Esta pieza está entera por escribir, y un fichero con todos los huecos no te sirve de nada ni a ti ni a quien lo lea.</p>
-              <p>Empieza por el bloque que quieras: el orden no es sagrado.</p>
-            </>
+            <p><b>Todavía no hay nada que generar.</b> Esta pieza está entera por escribir. Empieza por el bloque que quieras: el orden no es sagrado.</p>
           ) : (
-            <>
-              <p>
-                <b>Te {faltan.length === 1 ? 'falta un bloque' : `faltan ${faltan.length} bloques`}.</b>{' '}
-                No pasa nada por dejar{faltan.length === 1 ? 'lo' : 'los'}: lo que pasa es que el fichero que entregas
-                no dirá nada sobre {faltan.length === 1 ? 'eso' : 'ellos'}, y son de los que más falta te van a hacer
-                dentro de tres meses.
-              </p>
-              <p>Si te has atascado en alguno, sáltalo y vuelve — el orden no es sagrado.</p>
-            </>
+            <p>
+              <b>Te {faltan.length === 1 ? 'falta un bloque' : `faltan ${faltan.length} bloques`}.</b>{' '}
+              Puedes dejar{faltan.length === 1 ? 'lo' : 'los'}, pero el fichero no dirá nada sobre {faltan.length === 1 ? 'eso' : 'ellos'}.
+            </p>
           )}
           <div className="agl">
             {faltan.map((b) => (
-              <button key={b.n} className="btn btn-g" onClick={() => onIrABloque(b.n)}>
-                {b.titulo}
-              </button>
+              <button key={b.n} className="ayb" onClick={() => onIrABloque(b.n)}>{b.titulo}</button>
             ))}
           </div>
           {faltan.length < totalSecciones && (
@@ -675,51 +726,14 @@ function Pieza({ sal, hoja, texto, faltan, onGenerar, onGenerarIgual, onEntregar
           )}
         </div>
       )}
+
       <textarea id={'texto-' + clave} value={texto} readOnly placeholder="Pulsa «Generar» y aparecerá aquí." />
-      <div className="final">
-        <div className="fcard">
-          <b>1 · Pégalo en tu asistente</b>
-          <span>{sal.pegar || 'Detrás de la guía. A partir de ahí sabe con qué reglas trabajas.'}</span>
-          <button className="btn btn-g" onClick={onCopiarTexto}>Copiar</button>
-        </div>
-        <div className="fcard">
-          <b>2 · Entrégalo</b>
-          {/* El sitio de entrega —Aula Global, Drive— está sin decidir. Vive en
-              hojas.json y no en el código, para cambiarlo en las seis hojas a la
-              vez el día que se cierre. */}
-          <span>{sal.entrega || 'Descarga el fichero y súbelo donde se indique en clase.'}</span>
-          <button className="btn btn-d" onClick={onEntregar}>Descargar</button>
-        </div>
-        <div className="fcard">
-          <b>3 · Guárdalo</b>
-          <span>{sal.guardar || 'Un documento que no relees es un documento más.'}</span>
-          <button className="btn btn-g" onClick={() => window.print()}>Imprimir / PDF</button>
-        </div>
+      <div className="pz-a">
+        <button className="lnka" onClick={onCopiarTexto} disabled={!hay}>Copiar</button>
+        <button className="lnka" onClick={onEntregar} disabled={!hay}>Descargar</button>
+        <button className="lnka" onClick={() => window.print()} disabled={!hay}>Imprimir</button>
       </div>
-      {(sal.tfm || sal.abierto || sal.siguiente) && (
-        <div className="cierra">
-          {sal.tfm && (
-            <div className="cbloq">
-              <h3>{sal.tfm[0]}</h3>
-              <TextoInline texto={sal.tfm[1]} className="que" />
-            </div>
-          )}
-          {sal.abierto && (
-            <div className="cbloq">
-              <h3>{sal.abierto[0]}</h3>
-              <TextoInline texto={sal.abierto[1]} className="que" />
-            </div>
-          )}
-          {sal.siguiente && (
-            <div className="csig">
-              <TextoInline texto={sal.siguiente.txt} />
-              <button className="btn btn-p" onClick={() => onIrAHoja(sal.siguiente.n)}>
-                {sal.siguiente.titulo} →
-              </button>
-            </div>
-          )}
-        </div>
-      )}
+      {sal.entrega && <p className="pz-n">{sal.entrega}</p>}
     </div>
   );
 }
