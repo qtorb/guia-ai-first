@@ -7,7 +7,8 @@ import Grupo from '../components/hoja/Grupo';
 import TextoInline from '../components/TextoInline';
 import { useToast } from '../components/Toast';
 import { useDossier } from '../hooks/useDossier';
-import { recolectarCheckKeys, generarProtocolo, algoRellenado, slug, bloquesSinEscribir, seccionesConPlantilla } from '../lib/protocolo';
+import { recolectarCheckKeys, generarProtocolo, algoRellenado, slug, bloquesSinEscribir, seccionesConPlantilla, cuerpoDeSalida } from '../lib/protocolo';
+import Comparacion from '../components/hoja/Comparacion';
 import { guiaEntera } from '../lib/guiaTexto';
 import { bajar, alPortapapeles } from '../lib/portapapeles';
 
@@ -26,7 +27,10 @@ export default function IaLabHoja({ dossierCtl }) {
   const navigate = useNavigate();
   const toast = useToast();
   const sesionN = Number(n);
-  const sesion = sesionesData.sesiones.find((s) => s.n === sesionN);
+  // Las herramientas —la plantilla de encargo— son hojas con su propia ruta
+  // pero no son sesiones: viven en otra lista para no numerarse con ellas.
+  const sesion = sesionesData.sesiones.find((s) => s.n === sesionN)
+    || (sesionesData.herramientas || []).find((s) => s.n === sesionN);
   const hoja = sesion?.fichero ? hojasData[sesion.fichero] : null;
 
   const { dossier, guardaHoja, guardaNombre, borraHoja, reemplazar, dossierRef } = dossierCtl;
@@ -283,7 +287,7 @@ export default function IaLabHoja({ dossierCtl }) {
     { t: hoja.apertura ? 'Antes de empezar' : 'Preparar' },
     ...hoja.bloques.map((b) => ({ t: (b.parte ? b.parte + ' · ' : '') + b.titulo })),
     ...(hoja.contraste ? [{ t: 'Contraste' }] : []),
-    { t: salidas.length > 1 ? 'Tus dos piezas' : 'Tu protocolo' },
+    { t: salidas.length > 1 ? 'Tus dos piezas' : (salidas[0]?.titulo || 'Tu protocolo') },
   ];
 
   return (
@@ -324,12 +328,19 @@ export default function IaLabHoja({ dossierCtl }) {
         />
       )}
 
+      {hoja.acumula && salidas[0]?.plantilla && paso > 1 && paso < NPASOS && !verTodo && (
+        <aside className="crece">
+          <div className="lab">Tu encargo, hasta ahora</div>
+          <pre>{cuerpoDeSalida(hoja, datos, checkKeys, salidas[0])}</pre>
+          <button className="mini" onClick={() => copiarCampo(cuerpoDeSalida(hoja, datos, checkKeys, salidas[0]))}>Copiar</button>
+        </aside>
+      )}
       <div id="pasos" className={verTodo ? 'todos' : ''}>
         {(verTodo ? pasos.map((_, i) => i + 1) : [paso]).map((numPaso) => (
           <section className={'wstep' + (numPaso === paso ? ' on' : '')} data-p={numPaso} key={numPaso}>
             {numPaso === 1 && (
               hoja.apertura
-                ? <PasoApertura hoja={hoja} datos={datos} onChange={onCampoChange} cerrada={!!datos._cerrada} />
+                ? <PasoApertura hoja={hoja} datos={datos} onChange={onCampoChange} cerrada={!!datos._cerrada} onAtajo={() => irPaso(NPASOS)} />
                 : <PasoPreparar hoja={hoja} />
             )}
             {numPaso > 1 && numPaso <= hoja.bloques.length + 1 && (
@@ -395,7 +406,7 @@ export default function IaLabHoja({ dossierCtl }) {
 // sesión, contestadas a ciegas. Se cierran al avanzar y se vuelven a abrir en
 // el último paso, al lado de lo que haya escrito para entonces. Cerrado no es
 // perdido: lo escrito sigue a la vista, sólo deja de poder editarse.
-function PasoApertura({ hoja, datos, onChange, cerrada }) {
+function PasoApertura({ hoja, datos, onChange, cerrada, onAtajo }) {
   const a = hoja.apertura;
   return (
     <>
@@ -411,7 +422,13 @@ function PasoApertura({ hoja, datos, onChange, cerrada }) {
       <div className={'aciegas' + (cerrada ? ' cerrada' : '')}>
         <h2>{a.titulo}</h2>
         {(a.que || []).map((p, i) => <TextoInline key={i} texto={p} className="que" />)}
-        {cerrada ? (
+        {a.comparacion && <Comparacion c={a.comparacion} />}
+        {a.salida && (
+          <div className="atajo">
+            <button className="lnk" onClick={onAtajo}>{a.salida.txt}</button>
+          </div>
+        )}
+        {(a.grupos || []).length === 0 ? null : cerrada ? (
           <>
             <p className="acav">Esto es lo que contestaste. Se abre otra vez en el último paso.</p>
             <dl className="acal">
@@ -626,7 +643,7 @@ function Pieza({ sal, hoja, texto, faltan, onGenerar, onGenerarIgual, onEntregar
       )}
       <TextoInline texto={sal.que} className="que" />
       <div className="acts">
-        <button className="btn btn-p" onClick={onGenerar}>Generar {varias ? sal.parte : 'mi protocolo'}</button>
+        <button className="btn btn-p" onClick={onGenerar}>{sal.accion || `Generar ${varias ? sal.parte : 'mi protocolo'}`}</button>
       </div>
       {faltan && faltan.length > 0 && (
         <div className="antesgen" id="antesgen">

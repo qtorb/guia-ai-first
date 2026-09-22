@@ -54,5 +54,14 @@
    "salida": "Auditoría de coherencia, huecos críticos y preguntas de defensa",
    "fichero": null
   }
+ ],
+ "herramientas": [
+  {
+   "n": 12,
+   "titulo": "Tu plantilla de encargo",
+   "lede": "Cinco partes. La vas a usar en las seis sesiones y en tu TFM.",
+   "fichero": "hojas/mmdd31/encargo.json",
+   "kicker": "IA-Lab · MMDD31 · UPF-BSM"
+  }
  ]
 }

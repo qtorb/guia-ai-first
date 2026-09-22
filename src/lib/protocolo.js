@@ -88,11 +88,16 @@ export function generarProtocolo(hoja, datos, checkKeys, nombre, kicker, salida)
   // La apertura entra en el documento pero NO en la puerta: son dos preguntas
   // de arranque, no un bloque que se pueda «dejar sin hacer». Y sólo en 1A,
   // que es la pieza que abre la sesión.
-  const secs = [
-    (!parte || parte === '1A') ? hoja.apertura : null,
-    ...(hoja.bloques || []).filter((b) => deLaParte(b, parte)),
-    (!parte || !hoja.contraste) ? hoja.contraste : null,
-  ].filter(Boolean);
+  // Una salida puede traer su propia plantilla. La hoja del encargo la usa:
+  // sus cinco bloques se escriben en orden de aprendizaje, pero el documento
+  // sale en el orden de la plantilla, que es otro.
+  const secs = salida?.plantilla
+    ? [{ plantilla: salida.plantilla }]
+    : [
+      (!parte || parte === '1A') ? hoja.apertura : null,
+      ...(hoja.bloques || []).filter((b) => deLaParte(b, parte)),
+      (!parte || !hoja.contraste) ? hoja.contraste : null,
+    ].filter(Boolean);
   secs.forEach((b) => {
     if (!b.plantilla) return;
     const todas = b.plantilla.flatMap(claves);
@@ -131,6 +136,26 @@ export function generarProtocolo(hoja, datos, checkKeys, nombre, kicker, salida)
   t += ((salida || hoja.salida)?.cierre || []).join('\n') + '\n';
   t = t.replace(/\n{4,}/g, '\n\n\n');
   return t;
+}
+
+// El mismo texto que el documento, sin cabecera ni cierre: es lo que se pinta
+// en el panel lateral mientras el alumno lo va escribiendo.
+export function cuerpoDeSalida(hoja, datos, checkKeys, salida) {
+  if (!salida?.plantilla) return '';
+  const grupos = [];
+  let g = [];
+  salida.plantilla.forEach((l) => {
+    if (l.trim() === '') { grupos.push(g); g = []; } else g.push(l);
+  });
+  grupos.push(g);
+  const lineas = [];
+  grupos.forEach((grupo) => {
+    if (lineas.length) lineas.push('');
+    grupo.forEach((l) => lineas.push(
+      l.replace(/\{(\w+)\}/g, (_, k) => (tiene(datos, checkKeys, k) ? val(datos, checkKeys, k) : '…'))
+    ));
+  });
+  return lineas.join('\n');
 }
 
 export function algoRellenado(datos, checkKeys, nombre, paso) {
