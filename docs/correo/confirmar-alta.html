@@ -1,0 +1,143 @@
+<!-- Plantilla del correo de ALTA de Supabase.
+     Se pega en Authentication → Emails → Confirm signup.
+
+     POR QUÉ EXISTE ESTE FICHERO, QUE ES LO QUE NOS COSTÓ UNA TARDE
+     --------------------------------------------------------------
+     Supabase no manda «Magic Link» la primera vez. Cuando la dirección
+     todavía no existe como usuario, el mismo botón de «entrar con correo»
+     dispara «Confirm signup» — otra plantilla distinta, que si no se ha
+     tocado sale en inglés y sin diseño. Magic Link sólo se usa a partir de
+     la segunda vez.
+
+     Así que las dos plantillas tienen que estar puestas, y las dos con el
+     mismo diseño. Esta es la del primer correo que ve un alumno.
+
+     Las dos comparten estructura a propósito: si se cambia una, se cambia
+     la otra. La única diferencia real son tres frases y el rótulo del
+     botón.
+
+     Reglas de correo, que no son las de la web:
+     · Todo en línea. Los clientes de correo tiran las hojas de estilo…
+     · …salvo este bloque <style>, que es la excepción y el motivo está abajo.
+     · Tablas y no flex. Outlook sigue usando el motor de Word.
+     · Nada de SVG: de ahí el PNG servido desde el propio sitio.
+     · Ancho máximo 520 px y botón de 44 px de alto, como en la web.
+
+     Variables de Supabase: {{ .ConfirmationURL }} es el enlace.
+
+     EL MODO OSCURO DEL CORREO, QUE ES OTRA GUERRA
+     ---------------------------------------------
+     Apple Mail y Outlook, cuando un correo no declara que sabe pintarse en
+     oscuro, se lo inventan: invierten los colores por su cuenta. El resultado
+     de esa inversión fue lo que rompió la primera versión — el fondo del
+     botón desaparecía y quedaba «Entrar» como texto suelto.
+
+     La declaración `color-scheme` de abajo es la forma documentada de decir
+     «yo me encargo», y con ella esos clientes dejan de invertir y respetan lo
+     que venga en la media query.
+
+     Dicho esto, esto es lo mejor que se puede hacer, no una garantía: hay
+     clientes que invierten igual y no hay forma de impedirlo. Por eso el
+     correo NO depende del color para entenderse: el botón lleva borde además
+     de fondo, y si alguien se queda sin ninguno de los dos, debajo está el
+     enlace en texto. -->
+<style>
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  @media (prefers-color-scheme: dark) {
+    .e-fondo   { background:#0F1419 !important; }
+    .e-tarjeta { background:#171D25 !important; border-color:#2A323E !important; }
+    .e-ink     { color:#E8EDF4 !important; }
+    .e-gris    { color:#A6B1C0 !important; }
+    .e-acento  { color:#9EAAFF !important; }
+    .e-linea   { border-color:#2A323E !important; }
+    .e-btn     { background:#9EAAFF !important; border-color:#9EAAFF !important; }
+    .e-btn a, .e-btna { color:#0F1419 !important; }
+  }
+</style>
+<table class="e-fondo" width="100%" cellpadding="0" cellspacing="0" border="0"
+       style="background:#FCF9F6;margin:0;padding:32px 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">
+  <tr>
+    <td align="center">
+      <!-- Preencabezado: lo que se lee en la bandeja antes de abrir. -->
+      <div style="display:none;max-height:0;overflow:hidden;opacity:0">Confirma tu correo y entras. El enlace caduca en una hora y solo funciona una vez.</div>
+
+      <table class="e-tarjeta" width="520" cellpadding="0" cellspacing="0" border="0"
+             style="max-width:520px;width:100%;background:#FFFFFF;border:1px solid #DCD3CA;border-radius:14px">
+        <tr>
+          <td style="padding:32px 32px 0">
+            <img src="https://guia.qtorb.com/logo-correo.png" width="48" height="48" alt=""
+                 style="display:block;border:0;border-radius:10px">
+            <div class="e-acento" style="margin-top:14px;font-family:'IBM Plex Mono',Consolas,monospace;
+                        font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#3A2FA8">Guía AI-First</div>
+            <h1 class="e-ink" style="margin:10px 0 0;font-size:26px;line-height:1.2;letter-spacing:-.01em;
+                       color:#0E1526;font-weight:700">Confirma tu correo y entras</h1>
+          </td>
+        </tr>
+        <tr>
+          <td class="e-gris" style="padding:16px 32px 0;font-size:16px;line-height:1.55;color:#414C63">
+            <p style="margin:0 0 18px">Es la primera vez que entras con esta dirección, así que este enlace
+              además la confirma. De aquí en adelante, entrar será sólo pulsar.</p>
+            <p style="margin:0 0 18px"><strong class="e-ink" style="color:#0E1526">Ábrelo en el mismo
+              dispositivo desde el que lo pediste</strong> — si lo pediste en el portátil y lo abres en el
+              móvil, no funciona.</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:6px 32px 0">
+            <!-- BOTÓN A PRUEBA DE CLIENTES. El tamaño NO sale del enlace.
+                 Sale de la celda —padding y height, con el atributo bgcolor
+                 además del estilo— y de la altura de línea del texto. Un
+                 cliente que tire el padding del <a> deja el botón igual de
+                 grande; sólo desaparece si tira las dos cosas a la vez.
+                 El borde tampoco es decoración: si se come el fondo, sigue
+                 siendo un botón y no un texto suelto. Y si se lo come todo,
+                 debajo está el enlace en texto. -->
+            <table cellpadding="0" cellspacing="0" border="0" role="presentation">
+              <tr>
+                <td class="e-btn" bgcolor="#3A2FA8" align="center" height="48"
+                    style="background:#3A2FA8;border:1px solid #3A2FA8;border-radius:8px;
+                           height:48px;padding:0 30px;mso-padding-alt:14px 30px;
+                           font-size:16px;font-weight:600;line-height:48px">
+                  <a class="e-btna" href="{{ .ConfirmationURL }}"
+                     style="display:inline-block;padding:14px 0;font-size:16px;font-weight:600;
+                            line-height:20px;color:#FFFFFF;text-decoration:none">Confirmar y entrar</a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td class="e-gris" style="padding:22px 32px 0;font-size:13.5px;line-height:1.5;color:#6B6259">
+            <p style="margin:0 0 6px">Si el botón no va, copia esta dirección en tu navegador:</p>
+            <p style="margin:0;word-break:break-all"><a class="e-acento" href="{{ .ConfirmationURL }}"
+               style="color:#3A2FA8">{{ .ConfirmationURL }}</a></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:22px 32px 28px">
+            <div class="e-linea e-gris" style="border-top:1px solid #DCD3CA;padding-top:18px;
+                        font-size:13.5px;line-height:1.55;color:#6B6259">
+              <p style="margin:0 0 10px">El enlace <strong class="e-ink" style="color:#0E1526">caduca en una
+                hora</strong> y sirve una sola vez.</p>
+              <p style="margin:0">Si no has pedido entrar, ignora este correo. No se crea ninguna cuenta
+                mientras este enlace no se abra, y no hace falta que hagas nada.</p>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <table width="520" cellpadding="0" cellspacing="0" border="0" style="max-width:520px;width:100%">
+        <tr>
+          <td class="e-gris" style="padding:18px 8px 0;font-size:12.5px;line-height:1.6;color:#6B6259">
+            Entrar sirve para una sola cosa: que lo que escribes deje de ser un borrador de un solo
+            navegador y quede guardado, para seguir desde otro dispositivo. Las hojas funcionan igual
+            sin cuenta.<br>
+            <a class="e-acento" href="https://guia.qtorb.com/privacidad.html" style="color:#3A2FA8">Qué guarda esta web</a>
+            &nbsp;·&nbsp;
+            <a class="e-acento" href="https://guia.qtorb.com/" style="color:#3A2FA8">guia.qtorb.com</a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
