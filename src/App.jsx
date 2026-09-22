@@ -80,7 +80,25 @@ function Shell({ dossierCtl, n }) {
           <Route path="/guia/:ident" element={<GuiaCapitulo />} />
         </Routes>
       </main>
+      <PieLegal />
     </>
+  );
+}
+
+// El pie legal. Dos enlaces y nada más, en todas las páginas.
+//
+// Son ficheros estáticos y no rutas de la aplicación, a propósito: una
+// política de privacidad tiene que abrirse aunque el JavaScript falle, tiene
+// que poder enlazarse desde fuera con una URL normal —Google la pide para
+// publicar la aplicación de OAuth, y no admite bien las de almohadilla— y
+// tiene que seguir ahí el día que esta web se rehaga entera.
+function PieLegal() {
+  return (
+    <div className="pielegal">
+      <a href="/privacidad.html">Qué guarda esta web</a>
+      <a href="/condiciones.html">Condiciones de uso</a>
+      <span>Guía AI-First · Albert Garcia Pujadas · @qtorb</span>
+    </div>
   );
 }
 

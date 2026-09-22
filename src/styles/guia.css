@@ -1820,3 +1820,16 @@ p.ctx b{color:var(--ink)}
   .ctab{padding:8px 11px;font-size:13px}
   .ctap{width:min(94vw,340px);padding:18px 16px 16px;right:-8px}
 }
+
+/* El pie legal, en todas las páginas. Dos enlaces y la firma. */
+.pielegal{max-width:1160px;margin:0 auto;padding:22px 20px 40px;
+  border-top:1px solid var(--linea);display:flex;flex-wrap:wrap;align-items:center;gap:8px 22px;
+  font-size:13px;color:var(--mid)}
+.pielegal a{color:var(--ctx);text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+.pielegal a:hover{text-decoration:underline}
+.pielegal span{margin-left:auto;font-family:var(--mono);font-size:12px}
+@media(max-width:620px){
+  .pielegal{gap:4px 18px;padding-bottom:34px}
+  .pielegal span{margin-left:0;flex-basis:100%}
+}
+@media print{.pielegal{display:none}}

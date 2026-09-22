@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Qué guarda esta web · Guía AI-First</title>
+<meta name="description" content="Qué datos guarda guia.qtorb.com, dónde, quién puede leerlos y cómo se borran.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<style>
+:root{color-scheme:light dark;
+  --fondo:#fff;--ink:#0E1526;--gris:#414C63;--linea:#C4CDDB;--acento:#3A2FA8;--soft:#F2F5F9}
+@media (prefers-color-scheme:dark){:root{
+  --fondo:#0F1419;--ink:#E8EDF4;--gris:#A6B1C0;--linea:#2A323E;--acento:#9EAAFF;--soft:#171D25}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fondo);color:var(--ink);
+  font-family:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  font-size:17px;line-height:1.6;-webkit-text-size-adjust:100%}
+.w{max-width:680px;margin:0 auto;padding:0 20px 90px}
+a{color:var(--acento)}
+header{padding:48px 0 26px;border-bottom:1px solid var(--linea);margin-bottom:34px}
+.k{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--acento);margin:0 0 12px}
+h1{font-size:clamp(28px,6vw,38px);line-height:1.12;letter-spacing:-.02em;margin:0 0 16px}
+.lede{font-size:clamp(17px,3.6vw,19px);line-height:1.5;color:var(--gris);margin:0;max-width:56ch}
+.lede b{color:var(--ink)}
+h2{font-size:21px;line-height:1.25;margin:40px 0 12px}
+p{margin:0 0 14px;max-width:62ch}
+ul{margin:0 0 14px;padding-left:22px;max-width:62ch}
+li{margin-bottom:8px}
+b,strong{color:var(--ink)}
+.n{background:var(--soft);border-left:2px solid var(--acento);border-radius:0 8px 8px 0;
+  padding:16px 18px;margin:20px 0;font-size:15.5px}
+.n p:last-child{margin:0}
+footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--linea);
+  font-size:14px;color:var(--gris)}
+footer a{margin-right:16px}
+.f{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace;font-size:12.5px;color:var(--gris);margin-top:10px}
+</style>
+</head>
+<body>
+<div class="w">
+<header>
+  <p class="k">Guía AI-First</p>
+  <h1>Qué guarda esta web</h1>
+  <p class="lede">En una frase: <b>si no entras con una cuenta, nada de lo que escribes sale de tu
+  navegador.</b> Si entras, se guarda para que puedas seguir desde otro dispositivo — y lo puedes
+  borrar entero cuando quieras.</p>
+</header>
+
+<h2>Si no entras con cuenta</h2>
+<p>Lo que escribes en las hojas se guarda en <b>el almacenamiento de tu propio navegador</b>. No viaja
+a ningún servidor, ni al mío ni a otro. Si borras los datos del navegador, se pierde; si cambias de
+ordenador, no está allí.</p>
+<p><b>Esta web no lleva cookies, ni analítica, ni medición de ningún tipo.</b> No sé cuánta gente
+entra, ni de dónde, ni qué mira. No es una postura: es que no hay nada instalado que lo cuente.</p>
+
+<h2>Si entras con cuenta</h2>
+<p>Entrar sirve para una sola cosa: que lo que escribes en el portátil aparezca también en el móvil.
+Entonces sí se guardan dos cosas en un servidor:</p>
+<ul>
+  <li><b>Tu correo electrónico</b>, y el nombre público que te da Google o GitHub si entras por ahí.</li>
+  <li><b>Lo que has escrito en las hojas</b>, tal cual, sin procesar ni analizar.</li>
+</ul>
+<p>Nada más. No se guarda qué páginas visitas, ni cuánto tardas, ni cuándo entras. La copia se
+actualiza unos segundos después de que dejes de escribir.</p>
+<p><b>Dónde vive:</b> en un servidor de Supabase en <b>Fráncfort, Alemania</b> — dentro de la Unión
+Europea. Supabase actúa como encargado del tratamiento.</p>
+
+<h2>Quién puede leerlo</h2>
+<p>La base de datos tiene una regla que comprueba el propio servidor: <b>cada fila solo la puede leer
+la cuenta que la escribió.</b> Otro alumno con la misma aplicación no puede llegar a la tuya aunque
+lo intente.</p>
+<div class="n">
+  <p><b>Con una salvedad que prefiero escribir.</b> Quien administra el proyecto —yo— tiene acceso
+  técnico a la base de datos, como lo tiene cualquiera que administre un servidor. No leo lo que
+  escribes, y no hay ningún proceso que lo revise ni lo puntúe. Pero una política que prometiera lo
+  contrario estaría mintiendo, y este sitio va justamente de no aceptar afirmaciones que no se
+  sostienen.</p>
+</div>
+
+<h2>Google, GitHub y el correo</h2>
+<p>Si entras con Google o con GitHub, ellos saben que has entrado aquí — igual que en cualquier otro
+sitio donde uses ese botón. Esta web recibe de ellos tu correo y tu nombre público, y nada más: ni
+tus contactos, ni tus repositorios, ni tu agenda.</p>
+<p>Si entras con el enlace por correo, no interviene nadie más.</p>
+
+<h2>Cuánto dura</h2>
+<p>Hasta que lo borres tú. No hay borrado automático ni caducidad.</p>
+
+<h2>Cómo se borra</h2>
+<p>En la propia web, en el botón de tu cuenta, arriba a la derecha: <b>«Borrar mis datos»</b>. Se
+lleva las dos copias a la vez, la del servidor y la de este navegador, y cierra la sesión. No se
+puede deshacer.</p>
+<p>Y antes de borrar, si quieres llevarte lo escrito: en el panel de la «i» de cualquier hoja hay
+<b>«Guardar mi avance»</b>, que descarga todo en un fichero tuyo.</p>
+
+<h2>Tus derechos</h2>
+<p>Puedes pedir acceso, rectificación, supresión, limitación, oposición y portabilidad de tus datos.
+Los dos botones de arriba cubren la supresión y la portabilidad sin pedir permiso a nadie; para
+cualquier otra cosa, escribe a <a href="mailto:albert@qtorb.com">albert@qtorb.com</a> y contesto yo.</p>
+<p>Si crees que no se ha hecho bien, puedes reclamar ante la Agencia Española de Protección de Datos.</p>
+
+<h2>Quién responde de esto</h2>
+<p>Albert Garcia Pujadas · <a href="mailto:albert@qtorb.com">albert@qtorb.com</a></p>
+<p>Esta web se usa como material docente del Máster en Dirección de Marketing Digital de la UPF
+Barcelona School of Management, pero <b>no es una web de la escuela</b> y no está alojada por ella.
+Lo que entregues oficialmente del máster va por los canales del máster, no por aquí.</p>
+
+<footer>
+  <a href="/">Volver a la web</a>
+  <a href="/condiciones.html">Condiciones de uso</a>
+  <p class="f">Última actualización: 22 de septiembre de 2026</p>
+</footer>
+</div>
+</body>
+</html>
