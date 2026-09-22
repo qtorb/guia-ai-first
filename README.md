@@ -1,6 +1,6 @@
 # Guía AI-First · web
 
-El sitio de **https://qtorb.github.io/guia-ai-first/**. Dos barrios dentro de la misma web:
+El sitio de **https://guia.qtorb.com**. Dos barrios dentro de la misma web:
 
 - **El Método AI-First** — 18 capítulos, mapa, buscador y el bloque de 30 días. Abierto a cualquiera.
 - **IA-Lab** — las hojas de trabajo del MMDD31 (UPF-BSM). Cada una se rellena y devuelve uno o dos documentos.
@@ -26,12 +26,14 @@ npm run dev
 
 Empujar a `main`. GitHub Actions construye y despliega en Pages (`.github/workflows/`). No hay nada que subir a mano.
 
+El dominio propio vive en **`public/CNAME`**, que viaja dentro del artefacto de cada despliegue. Va emparejado con `base: '/'` en `vite.config.js`: con dominio propio Pages sirve el proyecto en la raíz del dominio, no en `/guia-ai-first/`. **Los dos se cambian juntos o hay una ventana con todos los recursos en 404.**
+
 ## Medir antes de dar una pasada por buena
 
 ```
 npm i -D playwright && npx playwright install chromium
 node scripts/medir.mjs                    # producción
-node scripts/medir.mjs http://localhost:4173/guia-ai-first/   # un build local
+node scripts/medir.mjs http://localhost:4173/   # un build local
 ```
 
 Devuelve las tres cifras del asiento: peso de la primera carga en móvil, alto y palabras de la pantalla que más pesa, y los fallos de accesibilidad. **Sale con código 1 si hay alguno**, así que sirve de puerta.
@@ -57,4 +59,4 @@ docs/REGISTRO.md           el registro de versiones
 
 **El color literal dentro de una regla que también redefine el fondo es un fallo de modo oscuro esperando fecha.** Ha pasado tres veces: un título en 1,03:1 —invisible—, un rótulo en 1,84:1 y un gris en 2,18:1. Los tres por el mismo motivo. Si escribes un `#hex` en una regla, pregúntate qué pinta encima en oscuro.
 
-**El dossier del alumno vive en el `localStorage` del dominio por el que entró.** Cambiar de dominio lo vacía. El dominio definitivo tiene que estar montado **antes** de dar ningún enlace a los alumnos, no después.
+**El dossier del alumno vive en el `localStorage` del dominio por el que entró.** Cambiar de dominio lo vacía — y lo ata el *nombre del host*, no el hosting. Por eso `guia.qtorb.com` se montó antes de dar ningún enlace: a partir de ahí, mudar la web de Pages a donde sea es cambiar un registro DNS y nadie pierde nada.

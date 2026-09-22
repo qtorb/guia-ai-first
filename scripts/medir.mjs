@@ -1,7 +1,7 @@
 // Las tres cifras que lleva cada asiento del registro, medidas igual siempre.
 //
 //   node scripts/medir.mjs                      → producción
-//   node scripts/medir.mjs http://localhost:4173/guia-ai-first/   → un build local
+//   node scripts/medir.mjs http://localhost:4173/    → un build local
 //
 // Necesita Playwright, que NO es dependencia del proyecto a propósito: pesa
 // más que la web entera y sólo hace falta el día que se mide.
@@ -17,7 +17,7 @@
 
 import { chromium } from 'playwright';
 
-const BASE = (process.argv[2] || 'https://qtorb.github.io/guia-ai-first/').replace(/\/$/, '') + '/';
+const BASE = (process.argv[2] || 'https://guia.qtorb.com/').replace(/\/$/, '') + '/';
 const ANCHOS = [390, 768, 1440];
 const ESQUEMAS = ['light', 'dark'];
 

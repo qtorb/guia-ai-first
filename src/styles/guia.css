@@ -676,7 +676,7 @@ body.ctx-hoja #pinfo{color:var(--gray)}
   border:0;border-radius:0;padding:0;color:inherit}
 .paso0 .sc b{display:block;color:#fff;font-size:15px;margin-bottom:5px}
 .paso0 .sc p{font-size:13.5px;margin:0 0 9px;color:#C7D2E4}
-/* Fix: en la web en producción (qtorb.github.io/guia-ai-first) .sc trae
+/* Fix: en la web en producción (guia.qtorb.com) .sc trae
    background:#fff de la lista de sesiones (.ses .sc) y aquí, dentro de
    .paso0 (fondo oscuro), eso deja el título y los botones en blanco sobre
    blanco — invisibles. Confirmado en vivo (hoja "Si todavía no tienes
