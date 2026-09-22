@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { HashRouter, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { ToastProvider } from './components/Toast';
 import { useDossier } from './hooks/useDossier';
+import { useNube } from './hooks/useNube';
+import Cuenta from './components/Cuenta';
 import Home from './pages/Home';
 import IaLabList from './pages/IaLabList';
 import IaLabHoja from './pages/IaLabHoja';
@@ -12,7 +14,7 @@ import Mapa from './pages/Mapa';
 import MetodoPortada from './pages/MetodoPortada';
 import Plan30 from './pages/Plan30';
 
-function Barra() {
+function Barra({ n }) {
   const navigate = useNavigate();
   const loc = useLocation();
   const enHoja = loc.pathname.startsWith('/ia-lab');
@@ -36,12 +38,13 @@ function Barra() {
           </button>
         </div>
         <div className="spacer" />
+        {n.hay && <Cuenta n={n} />}
       </div>
     </div>
   );
 }
 
-function Shell({ dossierCtl }) {
+function Shell({ dossierCtl, n }) {
   const loc = useLocation();
   const esPortada = loc.pathname === '/dos-puertas';
   const enHoja = loc.pathname.startsWith('/ia-lab');
@@ -58,7 +61,7 @@ function Shell({ dossierCtl }) {
 
   return (
     <>
-      <Barra />
+      <Barra n={n} />
       <main>
         <Routes>
           {/* La entrada del sitio es la portada de dos puertas: quien llega
@@ -83,10 +86,13 @@ function Shell({ dossierCtl }) {
 
 export default function App() {
   const dossierCtl = useDossier();
+  // Sin las dos variables de Supabase, `n.hay` es false y toda esta capa
+  // desaparece: la web queda exactamente como estaba.
+  const n = useNube(dossierCtl);
   return (
     <HashRouter>
       <ToastProvider>
-        <Shell dossierCtl={dossierCtl} />
+        <Shell dossierCtl={dossierCtl} n={n} />
       </ToastProvider>
     </HashRouter>
   );
