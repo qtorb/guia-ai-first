@@ -97,7 +97,8 @@ export default function Home({ dossierCtl }) {
 
         <div className="entpie">
           <span className="sello">Beta permanente</span>
-          <p>Nada de lo que escribas sale de tu navegador. No hay cuentas ni contraseñas.</p>
+          <p>Sin cuenta, lo que escribes es un <b>borrador</b> y no sale de este navegador.
+            Entrando, queda <b>guardado</b> y lo tienes en cualquier dispositivo.</p>
         </div>
       </div>
     </div>

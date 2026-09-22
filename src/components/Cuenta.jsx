@@ -47,11 +47,12 @@ export default function Cuenta({ n }) {
         <div className="ctap" role="dialog" aria-label="Tu cuenta">
           {!dentro ? (
             <>
-              <h3>Llévate lo que escribes a otro sitio</h3>
+              <h3>De borrador a guardado</h3>
               <p className="ctaq">
-                Sin cuenta, lo que escribes vive <b>solo en este navegador</b>. Entrando, aparece
-                también en tu móvil o en el ordenador de casa. <b>No hace falta para nada más:</b> las
-                hojas funcionan igual sin entrar.
+                Ahora mismo trabajas en <b>borrador</b>: lo que escribes vive en este navegador y no
+                sale de aquí. Entrando queda <b>guardado</b>, y aparece también en tu móvil o en el
+                ordenador de casa. <b>No hace falta para nada más:</b> las hojas funcionan igual sin
+                entrar.
               </p>
               {/* El correo va primero, y no por orden alfabético. Es la única de
                   las tres puertas que se puede dejar entera con el dominio y el
