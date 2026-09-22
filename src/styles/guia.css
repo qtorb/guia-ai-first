@@ -645,15 +645,9 @@ body.ctx-hoja #pinfo{color:var(--gray)}
 .pdot i{font-style:normal;width:26px;height:26px;border-radius:50%;border:2px solid var(--line);
   display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--mid);
   background:var(--fondo);transition:border-color .15s,background .15s,color .15s}
-.pdot u{text-decoration:none;font-size:10px;color:var(--mid);max-width:66px;overflow:hidden;
-  text-overflow:ellipsis;white-space:nowrap;display:none}
-@media(min-width:760px){.pdot{min-width:74px}.pdot u{display:block}}
 .pdot:not(.on):not(.done):hover i{border-color:var(--blue);color:var(--blue)}
 .pdot.done i{background:var(--gbg);border-color:var(--green);color:var(--green)}
 .pdot.on i{background:var(--blue);border-color:var(--blue);color:var(--fondo);font-weight:700}
-.pdot.on u{color:var(--ink);font-weight:600}
-.pb-r{display:flex;justify-content:space-between;align-items:center;margin-top:7px}
-#pinfo{font-family:var(--mono);font-size:12px;color:var(--gray)}
 .lnk{border:0;background:none;color:var(--blue);font-family:var(--sans);font-size:13px;
   cursor:pointer;padding:0;text-decoration:underline;min-height:44px;display:inline-flex;align-items:center}
 #pbar.plano .pb-in{display:none}
@@ -739,6 +733,14 @@ body.ctx-hoja #pinfo{color:var(--gray)}
 .gp:hover{border-color:var(--barrio)}
 .gp:focus-visible{outline:3px solid var(--barrio);outline-offset:2px}
 .gp-lab{--barrio:#8C1D2F;--barrio-sup:#F7EDEE}
+/* La puerta de IA-Lab traía el rojo y el tinte escritos a mano, así que en
+   modo oscuro conservaba el fondo rosa claro mientras el texto lo ponía la
+   paleta oscura: el título de la puerta quedaba en 1,03:1 —invisible— y el
+   rótulo y la descripción por debajo de AA. Mismo par que usa el barrio de
+   IA-Lab en oscuro: 14,74:1 el título, 7,99:1 el rótulo. */
+@media (prefers-color-scheme: dark){
+  :root:not([data-tema="claro"]) .gp-lab{--barrio:#FF9C93;--barrio-sup:#2B1515}
+}
 .gp-guia{--barrio:var(--acento);--barrio-sup:var(--acento-sup)}
 /* El rótulo va en --texto-2 y no en --mid: sobre el tinte de la caja, --mid
    (#495366) se queda en 6,75 y AAA pide 7. Con --texto-2, 7,51. */
@@ -1274,6 +1276,12 @@ details.fichero[open]>summary::before{content:none;display:none}
 .ficha-fila.mano .ficha-et { background:var(--accion); color:#fff; border-right-color:var(--accion) }
 .ficha-fila.mano .ficha-val::placeholder { color:var(--accion); opacity:1 }
 .a-mano { margin-left:6px }
+/* En oscuro --accion pasa a ser el ámbar claro (#F0B45C) y el blanco de este
+   rótulo se quedaba en 1,84:1. Con tinta oscura sobre el mismo ámbar, 10,04:1
+   — y en claro no cambia nada: allí --accion es #7C3A05 y el blanco va bien. */
+@media (prefers-color-scheme: dark){
+  :root:not([data-tema="claro"]) .ficha-fila.mano .ficha-et{ color:#1A1206 }
+}
 
 /* ---- las reglas del máster ---- */
 .puertas { display:flex; flex-direction:column; gap:var(--e5); margin:var(--e4) 0 }
@@ -1358,7 +1366,8 @@ body.ctx-hoja .puerta-motivo input:focus-visible { outline-color:var(--lab) }
 .wrap.taller-lab #pasos .blk > *{max-width:720px}
 .wrap.taller-lab #pasos .fichas-grupo,
 .wrap.taller-lab #pasos .puertas,
-.wrap.taller-lab #pasos .respuestas{max-width:none}
+.wrap.taller-lab #pasos .respuestas,
+.wrap.taller-lab #pasos #out{max-width:none}
 
 @media (min-width:1000px){
   /* dos fichas por fila: el paso de generación baja de ~6000px a ~3300px */
@@ -1573,12 +1582,6 @@ details.p0f > summary span{font-weight:400;color:var(--mid)}
   .pbanda .pb-id{font-size:18px}
 }
 
-/* Cada pieza del último paso, con su documento y su cierre. */
-#out .pieza.varias{margin-top:34px;padding-top:30px;border-top:2px solid var(--line)}
-#out .pieza.varias:first-of-type{border-top:0;padding-top:0}
-#out .pz-h{display:flex;align-items:baseline;gap:12px;margin-bottom:10px}
-#out .pz-id{font-family:var(--mono);font-size:18px;font-weight:600;color:var(--red, var(--acento))}
-#out .pz-h h3{margin:0;font-size:24px}
 
 /* ─── La plantilla de encargo ─────────────────────────────────────────
    Tres piezas: la tarjeta de herramienta en la lista, la comparación grabada
@@ -1631,3 +1634,145 @@ details.p0f > summary span{font-weight:400;color:var(--mid)}
 
 /* La salida de emergencia de la primera pantalla. */
 .atajo{margin-top:20px;padding-top:16px;border-top:1px dashed var(--line)}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   UNA PANTALLA, UNA TAREA, UN CAMPO VISIBLE
+
+   Medido sobre producción el 22-09: un bloque eran 2.465 px de alto, 552
+   palabras y 33 cajas con fondo o borde, con siete registros visuales antes
+   del primer campo. El último paso, 2.953 px, 639 palabras, 29 botones y 39
+   cajas, con el mismo bloque repetido para 1A y 1B.
+
+   Tres decisiones, en este orden:
+   1. Cada pantalla dice en UNA frase qué hay que hacer, y los campos van
+      inmediatamente después.
+   2. La tira pierde los rótulos truncados y se queda en puntos; lo que
+      orienta es la línea de posición y el botón «i», que están en el mismo
+      sitio en todas las hojas y en todos los pasos.
+   3. El cierre deja de duplicarse: el nombre una vez, las piezas en
+      paralelo, las acciones en texto y un solo cierre compartido.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ─── La tira ─────────────────────────────────────────────────────────── */
+.pb-top{display:flex;align-items:center;gap:12px;min-width:0}
+.wrap.taller-lab .volver{flex:0 0 auto;margin:0;padding:0 2px;border:0;background:none;
+  color:var(--red,var(--blue));font-family:var(--sans);font-size:13.5px;cursor:pointer;
+  min-height:44px;display:inline-flex;align-items:center;white-space:nowrap}
+.wrap.taller-lab .volver:hover{text-decoration:underline}
+#pbar .pb-in{flex:1 1 auto;min-width:0;padding-bottom:0}
+.pb-r{flex:0 0 auto;display:flex;align-items:center;gap:8px;margin:0;min-width:0}
+#pinfo{font-family:var(--mono);font-size:13px;color:var(--texto-2);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;max-width:32vw}
+/* 44×44 de zona táctil (AAA 2.5.5) con el círculo dibujado a 34. */
+.dndb{flex:0 0 auto;width:44px;height:44px;min-height:44px;padding:0;border:0;background:none;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  color:var(--red,var(--blue))}
+.dndb > span{width:34px;height:34px;border-radius:50%;border:2px solid currentColor;
+  display:flex;align-items:center;justify-content:center;font-family:var(--mono);
+  font-size:16px;font-weight:500;line-height:1}
+.dndb:hover > span{background:var(--rbg2)}
+.dndb.on > span{background:var(--red,var(--blue));color:var(--fondo)}
+@media(max-width:620px){
+  .wrap.taller-lab .volver span{display:none}
+  .wrap.taller-lab .volver{font-size:19px;padding:0;min-width:44px;justify-content:center}
+  #pinfo{font-size:12px;max-width:38vw}
+  .pb-top{gap:8px}
+}
+
+/* ─── El panel de la «i» ──────────────────────────────────────────────── */
+.dnd{margin:0 0 26px;padding:24px 26px;border:2px solid var(--red,var(--blue));
+  border-radius:14px;background:var(--fondo);scroll-margin-top:112px}
+.dnd:focus{outline:none}
+.dnd-h{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 20px}
+.dnd-h h2{margin:0;font-size:22px}
+.dnd-g{display:grid;gap:20px}
+@media(min-width:760px){ .dnd-g{grid-template-columns:repeat(3,minmax(0,1fr))} }
+.dnd-g .lab{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--mid);margin:0 0 7px}
+.dnd-g p{margin:0;font-size:15.5px;line-height:1.55;color:var(--texto)}
+.dnd-a{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 0;padding-top:20px;
+  border-top:1px solid var(--line)}
+.dnd-n{margin:14px 0 0;font-size:13.5px;color:var(--mid)}
+
+/* ─── El bloque ───────────────────────────────────────────────────────── */
+.bk{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--red,var(--blue));font-weight:500;margin:0 0 10px;
+  display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.bk em{font-style:normal;text-transform:none;letter-spacing:0;color:var(--mid);font-size:11px}
+#pasos .blk > h2{margin:0;font-size:clamp(25px,5vw,33px);letter-spacing:-.02em;line-height:1.14}
+p.tarea{margin:16px 0 0;font-size:clamp(18px,3.4vw,21px);line-height:1.45;font-weight:500;
+  color:var(--ink);max-width:48ch}
+p.tarea b{font-weight:700}
+p.ctx{margin:12px 0 0;font-size:16px;line-height:1.55;color:var(--texto-2);max-width:60ch}
+p.ctx b{color:var(--ink)}
+.campos{margin-top:26px}
+.blk > .contraste,.blk > .cmpg,.blk > .thead{margin-top:24px}
+
+/* ─── Las ayudas: una fila al pie, una abierta cada vez ───────────────── */
+.ayu{margin:30px 0 0;padding-top:20px;border-top:1px solid var(--line)}
+.ayu-r{display:flex;flex-wrap:wrap;gap:8px}
+.ayb{min-height:44px;padding:10px 16px;border:1px solid var(--linea-fuerte);border-radius:999px;
+  background:var(--fondo);color:var(--ink);font-family:var(--sans);font-size:14px;
+  line-height:1.25;text-align:left;cursor:pointer;
+  display:inline-flex;align-items:center;gap:8px}
+.ayb:hover{border-color:var(--red,var(--blue));color:var(--red,var(--blue))}
+.ayb.on{background:var(--soft);border-color:var(--ink);font-weight:600}
+.ayb .pt{width:7px;height:7px;border-radius:50%;background:var(--red,var(--blue));flex:0 0 auto}
+.ayp{margin:18px 0 0}
+.ayp .encargo,.ayp .ask,.ayp .duda,.ayp .cic{margin-top:0}
+.ayp .p0f{margin:0 0 18px}
+.ayp .que:last-of-type{margin-bottom:0}
+.ayp .ej{padding:0;font-size:15px}
+.ayn{margin:0 0 12px;font-size:13.5px;color:var(--mid)}
+
+/* ─── El último paso ──────────────────────────────────────────────────── */
+/* #out traía su propia línea superior de cuando la hoja era una sola página:
+   ahora es el primer elemento de su paso y la línea caía a 26px de la de la
+   tira, dos reglas seguidas sin nada en medio. */
+#pasos:not(.todos) .wstep > #out{border-top:0;margin-top:0;padding-top:10px}
+.wrap.taller-lab #out > .bk,
+.wrap.taller-lab #out > h2,
+.wrap.taller-lab #out > .tarea,
+.wrap.taller-lab #out > .nombre{max-width:720px}
+.piezas{display:grid;gap:24px;margin:28px 0 0}
+@media(min-width:900px){ .wrap.taller-lab .piezas.dos{grid-template-columns:1fr 1fr;gap:26px} }
+#out .pieza{display:flex;flex-direction:column;gap:13px;padding:22px 24px;
+  border:1px solid var(--line);border-radius:12px;background:var(--soft)}
+#out .pz-h{display:flex;align-items:baseline;gap:10px;margin:0}
+#out .pz-id{font-family:var(--mono);font-size:16px;font-weight:600;color:var(--red,var(--acento))}
+#out .pz-h h3{margin:0;font-size:21px}
+#out .pz-q{margin:0;font-size:15px;line-height:1.55;color:var(--texto-2)}
+#out .pieza .btn-p{align-self:flex-start}
+#out .pieza textarea{width:100%;box-sizing:border-box;min-height:150px;resize:vertical;
+  background:var(--fondo);border:1px solid var(--line);border-radius:8px;padding:14px 16px;
+  font-family:var(--mono);font-size:12.5px;line-height:1.65;color:var(--ink)}
+#out .pz-a{display:flex;gap:22px;flex-wrap:wrap}
+.lnka{border:0;background:none;padding:0;min-height:44px;cursor:pointer;
+  display:inline-flex;align-items:center;color:var(--red,var(--blue));
+  font-family:var(--sans);font-size:15px;font-weight:600;
+  text-decoration:underline;text-underline-offset:3px}
+.lnka:disabled{color:var(--mid);text-decoration:none;cursor:default}
+#out .pz-n{margin:0;font-size:13.5px;line-height:1.5;color:var(--mid)}
+#out .antesgen{margin:0}
+
+/* Un solo cierre para las dos piezas: antes se repetía entero, con dos
+   títulos idénticos «Dónde va esto en tu TFM». */
+#out .cierra{display:grid;gap:26px;margin-top:38px;padding-top:28px;
+  border-top:1px solid var(--line)}
+@media(min-width:900px){ .wrap.taller-lab #out .cierra{grid-template-columns:1fr 1fr;gap:36px} }
+#out .cbloq{margin:0;max-width:62ch}
+#out .cbloq h3{margin:0 0 10px;font-size:19px}
+#out .cbloq .que{margin:0 0 12px}
+#out .cbloq .que:last-child{margin:0}
+.wrap.taller-lab #out .csig{max-width:720px}
+
+@media(max-width:560px){
+  p.tarea{font-size:18px}
+  .ayb{font-size:13.5px;padding:10px 13px}
+  .ayu-r{gap:7px}
+  #out .pieza{padding:18px 16px}
+  #out .pz-a{gap:18px}
+  .dnd{padding:20px 18px}
+  .dnd-h h2{font-size:20px}
+}

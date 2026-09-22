@@ -12,6 +12,7 @@
    {
     "n": "01",
     "titulo": "Reparte los roles",
+    "tarea": "Escribe tres papeles que haces tú y, sobre todo, **qué NO decide cada uno**.",
     "que": [
      "Trabajando con IA lo haces todo tú: pides, ejecutas y validas. Y como los tres papeles viven en la misma cabeza, **el que valida siempre le da la razón al que pidió**.",
      "Un rol no es un modo de trabajo ni un «cambio de sombrero»: un sombrero te lo pones y te lo quitas. Es una frontera. Y la frontera solo existe si está escrita — sobre todo **lo que ese rol NO decide**."
@@ -128,6 +129,7 @@
    {
     "n": "02",
     "titulo": "Nombra el checkpoint",
+    "tarea": "Ponle nombre al papel que no produce nada y di **cuándo te interrumpe**.",
     "que": [
      "Es el papel que no produce nada. Su único trabajo es interrumpir y preguntar: **¿seguimos resolviendo el problema correcto?**",
      "En una empresa, esa función aparece sola: alguien discute, alguien frena, alguien pregunta en una reunión. Trabajando solo con IA **eliminas toda esa fricción de golpe**. Ganas velocidad y pierdes los controles que venían gratis. Este los recrea a mano."
@@ -198,6 +200,7 @@
    {
     "n": "03",
     "titulo": "Escribe tus líneas rojas",
+    "tarea": "Escribe tres cosas concretas que no vas a hacer, **antes de necesitarlas**.",
     "que": [
      "Los límites que no están escritos **se negocian solos a las once de la noche** de un jueves con una entrega encima. Se escriben antes de necesitarlos. Después ya no son límites: son excusas.",
      "Y ojo con el matiz: **un principio no es un límite.** «Ser riguroso» no ha frenado nunca a nadie. Un límite dice qué no vas a hacer, en concreto."
@@ -267,6 +270,7 @@
    {
     "n": "04",
     "titulo": "Define tu unidad de valor",
+    "tarea": "Di qué cuenta como salida en tu trabajo y **qué deja de contar desde hoy**.",
     "que": [
      "Sin una definición de qué cuenta como salida, **todo cuenta**: el documento bonito, la conversación interesante, el prototipo que nadie ha visto. Y entonces no puedes saber si avanzas ni qué descartar."
     ],
@@ -317,6 +321,7 @@
    {
     "n": "05",
     "titulo": "Adopta las tres reglas",
+    "tarea": "Cópialas tal cual —son las únicas que no se adaptan— y **di dónde las vas a pegar**.",
     "que": [
      "Un **encargo** no es un prompt. Un prompt es una petición; un encargo dice también qué no se puede tocar, cómo se comprueba que está bien y cuándo hay que parar.",
      "Estas tres reglas son las únicas de todo el método que **se copian tal cual, sin adaptar**. No hace falta que las entiendas hoy: las vas a entender la primera vez que te salven."
@@ -377,6 +382,7 @@
    {
     "n": "06",
     "titulo": "Estrena tu catálogo",
+    "tarea": "Abre el catálogo de errores. **Hoy basta con abrirlo**, aunque se quede vacío.",
     "que": [
      "Los errores sin nombre se repiten, porque cada vez parecen nuevos. Un fallo descrito en un párrafo no se reconoce cuando vuelve con otra ropa en otro sitio. Con un nombre, sí. **El nombre no es decoración: es el índice.**",
      "Hoy lo único que hay que hacer es **abrirlo**. Si todavía no tienes ningún fallo que apuntar, déjalo vacío: un catálogo vacío ya tiene sitio donde caer la primera entrada, y eso es todo lo que hace falta el primer día."
@@ -445,6 +451,7 @@
    {
     "n": "07",
     "titulo": "Instala el gate externo",
+    "tarea": "Di a quién de fuera le vas a enseñar esto y **con qué fecha**.",
     "que": [
      "Puedes trabajar semanas con un sistema impecable **sin tocar el mundo real ni una sola vez**. Y desde dentro se siente exactamente igual que ir bien: el trabajo interno siempre tiene una siguiente pregunta bien formulada, y contestarla se siente como progreso. Lo es — de otra cosa.",
      "Este es el único control del método que **no puedes delegar en nadie**. Todos los demás se escriben, se automatizan, saltan solos. Este exige que salgas tú."
@@ -516,6 +523,7 @@
     "parte": "1A",
     "esContraste": true,
     "titulo": "Contraste crítico",
+    "tarea": "Vuelve sobre las siete reglas y **pásales las tres pruebas**.",
     "que": [
      "Este paso es el que separa un protocolo de un formulario relleno. Son las tres preguntas que en clase te haría un compañero. Aquí te las haces tú, que es más difícil: hazlas **antes** de generar el protocolo, y no se las pases al asistente."
     ],
@@ -586,6 +594,7 @@
    {
     "n": "09",
     "titulo": "Para qué y para quién",
+    "tarea": "Escribe un nombre o un cargo concreto y **la decisión que esa persona toma hoy peor de lo que podría**.",
     "que": [
      "Lo primero que pregunta un tribunal, con otras palabras, es **a quién le importa esto**. Si la respuesta es «a las empresas del sector», no hay respuesta: las empresas no deciden, deciden personas con un cargo y un problema.",
      "Escribe un nombre o un cargo concreto, y la decisión que esa persona toma hoy peor de lo que podría."
@@ -659,6 +668,7 @@
    {
     "n": "10",
     "titulo": "Por dónde empiezo",
+    "tarea": "Escribe la primera pieza, qué sabrás cuando esté y **qué NO vas a hacer todavía**.",
     "que": [
      "Un TFM no se hace entero de una vez, y el orden en que lo empiezas decide cuánto vas a tirar. **Empieza por lo que te enseñe si estás equivocado**, no por lo que sea más fácil o más vistoso.",
      "Escribe la primera pieza, qué vas a saber cuando esté, y —esto es lo importante— qué **no** vas a hacer todavía aunque te apetezca."
@@ -732,6 +742,7 @@
    {
     "n": "11",
     "titulo": "Cuánto cuesta y cuándo",
+    "tarea": "Tres fechas y un orden de magnitud. **Escríbelos aunque te dé vergüenza.**",
     "que": [
      "Tres fechas y un orden de magnitud. **Nadie te va a pedir cuentas por estas cifras**: están aquí para que en junio puedas comparar lo que creías con lo que pasó, en vez de escribir el capítulo de viabilidad desde cero y de memoria.",
      "Si una fecha te da vergüenza escribirla, escríbela igual. Es la información más útil de esta hoja."
@@ -908,7 +919,7 @@
     ],
     "abierto": [
      "Qué pasa el 22",
-     "Pasado mañana cierras proyecto. Lo que acabas de escribir **no tiene que acertar**: tiene que estar fechado, para que dentro de ocho meses puedas ver el día en que dejó de ser cierto. Si el 22 cambias de idea, vuelve aquí y reescríbelo — la hoja sigue abierta."
+     "**Pasado mañana cierras proyecto.** Lo que acabas de escribir no tiene que acertar: tiene que estar fechado, para que dentro de ocho meses puedas ver el día en que dejó de ser cierto. Si el 22 cambias de idea, vuelve aquí y reescríbelo — la hoja sigue abierta."
     ],
     "cierre": [
      "Este es mi proyecto en una página. Cuando trabajemos sobre él, ten en",
@@ -916,7 +927,15 @@
      "aleja de eso, dímelo antes de ejecutarlo."
     ]
    }
-  ]
+  ],
+  "donde": {
+   "cuando": "En casa, después de la sesión del 20 de octubre. No hace falta acabarla de una sentada.",
+   "encaja": "Es la primera de seis. Cada IA-Lab deja una pieza, y las seis son el esqueleto de tu TFM."
+  },
+  "cierra": {
+   "tfm": "Dónde van en tu TFM",
+   "abierto": "Qué queda abierto"
+  }
  },
  "hojas/mmdd31/0.json": {
   "titulo": "Si todavía no tienes idea",
@@ -945,6 +964,7 @@
    {
     "n": "01",
     "titulo": "Tu materia prima",
+    "tarea": "Cuatro listas cortas, escritas por ti. **No busques que suenen bien: busca que sean verdad.**",
     "que": [
      "Cuatro listas cortas. Las escribes tú, no el asistente — y esto es lo único de la hoja que no admite atajo: **si esta parte la escribe un modelo, todo lo que venga después no es de nadie.**",
      "No busques que suenen bien. Busca que sean verdad."
@@ -1009,6 +1029,7 @@
    {
     "n": "02",
     "titulo": "Por lo que te pagarían hoy",
+    "tarea": "Escribe **por qué alguien pondría dinero encima de la mesa hoy**, no qué sabes hacer.",
     "que": [
      "La pregunta que más proyectos salva. No es qué sabes hacer: es **por qué alguien pondría dinero encima de la mesa hoy**."
     ],
@@ -1038,6 +1059,7 @@
    {
     "n": "03",
     "titulo": "Generar por tandas",
+    "tarea": "Escribe primero la tuya y **después** pide ideas al asistente, por tandas.",
     "que": [
      "Doce ideas pedidas de una vez son casi siempre **una idea doce veces**: el modelo se queda en la zona más probable y le cambia el envoltorio. Así que se entra por tres puntas distintas.",
      "Y la tuya va primero. Si la escribes después de leer cuatro suyas, ya no es tuya: es una variante de las suyas con tus palabras."
@@ -1083,6 +1105,7 @@
    {
     "n": "04",
     "titulo": "Las reglas del máster",
+    "tarea": "Pasa **todas** las fichas por las reglas. Abren o cierran la puerta: no puntúan.",
     "que": [
      "**Aquí empiezas si ya traías idea.** Da igual de dónde salga: propia, del asistente o de una conversación.",
      "No son preferencias y no puntúan: abren o cierran la puerta. Y se pasan sobre **todas** las fichas, no sobre cuatro que hayas elegido antes — elegir antes de filtrar es justo como se cuela la que estaba mejor escrita."
@@ -1121,6 +1144,7 @@
    {
     "n": "05",
     "titulo": "Quién ha elegido esto",
+    "tarea": "Di qué ficha es tuya y cuál es del asistente. **Esto no se lo preguntes a él.**",
     "que": [
      "Antes de quedarte con ninguna. Hazlo tú — **no se lo preguntes al asistente**, que en esto es parte interesada."
     ],
@@ -1173,6 +1197,7 @@
    {
     "n": "06",
     "titulo": "Antes de levantarte, escribe a alguien",
+    "tarea": "Escribe a alguien de fuera. Pregúntale **por lo que hace hoy**, no por tu idea.",
     "que": [
      "Hasta aquí todo ha pasado entre tu cabeza y tu asistente. Esto es lo único que mete algo de fuera, y es lo que hace que la elección de la semana que viene no sea otra vez una opinión tuya bien ordenada.",
      "No preguntes por la idea: preguntar por la idea produce cortesía, no información. Pregunta **por lo que hace hoy**, que es justo el hueco de tu ficha que sigue sin comprobar."
@@ -1195,6 +1220,7 @@
    {
     "n": "07",
     "titulo": "Qué te contestaron",
+    "tarea": "Copia lo que te dijeron, **literal y con nombre**. Sin parafrasear.",
     "que": [
      "Segunda sentada. Antes de tocar las fichas: lo que te dijeron, **literal**, con quién lo dijo. Si lo parafraseas ya es tuyo y no suyo."
     ],
@@ -1217,6 +1243,7 @@
    {
     "n": "08",
     "titulo": "Diferencia, frente a quién",
+    "tarea": "De las que han pasado las reglas, di **en qué eres diferente y frente a quién**.",
     "que": [
      "De las que han pasado las reglas, quedan pocas. Ahora sí: en qué eres diferente. Cuatro formas, no catorce."
     ],
@@ -1297,6 +1324,7 @@
    {
     "n": "09",
     "titulo": "La que gana",
+    "tarea": "Elige una y escribe **cuánto cuesta conseguir la evidencia**, no cuánto vale el negocio.",
     "que": [
      "Elige una. Y ponle lo que mata proyectos imposibles en la primera semana en vez de en la última.",
      "El coste no es el del negocio imaginado: es **el coste de conseguir la evidencia**. Cuántas conversaciones, qué datos, cuánto dinero tuyo en herramientas o en una prueba."
@@ -1348,6 +1376,7 @@
    {
     "n": "10",
     "titulo": "Lo que todavía no sabes",
+    "tarea": "Escribe **lo que has dado por cierto sin comprobar**, ahora que todavía se ve.",
     "que": [
      "Toda idea elegida descansa sobre algo que has dado por cierto sin comprobar. Escríbelo ahora, mientras se ve."
     ],
@@ -1424,7 +1453,11 @@
    "claim": "",
    "cifras": []
   },
-  "doc": "Mi idea de TFM"
+  "doc": "Mi idea de TFM",
+  "donde": {
+   "cuando": "Cuando quieras, antes de cerrar proyecto el 22 de octubre. Son dos sentadas con una noche en medio.",
+   "encaja": "No es de ninguna sesión: es la hoja de la que sale la idea que vas a trabajar en las seis."
+  }
  },
  "hojas/mmdd31/encargo.json": {
   "titulo": "Tu plantilla de encargo",
@@ -1466,6 +1499,7 @@
    {
     "n": "01",
     "titulo": "El objetivo",
+    "tarea": "Escribe **qué decisión tuya mejora** cuando esto esté hecho. No qué quieres que haga.",
     "que": [
      "Qué decisión tuya tiene que mejorar cuando esto esté hecho. **No qué quieres que haga**: eso es una tarea.",
      "Trabaja sobre la defensa de tu idea, que es lo que tienes encima esta semana."
@@ -1505,6 +1539,7 @@
    {
     "n": "02",
     "titulo": "Qué no es",
+    "tarea": "Escribe en dos líneas **qué no quieres que haga, aunque le parezca útil.**",
     "que": [
      "El límite: **qué no quieres que haga, aunque le parezca útil.** Es la parte que más cambia la respuesta y la que casi nadie escribe.",
      "Dos líneas bastan."
@@ -1558,6 +1593,7 @@
    {
     "n": "03",
     "titulo": "Los criterios",
+    "tarea": "Escribe cómo vas a saber si sirve, **antes de verlo**.",
     "que": [
      "Cómo vas a saber si sirve, **antes de verlo**. Si sólo puedes juzgarlo cuando lo tienes delante, no tenías criterio: tenías gusto."
     ],
@@ -1596,6 +1632,7 @@
    {
     "n": "04",
     "titulo": "La condición de parada",
+    "tarea": "Escribe **qué le hace volver a preguntarte en vez de seguir.**",
     "que": [
      "Qué le hace **volver a preguntarte en vez de seguir**. Normalmente: qué dato te falta.",
      "Y una cosa que conviene saber antes de escribirla: **es probable que no la obedezca.** Se escribe igual — la condición no controla al modelo, crea el sitio donde puedes mirar. Sin ella, su silencio sobre lo que le falta es indistinguible de que no le falte nada."
@@ -1631,6 +1668,7 @@
    {
     "n": "05",
     "titulo": "El contexto",
+    "tarea": "Escribe qué proyecto es, qué está decidido y **qué no se toca**.",
     "que": [
      "Va el primero en la plantilla y **el último en tu cabeza**, y es a propósito: ahora que sabes qué pides y qué aceptarás, ya sabes qué hace falta contar.",
      "Qué proyecto, qué está decidido y **qué no se toca**."
@@ -1709,6 +1747,10 @@
   "nota": [
    "Se guarda solo en este navegador. No pide cuentas ni contraseñas.",
    "No hace falta tener ningún asistente abierto para hacerla."
-  ]
+  ],
+  "donde": {
+   "cuando": "Cuando tengas un encargo real que hacer. Se rellena en diez minutos y se reutiliza siempre.",
+   "encaja": "No es de ninguna sesión: es la plantilla que vas a usar en las seis y en el TFM."
+  }
  }
 }
