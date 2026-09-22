@@ -1,0 +1,85 @@
+<!-- Plantilla del correo de «enlace mágico» de Supabase.
+     Se pega en Authentication → Emails → Magic Link.
+
+     Reglas de correo, que no son las de la web:
+     · Todo en línea. Los clientes de correo tiran las hojas de estilo.
+     · Tablas y no flex. Outlook sigue usando el motor de Word.
+     · Nada de SVG: de ahí el PNG servido desde el propio sitio.
+     · Diseñado en claro. El modo oscuro del correo es impredecible y hay
+       clientes que invierten los colores por su cuenta; por eso el texto no
+       depende nunca del color para entenderse.
+     · Ancho máximo 520 px y botón de 44 px de alto, como en la web.
+
+     Variables de Supabase: {{ .ConfirmationURL }} es el enlace. -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0"
+       style="background:#FCF9F6;margin:0;padding:32px 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">
+  <tr>
+    <td align="center">
+      <!-- Preencabezado: lo que se lee en la bandeja antes de abrir. -->
+      <div style="display:none;max-height:0;overflow:hidden;opacity:0">Tu enlace para entrar. Caduca en una hora y solo funciona una vez.</div>
+
+      <table width="520" cellpadding="0" cellspacing="0" border="0"
+             style="max-width:520px;width:100%;background:#FFFFFF;border:1px solid #DCD3CA;border-radius:14px">
+        <tr>
+          <td style="padding:32px 32px 0">
+            <img src="https://guia.qtorb.com/logo-correo.png" width="48" height="48" alt=""
+                 style="display:block;border:0;border-radius:10px">
+            <div style="margin-top:14px;font-family:'IBM Plex Mono',Consolas,monospace;font-size:11px;
+                        letter-spacing:.12em;text-transform:uppercase;color:#8C1D2F">Guía AI-First</div>
+            <h1 style="margin:10px 0 0;font-size:26px;line-height:1.2;letter-spacing:-.01em;color:#0E1526;font-weight:700">
+              Entra sin contraseña</h1>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:16px 32px 0;font-size:16px;line-height:1.55;color:#414C63">
+            <p style="margin:0 0 18px">Pulsa el botón y entras. <strong style="color:#0E1526">Ábrelo en el
+              mismo dispositivo desde el que lo pediste</strong> — si lo pediste en el portátil y lo abres
+              en el móvil, no funciona.</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:6px 32px 0">
+            <table cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="background:#8C1D2F;border-radius:8px">
+                  <a href="{{ .ConfirmationURL }}"
+                     style="display:inline-block;padding:14px 30px;min-height:44px;box-sizing:border-box;
+                            font-size:16px;font-weight:600;color:#FFFFFF;text-decoration:none">Entrar</a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:22px 32px 0;font-size:13.5px;line-height:1.5;color:#6B6259">
+            <p style="margin:0 0 6px">Si el botón no va, copia esta dirección en tu navegador:</p>
+            <p style="margin:0;word-break:break-all"><a href="{{ .ConfirmationURL }}"
+               style="color:#8C1D2F">{{ .ConfirmationURL }}</a></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:22px 32px 28px">
+            <div style="border-top:1px solid #DCD3CA;padding-top:18px;font-size:13.5px;line-height:1.55;color:#6B6259">
+              <p style="margin:0 0 10px">El enlace <strong style="color:#0E1526">caduca en una hora</strong> y
+                sirve una sola vez.</p>
+              <p style="margin:0">Si no has pedido entrar, ignora este correo. Nadie puede entrar en tu
+                cuenta sin abrir este enlace, y no hace falta que hagas nada.</p>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <table width="520" cellpadding="0" cellspacing="0" border="0" style="max-width:520px;width:100%">
+        <tr>
+          <td style="padding:18px 8px 0;font-size:12.5px;line-height:1.6;color:#6B6259">
+            Entrar sirve para que lo que escribes en un dispositivo aparezca en otro. Las hojas funcionan
+            igual sin cuenta.<br>
+            <a href="https://guia.qtorb.com/privacidad.html" style="color:#8C1D2F">Qué guarda esta web</a>
+            &nbsp;·&nbsp;
+            <a href="https://guia.qtorb.com/" style="color:#8C1D2F">guia.qtorb.com</a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
