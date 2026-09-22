@@ -297,7 +297,7 @@ No es grave hoy y sí lo es mañana: el texto se dibuja dos veces, cualquier ret
 
 Se abandona el enlace de artifact de Claude como forma de compartirla: quedaba fijado en una versión antigua y solo Albert podía soltarlo. **Este registro pasa a considerar esa URL el sitio canónico de la web.**
 
-**Pendiente, con su orden:** el dominio propio `guia.qtorb.com` va en dos pasos y en este orden — primero el CNAME en CDMON (`guia` → `qtorb.github.io.`), y solo cuando resuelva, el campo *Custom domain* en GitHub. Al revés, Pages deja de servir la URL `github.io` y la web queda caída mientras propaga.
+**Pendiente, con su orden:** el dominio propio `guia.qtorb.com` va en dos pasos y en este orden — primero el CNAME en CDMON (`guia` → `qtorb.github.io`), y solo cuando resuelva, el campo *Custom domain* en GitHub. Al revés, Pages deja de servir la URL `github.io` y la web queda caída mientras propaga. *(Hecho el 22 de septiembre. Ver esa entrada: faltaba un tercer paso que aquí no estaba previsto.)*
 
 **Y una consecuencia que decide el calendario:** el dossier del alumno vive en el `localStorage` del dominio donde entró. Cambiar de dominio lo vacía. Si los alumnos van a guardar trabajo, el dominio definitivo tiene que estar montado **antes** de darles ningún enlace.
 
@@ -426,3 +426,38 @@ La regla que evita que vuelva a pasar lo de arriba, y solo esa:
 **Un asiento por pasada, no por pull request.** Una pasada es un cambio que altera lo que el alumno ve o lo que la hoja le pide. Veintiocho PR no son veintiocho asientos: son cinco pasadas —migración, sistema visual, hoja 0, hoja 1, jerarquía—. Un arreglo suelto no abre asiento; se acumula al de su pasada.
 
 **Y cada asiento de web lleva las mismas tres cifras, medidas igual:** alto y palabras de la pantalla que más pesa, fallos AAA de contraste y táctiles, y peso de la primera carga en móvil. Sin las tres, el asiento no dice si la pasada mejoró o empeoró — que es justo lo que no supimos contestar hasta que hubo que medirlo a posteriori.
+
+---
+
+## 22 de septiembre de 2026 · `guia.qtorb.com`, y el tercer paso que faltaba
+
+**La URL canónica de la web pasa a ser https://guia.qtorb.com.** `qtorb.github.io/guia-ai-first/` redirige y deja de usarse.
+
+**Por qué ahora y no en octubre.** Lo que ata el trabajo del alumno no es el hosting: es el **nombre del host**. El dossier vive en el `localStorage` del origen por el que entró, así que el único movimiento que lo borra es cambiar de hostname. Hoy ese movimiento es gratis —ningún alumno ha escrito nada todavía—; el 20 de octubre cuesta el trabajo de una promoción entera. Y a partir de aquí el dominio es propio, de modo que **mudar la web de Pages a Netlify, a Vercel o a una máquina propia es cambiar un registro DNS**: la URL no cambia y nadie pierde nada. Eso es exactamente lo que se compra con un dominio propio.
+
+**Subdominio y no carpeta** (`guia.qtorb.com`, no `qtorb.com/guia`). Dos razones: apunta a donde se quiera con independencia de la web principal, y mantiene su almacenamiento separado del de `qtorb.com`. Son orígenes distintos y la elección es irreversible sin borrar lo que haya escrito la gente.
+
+### El tercer paso, que la entrada del 13 de septiembre no preveía
+
+Los dos pasos conocidos eran: CNAME en CDMON (`guia` → `qtorb.github.io`) y, cuando resuelva, *Custom domain* en GitHub. Falta uno, y es de código:
+
+**Con dominio propio, Pages sirve el proyecto en la RAÍZ del dominio**, no en `/guia-ai-first/`. Así que `base` en `vite.config.js` pasa de `'/guia-ai-first/'` a `'/'`, y el dominio se escribe en `public/CNAME` para que viaje dentro del artefacto de cada despliegue.
+
+**Los tres van juntos o hay ventana rota**, en los dos sentidos: si el código sale antes de que el dominio esté, `github.io` queda con todos los recursos en 404; si el dominio entra antes que el código, la web nueva queda igual. El orden que funciona es DNS → comprobar que resuelve → *Custom domain* en GitHub y fusionar el cambio de `base` en la misma sentada.
+
+**Y no se rompe nada más**, porque el enrutador es de tipo hash: las rutas son `#/ia-lab/1` y no hacen falta reglas de reescritura en el servidor. Fue una decisión tomada por otro motivo que aquí sale gratis.
+
+**Dos detalles operativos, los dos aprendidos a base de fallar.**
+
+El primero: **en CDMON el destino va SIN punto final.** `qtorb.github.io`, no `qtorb.github.io.`. En un fichero de zona el punto final es la forma correcta —marca el nombre como absoluto— y así estaba escrito aquí, pero el formulario de CDMON pide el nombre y pone el punto él: con el punto contesta «El valor no és vàlid» y no deja guardar. La documentación de GitHub lo escribe con punto porque describe la zona, no el panel del registrador. Cada panel tiene su convención y hay que mirar el ejemplo que el propio formulario enseña debajo del campo.
+
+El segundo: el certificado HTTPS tarda un rato en emitirse después de fijar el dominio, y hasta que está, *Enforce HTTPS* aparece en gris en los ajustes de GitHub. No es un error; es la espera.
+
+### La documentación se muda al repositorio, el mismo día
+
+Este registro vivía en el proyecto de Claude, separado del código que describe, y pasó lo previsible: entre el 13 y el 22 de septiembre la web se reconstruyó entera y el registro siguió describiendo un fichero de 4,2 MB que ya no existía. Ahora vive en `docs/REGISTRO.md`.
+
+Con él van dos cosas que convierten la regla de los asientos en algo comprobable:
+
+* **`scripts/medir.mjs`** da las tres cifras de cada asiento —peso de la primera carga en móvil, alto y palabras de la pantalla que más pesa, y los fallos de accesibilidad— y **sale con código 1 si hay alguno**, así que sirve de puerta y no de buena intención. Playwright no se añade como dependencia del proyecto: pesa más que la web entera y sólo hace falta el día que se mide.
+* **El README** deja de ser la plantilla de Vite y dice qué es esto, cómo se publica, dónde está cada cosa y las dos trampas que ya han costado caras: el color literal dentro de una regla que también redefine el fondo, y que el dossier muere al cambiar de dominio.
