@@ -111,7 +111,15 @@ export function useDossier() {
     persistir(next);
   }, [persistir]);
 
-  return { dossier, guardaHoja, guardaNombre, borraHoja, reemplazar, dossierRef };
+  // Releer lo que hay en este navegador y ponerlo en pantalla. Lo usa la
+  // sincronización cuando se trae el dossier de la nube: el fichero ya está
+  // escrito en localStorage y lo que falta es que React se entere.
+  const recargar = useCallback(() => {
+    const d = leerInicial();
+    setDossier(d);
+  }, []);
+
+  return { dossier, guardaHoja, guardaNombre, borraHoja, reemplazar, recargar, dossierRef };
 }
 
 export { LS, LS_VIEJO };

@@ -25,6 +25,14 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+        env:
+          # Sin estas dos, la capa de sincronización queda apagada y la web
+          # se comporta como antes. Son VARIABLES y no secretos a propósito:
+          # la clave anon viaja dentro del JavaScript que descarga cualquiera,
+          # así que esconderla no protegería nada. Lo que protege los datos es
+          # la política de seguridad a nivel de fila — ver docs/SUPABASE.md.
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
