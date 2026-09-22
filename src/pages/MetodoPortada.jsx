@@ -100,8 +100,8 @@ export default function MetodoPortada() {
             salido a la calle, además tienes los cuatro pasos para dejar esa carpeta
             en un repositorio —una carpeta tuya en internet que guarda el historial
             de todo lo que cambies.</p>
-          <p>No hace falta instalar nada ni saber programar. Nada de lo que escribas
-            sale de tu navegador: no hay cuentas ni contraseñas.</p>
+          <p>No hace falta instalar nada ni saber programar. Sin cuenta, lo que escribas
+            es un borrador que no sale de este navegador; entrando, queda guardado.</p>
 
           <div className="acciones">
             <button className="btn" onClick={() => navigate('/metodo/recorrido')}>

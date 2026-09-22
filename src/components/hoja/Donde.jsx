@@ -49,7 +49,8 @@ export default function Donde({
         </div>
         <div>
           <div className="lab">Dónde se guarda</div>
-          <p>Solo en este navegador, según escribes. No pide cuentas ni contraseñas.</p>
+          <p>Sin cuenta, como <b>borrador</b>: vive en este navegador y no viaja contigo a otro
+            dispositivo. Entrando, queda <b>guardado</b> y lo retomas donde sea.</p>
         </div>
         <div>
           <div className="lab">Dónde encaja en el máster</div>

@@ -5,10 +5,12 @@ Quince minutos, una vez. Al acabar, la web tiene tres puertas de entrada
 portátil le aparece en el móvil.
 
 > **Lo que esto NO es.** No es un control de acceso. Las hojas funcionan
-> enteras sin cuenta y eso no se toca: la página promete en tres sitios que
-> no pide cuentas ni contraseñas, y esa promesa es la que hace que alguien
-> escriba en la hoja 1 lo que piensa de verdad y no lo que queda bien.
-> Entrar sirve para una sola cosa: llevarte lo escrito a otro sitio.
+> enteras sin cuenta y eso no se toca. La web tiene dos estados y los llama
+> siempre igual: sin cuenta se trabaja en **borrador** —lo escrito vive en
+> ese navegador y no sale de ahí—, y entrando queda **guardado**. Que el
+> borrador no salga del navegador es lo que hace que alguien escriba en la
+> hoja 1 lo que piensa de verdad y no lo que queda bien. Entrar sirve para
+> una sola cosa: seguir en otro dispositivo.
 
 **Mientras las dos variables del paso 4 no existan, toda esta capa está
 apagada** y la web se comporta exactamente como antes. Por eso el código

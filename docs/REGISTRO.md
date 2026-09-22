@@ -461,3 +461,28 @@ Con él van dos cosas que convierten la regla de los asientos en algo comprobabl
 
 * **`scripts/medir.mjs`** da las tres cifras de cada asiento —peso de la primera carga en móvil, alto y palabras de la pantalla que más pesa, y los fallos de accesibilidad— y **sale con código 1 si hay alguno**, así que sirve de puerta y no de buena intención. Playwright no se añade como dependencia del proyecto: pesa más que la web entera y sólo hace falta el día que se mide.
 * **El README** deja de ser la plantilla de Vite y dice qué es esto, cómo se publica, dónde está cada cosa y las dos trampas que ya han costado caras: el color literal dentro de una regla que también redefine el fondo, y que el dossier muere al cambiar de dominio.
+
+---
+
+## 22 de septiembre de 2026 · dos estados: borrador y guardado
+
+**La web prometía en seis sitios algo que dejó de ser verdad el día que se montó la capa de cuentas:** «Nada de lo que escribas sale de tu navegador. No hay cuentas ni contraseñas.» Hay cuentas desde el commit de `nube`, y quien entra manda su dossier a un servidor. Una promesa vieja que sobrevive a su propio cambio no es un descuido de copia: es la clase de frase que un alumno cita cuando se entera de lo contrario.
+
+**Lo que se descartó.** La salida rápida era hacer la cuenta obligatoria —autenticado se guarda, no autenticado no se guarda— y así la frase desaparece sin sustituta. Tiene tres costes que no se ven el primer día:
+
+* Las propias hojas dicen en su texto que no se acaban de una sentada («No hace falta acabarla de una sentada», «son dos sentadas con una noche en medio»). Sin guardado local, cerrar la pestaña a media hoja 1 es empezar de cero.
+* La cuenta pasa a ser obligatoria de hecho mientras el deck sigue diciendo que no lo es.
+* El argumento de la hoja 1 —que escribas lo que piensas y no lo que queda bien— se apoya en que lo escrito no vaya a ninguna parte mientras no decidas tú.
+
+**Lo que se decidió: dos estados, y se llaman siempre igual.**
+
+| Estado | Qué significa | Cuándo |
+|---|---|---|
+| **Borrador** | Vive en el `localStorage` de este navegador. No sale de ahí. Si cambias de dispositivo, no viaja | Sin cuenta |
+| **Guardado** | Además va al servidor, y lo retomas donde sea | Entrando |
+
+**Las seis frases reescritas**, todas con esas dos palabras y ninguna otra: `src/pages/Home.jsx`, `src/pages/MetodoPortada.jsx`, `src/components/hoja/Donde.jsx` (el panel «i», apartado *Dónde se guarda*), `src/components/Cuenta.jsx` (titular incluido: «De borrador a guardado»), y las dos notas de pie de `src/data/hojas.json`. Con ellas, `public/privacidad.html` —que ya era honesta, pero llamaba a los dos estados por descripción y no por nombre— y el aviso de `docs/SUPABASE.md`, que citaba la promesa vieja como razón de diseño.
+
+**Lo que esto todavía no resuelve.** Las palabras están; el **indicador no**. Ahora mismo el estado sólo se lee entrando en el panel de cuenta, y un estado que hay que ir a buscar no protege a nadie. Falta que la pantalla diga en todo momento en cuál de los dos estás. Va con la pieza «Lo que llevas», que está en wireframe y no en código.
+
+**Medido antes de entregar:** primera carga en móvil 7 peticiones · 290 KB · 1,4 s; la pantalla que más pesa sigue siendo hoja 1 · bloque a 390 px (2.250 px · 232 palabras · 20 cajas · 6 botones); **0 fallos** de contraste AAA y de área táctil en las 42 combinaciones de ruta, ancho y modo.
