@@ -86,23 +86,59 @@ sea solo enlace, sin contraseñas.
 
 ## 4 · Las dos variables
 
-En Supabase, *Project Settings → API*: copia **Project URL** y **anon public**.
+**La URL** no hace falta buscarla en ningún sitio: es el *Project ID* que sale
+en *Project Settings → General*, con el sufijo de Supabase —
+`https://<project-id>.supabase.co`.
 
-En GitHub, *Settings → Secrets and variables → Actions → Variables → New
-repository variable*, dos veces:
+**La clave** está en *Project Settings → API Keys*. Ahí hay dos listas y
+conviene no confundirlas:
+
+* **Publishable key** (`sb_publishable_…`) — **es esta.** La propia pantalla lo
+  dice: *segura en un navegador si has activado la seguridad a nivel de fila*,
+  que es exactamente lo que hace el paso 2.
+* **Secret keys** (`sb_secret_…`) — **esta nunca.** Se salta la seguridad a
+  nivel de fila y leería las filas de todo el mundo. No sale del panel.
+
+> **Ojo al nombre.** La variable se llama `VITE_SUPABASE_ANON_KEY` por historia
+> —Supabase llamaba *anon* a esta clave hasta hace poco— pero lo que va dentro
+> es la *publishable*. No le cambies el nombre a la variable: el código busca
+> ese. Si algún día la publishable diera problemas, la pestaña *Legacy anon,
+> service_role API keys* sigue teniendo la `anon` del formato antiguo y vale
+> igual.
+
+En GitHub, *Settings → Secrets and variables → Actions → pestaña **Variables**
+→ New repository variable*, dos veces:
 
 | Nombre | Valor |
 |---|---|
-| `VITE_SUPABASE_URL` | `https://<ref>.supabase.co` |
-| `VITE_SUPABASE_ANON_KEY` | la clave `anon public` |
+| `VITE_SUPABASE_URL` | `https://<project-id>.supabase.co` |
+| `VITE_SUPABASE_ANON_KEY` | la clave `sb_publishable_…` |
 
 **Variables y no secretos, a propósito.** Esa clave va dentro del JavaScript
 que se descarga cualquiera: esconderla no protegería nada y guardarla como
 secreto solo haría creer que sí. Lo que protege los datos es la política del
 paso 2.
 
-Relanza el despliegue (*Actions → Deploy a GitHub Pages → Run workflow*) y
-aparecerá el botón **Entrar** al final de la barra.
+Si un nombre se escribe mal, el despliegue **no falla**: simplemente el botón
+«Entrar» no aparece. Es el mismo comportamiento que con las variables
+ausentes, así que conviene comprobar los nombres antes de buscar el fallo en
+otro sitio.
+
+## 5 · Relanzar el despliegue
+
+Las variables se leen al construir, así que hasta que no haya un despliegue
+nuevo no cambia nada.
+
+*Actions* → en la **columna izquierda** pincha **«Deploy a GitHub Pages»** →
+arriba a la derecha aparece **Run workflow**. Ese botón sólo sale dentro de la
+página del workflow, no en la lista general de *Actions* — es donde todo el
+mundo lo busca y no está.
+
+Si no aparece, sirve igual abrir el último despliegue de la lista y darle a
+*Re-run all jobs*: las variables se leen en el momento de ejecutar. Y en
+último caso, cualquier commit a `main` dispara el despliegue.
+
+Cuando termine, aparece el botón **Entrar** al final de la barra.
 
 ---
 
