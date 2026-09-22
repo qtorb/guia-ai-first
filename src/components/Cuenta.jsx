@@ -53,11 +53,15 @@ export default function Cuenta({ n }) {
                 también en tu móvil o en el ordenador de casa. <b>No hace falta para nada más:</b> las
                 hojas funcionan igual sin entrar.
               </p>
-              <div className="ctab3">
-                <button className="ayb" onClick={() => prueba(() => entrarCon('google'))}>Entrar con Google</button>
-                <button className="ayb" onClick={() => prueba(() => entrarCon('github'))}>Entrar con GitHub</button>
-              </div>
-              <div className="ctasep"><span>o con un enlace al correo</span></div>
+              {/* El correo va primero, y no por orden alfabético. Es la única de
+                  las tres puertas que se puede dejar entera con el dominio y el
+                  diseño del sitio: el correo sale de guia.qtorb.com. Google y
+                  GitHub enseñan por el camino la dirección larga del servidor de
+                  autenticación, y eso no se puede cambiar sin pagar un dominio
+                  propio de Supabase — Google solo pinta el nombre y el logo de
+                  una app cuando ha pasado verificación de marca, y esa exige
+                  verificar todos los dominios autorizados, incluido uno que no
+                  es nuestro. */}
               {enviado ? (
                 <p className="ctaok">Te he mandado un enlace a <b>{correo}</b>. Ábrelo desde este mismo dispositivo.</p>
               ) : (
@@ -73,9 +77,18 @@ export default function Cuenta({ n }) {
                     id="ctacorreo" type="email" required placeholder="tu@correo.com"
                     value={correo} onChange={(e) => setCorreo(e.target.value)}
                   />
-                  <button className="btn btn-p" type="submit">Enviar</button>
+                  <button className="btn btn-p" type="submit">Enviar enlace</button>
                 </form>
               )}
+              <div className="ctasep"><span>o con un botón</span></div>
+              <div className="ctab3">
+                <button className="ayb" onClick={() => prueba(() => entrarCon('google'))}>Entrar con Google</button>
+                <button className="ayb" onClick={() => prueba(() => entrarCon('github'))}>Entrar con GitHub</button>
+              </div>
+              {/* Avisar de la dirección rara no la arregla, pero quita el
+                  desconcierto — que es la mitad del problema. */}
+              <p className="ctaav">Estos dos te llevan un momento a una dirección larga acabada en
+                <b> supabase.co</b>. Es el servidor que guarda tu avance; es normal.</p>
               <p className="ctan">
                 Se guarda lo que escribes en las hojas y tu correo, nada más. Puedes borrarlo todo
                 desde aquí cuando quieras.

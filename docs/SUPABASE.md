@@ -74,15 +74,62 @@ Y en *Authentication → URL Configuration*, **Site URL**: `https://guia.qtorb.c
 3. **Authorization callback URL**: la misma que te da Supabase.
 4. Copia **Client ID** y genera un **Client Secret**; los dos a Supabase.
 
-### Enlace por correo
+### Enlace por correo — y es la puerta principal
 
 Ya viene encendido. En *Authentication → Providers → Email*, deja **Confirm
 email** activo y desactiva **Enable email provider password** si quieres que
 sea solo enlace, sin contraseñas.
 
-> El correo que manda Supabase por defecto sale de su servidor compartido y
-> tiene un límite bajo por hora. Para cuarenta personas en una tarde conviene
-> conectar un SMTP propio en *Project Settings → Auth → SMTP Settings*.
+**Va primero en el panel, y no por orden alfabético.** Es la única de las tres
+puertas que se puede dejar entera con el dominio y el diseño del sitio. Google
+y GitHub enseñan por el camino la dirección larga del servidor de Supabase, y
+eso **no se puede quitar gratis**: Google solo pinta el nombre y el logo de una
+app cuando ha pasado *verificación de marca*, y esa exige verificar todos los
+dominios autorizados — incluido el del URI de redirección, que es de Supabase y
+no nuestro. El único arreglo es el add-on de dominio propio, $10/mes sobre plan
+de pago.
+
+**Y hay una razón operativa además de estética:** el servidor de correo que
+Supabase da por defecto es compartido y tiene un límite bajo por hora. Cuarenta
+alumnos entrando la misma tarde lo rozan.
+
+#### Montar el envío propio (Postmark)
+
+1. **En Postmark**, comprueba que el dominio desde el que vas a enviar está
+   verificado (*Sender Signatures* o *Domains*), con sus registros DKIM y de
+   Return-Path puestos en el DNS. Si ya envías desde `qtorb.com`, ya está.
+2. Entra en el **servidor** que vayas a usar → *API Tokens*. El **Server API
+   token** vale a la vez de usuario y de contraseña SMTP.
+3. Usa el flujo **transaccional**, no el de difusión: un enlace de acceso no es
+   una newsletter, y mezclarlos ensucia la reputación de envío de los dos.
+
+#### Conectarlo a Supabase
+
+*Project Settings → Authentication → SMTP Settings* → activar **Enable Custom
+SMTP**:
+
+| Campo | Valor |
+|---|---|
+| Sender email | la dirección verificada en Postmark |
+| Sender name | `Guía AI-First` |
+| Host | `smtp.postmarkapp.com` |
+| Port | `587` |
+| Username | el Server API token |
+| Password | el mismo Server API token |
+
+#### La plantilla
+
+*Authentication → Emails → **Magic Link*** → pega entero el fichero
+[`docs/correo/enlace-magico.html`](correo/enlace-magico.html).
+
+Asunto sugerido: **Tu enlace para entrar en la Guía AI-First**
+
+Está escrito con las reglas del correo, que no son las de la web: todo en
+línea, tablas en vez de flex —Outlook sigue usando el motor de Word—, nada de
+SVG, y diseñado en claro porque el modo oscuro del correo lo invierte cada
+cliente a su manera. Dice además las dos cosas que la gente pregunta siempre:
+que el enlace hay que abrirlo **en el mismo dispositivo** desde el que se pidió,
+y que si no lo has pedido tú no tienes que hacer nada.
 
 ## 4 · Las dos variables
 

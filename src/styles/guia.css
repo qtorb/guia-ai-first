@@ -1833,3 +1833,5 @@ p.ctx b{color:var(--ink)}
   .pielegal span{margin-left:0;flex-basis:100%}
 }
 @media print{.pielegal{display:none}}
+.ctaav{margin:12px 0 0;font-size:12.5px;line-height:1.5;color:var(--mid)}
+.ctaav b{color:var(--texto-2)}
