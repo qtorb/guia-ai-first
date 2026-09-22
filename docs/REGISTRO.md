@@ -486,3 +486,17 @@ Con él van dos cosas que convierten la regla de los asientos en algo comprobabl
 **Lo que esto todavía no resuelve.** Las palabras están; el **indicador no**. Ahora mismo el estado sólo se lee entrando en el panel de cuenta, y un estado que hay que ir a buscar no protege a nadie. Falta que la pantalla diga en todo momento en cuál de los dos estás. Va con la pieza «Lo que llevas», que está en wireframe y no en código.
 
 **Medido antes de entregar:** primera carga en móvil 7 peticiones · 290 KB · 1,4 s; la pantalla que más pesa sigue siendo hoja 1 · bloque a 390 px (2.250 px · 232 palabras · 20 cajas · 6 botones); **0 fallos** de contraste AAA y de área táctil en las 42 combinaciones de ruta, ancho y modo.
+
+---
+
+## 22 de septiembre de 2026 · el correo de alta, que era otra plantilla
+
+**Supabase no manda «Magic Link» la primera vez.** Cuando la dirección todavía no existe como usuario, el mismo botón de «entrar con correo» dispara **Confirm signup**, que es otra plantilla. «Magic Link» sólo se usa a partir de la segunda vez.
+
+Consecuencia práctica: se diseñó, se corrigió y se pegó la plantilla equivocada para el caso que importa. El primer correo que ve un alumno —justo el que decide si vuelve— salía en inglés, sin diseño, sin logo y con el enlace como texto azul subrayado. Se descubrió a base de recibirlo, después de dos rondas arreglando la otra.
+
+**Lo que se añade:** `docs/correo/confirmar-alta.html`, con el mismo diseño y tres frases distintas —dice que es la primera vez y que el enlace además confirma la dirección; el botón pone «Confirmar y entrar»; y el aviso de abajo dice que no se crea ninguna cuenta mientras el enlace no se abra—. Las dos plantillas comparten estructura a propósito: **si se cambia una, se cambia la otra.**
+
+**Las otras cuatro plantillas de esa pantalla no se disparan con este montaje** —no hay contraseñas, ni invitaciones, ni forma de cambiar el correo desde la web—. Queda escrito en `SUPABASE.md` para no volver a descubrirlo por correo.
+
+**De la misma tanda, el botón.** En la captura que llegó, «Entrar» aparecía como texto con un recuadro pegado: el tamaño del botón salía del `padding` del `<a>`, y el cliente se lo comió. Rehecho para que salga de la celda —`padding`, `height` y `bgcolor` como atributo, además del estilo— más la altura de línea. Comprobado quitando a la vez el bloque `<style>` y el `padding` del enlace: sigue midiendo 109×48 y sigue pareciendo un botón. Sólo desaparece si un cliente tira las dos cosas, y para eso debajo está el enlace en texto.

@@ -119,19 +119,37 @@ SMTP**:
 | Username | el Server API token |
 | Password | el mismo Server API token |
 
-#### La plantilla
+#### Las plantillas · son DOS, y esto no es opcional
 
-*Authentication → Emails → **Magic Link*** → pega entero el fichero
-[`docs/correo/enlace-magico.html`](correo/enlace-magico.html).
+**Supabase no manda «Magic Link» la primera vez.** Cuando la dirección todavía
+no existe como usuario, el mismo botón de «entrar con correo» dispara la
+plantilla **Confirm signup**; «Magic Link» sólo se usa a partir de la segunda
+vez. Si sólo se pega una, el primer correo que ve un alumno —justo el que
+decide si vuelve— sale en inglés, sin diseño y sin logo. Se descubrió a base
+de recibirlo.
 
-Asunto sugerido: **Tu enlace para entrar en la Guía AI-First**
+| Cuándo sale | Plantilla de Supabase | Fichero | Asunto sugerido |
+|---|---|---|---|
+| La **primera** vez con esa dirección | *Confirm signup* | [`docs/correo/confirmar-alta.html`](correo/confirmar-alta.html) | **Confirma tu correo y entras en la Guía AI-First** |
+| Todas las **siguientes** | *Magic Link* | [`docs/correo/enlace-magico.html`](correo/enlace-magico.html) | **Tu enlace para entrar en la Guía AI-First** |
 
-Está escrito con las reglas del correo, que no son las de la web: todo en
+Las dos están en *Authentication → Emails*, y cada una se pega entera en su
+pestaña. Comparten estructura a propósito: **si se cambia una, se cambia la
+otra.** La diferencia real son tres frases y el rótulo del botón.
+
+Las otras plantillas de esa pantalla —*Invite user*, *Change Email Address*,
+*Reset Password*, *Reauthentication*— no se disparan con este montaje: no hay
+contraseñas, no hay invitaciones y no se puede cambiar el correo desde la web.
+El día que alguna de esas cosas exista, su plantilla habrá que escribirla.
+
+Están escritas con las reglas del correo, que no son las de la web: todo en
 línea, tablas en vez de flex —Outlook sigue usando el motor de Word—, nada de
-SVG, y diseñado en claro porque el modo oscuro del correo lo invierte cada
-cliente a su manera. Dice además las dos cosas que la gente pregunta siempre:
-que el enlace hay que abrirlo **en el mismo dispositivo** desde el que se pidió,
-y que si no lo has pedido tú no tienes que hacer nada.
+SVG, y con `color-scheme` declarado para que Apple Mail y Outlook dejen de
+inventarse la versión oscura. El botón no depende del enlace: el tamaño sale de
+la celda, así que un cliente que se coma el `padding` del `<a>` deja el botón
+igual de grande. Dicen además las dos cosas que la gente pregunta siempre: que
+el enlace hay que abrirlo **en el mismo dispositivo** desde el que se pidió, y
+que si no lo has pedido tú no tienes que hacer nada.
 
 ## 4 · Las dos variables
 
