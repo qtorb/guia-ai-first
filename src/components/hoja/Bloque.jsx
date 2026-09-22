@@ -1,4 +1,5 @@
 import Grupo from './Grupo';
+import Comparacion from './Comparacion';
 import TextoInline from '../TextoInline';
 import { esc } from '../../lib/inline';
 import { alPortapapeles } from '../../lib/portapapeles';
@@ -48,6 +49,10 @@ export default function Bloque({ b, datos, onChange, total, rotulo, preparar, du
           <div className="cicb"><TextoInline texto={b.cicatriz} /></div>
         </details>
       )}
+      {/* La comparación grabada: dos ejecuciones reales, una al lado de otra.
+          Va dentro de la página para que la hoja funcione sin ningún modelo
+          abierto al otro lado, que es la condición de autogestión. */}
+      {b.comparacion && <Comparacion c={b.comparacion} />}
       {b.thead && (
         <div className="thead">
           {b.thead.map((t, i) => <div key={i}>{esc(t)}</div>)}

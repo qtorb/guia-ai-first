@@ -1425,5 +1425,290 @@
    "cifras": []
   },
   "doc": "Mi idea de TFM"
+ },
+ "hojas/mmdd31/encargo.json": {
+  "titulo": "Tu plantilla de encargo",
+  "doc": "Mi encargo",
+  "kicker": "IA-Lab · MMDD31 · UPF-BSM",
+  "lede": "Un encargo no es un prompt largo. Dice también **qué no quieres**, **cómo vas a juzgarlo** y **cuándo tiene que parar**. Son cinco partes y las vas a usar en las seis sesiones.",
+  "facts": [
+   "Cinco partes, una por pantalla",
+   "Quince minutos",
+   "Salida: tu encargo, listo para pegar"
+  ],
+  "acumula": true,
+  "apertura": {
+   "titulo": "Dos maneras de pedir lo mismo",
+   "que": [
+    "Antes de explicarte nada: esto es lo que devuelve el modelo cuando se le pide de las dos maneras. La misma pregunta, el mismo día, el mismo modelo.",
+    "**No hay nada que escribir en esta pantalla.** Mírala treinta segundos y pasa."
+   ],
+   "comparacion": {
+    "izq": {
+     "titulo": "Como lo pide todo el mundo",
+     "peticion": "Ayúdame a preparar la defensa de mi idea de proyecto.",
+     "salida": "[ PENDIENTE · se pega aquí lo que devolvió el modelo en el ensayo ]"
+    },
+    "der": {
+     "titulo": "Como lo vas a pedir tú",
+     "peticion": "El mismo encargo, con las cinco partes. Lo vas a escribir en las próximas cinco pantallas.",
+     "salida": "[ PENDIENTE · se pega aquí lo que devolvió el modelo en el ensayo ]"
+    },
+    "nota": "La pregunta, sin contestar todavía: **¿qué ha cambiado, y cuál de las dos te ahorra más trabajo?**",
+    "sello": "[ modelo y fecha del ensayo ]"
+   },
+   "salida": {
+    "txt": "¿Ya sabes lo que es un encargo? Salta a la plantilla en blanco.",
+    "paso": -1
+   }
+  },
+  "bloques": [
+   {
+    "n": "01",
+    "titulo": "El objetivo",
+    "que": [
+     "Qué decisión tuya tiene que mejorar cuando esto esté hecho. **No qué quieres que haga**: eso es una tarea.",
+     "Trabaja sobre la defensa de tu idea, que es lo que tienes encima esta semana."
+    ],
+    "grupos": [
+     {
+      "tipo": "campo",
+      "campos": [
+       {
+        "k": "e_obj",
+        "label": "Qué decisión tiene que mejorar",
+        "rows": 2,
+        "ph": "Ej. Decidir con qué tres argumentos defiendo mi idea, y cuál dejo fuera"
+       }
+      ]
+     }
+    ],
+    "check": [
+     "¿Tu objetivo se puede dar por terminado **sin que tú decidas nada**? Entonces es una tarea, no un objetivo.",
+     "¿Aparece un verbo de decisión —elegir, descartar, priorizar—? Si no, reescríbelo."
+    ],
+    "ejemplo": [
+     [
+      "Objetivo",
+      "Decidir con qué tres argumentos defiendo mi idea el día 22, y cuál dejo fuera."
+     ],
+     [
+      "Lo que NO es un objetivo",
+      "«Hacer un análisis de mi idea». Eso se puede terminar sin que yo decida nada."
+     ]
+    ],
+    "plantilla": [
+     "OBJETIVO",
+     "  {e_obj}"
+    ]
+   },
+   {
+    "n": "02",
+    "titulo": "Qué no es",
+    "que": [
+     "El límite: **qué no quieres que haga, aunque le parezca útil.** Es la parte que más cambia la respuesta y la que casi nadie escribe.",
+     "Dos líneas bastan."
+    ],
+    "comparacion": {
+     "izq": {
+      "titulo": "Sin esta parte",
+      "peticion": "El encargo con objetivo, criterios y parada — pero sin decir qué no quieres.",
+      "salida": "[ PENDIENTE · se pega aquí lo que devolvió el modelo en el ensayo ]"
+     },
+     "der": {
+      "titulo": "Con esta parte",
+      "peticion": "El mismo encargo, añadiendo dos líneas de «qué no es».",
+      "salida": "[ PENDIENTE · se pega aquí lo que devolvió el modelo en el ensayo ]"
+     },
+     "nota": "Dos líneas de diferencia. Míralo y sigue: **esto es lo que compra el «qué no es»**.",
+     "sello": "[ modelo y fecha del ensayo ]"
+    },
+    "grupos": [
+     {
+      "tipo": "campo",
+      "campos": [
+       {
+        "k": "e_no",
+        "label": "Qué no quiero que haga",
+        "rows": 2,
+        "ph": "Ej. No me des una estructura de presentación. No me escribas las frases. No me propongas cambiar la idea"
+       }
+      ]
+     }
+    ],
+    "check": [
+     "¿Lo que has escrito **podría escribirlo cualquiera de tu clase**? Entonces todavía no es tu límite, es una buena intención.",
+     "¿Has dicho que no a algo que de verdad te apetecería que hiciera? Si no, no estás limitando nada."
+    ],
+    "ejemplo": [
+     [
+      "Qué no es",
+      "No me des una estructura de presentación. No me escribas las frases. No me propongas cambiar la idea: la idea ya está elegida."
+     ],
+     [
+      "Lo que no sirve",
+      "«No seas genérico.» No limita nada, porque nadie cree estar siéndolo."
+     ]
+    ],
+    "plantilla": [
+     "QUÉ NO ES",
+     "  {e_no}"
+    ]
+   },
+   {
+    "n": "03",
+    "titulo": "Los criterios",
+    "que": [
+     "Cómo vas a saber si sirve, **antes de verlo**. Si sólo puedes juzgarlo cuando lo tienes delante, no tenías criterio: tenías gusto."
+    ],
+    "grupos": [
+     {
+      "tipo": "campo",
+      "campos": [
+       {
+        "k": "e_cri",
+        "label": "Cómo sabré si sirve",
+        "rows": 3,
+        "ph": "Ej. Tres argumentos como máximo. Cada uno con la objeción que le van a hacer. Ninguno que dependa de un dato que yo no tenga hoy"
+       }
+      ]
+     }
+    ],
+    "check": [
+     "**Imagina la peor respuesta que aun así cumpliría tus criterios.** ¿Te sirve? Si te sirve, tus criterios no distinguen nada.",
+     "¿Alguno de tus criterios se puede contestar con sí o con no mirando el resultado? Si ninguno, todavía son deseos."
+    ],
+    "ejemplo": [
+     [
+      "Criterios",
+      "Tres argumentos como máximo. Cada uno con la objeción que le van a hacer. Y ninguno que dependa de un dato que yo no tenga hoy."
+     ],
+     [
+      "Lo que no sirve",
+      "«Que sea completo y profesional.» Cualquier respuesta lo cumple."
+     ]
+    ],
+    "plantilla": [
+     "CRITERIOS",
+     "  {e_cri}"
+    ]
+   },
+   {
+    "n": "04",
+    "titulo": "La condición de parada",
+    "que": [
+     "Qué le hace **volver a preguntarte en vez de seguir**. Normalmente: qué dato te falta.",
+     "Y una cosa que conviene saber antes de escribirla: **es probable que no la obedezca.** Se escribe igual — la condición no controla al modelo, crea el sitio donde puedes mirar. Sin ella, su silencio sobre lo que le falta es indistinguible de que no le falte nada."
+    ],
+    "grupos": [
+     {
+      "tipo": "campo",
+      "campos": [
+       {
+        "k": "e_par",
+        "label": "Qué le hace parar y preguntarme",
+        "rows": 2,
+        "ph": "Ej. Si para responder necesitas saber a quién va dirigida la idea y yo no te lo he dicho, no lo inventes: pregúntamelo y para"
+       }
+      ]
+     }
+    ],
+    "check": [
+     "¿Has nombrado **qué dato concreto** te falta? Si no lo has nombrado, no puede saber cuándo parar.",
+     "Cuando lo ejecutes, mira si ha parado. Casi seguro que no. Eso es información, no un fallo tuyo."
+    ],
+    "ejemplo": [
+     [
+      "Condición de parada",
+      "Si necesitas un dato que no te he dado —el público, el presupuesto, la fecha—, no lo inventes: dímelo y para."
+     ]
+    ],
+    "plantilla": [
+     "CONDICIÓN DE PARADA",
+     "  {e_par}"
+    ]
+   },
+   {
+    "n": "05",
+    "titulo": "El contexto",
+    "que": [
+     "Va el primero en la plantilla y **el último en tu cabeza**, y es a propósito: ahora que sabes qué pides y qué aceptarás, ya sabes qué hace falta contar.",
+     "Qué proyecto, qué está decidido y **qué no se toca**."
+    ],
+    "grupos": [
+     {
+      "tipo": "campo",
+      "campos": [
+       {
+        "k": "e_ctx",
+        "label": "Qué tiene que saber para empezar",
+        "rows": 3,
+        "ph": "Ej. Mi idea de TFM es [dos líneas]. La defiendo el 22. La idea ya está elegida y el público también"
+       }
+      ]
+     }
+    ],
+    "check": [
+     "¿Has dicho **qué NO se toca**? Es lo que más se olvida y lo que más caro sale.",
+     "¿Sobra algo? El contexto que no cambia la respuesta sólo la alarga."
+    ],
+    "ejemplo": [
+     [
+      "Contexto",
+      "Mi idea de TFM es una escuela de música para adultos principiantes. La defiendo el 22. La idea ya está elegida y el público también: no los discutimos."
+     ]
+    ],
+    "plantilla": [
+     "CONTEXTO",
+     "  {e_ctx}"
+    ]
+   }
+  ],
+  "salidas": [
+   {
+    "doc": "Mi encargo",
+    "fichero": "encargo",
+    "titulo": "Tu encargo",
+    "que": "Ya está escrito: lo llevas construyendo cinco pantallas. Pásale las dos pruebas de abajo, cópialo y pégaselo a tu asistente.",
+    "entrega": "No hay que entregarlo. Es tuyo y lo vas a reusar en las seis sesiones.",
+    "pegar": "Tal cual, al principio de la conversación. Y si no funciona, mira cuál de las cinco partes estaba floja.",
+    "guardar": "Descárgalo. En noviembre lo vas a abrir para el mapa de mercado, y no vas a acordarte de las cinco partes.",
+    "plantilla": [
+     "CONTEXTO",
+     "  {e_ctx}",
+     "",
+     "OBJETIVO",
+     "  {e_obj}",
+     "",
+     "QUÉ NO ES",
+     "  {e_no}",
+     "",
+     "CRITERIOS",
+     "  {e_cri}",
+     "",
+     "CONDICIÓN DE PARADA",
+     "  {e_par}"
+    ],
+    "cierre": [
+     "# Cuando lo uses: qué te devolvió que no esperabas.",
+     "#",
+     "# (Esta línea es para ti. Bórrala antes de pegarlo.)"
+    ],
+    "tfm": [
+     "Dos pruebas antes de darlo por bueno",
+     "**La prueba del compañero.** ¿Tu encargo lo podría usar el de al lado cambiando dos palabras? Entonces no es tuyo todavía — es la misma prueba que en clase se le hace a la respuesta, aplicada aquí a la pregunta.\n\n**La prueba del peor resultado.** Imagina lo peor que podría devolverte cumpliendo tus cinco partes. Si te sirve, todavía no has pedido lo que querías."
+    ],
+    "abierto": [
+     "Dónde lo vas a volver a usar",
+     "En las seis sesiones de IA-Lab. Los encargos que encontrarás dentro de cada ficha tienen estas mismas cinco partes — cuando los veas, ya sabrás de dónde salen y qué cambiar si no te sirven."
+    ],
+    "accion": "Generar mi encargo"
+   }
+  ],
+  "pie": "IA-Lab · Máster en Dirección de Marketing Digital · UPF Barcelona School of Management",
+  "nota": [
+   "Se guarda solo en este navegador. No pide cuentas ni contraseñas.",
+   "No hace falta tener ningún asistente abierto para hacerla."
+  ]
  }
 }

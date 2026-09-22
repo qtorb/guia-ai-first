@@ -38,6 +38,23 @@ export default function IaLabList({ dossierCtl }) {
         <h1>Mis hojas de IA-Lab</h1>
         <p className="lede">{SES.lede}</p>
       </header>
+      {/* Las herramientas no son sesiones y no van numeradas: si entran en la
+          lista, el alumno lee «0, 1, encargo, 2» y se pregunta qué sesión es
+          ésa. Van encima, con otra forma. */}
+      {(SES.herramientas || []).map((h) => (
+        <a
+          key={h.n}
+          className="herr"
+          href={`#/ia-lab/${h.n}`}
+          onClick={(e) => { e.preventDefault(); navigate(`/ia-lab/${h.n}`); }}
+        >
+          <div className="hrb">
+            <b>{h.titulo}</b>
+            <span>{h.lede}</span>
+          </div>
+          <em>Abrir →</em>
+        </a>
+      ))}
       <div className="ses">
         {SES.sesiones.map((s) => {
           const st = estadoDe(dossier, s.n);
