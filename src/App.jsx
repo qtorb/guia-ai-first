@@ -13,6 +13,7 @@ import ProtocoloIA from './pages/ProtocoloIA';
 import Mapa from './pages/Mapa';
 import MetodoPortada from './pages/MetodoPortada';
 import Plan30 from './pages/Plan30';
+import Panel from './pages/Panel';
 
 function Barra({ n }) {
   const navigate = useNavigate();
@@ -78,6 +79,10 @@ function Shell({ dossierCtl, n }) {
           <Route path="/metodo/recorrido" element={<ProtocoloIA />} />
           <Route path="/guia" element={<GuiaIndex />} />
           <Route path="/guia/:ident" element={<GuiaCapitulo />} />
+          {/* El panel de actividad. No sale en ningún menú y solo funciona
+              con la cuenta del administrador: lo comprueba la base de datos. */}
+          <Route path="/panel" element={<Panel n={n} vista="resumen" />} />
+          <Route path="/panel/personas" element={<Panel n={n} vista="personas" />} />
         </Routes>
       </main>
       <PieLegal />

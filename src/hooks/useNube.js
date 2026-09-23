@@ -82,6 +82,21 @@ export function useNube(dossierCtl) {
     return () => clearTimeout(debounce.current);
   }, [dossier, uid]);
 
+  // El método y el plan de 30 días no pasan por el dossier de IA-Lab: avisan
+  // con un evento cuando guardan, y se sube igual, con el mismo retraso.
+  useEffect(() => {
+    if (!uid) return undefined;
+    const alCambiar = () => {
+      if (conflictoRef.current) return;
+      clearTimeout(debounce.current);
+      debounce.current = setTimeout(() => {
+        enviarRemoto(uid).catch((e) => setError(e.message || String(e)));
+      }, 2000);
+    };
+    window.addEventListener('guia-local', alCambiar);
+    return () => window.removeEventListener('guia-local', alCambiar);
+  }, [uid]);
+
   const resolver = useCallback(async (cual) => {
     if (!uid) return;
     try {

@@ -114,6 +114,9 @@ export default function ProtocoloIA() {
   function guarda(datos, p, extra = {}) {
     try {
       localStorage.setItem(LLAVE, JSON.stringify({ ...datos, ...extra, _paso: Math.min(p, N_PASOS) }));
+      // Aviso para la copia en la nube: sin él, el avance del método solo
+      // subía cuando cambiaba una hoja de IA-Lab.
+      window.dispatchEvent(new Event('guia-local'));
     } catch (e) { /* almacenamiento no disponible */ }
   }
 
