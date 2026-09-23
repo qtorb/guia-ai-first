@@ -10,6 +10,7 @@ import { useDossier } from '../hooks/useDossier';
 import { recolectarCheckKeys, generarProtocolo, algoRellenado, slug, bloquesSinEscribir, seccionesConPlantilla, cuerpoDeSalida } from '../lib/protocolo';
 import Comparacion from '../components/hoja/Comparacion';
 import Donde from '../components/hoja/Donde';
+import { AtascoEnlace, AtascoHoja } from '../components/hoja/Atasco';
 import { guiaEntera } from '../lib/guiaTexto';
 import { bajar, alPortapapeles } from '../lib/portapapeles';
 
@@ -52,6 +53,8 @@ export default function IaLabHoja({ dossierCtl }) {
   // sin decirlo: el alumno aparecía en mitad de la hoja sin saber por qué.
   const [volviendo, setVolviendo] = useState(() => (guardadas._paso || 1) > 1);
   const debounceRef = useRef(null);
+  // El botón de atasco se abre en el paso en el que estás y se cierra al cambiar.
+  const [atasco, setAtasco] = useState(null);
   const barraRef = useRef(null);
 
   // paso 0 + bloques + (contraste, si la hoja lo tiene aparte) + salida.
@@ -425,10 +428,14 @@ export default function IaLabHoja({ dossierCtl }) {
             {!verTodo && (
               <div className="pnav">
                 {numPaso > 1 ? <button className="btn btn-g" onClick={() => irPaso(numPaso - 1)}>← Atrás</button> : <span />}
+                <AtascoEnlace onAbrir={() => setAtasco(numPaso)} />
                 {numPaso < NPASOS
                   ? <button className="btn btn-p" onClick={() => irPaso(numPaso + 1)}>Siguiente →</button>
                   : <span className="fin">Ya está. Has terminado.</span>}
               </div>
+            )}
+            {!verTodo && atasco === numPaso && (
+              <AtascoHoja hoja={sesionN} paso={numPaso} onCerrar={() => setAtasco(null)} />
             )}
           </section>
         ))}

@@ -47,6 +47,7 @@ export default function Plan30() {
   const [m, setM] = useState(() => leerMarcas());
   useEffect(() => {
     try { localStorage.setItem(LLAVE_PLAN, JSON.stringify(m)); } catch (e) { /* modo privado */ }
+    window.dispatchEvent(new Event('guia-local'));
   }, [m]);
 
   const hechas = [0, 1, 2, 3].filter((i) => m['s' + (i + 1)]).length;

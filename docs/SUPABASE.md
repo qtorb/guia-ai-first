@@ -240,3 +240,18 @@ cuando alguien ejerza su derecho de supresión.
    UPF-BSM. No es lo mismo y conviene preguntarlo antes, no después.
 3. **Qué pasa en junio**, cuando el curso acaba: si las filas se borran, se
    archivan o se quedan.
+
+## Panel de actividad y botón de atasco (23-09-2026)
+
+`supabase/migrations/0002_panel_y_atasco.sql` se aplica a mano en el SQL
+Editor, igual que la 0001, **antes** de publicar la web que la usa.
+
+* `panel_personas()` y `panel_atascos()`: solo responden a la cuenta
+  albert@qtorb.com con el correo confirmado. Devuelven metadatos —paso,
+  total, si la hoja está terminada, fechas, vía de entrada— y nunca lo
+  escrito. No usan `last_sign_in_at`: la página de privacidad dice que no se
+  guarda cuándo entras.
+* `atasco`: tabla sin identidad (hoja, paso, frase de 280 caracteres como
+  máximo). Cualquiera puede insertar; nadie puede leer por la API.
+* Sin límite de peticiones propio. Si algún día llega basura al botón, se
+  añade entonces; hoy sería una regla sin disparador.
