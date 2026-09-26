@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import sesionesData from '../data/sesiones.json';
 import { plan, dondeEstoy } from '../lib/plan30';
+import { segundaSentada } from '../lib/segundaSentada';
 
 // La portada del sitio: dos puertas, una por cada cosa que aquí se trabaja.
 // Port de portadaHtml() — guia-ai-first-src/index.html:3462-3479 — rehecho en
@@ -12,18 +13,36 @@ const SESIONES = sesionesData.sesiones || [];
 // Qué decirle a quien ya ha empezado. Lo sabe este navegador, no un servidor:
 // si no hay nada guardado, la puerta no dice nada y recibe desde cero.
 function avanceLab(dossier) {
+  // Lo primero, si toca: la segunda sentada de la hoja 0 lleva días esperando.
+  const vuelta = segundaSentada((dossier.hojas || {})[10]);
+  if (vuelta) {
+    return {
+      est: `Tu segunda sentada te espera · escribiste hace ${vuelta.dias} días`,
+      cta: 'Volver a la segunda sentada →',
+      destino: vuelta.destino,
+    };
+  }
   const empezadas = Object.entries(dossier.hojas || {})
     .filter(([, h]) => Object.keys(h).some((k) => k[0] !== '_' && String(h[k] ?? '').trim()));
   if (!empezadas.length) return null;
-  if (empezadas.length > 1) return `${empezadas.length} hojas empezadas`;
+  // Con una sola hoja empezada, la tarjeta lleva directa a esa hoja; con
+  // varias, a la lista.
+  if (empezadas.length > 1) {
+    const terminadas = empezadas.filter(([, h]) => h._fin).length;
+    const est = `${empezadas.length} hojas empezadas`
+      + (terminadas === 1 ? ' · 1 terminada' : terminadas > 1 ? ` · ${terminadas} terminadas` : '');
+    return { est, destino: '/ia-lab' };
+  }
   const [n, h] = empezadas[0];
   const ses = SESIONES.find((s) => String(s.n) === String(n));
   const etiqueta = ses ? (ses.etiqueta ?? ses.n) : n;
-  if (h._paso && h._total) return `Sesión ${etiqueta} · paso ${h._paso} de ${h._total}`;
-  return `Sesión ${etiqueta}, empezada`;
+  const destino = `/ia-lab/${n}`;
+  if (h._fin) return { est: `Sesión ${etiqueta} · terminada`, destino };
+  if (h._paso && h._total) return { est: `Sesión ${etiqueta} · paso ${h._paso} de ${h._total}`, destino };
+  return { est: `Sesión ${etiqueta}, empezada`, destino };
 }
 
-// Devuelve {est, cta} porque las dos cosas van juntas: «ver dónde vas» solo
+// Devuelve {est, cta, destino} porque las dos cosas van juntas: «ver dónde vas» solo
 // tiene sentido si el plan de 30 días está corriendo; a medio montar, lo que
 // toca decir es «sigue montándolo».
 function avanceMetodo() {
@@ -35,12 +54,12 @@ function avanceMetodo() {
     try {
       const aqui = dondeEstoy(plan(d));
       if (aqui && !aqui.pasado) {
-        return { est: `Tu método, montado · día ${aqui.dia} de ${aqui.total}`, cta: 'Ver dónde vas →' };
+        return { est: `Tu método, montado · día ${aqui.dia} de ${aqui.total}`, cta: 'Ver dónde vas →', destino: '/metodo/plan' };
       }
     } catch (e) { /* sin plan legible: se cae al paso */ }
   }
   const paso = Math.min(Number(d._paso) || 1, 7);
-  return { est: `Empezado · paso ${paso} de 7`, cta: 'Seguir montándolo →' };
+  return { est: `Empezado · paso ${paso} de 7`, cta: 'Seguir montándolo →', destino: '/metodo/recorrido' };
 }
 
 export default function Home({ dossierCtl }) {
@@ -63,19 +82,19 @@ export default function Home({ dossierCtl }) {
         </div>
 
         <div className="dospuertas">
-          <a className="gp gp-lab" href="#/ia-lab" onClick={ir('/ia-lab')}>
+          <a className="gp gp-lab" href={`#${lab ? lab.destino : '/ia-lab'}`} onClick={ir(lab ? lab.destino : '/ia-lab')}>
             <span className="gpk">MMDD31 · UPF-BSM</span>
             <b>IA-Lab</b>
             <span className="gpd">
-              Seis sesiones sobre tu propio TFM. De cada una sales con una pieza escrita:
-              el mapa de tu mercado, tu propuesta de valor, tu matriz de captación.
-              Se hace, no se lee.
+              Seis sesiones sobre tu propio TFM. De cada una sales con una pieza escrita.
+              Hoy están la hoja para elegir idea, la sesión 1 y tu plantilla de encargo;
+              las demás llegan con cada sesión. Se hace, no se lee.
             </span>
-            {lab && <span className="p-est">{lab}</span>}
-            <span className="gpgo">{lab ? 'Seguir donde lo dejaste →' : 'Empezar el recorrido →'}</span>
+            {lab && <span className="p-est">{lab.est}</span>}
+            <span className="gpgo">{lab ? (lab.cta || 'Seguir donde lo dejaste →') : 'Empezar el recorrido →'}</span>
           </a>
 
-          <a className="gp gp-guia" href="#/metodo" onClick={ir('/metodo')}>
+          <a className="gp gp-guia" href={`#${metodo ? metodo.destino : '/metodo'}`} onClick={ir(metodo ? metodo.destino : '/metodo')}>
             <span className="gpk">Abierto a cualquiera</span>
             <b>El Método AI-First</b>
             <span className="gpd">

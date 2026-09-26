@@ -9,7 +9,7 @@
    "_nota": "n=10 y no 0 a propósito: el motor comprueba «if (SESION)» en seis sitios y un 0 es falsy — no guardaría ni cargaría. La etiqueta es lo que se ve.",
    "titulo": "Si todavía no tienes idea",
    "asignatura": "Antes de empezar · opcional",
-   "salida": "Tus ideas de TFM, filtradas y puntuadas, y una elegida con precio y fechas",
+   "salida": "Tus ideas de TFM filtradas con las reglas del máster, y una elegida con su coste y sus fechas",
    "fichero": "hojas/mmdd31/0.json"
   },
   {

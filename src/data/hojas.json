@@ -942,9 +942,9 @@
   "kicker": "IA-LAB · MMDD31 · UPF-BSM",
   "lede": "Una manera ordenada de buscar la idea de tu TFM. No te la da: te da la materia prima, la genera contigo y la filtra con las reglas del máster puestas por delante.",
   "facts": [
-   "Dos sentadas, con unos días en medio",
+   "Dos sentadas, con dos o tres días en medio",
    "No es obligatoria",
-   "Si ya tienes idea, empieza en el bloque 04",
+   "Si ya tienes idea, empieza en el paso 5",
    "Salida: el correo de ideas a dirección"
   ],
   "intro": {
@@ -952,7 +952,7 @@
    "que": [
     "Esto no es un formulario. **La idea que elijas aquí se va a llevar una parte importante de tus próximos ocho meses.** Ponle el tiempo que haga falta, y hazla cuando estés despejado: si la haces cansado, la va a hacer tu asistente por ti.",
     "**Son dos sentadas.** La primera acaba con un mensaje enviado a una persona de verdad. La segunda, dos o tres días después, empieza por lo que te haya contestado — y entonces eliges. Eso es lo único que impide que la decisión salga entera de tu cabeza y de la de tu asistente.",
-    "**No es obligatoria.** Si ya tienes una idea —o varias— sáltate hasta el bloque 04, que es donde se filtra. Y si tu TFM va a ser el plan de marketing de una empresa a la que ya tienes acceso, esta hoja no es para ti: tu idea es esa empresa."
+    "**No es obligatoria.** Si ya tienes una idea —o varias— sáltate hasta el paso 5, que es donde se filtra. Y si tu TFM va a ser el plan de marketing de una empresa a la que ya tienes acceso, esta hoja no es para ti: tu idea es esa empresa."
    ]
   },
   "paso0": {
@@ -1094,7 +1094,7 @@
      "lab": "Lo que le pides en cada tanda",
      "txt": "«Tanda A: de la gente a la que puedo llegar, ¿quién paga hoy por no resolver esto? Tanda B: partiendo de este problema que me importa, ¿quién paga hoy por no tenerlo resuelto? Tanda C: partiendo de este cambio que veo venir, ¿qué se vuelve vendible cuando eso sea normal?»"
     },
-    "aviso": "**Tres tandas y ya está. No hay contador.** Si las trece fichas acaban orbitando dos compradores, eso no es un fallo que haya que corregir generando más: es información, y se ve sola en el bloque siguiente. Lo único que haces es anotarlo — *materia prima estrecha: el acceso que me falta es ___*.",
+    "aviso": "**Tres tandas y ya está. No hay contador.** Si las trece fichas acaban orbitando dos compradores, eso no es un fallo que haya que corregir generando más: es información, y se ve sola en el paso siguiente. Lo único que haces es anotarlo — *materia prima estrecha: el acceso que me falta es ___*.",
     "cicatriz": "La ficha no lleva «paga porque» a propósito. Era el único campo que pedía una afirmación causal, y la retórica vive ahí: «paga porque pierde clientes cada mes y ya lo ha intentado sin éxito» son tres cosas sin comprobar en una línea, y esa ficha gana. Un gasto actual no se puede narrar. Y «yo llego así» lo escribes tú: es el único campo que un modelo no puede rellenar honestamente — escribirá «a través de mi red profesional» y la idea sobrevivirá sobre un acceso inventado.",
     "plantilla": [
      "MI IDEA, ANTES DE VER NINGUNA",
@@ -1139,14 +1139,17 @@
       ]
      }
     ],
-    "aviso": "Tres estados, no dos: **cumple · no cumple · no sé decirlo.** El tercero también para — no es un aprobado con dudas, es lo siguiente que tienes que averiguar. Y el motivo del descarte se escribe **ahora**, no al final cuando toque redactar el correo: reconstruido después no es un registro, es una coartada."
+    "aviso": "Tres estados, no dos: **cumple · no cumple · no sé decirlo.** El tercero también para — no es un aprobado con dudas, es lo siguiente que tienes que averiguar. Y el motivo del descarte se escribe **ahora**, no al final cuando toque redactar el correo: reconstruido después no es un registro, es una coartada.",
+    "salidaPuertas": {
+     "titulo": "LAS IDEAS QUE CONSIDERÉ"
+    }
    },
    {
     "n": "05",
-    "titulo": "Quién ha elegido esto",
-    "tarea": "Di qué ficha es tuya y cuál es del asistente. **Esto no se lo preguntes a él.**",
+    "titulo": "Quién está eligiendo",
+    "tarea": "Mira quién está empujando antes de quedarte con ninguna. Esto no se lo preguntes a tu asistente.",
     "que": [
-     "Antes de quedarte con ninguna. Hazlo tú — **no se lo preguntes al asistente**, que en esto es parte interesada."
+     "Hazlo tú: el asistente, en esto, es parte interesada."
     ],
     "grupos": [
      {
@@ -1154,9 +1157,9 @@
       "campos": [
        {
         "k": "c1",
-        "label": "¿Quién eligió: tú, o la que estaba mejor redactada?",
-        "ph": "reconstruye el momento en que decidiste",
-        "hint": "Si no puedes reconstruirlo, decidió otro.",
+        "label": "¿Cuál te tira más, y es por la idea o por cómo está redactada?",
+        "ph": "la ficha, y por qué, en una línea",
+        "hint": "Si lo que te gusta es la frase, esa ficha la escribió otro.",
         "rows": 3
        }
       ]
@@ -1187,9 +1190,9 @@
      }
     ],
     "plantilla": [
-     "QUIÉN ELIGIÓ ESTO",
+     "QUIÉN ESTÁ ELIGIENDO",
      "",
-     "Quién eligió: {c1}",
+     "La que me tira, y por qué: {c1}",
      "Por qué paré ahí: {c2}",
      "Líneas que no son mías: {c3}"
     ]
@@ -1199,7 +1202,7 @@
     "titulo": "Antes de levantarte, escribe a alguien",
     "tarea": "Escribe a alguien de fuera. Pregúntale **por lo que hace hoy**, no por tu idea.",
     "que": [
-     "Hasta aquí todo ha pasado entre tu cabeza y tu asistente. Esto es lo único que mete algo de fuera, y es lo que hace que la elección de la semana que viene no sea otra vez una opinión tuya bien ordenada.",
+     "Hasta aquí todo ha pasado entre tu cabeza y tu asistente. Esto es lo único que mete algo de fuera, y es lo que hace que la elección de dentro de unos días no sea otra vez una opinión tuya bien ordenada.",
      "No preguntes por la idea: preguntar por la idea produce cortesía, no información. Pregunta **por lo que hace hoy**, que es justo el hueco de tu ficha que sigue sin comprobar."
     ],
     "grupos": [
@@ -1229,16 +1232,28 @@
       "tipo": "respuestas",
       "pre": "r",
       "n": 3
+     },
+     {
+      "tipo": "checks",
+      "campos": [
+       {
+        "k": "r_nadie",
+        "txt": "No ha contestado nadie. Elijo igual, y lo dejo escrito."
+       }
+      ]
      }
     ],
-    "aviso": "Si no ha contestado nadie, no se bloquea nada: eliges igual, con una línea escrita — *elegí sin respuesta de nadie*. Es un dato sobre tu acceso, y de los buenos: significa que la parte más difícil del proyecto sigue sin resolver y ya lo sabes ahora, no en marzo.",
+    "aviso": "Si no ha contestado nadie, no se bloquea nada: marca la casilla de abajo y eliges igual. Es un dato sobre tu acceso, y de los buenos: significa que la parte más difícil del proyecto sigue sin resolver y ya lo sabes ahora, no en marzo.",
     "plantilla": [
      "LO QUE ME DIJERON",
      "",
      "{r1_quien}: {r1_dijo}",
      "{r2_quien}: {r2_dijo}",
-     "{r3_quien}: {r3_dijo}"
-    ]
+     "{r3_quien}: {r3_dijo}",
+     "",
+     "[{r_nadie}] Nadie contestó."
+    ],
+    "vuelta": true
    },
    {
     "n": "08",
@@ -1249,65 +1264,24 @@
     ],
     "grupos": [
      {
-      "tipo": "fila3",
-      "sep": true,
-      "campos": [
+      "tipo": "finalistas",
+      "n": 3,
+      "de": [
        {
-        "k": "d1",
-        "label": "Finalista 1",
-        "ph": "su asa"
+        "pre": "fp",
+        "n": 1
        },
        {
-        "k": "d1d",
-        "label": "Diferente en",
-        "ph": "único / más rápido / menor coste / mejores prestaciones"
+        "pre": "fa",
+        "n": 4
        },
        {
-        "k": "d1q",
-        "label": "Frente a quién — tres nombres",
-        "ph": "tres alternativas concretas, con nombre"
-       }
-      ]
-     },
-     {
-      "tipo": "fila3",
-      "sep": true,
-      "campos": [
-       {
-        "k": "d2",
-        "label": "Finalista 2",
-        "ph": "su asa"
+        "pre": "fb",
+        "n": 4
        },
        {
-        "k": "d2d",
-        "label": "Diferente en",
-        "ph": "…"
-       },
-       {
-        "k": "d2q",
-        "label": "Frente a quién — tres nombres",
-        "ph": "…"
-       }
-      ]
-     },
-     {
-      "tipo": "fila3",
-      "sep": true,
-      "campos": [
-       {
-        "k": "d3",
-        "label": "Finalista 3",
-        "ph": "su asa"
-       },
-       {
-        "k": "d3d",
-        "label": "Diferente en",
-        "ph": "…"
-       },
-       {
-        "k": "d3q",
-        "label": "Frente a quién — tres nombres",
-        "ph": "…"
+        "pre": "fc",
+        "n": 4
        }
       ]
      }
@@ -1436,7 +1410,7 @@
   ],
   "salida": {
    "titulo": "Tus ideas, y el correo a dirección",
-   "que": "Esto es lo que te llevas, y es **el correo que hay que enviar a dirección con algunas ideas de proyecto**: las que consideraste, por qué se cayeron las que se cayeron, y la que eliges. Los motivos ya están escritos desde el bloque 04 — aquí no se reconstruyen, se pegan. Guárdalo también para ti: cuando dentro de unos meses dudes de por qué elegiste esto, la respuesta está aquí — y de paso es «motivaciones y punto de partida», uno de los contenidos obligatorios del TFM.",
+   "que": "Esto es lo que te llevas, y es **el correo que hay que enviar a dirección con algunas ideas de proyecto**: las que consideraste, por qué se cayeron las que se cayeron, y la que eliges. Los motivos ya están escritos desde el paso 5 — aquí no se reconstruyen, se pegan. Guárdalo también para ti: cuando dentro de unos meses dudes de por qué elegiste esto, la respuesta está aquí — y de paso es «motivaciones y punto de partida», uno de los contenidos obligatorios del TFM.",
    "cierre": [
     "Y una línea más, que es obligatoria y solo tiene dos formas:",
     "",
@@ -1455,9 +1429,10 @@
   },
   "doc": "Mi idea de TFM",
   "donde": {
-   "cuando": "Cuando quieras, antes de cerrar proyecto el 22 de octubre. Son dos sentadas con una noche en medio.",
+   "cuando": "Cuando quieras, antes de cerrar proyecto el 22 de octubre. Son dos sentadas, con dos o tres días en medio.",
    "encaja": "No es de ninguna sesión: es la hoja de la que sale la idea que vas a trabajar en las seis."
-  }
+  },
+  "omitirLineasVacias": true
  },
  "hojas/mmdd31/encargo.json": {
   "titulo": "Tu plantilla de encargo",
