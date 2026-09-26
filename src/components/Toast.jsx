@@ -18,7 +18,7 @@ export function ToastProvider({ children }) {
   return (
     <ToastCtx.Provider value={toast}>
       {children}
-      <div id="toast" className={on ? 'on' : ''}>{msg}</div>
+      <div id="toast" role="status" aria-live="polite" aria-atomic="true" className={on ? 'on' : ''}>{msg}</div>
     </ToastCtx.Provider>
   );
 }

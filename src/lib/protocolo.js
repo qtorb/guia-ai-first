@@ -15,6 +15,7 @@ export function recolectarCheckKeys(hoja) {
       if (g.tipo === 'checks') {
         (g.campos || []).forEach((c) => set.add(c.k));
       }
+      if (g.tipo === 'nadie') set.add(g.k);
     });
   };
   (hoja.bloques || []).forEach((b) => visitarGrupos(b.grupos));
@@ -203,8 +204,13 @@ export function generarProtocolo(hoja, datos, checkKeys, nombre, kicker, salida)
   const dudas = dudasApuntadas(hoja, datos, parte);
   if (dudas.length) {
     t += 'LO QUE TODAVÍA NO ENTIENDO\n\n';
+    // Sin partes, la hoja numera por pasos, igual que la tira.
+    const porPasos = !(hoja.partes || []).length;
     dudas.forEach((d) => {
-      t += '  Bloque ' + (+d.n) + ' · ' + d.titulo + '\n';
+      const donde = porPasos
+        ? 'Paso ' + ((hoja.bloques || []).findIndex((b) => b.n === d.n) + 2)
+        : 'Bloque ' + (+d.n);
+      t += '  ' + donde + ' · ' + d.titulo + '\n';
       if (d.txt) t += '     ' + d.txt + '\n';
     });
     t += '\n' + L + '\n\n';

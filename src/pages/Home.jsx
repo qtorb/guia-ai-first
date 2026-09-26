@@ -37,7 +37,14 @@ function avanceLab(dossier) {
   const ses = SESIONES.find((s) => String(s.n) === String(n));
   const etiqueta = ses ? (ses.etiqueta ?? ses.n) : n;
   const destino = `/ia-lab/${n}`;
-  if (h._fin) return { est: `Sesión ${etiqueta} · terminada`, destino };
+  // Terminada: lo que queda por hacer ahí es volver a su documento.
+  if (h._fin) {
+    return {
+      est: `Sesión ${etiqueta} · terminada`,
+      cta: 'Ver tu documento →',
+      destino: h._total ? `/ia-lab/${n}?paso=${h._total}` : destino,
+    };
+  }
   if (h._paso && h._total) return { est: `Sesión ${etiqueta} · paso ${h._paso} de ${h._total}`, destino };
   return { est: `Sesión ${etiqueta}, empezada`, destino };
 }
@@ -91,7 +98,7 @@ export default function Home({ dossierCtl }) {
               las demás llegan con cada sesión. Se hace, no se lee.
             </span>
             {lab && <span className="p-est">{lab.est}</span>}
-            <span className="gpgo">{lab ? (lab.cta || 'Seguir donde lo dejaste →') : 'Empezar el recorrido →'}</span>
+            <span className="gpgo">{lab ? (lab.cta || 'Seguir donde lo dejaste →') : 'Ver las hojas →'}</span>
           </a>
 
           <a className="gp gp-guia" href={`#${metodo ? metodo.destino : '/metodo'}`} onClick={ir(metodo ? metodo.destino : '/metodo')}>

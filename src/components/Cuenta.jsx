@@ -11,12 +11,27 @@ export default function Cuenta({ n }) {
   const [correo, setCorreo] = useState('');
   const [enviado, setEnviado] = useState(false);
   const [fallo, setFallo] = useState(null);
+  // Borrar pide dos confirmaciones en la propia página: 0 nada, 1 la primera
+  // pregunta, 2 la última. Sin window.confirm, que en móvil es un cuadro del
+  // sistema que se acepta sin leer.
+  const [borrando, setBorrando] = useState(0);
+  const [enCurso, setEnCurso] = useState(false);
+  const fila = useRef(null);
   const caja = useRef(null);
+  // Cerrar el panel a medio borrar no deja la pregunta esperando.
+  const cerrar = () => { setAbierto(false); setBorrando(0); };
+
+  // Al cambiar de paso, el foco va al primer botón del paso nuevo.
+  const primero = useRef(true);
+  useEffect(() => {
+    if (primero.current) { primero.current = false; return; }
+    fila.current?.querySelector('button')?.focus();
+  }, [borrando]);
 
   useEffect(() => {
     if (!abierto) return undefined;
-    const fuera = (e) => { if (caja.current && !caja.current.contains(e.target)) setAbierto(false); };
-    const esc = (e) => { if (e.key === 'Escape') setAbierto(false); };
+    const fuera = (e) => { if (caja.current && !caja.current.contains(e.target)) cerrar(); };
+    const esc = (e) => { if (e.key === 'Escape') cerrar(); };
     document.addEventListener('mousedown', fuera);
     document.addEventListener('keydown', esc);
     return () => { document.removeEventListener('mousedown', fuera); document.removeEventListener('keydown', esc); };
@@ -25,6 +40,18 @@ export default function Cuenta({ n }) {
   const dentro = !!n.usuario;
   const quien = n.usuario?.email || n.usuario?.user_metadata?.name || '';
   const inicial = (quien.trim()[0] || '?').toUpperCase();
+
+  async function borrarDefinitivamente() {
+    setFallo(null);
+    setEnCurso(true);
+    try {
+      await n.borrarTodo();
+    } catch (e) {
+      setEnCurso(false);
+      setBorrando(0);
+      setFallo(e.message || String(e));
+    }
+  }
 
   async function prueba(fn) {
     setFallo(null);
@@ -35,7 +62,7 @@ export default function Cuenta({ n }) {
     <div className="cta" ref={caja}>
       <button
         className={'ctab' + (dentro ? ' dentro' : '')}
-        onClick={() => setAbierto((v) => !v)}
+        onClick={() => (abierto ? cerrar() : setAbierto(true))}
         aria-expanded={abierto}
         aria-label={dentro ? `Tu cuenta (${quien})` : 'Entrar para sincronizar'}
         title={dentro ? quien : 'Entrar para sincronizar'}
@@ -91,8 +118,8 @@ export default function Cuenta({ n }) {
               <p className="ctaav">Estos dos te llevan un momento a una dirección larga acabada en
                 <b> supabase.co</b>. Es el servidor que guarda tu avance; es normal.</p>
               <p className="ctan">
-                Se guarda lo que escribes en las hojas y tu correo, nada más. Puedes borrarlo todo
-                desde aquí cuando quieras.
+                Se guarda lo que escribes y tu correo y, si pides los avisos de tu plan, las fechas
+                en que te toca uno. Puedes borrarlo todo desde aquí cuando quieras, cuenta incluida.
               </p>
             </>
           ) : (
@@ -117,19 +144,39 @@ export default function Cuenta({ n }) {
                 </p>
               )}
               {n.error && <p className="ctaerr">{n.error}</p>}
-              <div className="ctab3">
-                <button className="ayb" onClick={n.salir}>Salir</button>
-                <button
-                  className="ayb"
-                  onClick={() => {
-                    if (window.confirm('Se borra lo guardado en tu cuenta Y lo de este navegador. No se puede deshacer.')) n.borrarTodo();
-                  }}
-                >
-                  Borrar mis datos
-                </button>
-              </div>
+              {borrando === 0 && (
+                <div className="ctab3" ref={fila}>
+                  <button className="ayb" onClick={n.salir}>Salir</button>
+                  <button className="ayb" onClick={() => setBorrando(1)}>Borrar mis datos</button>
+                </div>
+              )}
+              {borrando === 1 && (
+                <>
+                  <p className="ctaq">
+                    <b>¿Seguro que quieres borrar todos tus datos?</b> Se borran lo que has escrito, en
+                    tu cuenta y en este navegador, tus avisos y la propia cuenta.
+                  </p>
+                  <div className="ctab3" ref={fila}>
+                    <button className="ayb" onClick={() => setBorrando(2)}>Sí, seguir</button>
+                    <button className="ayb" onClick={() => setBorrando(0)}>Cancelar</button>
+                  </div>
+                </>
+              )}
+              {borrando === 2 && (
+                <>
+                  <p className="ctaq">
+                    <b>Última confirmación.</b> Después de esto no hay forma de recuperarlo.
+                  </p>
+                  <div className="ctab3" ref={fila}>
+                    <button className="ayb" onClick={borrarDefinitivamente} disabled={enCurso}>
+                      {enCurso ? 'Borrando…' : 'Borrar definitivamente'}
+                    </button>
+                    <button className="ayb" onClick={() => setBorrando(0)}>Cancelar</button>
+                  </div>
+                </>
+              )}
               <p className="ctan">
-                Salir no borra nada de este navegador. «Borrar mis datos» sí: se lleva las dos copias.
+                Salir no borra nada de este navegador. «Borrar mis datos» sí: se lleva las dos copias y la cuenta.
               </p>
             </>
           )}

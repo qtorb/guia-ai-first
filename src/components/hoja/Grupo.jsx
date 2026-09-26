@@ -1,7 +1,7 @@
 import Campo from './Campo';
 import TextoInline from '../TextoInline';
 import { esc } from '../../lib/inline';
-import { Fichas, Puertas, Finalistas, Mensaje, Respuestas } from './GruposHoja0';
+import { Fichas, Puertas, Finalistas, Ganadora, Nadie, Mensaje, Respuestas } from './GruposHoja0';
 
 // Port de grupo() — guia-ai-first-src/index.html:2679-2688.
 export default function Grupo({ g, datos, onChange }) {
@@ -10,6 +10,8 @@ export default function Grupo({ g, datos, onChange }) {
   if (g.tipo === 'fichas') return <Fichas g={g} datos={datos} onChange={onChange} />;
   if (g.tipo === 'puertas') return <Puertas g={g} datos={datos} onChange={onChange} />;
   if (g.tipo === 'finalistas') return <Finalistas g={g} datos={datos} onChange={onChange} />;
+  if (g.tipo === 'ganadora') return <Ganadora g={g} datos={datos} onChange={onChange} />;
+  if (g.tipo === 'nadie') return <Nadie g={g} datos={datos} onChange={onChange} />;
   if (g.tipo === 'mensaje') return <Mensaje g={g} datos={datos} onChange={onChange} />;
   if (g.tipo === 'respuestas') return <Respuestas g={g} datos={datos} onChange={onChange} />;
 

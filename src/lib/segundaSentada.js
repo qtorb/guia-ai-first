@@ -12,7 +12,8 @@ export const DESTINO_VUELTA = `/ia-lab/10?paso=${PASO_VUELTA}`;
 // Te espera la segunda sentada: el mensaje se marcó como enviado, han pasado
 // 48 horas o más y todavía no se ha entrado en el paso de la vuelta.
 export function segundaSentada(h10, ahora = Date.now()) {
-  if (!h10 || h10.msg_enviado !== true || !h10._enviado_t || h10._vuelta_t) return null;
+  // Con la hoja terminada ya no hay segunda sentada que esperar.
+  if (!h10 || h10._fin || h10.msg_enviado !== true || !h10._enviado_t || h10._vuelta_t) return null;
   const t = Date.parse(h10._enviado_t);
   if (Number.isNaN(t)) return null;
   const horas = Math.floor((ahora - t) / 3600000);

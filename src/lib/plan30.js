@@ -8,7 +8,7 @@
 // --------------------------------------------------------------------------
 
 import { fechaLarga } from './protocoloAiFirst';
-import { escaparIcs, selloIcs } from './ics';
+import { calendario } from './ics';
 
 export const LLAVE_PLAN = 'metodo-plan30';
 
@@ -210,27 +210,7 @@ export function ics(d, p) {
       'Y has cambiado algo por lo que te dijeron.',
   });
 
-  const lineas = [
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'PRODID:-//Metodo AI-First//ES',
-    'CALSCALE:GREGORIAN',
-  ];
-  ev.forEach((e) => {
-    lineas.push(
-      'BEGIN:VEVENT',
-      `UID:${e.uid}`,
-      `DTSTAMP:${selloIcs(p.inicio, '09:00')}`,
-      `DTSTART:${selloIcs(e.dia, e.hora)}`,
-      `DTEND:${selloIcs(e.dia, e.hora)}`,
-      `SUMMARY:${escaparIcs(e.titulo)}`,
-      `DESCRIPTION:${escaparIcs(e.cuerpo)}`,
-      'END:VEVENT'
-    );
-  });
-  lineas.push('END:VCALENDAR');
-  // RFC 5545: líneas terminadas en CRLF.
-  return lineas.join('\r\n') + '\r\n';
+  return calendario(ev);
 }
 
 // El plan como fichero de la carpeta.

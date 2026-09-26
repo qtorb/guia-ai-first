@@ -420,7 +420,7 @@ body{padding-top:0}
 .sc{display:flex;gap:14px;align-items:center;border:2px solid var(--linea-fuerte);border-radius:var(--radio);
   padding:16px 18px;text-decoration:none;color:var(--ink);background:var(--fondo);transition:border-color .15s,background .15s}
 a.sc:hover{border-color:var(--blue);background:var(--acento-sup)}
-.sc.off{opacity:.55;background:var(--soft)}
+.sc.off{background:var(--soft);border-color:var(--line)}
 .sc.hecha{border-color:var(--regla);background:var(--gbg)}
 .scn{flex:0 0 34px;width:34px;height:34px;border-radius:50%;border:2px solid var(--line);
   display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;background:var(--fondo)}
@@ -641,7 +641,7 @@ body.ctx-hoja #pinfo{color:var(--gray)}
 .pb-in{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
 .pb-in::-webkit-scrollbar{display:none}
 .pdot{flex:0 0 auto;border:0;background:transparent;cursor:pointer;padding:3px 2px;
-  display:flex;flex-direction:column;align-items:center;gap:4px;min-width:34px;min-height:44px;font-family:var(--sans)}
+  display:flex;flex-direction:column;align-items:center;gap:4px;min-width:44px;min-height:44px;font-family:var(--sans)}
 .pdot i{font-style:normal;width:26px;height:26px;border-radius:50%;border:2px solid var(--line);
   display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--mid);
   background:var(--fondo);transition:border-color .15s,background .15s,color .15s}
@@ -1085,7 +1085,7 @@ details.fichero[open]>summary::before{content:none;display:none}
 .mapa-caja .rotulo{color:var(--texto-2);margin-bottom:var(--e2);font-family:var(--familia-mono);
   font-size:12px;letter-spacing:.12em;text-transform:uppercase}
 .mapa-caja .ayuda{font-size:15px;color:var(--texto-2)}
-.mapa-caja a{font-weight:600;color:var(--acento)}
+.mapa-caja a{font-weight:600;color:var(--acento);display:inline-flex;align-items:center;min-height:44px}
 .mapa-caja.centro{border-color:var(--acento);background:var(--acento-sup)}
 .mapa-stack{list-style:none;margin:var(--e4) 0 var(--e5);padding:0}
 .mapa-stack li{display:flex;gap:var(--e3);align-items:baseline;padding:var(--e2) 0;
@@ -1138,7 +1138,7 @@ details.fichero[open]>summary::before{content:none;display:none}
 /* objetivos táctiles que se quedaban cortos */
 #ayuda{min-height:44px;display:inline-flex;align-items:center}
 @media (max-width:480px){
-  .punto{min-width:32px;height:44px}
+  .punto{min-width:44px;height:44px}
   .punto span{width:16px}
   .volver-fila .volver:last-child{display:none}
 }

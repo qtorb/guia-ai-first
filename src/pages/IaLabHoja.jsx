@@ -13,6 +13,7 @@ import Donde from '../components/hoja/Donde';
 import { AtascoEnlace, AtascoHoja } from '../components/hoja/Atasco';
 import { guiaEntera } from '../lib/guiaTexto';
 import { bajar, alPortapapeles } from '../lib/portapapeles';
+import { fechaLarga } from '../lib/protocoloAiFirst';
 
 // Port de pintarHoja()/irPaso()/auto()/generar()/entregar() —
 // guia-ai-first-src/index.html L2712-2947. Contenido y comportamiento se
@@ -148,6 +149,26 @@ export default function IaLabHoja({ dossierCtl }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Lo último escrito no espera al debounce si la pestaña se oculta o se
+  // cierra: en el móvil, cambiar de aplicación puede ser lo último que pase.
+  const datosRef = useRef(datos);
+  datosRef.current = datos;
+  useEffect(() => {
+    if (!hoja) return undefined;
+    const ya = () => {
+      clearTimeout(debounceRef.current);
+      guardaHoja(sesionN, { ...datosRef.current, _paso: paso, _total: NPASOS });
+    };
+    const alOcultar = () => { if (document.visibilityState === 'hidden') ya(); };
+    window.addEventListener('pagehide', ya);
+    document.addEventListener('visibilitychange', alOcultar);
+    return () => {
+      window.removeEventListener('pagehide', ya);
+      document.removeEventListener('visibilitychange', alOcultar);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paso, NPASOS, sesionN]);
+
   function onChecklistChange(k, valor) {
     // change (checkbox): guardado inmediato, como en el listener 'change' (L3524).
     setDatos((d) => {
@@ -277,7 +298,7 @@ export default function IaLabHoja({ dossierCtl }) {
       setDatos({ ...hojaNueva });
       setPaso(hojaNueva._paso || 1);
       setTextos(hojaNueva._salidas || (hojaNueva._salida ? { _: hojaNueva._salida } : {}));
-      toast('Avance recuperado' + (j.fecha ? ' · guardado el ' + j.fecha : ''));
+      toast('Avance recuperado' + (j.fecha ? ' · guardado el ' + fechaLarga(j.fecha) : ''));
     };
     r.readAsText(file);
   }
@@ -476,7 +497,7 @@ export default function IaLabHoja({ dossierCtl }) {
                 <AtascoEnlace onAbrir={() => setAtasco(numPaso)} />
                 {numPaso < NPASOS
                   ? <button className="btn btn-p" onClick={() => irPaso(numPaso + 1)}>Siguiente →</button>
-                  : <span className="fin">Ya está. Has terminado.</span>}
+                  : (datos._fin ? <span className="fin">Ya está. Has terminado.</span> : <span />)}
               </div>
             )}
             {!verTodo && atasco === numPaso && (

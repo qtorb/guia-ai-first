@@ -242,7 +242,9 @@ export default function Plan30({ n }) {
             conversación: esa se reserva con antelación o no ocurre. Es la única pieza que
             no se puede sustituir por nada.</p>
 
-          <p className="ayuda">Lo que marcas aquí lo guarda tu navegador, no un servidor nuestro.</p>
+          <p className="ayuda">{n?.estado === 'dentro'
+            ? 'Lo que marcas aquí se guarda en tu cuenta.'
+            : 'Lo que marcas aquí lo guarda tu navegador, no un servidor nuestro.'}</p>
         </>
       )}
     </div>

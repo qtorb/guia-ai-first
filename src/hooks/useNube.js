@@ -119,14 +119,17 @@ export function useNube(dossierCtl) {
     await c.auth.signOut();
   }, [uid]);
 
-  // Borrar la copia local y la de la nube. Es lo que pide el RGPD cuando
-  // alguien quiere irse del todo.
+  // Borrar la cuenta, la copia de la nube y la de este navegador. Es lo que
+  // pide el RGPD cuando alguien quiere irse del todo. La cuenta se borra en
+  // el servidor (borrar_mi_cuenta, migración 0004) y lo demás cae en cascada.
   const borrarTodo = useCallback(async () => {
     if (!uid) return;
-    await borrarRemoto(uid);
-    escribirLocal({});
     const c = await cliente();
-    await c.auth.signOut();
+    const { error: fallo } = await c.rpc('borrar_mi_cuenta');
+    if (fallo) throw fallo;
+    escribirLocal({});
+    // La sesión ya no existe en el servidor: cerrarla puede fallar.
+    try { await c.auth.signOut(); } catch { /* ya no hay cuenta */ }
     window.location.reload();
   }, [uid]);
 
