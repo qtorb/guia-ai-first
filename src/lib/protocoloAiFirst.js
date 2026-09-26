@@ -8,6 +8,14 @@
 // de campo (quien, que, columna, roja1…, 'asesor-chips', 'no-asesor',
 // checkpoint…) son EXACTAMENTE los de sitio.py, para que paso a paso y el
 // fichero de vista previa usen las mismas claves sin traducción.
+//
+// Cinco de los siete ficheros (00, 01, 02, 03, 07) salen ahora de
+// fuente-ligera.json — la misma plantilla que se publica en
+// metodo-ai-first-plantilla, con sus huecos {{...}} sin rellenar— y aquí solo
+// se rellenan esos huecos. Los otros dos (encargos/primera-tanda.md y
+// activos/_LEEME.md) no tienen plantilla pública: se generan como siempre.
+
+import fuenteLigera from '../data/fuente-ligera.json';
 
 export const AB = '<<<m', CE = 'm>>>', AP = '<<<p', CP = 'p>>>';
 
@@ -128,153 +136,63 @@ export function lleno(k, d) {
 // la vista previa qué has escrito tú (<<<m…m>>>) y qué sigue pendiente
 // (<<<p…p>>>).
 // --------------------------------------------------------------------------
+// Rellena los {{...}} de una plantilla de fuente-ligera.json con las
+// respuestas d, según la tabla de A5. Con marcado=true quita antes los
+// comentarios HTML (la vista previa no los enseña) y envuelve lo pendiente
+// en AP…CP y lo escrito en AB…CE; con marcado=false deja los comentarios y
+// pone el texto llano.
+function rellenarHuecos(plantilla, d, marcado) {
+  const M = (v, alt) => {
+    const t = (v || '').trim();
+    if (!marcado) return t || alt;
+    return t ? AB + t + CE : AP + alt + CP;
+  };
+  const fe = d.fecha || hoy();
+  const col = marcado ? (d.columna ? AB + d.columna + CE : AP + 'A' + CP) : (d.columna || 'A');
+  const asesor = listaAsesor(d);
+  const asesorTxt = asesor.length
+    ? (marcado ? AB + asesor.map((a) => '- ' + a).join('\n') + CE : asesor.map((a) => '- ' + a).join('\n'))
+    : (marcado ? AP + '[por escribir]' + CP : '[por escribir]');
+
+  const huecos = {
+    quien: M(d.quien, '[quién]'),
+    que: M(d.que, '[qué]'),
+    fecha: fe,
+    columna: col,
+    asesor_no: asesorTxt,
+    checkpoint: M(d.checkpoint, '[por poner]'),
+    roja1: M(d.roja1, '[por escribir]'),
+    roja2: M(d.roja2, '[por escribir]'),
+    roja3: M(d.roja3, '[por escribir]'),
+    firma: M(d.firma, '[tu nombre]'),
+    usare: M(d.usare, '[por escribir]'),
+    no_usare: M(d['no-usare'], '[por escribir]'),
+    validar: M(d.validar, '[por escribir]'),
+    suposicion: M(d.suposicion, '[por escribir]'),
+    persona: M(d.persona, '[un nombre]'),
+    cuando: M(fechaLarga(d.cuando), '[una fecha de esta semana]'),
+    sino: M(d.siNo, '[por escribir, y antes de la conversación]'),
+    fecha_entrada: fe,
+  };
+
+  const texto = marcado ? plantilla.replace(/<!--[\s\S]*?-->\n?/g, '') : plantilla;
+  return texto.replace(/\{\{(\w+)\}\}/g, (m, k) => (k in huecos ? huecos[k] : m));
+}
+
 export function ficheros(d, marcado) {
   const M = (v, alt) => {
     const t = (v || '').trim();
     if (!marcado) return t || alt;
     return t ? AB + t + CE : AP + alt + CP;
   };
-  const q = M(d.quien, '[quién]'), w = M(d.que, '[qué]');
   const fe = d.fecha || hoy();
   const col = marcado ? (d.columna ? AB + d.columna + CE : AP + 'A' + CP) : (d.columna || 'A');
-  const firma = M(d.firma, '[tu nombre]');
-  const roja = (n) => M(d['roja' + n], '[por escribir]');
-  const asesor = listaAsesor(d);
-  const asesorTxt = asesor.length
-    ? (marcado ? AB + asesor.join('\n') + CE : asesor.join('\n'))
-    : (marcado ? AP + '[por escribir]' + CP : '[por escribir]');
 
   return {
-    'metodo/00_VALOR.md':
-`# Valor y fase
-
-## La frase
-
-Este trabajo produce valor cuando ${q} puede tomar mejor la decisión de ${w}.
-
-**Fecha:** ${fe}
-
-## La columna
-
-**Columna:** ${col} desde ${fe}
-
-## Historial de cambios de esta frase
-
-| Fecha | Qué cambió | Qué lo hizo cambiar |
-|---|---|---|
-| | | |
-`,
-    'metodo/01_ROLES.md':
-`# Roles
-
-Quién decide qué. Y sobre todo: qué no decide cada uno.
-La columna de la derecha vale más que la de la izquierda.
-
-## Fundador — tú
-
-Decide: intención, criterio, prioridad, restricciones, trade-offs,
-qué está prohibido, y todo lo que no esté delegado por escrito.
-NO decide: nada queda fuera de tu decisión — esa es la diferencia entre
-delegar y desaparecer.
-
-## Asesor
-
-NO decide:
-
-${asesorTxt}
-
-## Ejecutor
-
-Decide: nada. Ejecuta encargos cerrados.
-Lo no previsto va a 05_VISTO_NO_TOCADO.md, en una línea.
-
-## Checkpoint
-
-Decide: cuándo se mira si hay que parar.
-NO decide: qué se construye, ni parar. El STOP lo firmas tú.
-
-**Cita en el calendario:** ${M(d.checkpoint, '[por poner]')}
-`,
-    'metodo/02_LINEAS_ROJAS.md':
-`# Líneas rojas y protocolo de uso
-
-Cada línea lleva fecha y firma. La firma es lo único que distingue una línea
-roja de una cautela que apareció sola.
-
-## 1 · Qué no afirmaré nunca sin evidencia
-
-${roja(1)}
-
-**Fecha:** ${fe} · **Firma:** ${firma}
-
-## 2 · Qué datos no compartiré nunca con un modelo
-
-${roja(2)}
-
-**Fecha:** ${fe} · **Firma:** ${firma}
-
-## 3 · Qué no publicaré nunca sin que lo mire alguien
-
-${roja(3)}
-
-**Fecha:** ${fe} · **Firma:** ${firma}
-
-## Cuándo uso IA y cuándo no
-
-**Usaré IA cuando:**
-
-${M(d.usare, '[por escribir]')}
-
-**No la usaré cuando:**
-
-${M(d['no-usare'], '[por escribir]')}
-
-**Antes de aceptar una respuesta comprobaré:**
-
-${M(d.validar, '[por escribir]')}
-
-**Fecha:** ${fe} · **Firma:** ${firma}
-
-## Añadidas después
-
-| Fecha | Línea | Firma | Qué la hizo necesaria |
-|---|---|---|---|
-| | | | |
-`,
-    'metodo/03_HIPOTESIS.md':
-`# Hipótesis
-
-Lo que se afirma, y qué evidencia haría falta para poder afirmarlo.
-
-## La que sostiene el plan
-
-${M(d.suposicion, '[por escribir]')}
-
-**Estado:** supuesto. No comprobado.
-**Quién puede decir si es verdad:** ${M(d.persona, '[un nombre]')}
-**Cuándo se lo pregunto:** ${M(fechaLarga(d.cuando), '[una fecha de esta semana]')}
-**Si resulta falso, lo que hago es:** ${M(d.siNo, '[por escribir, y antes de la conversación]')}
-
-Esa última línea se escribió antes de hablar con nadie, y por eso vale. Cuando
-vuelvas, no la renegocies: si ahora suena mal, esa reacción es el dato.
-
-## Lo que salga de esa conversación
-
-Tres frases suyas literales, no tu resumen. Y una cosa que te haya sorprendido:
-si no hay ninguna, o preguntaste mal o te dijeron lo que querías oír.
-
-| Fecha | Con quién | Tres frases suyas | Qué me sorprendió | Qué decisión cambia |
-|---|---|---|---|---|
-| | | | | |
-
-*Si lo único que puedes escribir es «le gustó», la conversación cuenta como cero.*
-
-## Otras hipótesis
-
-| Fecha | Qué se afirma | Qué evidencia haría falta | Estado |
-|---|---|---|---|
-| | | | |
-`,
+    'metodo/00_VALOR.md': rellenarHuecos(fuenteLigera['metodo/00_VALOR.md'], d, marcado),
+    'metodo/01_ROLES.md': rellenarHuecos(fuenteLigera['metodo/01_ROLES.md'], d, marcado),
+    'metodo/02_LINEAS_ROJAS.md': rellenarHuecos(fuenteLigera['metodo/02_LINEAS_ROJAS.md'], d, marcado),
+    'metodo/03_HIPOTESIS.md': rellenarHuecos(fuenteLigera['metodo/03_HIPOTESIS.md'], d, marcado),
     'metodo/encargos/primera-tanda.md':
 `# Primera tanda — ${fe}
 
@@ -374,31 +292,7 @@ la frase que no funcionó, y la siguiente vez lo reescribes desde cero.
 
 Regla: cada vez que aceptes una entrega, cópiala aquí antes de anotar nada.
 `,
-    'metodo/07_CIERRE.md':
-`# Cierre del día
-
-Cinco líneas al terminar la jornada. No al empezar la siguiente.
-
-De todo el método es lo que más rinde por minuto invertido: sin esto, cada
-mañana se va en reconstruir dónde te quedaste.
-
-Si hoy decides algo que cuesta deshacer, y lo decides tarde o después de una
-jornada larga, márcalo **REVISAR MAÑANA**. Y si lo que decides es NO hacer
-algo, márcalo igual: las renuncias no dejan rastro y no se echan de menos.
-
----
-
-Entradas nuevas arriba. Copia el bloque de abajo.
-
-## ${fe}
-
-**Decidí:**
-**Por qué:**
-**Descarté:**
-**Abierto:**
-**Mañana empiezo por:**
-**Coste del día:**
-`
+    'metodo/07_CIERRE.md': rellenarHuecos(fuenteLigera['metodo/07_CIERRE.md'], d, marcado),
   };
 }
 

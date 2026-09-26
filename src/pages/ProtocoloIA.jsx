@@ -802,9 +802,18 @@ function Listo({ d, fs, onCopiar, onIr, navigate, toast, n }) {
     setBajando(true);
     try {
       const { default: JSZip } = await import('jszip');
+      // El resto de la plantilla —lo que no tiene huecos que la web tenga que
+      // rellenar— sale de fuente.json, la misma fuente que se publica en
+      // metodo-ai-first-plantilla. VERSION.md y LICENSE no aportan nada fuera
+      // de la plantilla publicada.
+      const { default: fuenteCompleta } = await import('../data/fuente.json');
       const zip = new JSZip();
       Object.entries(fs).forEach(([nombre, contenido]) => zip.file(nombre, contenido));
-      // Lo que acompaña a los ficheros: los cuatro textos pegables, el plan
+      Object.entries(fuenteCompleta).forEach(([nombre, contenido]) => {
+        if (nombre === 'VERSION.md' || nombre === 'LICENSE') return;
+        zip.file(nombre, contenido);
+      });
+      // Lo que acompaña a los ficheros: los cinco textos pegables, el plan
       // del mes con sus fechas y el .ics. Sin esto la carpeta es el día cero
       // y nada más.
       Object.entries(TEXTOS).forEach(([nombre, contenido]) => zip.file(nombre, contenido));
