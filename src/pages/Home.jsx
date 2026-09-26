@@ -29,9 +29,8 @@ function avanceLab(dossier) {
   // varias, a la lista.
   if (empezadas.length > 1) {
     const terminadas = empezadas.filter(([, h]) => h._fin).length;
-    const est = terminadas > 0
-      ? `${empezadas.length} hojas empezadas · ${terminadas} terminadas`
-      : `${empezadas.length} hojas empezadas`;
+    const est = `${empezadas.length} hojas empezadas`
+      + (terminadas === 1 ? ' · 1 terminada' : terminadas > 1 ? ` · ${terminadas} terminadas` : '');
     return { est, destino: '/ia-lab' };
   }
   const [n, h] = empezadas[0];

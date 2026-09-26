@@ -126,13 +126,27 @@ export default function IaLabHoja({ dossierCtl }) {
   // La vuelta a la segunda sentada queda apuntada la primera vez que se
   // entra en su paso, por navegación o por el enlace del calendario. Solo en
   // el dossier: el panel no la lee.
+  // Asomarse al paso nada más enviar el mensaje no es volver: solo cuenta a
+  // partir de 48 horas. Antes de eso se apunta aparte, en _vuelta_pronto_t,
+  // para que el aviso de «te espera la segunda sentada» siga saliendo.
   const bloqueActivo = hoja && paso > 1 && paso <= hoja.bloques.length + 1 ? hoja.bloques[paso - 2] : null;
   useEffect(() => {
-    if (bloqueActivo?.vuelta && !datos._vuelta_t) {
-      setDatos((d) => (d._vuelta_t ? d : { ...d, _vuelta_t: new Date().toISOString() }));
-    }
+    if (!bloqueActivo?.vuelta) return;
+    setDatos((d) => {
+      const t = Date.parse(d._enviado_t || '');
+      const vuelve = !Number.isNaN(t) && Date.now() - t >= 48 * 3600000;
+      const k = vuelve ? '_vuelta_t' : '_vuelta_pronto_t';
+      return d[k] ? d : { ...d, [k]: new Date().toISOString() };
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paso]);
+
+  // El ?paso=N del enlace sirve para entrar, no para quedarse: si se queda en
+  // la URL, avanzar y recargar devuelve al paso del enlace.
+  useEffect(() => {
+    if (pasoEnlace) navigate('/ia-lab/' + n, { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function onChecklistChange(k, valor) {
     // change (checkbox): guardado inmediato, como en el listener 'change' (L3524).
