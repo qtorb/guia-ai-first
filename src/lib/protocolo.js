@@ -50,11 +50,16 @@ function deLaParte(b, parte) {
 export function seccionesConPlantilla(hoja, parte) {
   return [...(hoja.bloques || []), hoja.contraste]
     .filter(Boolean)
-    .filter((b) => b.plantilla && deLaParte(b, parte));
+    .filter((b) => (b.plantilla || b.salidaPuertas) && deLaParte(b, parte));
 }
 
 export function bloquesSinEscribir(hoja, datos, checkKeys, parte) {
   return seccionesConPlantilla(hoja, parte).filter((b) => {
+    // El bloque de las reglas no tiene plantilla: está escrito cuando alguna
+    // ficha viva ha pasado ya por alguna regla.
+    if (b.salidaPuertas) {
+      return !fichasVivas(b, datos).some((f) => [1, 2, 3, 4].some((i) => datos[`${f.pre}_r${i}`]));
+    }
     const ks = b.plantilla.flatMap(claves);
     return !ks.some((k) => tiene(datos, checkKeys, k));
   });
@@ -64,6 +69,59 @@ export function dudasApuntadas(hoja, datos, parte) {
   return (hoja.bloques || [])
     .filter((b) => deLaParte(b, parte) && typeof datos['duda' + b.n] === 'string')
     .map((b) => ({ n: b.n, titulo: b.titulo, txt: String(datos['duda' + b.n]).trim() }));
+}
+
+// Las fichas del bloque de las reglas que tienen algo escrito — el mismo
+// recorrido que hace Puertas para pintar sus filas.
+function fichasVivas(b, datos) {
+  const g = (b.grupos || []).find((x) => x.tipo === 'puertas');
+  if (!g) return [];
+  const filas = [];
+  (g.de || []).forEach((d) => {
+    for (let i = 1; i <= (d.n || 4); i++) {
+      const pre = `${d.pre}${i}`;
+      filas.push({ pre, origen: d.pre, asa: String(datos[`${pre}_asa`] || '').trim(), vende: String(datos[`${pre}_vende`] || '').trim() });
+    }
+  });
+  return filas.filter((f) => f.asa || f.vende);
+}
+
+const ORIGEN = { fp: 'mía', fa: 'tanda A', fb: 'tanda B', fc: 'tanda C' };
+
+// Las ideas que se consideraron, con su veredicto y sus motivos. El bloque
+// de las reglas no tiene plantilla porque sus claves dependen de cuántas
+// fichas haya escritas; esta función hace de plantilla.
+export function textoPuertas(b, datos) {
+  const g = (b.grupos || []).find((x) => x.tipo === 'puertas');
+  const reglas = (g?.reglas || []).map((r) => r.replace(/^\d+\s*·\s*/, ''));
+  const pasan = [];
+  const caen = [];
+  const dudan = [];
+  fichasVivas(b, datos).forEach((f) => {
+    const quien = String(datos[`${f.pre}_quien`] || '').trim();
+    const cab = '· ' + (f.asa && f.vende ? `${f.asa} — ${f.vende}` : f.asa || f.vende) +
+      (quien ? `, para ${quien}` : '') + ` (${ORIGEN[f.origen] || f.origen})`;
+    const r = [1, 2, 3, 4].map((i) => datos[`${f.pre}_r${i}`]);
+    const motivo = String(datos[`${f.pre}_motivo`] || '').trim();
+    const con = (v) => reglas.filter((_, i) => r[i] === v).join('; ');
+    if (r.some((v) => v === 'no')) {
+      caen.push([cab, `  No cumple: ${con('no')}.`, `  Por qué: ${motivo || 'sin motivo escrito'}`]);
+    } else if (r.every((v) => v === 'si')) {
+      pasan.push([cab]);
+    } else {
+      const l = [cab];
+      if (r.some((v) => v === 'ns')) l.push(`  No sé decirlo: ${con('ns')}.`);
+      const sin = reglas.filter((_, i) => !r[i]).join('; ');
+      if (sin) l.push(`  Sin pasar: ${sin}.`);
+      if (motivo) l.push(`  Nota: ${motivo}`);
+      dudan.push(l);
+    }
+  });
+  const secciones = [b.salidaPuertas.titulo];
+  [['PASAN LAS CUATRO REGLAS', pasan], ['SE CAEN', caen], ['SIN DECIDIR', dudan]].forEach(([tit, fichas]) => {
+    if (fichas.length) secciones.push([tit, ...fichas.flat()].join('\n'));
+  });
+  return secciones.join('\n\n');
 }
 
 function claves(linea) {
@@ -99,6 +157,10 @@ export function generarProtocolo(hoja, datos, checkKeys, nombre, kicker, salida)
       (!parte || !hoja.contraste) ? hoja.contraste : null,
     ].filter(Boolean);
   secs.forEach((b) => {
+    if (b.salidaPuertas) {
+      if (fichasVivas(b, datos).length) t += textoPuertas(b, datos) + '\n\n' + L + '\n\n';
+      return;
+    }
     if (!b.plantilla) return;
     const todas = b.plantilla.flatMap(claves);
     if (!todas.some((k) => tiene(datos, checkKeys, k))) return;

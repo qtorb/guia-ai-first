@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------
 
 import { fechaLarga } from './protocoloAiFirst';
+import { escaparIcs, selloIcs } from './ics';
 
 export const LLAVE_PLAN = 'metodo-plan30';
 
@@ -160,15 +161,6 @@ export function dondeEstoy(p) {
 // semana: un evento titulado «Checkpoint» y vacío es teatro.
 // --------------------------------------------------------------------------
 
-function sinSaltos(s) {
-  return (s || '').replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/,/g, '\\,').replace(/;/g, '\;');
-}
-
-function sello(isoDia, hora) {
-  const [h, m] = (hora || '09:00').split(':');
-  return isoDia.replace(/-/g, '') + 'T' + (h || '09').padStart(2, '0') + (m || '00').padStart(2, '0') + '00';
-}
-
 export function ics(d, p) {
   const uid = (n) => `metodo-${p.inicio.replace(/-/g, '')}-${n}@ai-first`;
   const ev = [];
@@ -228,11 +220,11 @@ export function ics(d, p) {
     lineas.push(
       'BEGIN:VEVENT',
       `UID:${e.uid}`,
-      `DTSTAMP:${sello(p.inicio, '09:00')}`,
-      `DTSTART:${sello(e.dia, e.hora)}`,
-      `DTEND:${sello(e.dia, e.hora)}`,
-      `SUMMARY:${sinSaltos(e.titulo)}`,
-      `DESCRIPTION:${sinSaltos(e.cuerpo)}`,
+      `DTSTAMP:${selloIcs(p.inicio, '09:00')}`,
+      `DTSTART:${selloIcs(e.dia, e.hora)}`,
+      `DTEND:${selloIcs(e.dia, e.hora)}`,
+      `SUMMARY:${escaparIcs(e.titulo)}`,
+      `DESCRIPTION:${escaparIcs(e.cuerpo)}`,
       'END:VEVENT'
     );
   });

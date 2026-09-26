@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import sesionesData from '../data/sesiones.json';
 import hojasData from '../data/hojas.json';
 import Bloque from '../components/hoja/Bloque';
@@ -41,7 +41,19 @@ export default function IaLabHoja({ dossierCtl }) {
   const checkKeys = useMemo(() => (hoja ? recolectarCheckKeys(hoja) : new Set()), [hoja]);
   const [datos, setDatos] = useState(() => ({ ...guardadas }));
   const [nombre, setNombre] = useState(dossier.proyecto._nombre || '');
-  const [paso, setPaso] = useState(guardadas._paso || 1);
+
+  // paso 0 + bloques + (contraste, si la hoja lo trae aparte) + salida.
+  // La hoja 0 rediseñada mueve el contraste a un bloque, así que ya no es fijo.
+  const NPASOS = hoja ? hoja.bloques.length + 2 + (hoja.contraste ? 1 : 0) : 0;
+
+  // Un enlace con ?paso=N —el del evento de calendario de la hoja 0— entra
+  // directo en ese paso, por encima del guardado.
+  const [params] = useSearchParams();
+  const pasoEnlace = (() => {
+    const p = Number(params.get('paso'));
+    return Number.isInteger(p) && p >= 1 && p <= NPASOS ? p : null;
+  })();
+  const [paso, setPaso] = useState(pasoEnlace || guardadas._paso || 1);
   // Una hoja puede tener más de una pieza —la 1 tiene dos: 1A el protocolo y
   // 1B el TFM en una página—, y cada una genera su documento.
   const salidas = useMemo(() => (hoja ? (hoja.salidas || (hoja.salida ? [hoja.salida] : [])) : []), [hoja]);
@@ -51,15 +63,11 @@ export default function IaLabHoja({ dossierCtl }) {
   const [faltan, setFaltan] = useState(null);   // { parte, lista }
   // Si al abrir ya hay avance, se entra donde se dejó —eso ya pasaba— pero
   // sin decirlo: el alumno aparecía en mitad de la hoja sin saber por qué.
-  const [volviendo, setVolviendo] = useState(() => (guardadas._paso || 1) > 1);
+  const [volviendo, setVolviendo] = useState(() => !pasoEnlace && (guardadas._paso || 1) > 1);
   const debounceRef = useRef(null);
   // El botón de atasco se abre en el paso en el que estás y se cierra al cambiar.
   const [atasco, setAtasco] = useState(null);
   const barraRef = useRef(null);
-
-  // paso 0 + bloques + (contraste, si la hoja lo tiene aparte) + salida.
-  // La hoja 0 rediseñada mueve el contraste a un bloque, así que ya no es fijo.
-  const NPASOS = hoja ? hoja.bloques.length + 2 + (hoja.contraste ? 1 : 0) : 0;
 
   // datos._total se fija al abrir, igual que abrirSesion() (L2839).
   useEffect(() => {
@@ -115,6 +123,17 @@ export default function IaLabHoja({ dossierCtl }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [datos]);
 
+  // La vuelta a la segunda sentada queda apuntada la primera vez que se
+  // entra en su paso, por navegación o por el enlace del calendario. Solo en
+  // el dossier: el panel no la lee.
+  const bloqueActivo = hoja && paso > 1 && paso <= hoja.bloques.length + 1 ? hoja.bloques[paso - 2] : null;
+  useEffect(() => {
+    if (bloqueActivo?.vuelta && !datos._vuelta_t) {
+      setDatos((d) => (d._vuelta_t ? d : { ...d, _vuelta_t: new Date().toISOString() }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paso]);
+
   function onChecklistChange(k, valor) {
     // change (checkbox): guardado inmediato, como en el listener 'change' (L3524).
     setDatos((d) => {
@@ -159,7 +178,10 @@ export default function IaLabHoja({ dossierCtl }) {
     const nuevos = { ...textos, [clave]: t };
     setTextos(nuevos);
     const hoy = new Date().toISOString().slice(0, 10);
-    guardaHoja(sesionN, { ...datos, _paso: paso, _total: NPASOS, _salidas: nuevos, _fin: hoy });
+    // «Terminada» solo cuando lo está: generar con bloques sin escribir deja
+    // constancia de que se generó, pero no cierra la hoja.
+    const completa = bloquesSinEscribir(hoja, datos, checkKeys).length === 0;
+    guardaHoja(sesionN, { ...datos, _paso: paso, _total: NPASOS, _salidas: nuevos, _generada: hoy, ...(completa ? { _fin: hoy } : {}) });
     toast((sal.parte ? sal.parte + ' · ' : '') + 'documento generado');
     setTimeout(() => document.getElementById('texto-' + clave)?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
   }
@@ -277,7 +299,9 @@ export default function IaLabHoja({ dossierCtl }) {
     });
     const va = {};
     let ultima = null;
-    return (hoja.bloques || []).map((b) => {
+    return (hoja.bloques || []).map((b, i) => {
+      // Sin partes, una sola numeración: la de la tira.
+      if (partes.length === 0) return { txt: `Paso ${i + 2} de ${NPASOS}`, banda: null };
       const k = b.parte || '_';
       const banda = b.parte && b.parte !== ultima ? partes.find((x) => x.id === b.parte) : null;
       ultima = b.parte || ultima;
@@ -389,6 +413,9 @@ export default function IaLabHoja({ dossierCtl }) {
               <>
                 {rotulos[numPaso - 2].banda && (
                   <ParteBanda parte={rotulos[numPaso - 2].banda} onIrAHoja={(nh) => navigate('/ia-lab/' + nh)} />
+                )}
+                {hoja.bloques[numPaso - 2].vuelta && (
+                  <AvisoVuelta datos={datos} onVolver={() => irPaso(numPaso - 1)} />
                 )}
                 <Bloque
                   b={hoja.bloques[numPaso - 2]}
@@ -541,6 +568,33 @@ function Vuelta({ hoja, datos, checkKeys, onCerrar, onPrincipio }) {
         <button className="lnk" onClick={onPrincipio}>Empezar por el principio</button>
         <button className="mini" onClick={onCerrar}>Seguir aquí</button>
       </div>
+    </div>
+  );
+}
+
+// La segunda sentada empieza por lo que te contestaron. Si no consta que el
+// mensaje salió, o salió hace nada, se dice — sin bloquear nada.
+function AvisoVuelta({ datos, onVolver }) {
+  const [ahora] = useState(() => Date.now());
+  if (datos.msg_enviado !== true) {
+    return (
+      <div className="vuelta">
+        <TextoInline texto="**Todavía no has marcado que lo enviaste.** Esta parte empieza por lo que te contesten. Si ya lo mandaste, márcalo en el paso anterior; si no, ese es el siguiente movimiento." />
+        <div className="va">
+          <button className="lnk" onClick={onVolver}>← Volver al mensaje</button>
+        </div>
+      </div>
+    );
+  }
+  const t = Date.parse(datos._enviado_t || '');
+  if (Number.isNaN(t)) return null;
+  const horas = (ahora - t) / 3600000;
+  if (horas >= 48) return null;
+  const n = Math.floor(horas);
+  const h = n < 1 ? 'menos de una hora' : n === 1 ? '1 hora' : `${n} horas`;
+  return (
+    <div className="vuelta">
+      <TextoInline texto={`**Le escribiste hace ${h}.** La segunda sentada va mejor con dos o tres días en medio: es lo que tarda alguien en contestar. Puedes seguir igual; si no contesta nadie, también es un dato.`} />
     </div>
   );
 }

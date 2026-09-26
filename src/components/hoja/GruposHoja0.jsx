@@ -1,4 +1,9 @@
 import TextoInline from '../TextoInline';
+import Campo from './Campo';
+import hojasData from '../../data/hojas.json';
+import { bajar } from '../../lib/portapapeles';
+import { calendario } from '../../lib/ics';
+import { fechaLarga } from '../../lib/protocoloAiFirst';
 
 // --------------------------------------------------------------------------
 // Los tipos de grupo que estrena la hoja 0 rediseñada. Viven aparte de
@@ -73,11 +78,18 @@ export function Puertas({ g, datos, onChange }) {
     }
   });
   const vivas = filas.filter((f) => f.asa || f.vende);
+  // Quien llega con su idea no ha pasado por las tandas. Se le ofrece la
+  // ficha aquí mismo. Se mira `generadas` y no `vivas`: si no, la ficha
+  // desaparecería al empezar a escribir en ella.
+  const generadas = vivas.filter((f) => !f.pre.startsWith('fp'));
 
   return (
     <div className="puertas">
-      {vivas.length === 0 && (
-        <p className="ayuda">Aquí aparecerán tus fichas cuando las escribas arriba.</p>
+      {generadas.length === 0 && (
+        <>
+          <TextoInline className="ayuda" texto="¿Ya traes tu idea? Escríbela aquí y pásala por las reglas. Si vienes de generar, tus fichas aparecen solas." />
+          <Fichas g={{ pre: 'fp', n: 1, rotulo: 'Tu idea' }} datos={datos} onChange={onChange} />
+        </>
       )}
       {vivas.map((f) => (
         <div className="puerta-fila" key={f.pre}>
@@ -123,7 +135,102 @@ export function Puertas({ g, datos, onChange }) {
   );
 }
 
+// Los finalistas salen de las fichas que pasaron las cuatro reglas, no se
+// vuelven a escribir: así no se cuela una que no pasó.
+export function Finalistas({ g, datos, onChange }) {
+  const elegibles = [];
+  (g.de || []).forEach((d) => {
+    for (let i = 1; i <= (d.n || 4); i++) {
+      const pre = `${d.pre}${i}`;
+      const asa = (datos[`${pre}_asa`] || '').trim();
+      const vende = (datos[`${pre}_vende`] || '').trim();
+      if (!(asa || vende)) continue;
+      if (![1, 2, 3, 4].every((r) => datos[`${pre}_r${r}`] === 'si')) continue;
+      elegibles.push({ pre, txt: asa || vende });
+    }
+  });
+
+  if (elegibles.length === 0) {
+    return (
+      <p className="ayuda">Todavía no ha pasado ninguna ficha las cuatro reglas. Vuelve al paso 5 y termina de pasarlas: lo que se quede en «no sé decirlo» es lo siguiente que tienes que averiguar.</p>
+    );
+  }
+
+  return (
+    <>
+      {Array.from({ length: g.n || 3 }, (_, j) => {
+        const i = j + 1;
+        const k = `d${i}`;
+        const escrita = datos[k] && !datos[`${k}_pre`];
+        const valor = escrita ? '_mano' : (datos[`${k}_pre`] || '');
+        const elegir = (v) => {
+          const e = elegibles.find((x) => x.pre === v);
+          onChange(k, e ? e.txt : '');
+          onChange(`${k}_pre`, e ? e.pre : '');
+        };
+        return (
+          <div className="asiento" key={k}>
+            <div className="row g3">
+              <div className="field">
+                <label>Finalista {i}</label>
+                <select className="c" value={valor} onChange={(e) => elegir(e.target.value)}>
+                  <option value="">— elige una —</option>
+                  {elegibles.map((x) => <option key={x.pre} value={x.pre}>{x.txt}</option>)}
+                  {escrita && <option value="_mano">{`${datos[k]} (escrita a mano)`}</option>}
+                </select>
+              </div>
+              <Campo c={{ k: `${k}d`, label: 'Diferente en', ph: i === 1 ? 'único / más rápido / menor coste / mejores prestaciones' : '…' }} valor={datos[`${k}d`]} onChange={onChange} />
+              <Campo c={{ k: `${k}q`, label: 'Frente a quién — tres nombres', ph: i === 1 ? 'tres alternativas concretas, con nombre' : '…' }} valor={datos[`${k}q`]} onChange={onChange} />
+            </div>
+          </div>
+        );
+      })}
+    </>
+  );
+}
+
+// El paso del bloque con `vuelta` en la hoja 0: el enlace del .ics lleva ahí.
+const HOJA0 = hojasData['hojas/mmdd31/0.json'];
+const PASO_VUELTA = HOJA0.bloques.findIndex((b) => b.vuelta) + 2;
+
+function isoLocal(d) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+function eventoVuelta(datos, pre) {
+  const hoy = new Date();
+  hoy.setHours(0, 0, 0, 0);
+  let base = hoy;
+  const m = String(datos[`${pre}_dia`] || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (m) {
+    const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+    if (!Number.isNaN(d.getTime()) && d > hoy) base = d;
+  }
+  const dia = new Date(base);
+  dia.setDate(dia.getDate() + 2);
+  const quien = String(datos[`${pre}_quien`] || '').trim();
+  const cuando = String(datos[`${pre}_dia`] || '').trim();
+  const url = `${window.location.origin}${window.location.pathname}#/ia-lab/10?paso=${PASO_VUELTA}`;
+  const cuerpo =
+    (quien ? `Le escribiste a ${quien}` + (cuando ? ` el ${fechaLarga(cuando)}` : '') + '.\n\n' : '') +
+    'Hoy toca la segunda sentada. Empieza por copiar lo que te haya contestado, literal y con nombre. Si no ha contestado nadie, márcalo y eliges igual: eso también es un dato.\n\n' +
+    `Vuelve aquí: ${url}`;
+  return calendario([{
+    uid: `ialab-vuelta-${Date.now()}@ai-first`,
+    dia: isoLocal(dia),
+    hora: '10:00',
+    titulo: 'IA-Lab · segunda sentada: lo que te contestaron',
+    cuerpo,
+  }]);
+}
+
 export function Mensaje({ g, datos, onChange }) {
+  const enviado = !!datos[`${g.pre}_enviado`];
+  const marcar = (on) => {
+    onChange(`${g.pre}_enviado`, on);
+    if (on && !datos._enviado_t) onChange('_enviado_t', new Date().toISOString());
+    if (!on) onChange('_enviado_t', undefined);
+  };
   return (
     <div className="mensaje">
       <div className="msg-campo">
@@ -154,11 +261,24 @@ export function Mensaje({ g, datos, onChange }) {
         <input
           type="checkbox"
           className="c"
-          checked={!!datos[`${g.pre}_enviado`]}
-          onChange={(e) => onChange(`${g.pre}_enviado`, e.target.checked)}
+          checked={enviado}
+          onChange={(e) => marcar(e.target.checked)}
         />
         <span>Ya lo he enviado</span>
       </label>
+      {enviado && (
+        <div className="msg-campo">
+          <p className="rotulo">La vuelta, en tu calendario</p>
+          <p className="ayuda">Un evento para dentro de dos días, con lo que toca hacer y el enlace para volver justo aquí.</p>
+          <button
+            type="button"
+            className="btn btn-g"
+            onClick={() => bajar(eventoVuelta(datos, g.pre), 'ia-lab-segunda-sentada.ics', 'text/calendar;charset=utf-8')}
+          >
+            Descargar el evento (.ics)
+          </button>
+        </div>
+      )}
     </div>
   );
 }
@@ -194,8 +314,6 @@ export function Respuestas({ g, datos, onChange }) {
           </div>
         );
       })}
-      <p className="ayuda">Si no ha contestado nadie, déjalo vacío y sigue. El silencio no es un dato sobre tu
-        idea: es un dato sobre tu acceso, y de los buenos — porque lo sabes ahora y no en marzo.</p>
     </div>
   );
 }
