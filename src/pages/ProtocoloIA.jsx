@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useToast } from '../components/Toast';
+import AvisosMes from '../components/AvisosMes';
 import { alPortapapeles, bajar } from '../lib/portapapeles';
 import { plan, ics, planMd, leemeMd } from '../lib/plan30';
 import { TEXTOS } from '../lib/textos';
@@ -73,7 +74,7 @@ function leerGuardado() {
   try { return JSON.parse(localStorage.getItem(LLAVE)) || {}; } catch (e) { return {}; }
 }
 
-export default function ProtocoloIA() {
+export default function ProtocoloIA({ n }) {
   const navigate = useNavigate();
   const toast = useToast();
   const [query] = useSearchParams();
@@ -221,7 +222,7 @@ export default function ProtocoloIA() {
           {esAncho && <Vista d={d} fichero={vista.f} campos={vista.campos} ancho />}
         </div>
       ) : paso === PASO_LISTO ? (
-        <Listo d={d} fs={fs} onCopiar={copiar} onIr={irPaso} navigate={navigate} toast={toast} />
+        <Listo d={d} fs={fs} onCopiar={copiar} onIr={irPaso} navigate={navigate} toast={toast} n={n} />
       ) : (
         <AGithub onIr={irPaso} />
       )}
@@ -777,7 +778,7 @@ function Paso7({ d, set, texto, onCopiar, esAncho }) {
 
 /* --------------------------- listo --------------------------- */
 
-function Listo({ d, fs, onCopiar, onIr, navigate, toast }) {
+function Listo({ d, fs, onCopiar, onIr, navigate, toast, n }) {
   const quien = (d.persona || '').trim(), dia = (d.cuando || '').trim();
   const columna = d.columna || 'A';
   const p30 = useMemo(() => plan(d), [d]);
@@ -869,6 +870,7 @@ function Listo({ d, fs, onCopiar, onIr, navigate, toast }) {
           <button className="btn" onClick={() => navigate('/metodo/plan')}>Ver mi plan</button>
           <button className="btn btn-2" onClick={bajarIcs}>Añadir las fechas a mi calendario</button>
         </div>
+        <AvisosMes n={n} />
         <p className="ayuda">Las fechas salen de lo que ya has escrito en los pasos 4 y 6.
           Son tuyas: se mueven. Y en la carpeta van los cuatro textos que te acompañan
           después, en <code>textos/</code>.</p>

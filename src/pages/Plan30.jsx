@@ -4,6 +4,7 @@ import { fechaLarga } from '../lib/protocoloAiFirst';
 import { plan, dondeEstoy, ics, LLAVE_PLAN } from '../lib/plan30';
 import { TEXTOS } from '../lib/textos';
 import { useToast } from '../components/Toast';
+import AvisosMes from '../components/AvisosMes';
 
 const LLAVE = 'metodo-ai-first';
 
@@ -37,7 +38,7 @@ const PRUEBA = [
   'Ya está publicado y he escrito qué cambié',
 ];
 
-export default function Plan30() {
+export default function Plan30({ n }) {
   const navigate = useNavigate();
   const toast = useToast();
   const d = useMemo(() => leerGuardado(), []);
@@ -232,6 +233,8 @@ export default function Plan30() {
             <button className="btn" onClick={bajarIcs}>Añadir las fechas a mi calendario</button>
             <button className="btn btn-2" onClick={() => navigate('/metodo')}>← El método</button>
           </div>
+
+          <AvisosMes n={n} />
 
           <p className="ayuda pie-plan">Las fechas son tuyas y se mueven. Si la
             conversación cae tarde, la semana 1 se alarga hasta contenerla y las demás la

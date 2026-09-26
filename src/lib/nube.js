@@ -148,6 +148,9 @@ export async function traerRemoto(userId) {
 
 export async function borrarRemoto(userId) {
   const c = await cliente();
+  // Los avisos del mes primero: borrar el aviso arrastra sus recordatorios.
+  const av = await c.from('aviso').delete().eq('user_id', userId);
+  if (av.error) throw av.error;
   const { error } = await c.from('dossier').delete().eq('user_id', userId);
   if (error) throw error;
   guardaSello(null);

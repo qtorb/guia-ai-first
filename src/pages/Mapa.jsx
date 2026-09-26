@@ -58,10 +58,11 @@ export default function Mapa() {
             nunca solo dentro de un chat.</p>
         </div>
         <div className="mapa-caja">
-          <p className="rotulo">Te acompaña una vez</p>
+          <p className="rotulo">Te acompaña el mes</p>
           <h3>Esta web</h3>
-          <p>Rellena esa carpeta contigo, paso a paso. Cuando terminas el
-            recorrido no vuelves aquí — usas los ficheros directamente.</p>
+          <p>Rellena esa carpeta contigo, paso a paso, y te sitúa cuando vuelves. Si entras
+            con tu cuenta, te escribe el día que cierra cada semana de tu plan y, después,
+            una vez al mes.</p>
           <p><a href="#/metodo/recorrido" onClick={ir('/metodo/recorrido')}>Empezar el recorrido →</a></p>
         </div>
       </div>
