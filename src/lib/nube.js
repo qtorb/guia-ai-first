@@ -70,6 +70,7 @@ export const CLAVES = [
   'ialab-dossier-v2',    // las hojas de IA-Lab
   'metodo-ai-first',     // el recorrido del método
   'metodo-plan30',       // el plan de 30 días
+  'metodo-checkpoints',  // los cierres de semana del checkpoint
   'protocolo-ialab1-v1', // formato viejo, por si alguien lo arrastra
 ];
 

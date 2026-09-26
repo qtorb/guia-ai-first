@@ -1,25 +1,30 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { darseDeBaja } from '../lib/avisos';
+import { pausarConEnlace } from '../lib/avisos';
+import { fechaLarga } from '../lib/protocoloAiFirst';
 
-// El enlace de baja de los correos del mes. Funciona sin sesión: el token del
-// enlace es la llave, y no dice de quién es.
+// El enlace de pausa de los correos del checkpoint. Funciona sin sesión: el
+// token del enlace es la llave, y no dice de quién es. Misma estructura que
+// Baja.jsx.
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-export default function Baja() {
+export default function Pausa() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const t = params.get('t') || '';
   // Un enlace sin forma de token no se consulta: se sabe ya que no sirve.
   const valido = UUID.test(t);
   const [estado, setEstado] = useState(valido ? 'esperando' : 'no');   // esperando · hecho · no · error
+  const [fecha, setFecha] = useState(null);
   const llamado = useRef(false);
 
   useEffect(() => {
     if (!valido || llamado.current) return;
     llamado.current = true;
-    darseDeBaja(t)
-      .then((ok) => setEstado(ok === true ? 'hecho' : 'no'))
+    pausarConEnlace(t)
+      .then((f) => {
+        if (f) { setFecha(f); setEstado('hecho'); } else { setEstado('no'); }
+      })
       .catch(() => setEstado('error'));
   }, [t, valido]);
 
@@ -30,7 +35,7 @@ export default function Baja() {
       {estado === 'hecho' && (
         <>
           <h1>Hecho.</h1>
-          <p>No te vuelvo a escribir. Si algún día quieres los avisos otra vez, están en la página de tu plan.</p>
+          <p>No te escribo hasta el {fechaLarga(String(fecha || '').slice(0, 10))}. Después sigo, y la cuenta de semanas sigue donde estaba.</p>
           <button className="btn" onClick={() => navigate('/metodo/plan')}>Ir a mi plan</button>
         </>
       )}

@@ -882,8 +882,8 @@ function Listo({ d, fs, onCopiar, onIr, navigate, toast, n }) {
         </div>
         <AvisosMes n={n} />
         <p className="ayuda">Las fechas salen de lo que ya has escrito en los pasos 4 y 6.
-          Son tuyas: se mueven. Y en la carpeta van los cuatro textos que te acompañan
-          después, en <code>textos/</code>.</p>
+          Son tuyas: se mueven. Y en la carpeta van los cinco textos que te acompañan
+          después, en <code>textos/</code>, y el checkpoint de cada semana ya puesto en el calendario.</p>
       </div>
 
       <div className="acciones">
@@ -941,6 +941,9 @@ function Listo({ d, fs, onCopiar, onIr, navigate, toast, n }) {
       <p>Lo siguiente es la conversación que acabas de poner en el calendario, con la
         pieza que pide tu encargo en la mano. Cuando vuelvas, anotas tres frases suyas
         literales en <code>03_HIPOTESIS.md</code> y cierras la tanda.</p>
+      <p>Y cada semana, el día de tu checkpoint, media hora con cuatro preguntas. Se hace en{' '}
+        <a href="#/metodo/checkpoint" onClick={(e) => { e.preventDefault(); navigate('/metodo/checkpoint'); }}>Cierre de semana</a>
+        {' '}o con el texto 5.</p>
       <p>Todo lo demás del método —leer antes de tocar, comprobar una entrega, cerrar
         el día— está en el manual.</p>
       <p>

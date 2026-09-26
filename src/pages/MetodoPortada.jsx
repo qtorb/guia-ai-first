@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import { plan, dondeEstoy, LLAVE_PLAN } from '../lib/plan30';
+import { plan, dondeEstoy, partesCheckpoint, LLAVE_PLAN } from '../lib/plan30';
 import { fechaLarga } from '../lib/protocoloAiFirst';
+import { contador } from '../lib/checkpoint';
 
 // Si hay avance guardado, el botón principal continúa en vez de empezar de
 // cero: volver con el botón del navegador conservaba el recorrido, pero la
@@ -17,20 +18,23 @@ function pasoGuardado() {
 // desde aquí se monta el tuyo (el recorrido de siete pasos), se lee el manual
 // o se ve el mapa completo.
 // Si el recorrido está terminado, la portada deja de recibir desde cero: dice
-// por dónde vas del mes y qué toca esta semana. Lo sabe este navegador, no un
-// servidor.
+// por dónde vas del mes y qué toca esta semana. Después del mes, dice que
+// toca el checkpoint. Lo sabe este navegador, no un servidor.
 function situacion() {
   try {
     const d = JSON.parse(localStorage.getItem('metodo-ai-first')) || {};
     if (!d.persona && !d.cuando) return null;
     const p = plan(d);
     const aqui = dondeEstoy(p);
-    if (!aqui || aqui.pasado) return null;
+    if (!aqui) return null;
     let m = {};
     try { m = JSON.parse(localStorage.getItem(LLAVE_PLAN)) || {}; } catch (e) { m = {}; }
     const s = p.semanas[aqui.semana - 1];
     const hechas = [1, 2, 3, 4].filter((n) => m['s' + n]);
-    return { aqui, s, hechas, cambios: Number(m.cambios || 0) };
+    return {
+      aqui, s, hechas, cambios: Number(m.cambios || 0),
+      pasado: aqui.pasado, checkpoint: partesCheckpoint(d),
+    };
   } catch (e) { return null; }
 }
 
@@ -41,33 +45,55 @@ export default function MetodoPortada() {
   // «Terminado» no es haber llegado al paso 7: es haber contestado el 6, que
   // es lo que produce la carpeta y el plan. Se puede estar en el 7 sin nada.
   const terminado = paso >= 7 && !!sit;
+  const cont = contador();
   return (
     <div className="pagina">
-      <h1>Método AI-First</h1>
+      <p className="rotulo">Método AI-First</p>
+      <h1>En dos semanas tienes algo fuera. En cuatro sabes qué cambiar.</h1>
+
+      <div className="entradilla">
+        <p>Para quien trabaja con IA, produce mucho y ya no sabe qué de todo eso es verdad.</p>
+        <p>Un sistema de trabajo: quién decide qué, cómo se pide, qué se comprueba antes de
+          darlo por bueno y cuándo hay que parar. Y una cita cada semana para saber si sigues
+          en lo correcto.</p>
+      </div>
 
       {sit && (
         <div className="situacion">
-          <p className="rotulo">Vas por aquí</p>
-          {sit.hechas.length > 0 && (
-            <ul className="yatienes">
-              {sit.hechas.map((n) => (
-                <li key={n}>Semana {n}, hecha.</li>
-              ))}
-            </ul>
+          {!sit.pasado ? (
+            <>
+              <p className="rotulo">Vas por aquí</p>
+              {sit.hechas.length > 0 && (
+                <ul className="yatienes">
+                  {sit.hechas.map((n) => (
+                    <li key={n}>Semana {n}, hecha.</li>
+                  ))}
+                </ul>
+              )}
+              <h2>Día {sit.aqui.dia} de {sit.aqui.total} · esta semana sales con: {sit.s.gano}</h2>
+              <p>{sit.s.como}</p>
+              <p className="ayuda">Cierras el {fechaLarga(sit.s.cierre)} a las {sit.s.hora}.</p>
+              {cont && <p className="ayuda">{cont}</p>}
+              <div className="acciones">
+                <button className="btn" onClick={() => navigate('/metodo/plan')}>Ver mi plan</button>
+                <button className="btn btn-2" onClick={() => navigate('/metodo/checkpoint')}>Cerrar esta semana</button>
+              </div>
+            </>
+          ) : (
+            <>
+              <p className="rotulo">Vas por aquí</p>
+              <h2>Tu mes ha terminado. Ahora, cada semana, tu checkpoint.</h2>
+              <p>Cada {sit.checkpoint.dia} a las {sit.checkpoint.hora}: cuatro preguntas y un
+                veredicto. Media hora.</p>
+              {cont && <p className="ayuda">{cont}</p>}
+              <div className="acciones">
+                <button className="btn" onClick={() => navigate('/metodo/checkpoint')}>Cerrar esta semana</button>
+                <button className="btn btn-2" onClick={() => navigate('/metodo/plan')}>Ver mi plan</button>
+              </div>
+            </>
           )}
-          <h2>Día {sit.aqui.dia} de {sit.aqui.total} · esta semana sales con: {sit.s.gano}</h2>
-          <p>{sit.s.como}</p>
-          <p className="ayuda">Cierras el {fechaLarga(sit.s.cierre)} a las {sit.s.hora}.
-            {sit.cambios > 0 && ` Llevas ${sit.cambios} ${sit.cambios === 1 ? 'cosa cambiada' : 'cosas cambiadas'} por lo que te han dicho.`}</p>
-          <div className="acciones">
-            <button className="btn" onClick={() => navigate('/metodo/plan')}>Ver mi plan</button>
-          </div>
         </div>
       )}
-      <div className="entradilla">
-        <p>Un sistema de trabajo para construir con agentes de IA: quién decide qué,
-          cómo se pide, qué se comprueba antes de darlo por bueno y cuándo hay que parar.</p>
-      </div>
 
       {/* Con el recorrido terminado esta pantalla decía «Empieza por montar el
           tuyo» encima de un plan ya en marcha, y no decía en ningún sitio que
@@ -75,13 +101,9 @@ export default function MetodoPortada() {
       {terminado ? (
         <>
           <h2>Tu método ya está montado</h2>
-          {/* La lista de lo que puedes hacer la dicen los botones. Decirla además en
-              prosa prometía volver a un paso sin que hubiera botón para hacerlo. */}
-          <p>Lo escribiste en siete pasos y está en este navegador, no en un servidor
-            nuestro.</p>
+          <p>Lo escribiste en siete pasos. Desde ahora el método es una cita: cada semana,
+            cuatro preguntas y un veredicto.</p>
 
-          {/* «Ver mi plan» ya está arriba, en el recuadro de situación: aquí
-              sería el mismo botón dos veces en la misma pantalla. */}
           <div className="acciones">
             <button className="btn" onClick={() => navigate('/metodo/recorrido?paso=7')}>
               Descargar la carpeta otra vez
@@ -95,20 +117,17 @@ export default function MetodoPortada() {
       ) : (
         <>
           <h2>Empieza por montar el tuyo</h2>
-          <p>Quince minutos, siete pasos. Al terminar te llevas, en una carpeta, los
-            ficheros de tu método escritos con tus respuestas. Si tu proyecto ya ha
-            salido a la calle, además tienes los cuatro pasos para dejar esa carpeta
-            en un repositorio —una carpeta tuya en internet que guarda el historial
-            de todo lo que cambies.</p>
-          <p>No hace falta instalar nada ni saber programar. Sin cuenta, lo que escribas
-            es un borrador que no sale de este navegador; entrando, queda guardado.</p>
+          <p>Quince minutos, siete pasos. No hace falta instalar nada ni saber programar.</p>
 
           <div className="acciones">
             <button className="btn" onClick={() => navigate('/metodo/recorrido')}>
               {paso > 1 ? `Seguir donde lo dejé · paso ${paso} de 7` : 'Montar el mío · 15 minutos'}
             </button>
-            <button className="btn btn-2" onClick={() => navigate('/guia')}>Ver el método primero</button>
+            <button className="btn btn-2" onClick={() => navigate('/guia')}>Leer el manual primero</button>
           </div>
+          <p className="ayuda">Funciona sin cuenta: lo que escribes se queda en este navegador.
+            Si entras —arriba a la derecha—, lo tienes también en el móvil y, si lo pides, te
+            escribo cada semana el día de tu checkpoint.</p>
         </>
       )}
       {paso > 1 && (
@@ -121,7 +140,27 @@ export default function MetodoPortada() {
           }}>Empezar de cero</button>
         </p>
       )}
+
+      <h2>Cómo funciona</h2>
+      <ol>
+        <li><b>Montas tu método en quince minutos.</b> Siete pasos: para quién es, en qué fase
+          estás, qué no se toca, quién decide qué y la primera suposición que vas a poner a
+          prueba con alguien de fuera.</li>
+        <li><b>Te llevas tu carpeta y un plan con fechas.</b> Ficheros de texto con tus
+          respuestas, los textos para pegar en tu IA y tu primer mes en el calendario.</li>
+        <li><b>Cada semana, un checkpoint de media hora.</b> Cuatro preguntas fijas y un
+          veredicto que firmas tú: seguimos, cambiamos o paramos.</li>
+        <li><b>La web te escribe ese día y lleva la cuenta.</b> Si entras con tu cuenta.
+          Semanas cerradas, conversaciones con gente de fuera, cosas cambiadas por lo que te
+          dijeron.</li>
+      </ol>
+
       <p style={{ marginTop: 'var(--e5)' }}>
+        <a href="#/guia" onClick={(e) => { e.preventDefault(); navigate('/guia'); }} style={{ display: 'inline-flex', alignItems: 'center', minHeight: 44 }}>
+          Leer el manual: el porqué y las reglas, por situaciones →
+        </a>
+      </p>
+      <p>
         <a href="#/metodo/mapa" onClick={(e) => { e.preventDefault(); navigate('/metodo/mapa'); }} style={{ display: 'inline-flex', alignItems: 'center', minHeight: 44 }}>
           Ver el mapa completo: piezas, roles, pasos y qué te llevas →
         </a>
@@ -130,17 +169,10 @@ export default function MetodoPortada() {
       <hr />
 
       <h2>Beta permanente</h2>
-      <p>Esto no está terminado, y no lo va a estar. Lo que tienes delante es la versión de
-        hoy: sale antes de estar redonda, se usa, y lo que no funciona se cambia. Un método
-        que espera a estar perfecto para salir no es un método mejor: es uno que nadie ha
-        probado.</p>
-      <p>Vale igual para lo tuyo, y es la parte incómoda. La página que vas a hacer no tiene
-        que estar bien: tiene que existir, para que alguien que no eres tú te diga qué no se
-        entiende. Publicar pronto no es descuido. Es la única forma de que algo se corrija
-        mientras corregirlo todavía es barato.</p>
-      <p>Así que trabaja en beta permanente: versiones, no lanzamientos. Nada de esperar al
-        momento bueno, que no llega. Lo que sacas hoy es peor que lo que sacarás en tres
-        meses, y a la vez es lo único que hace posible lo de dentro de tres meses.</p>
+      <p>Esto no está terminado y no lo va a estar: es la versión de hoy, sale antes de estar
+        redonda y lo que no funciona se cambia. Vale igual para lo tuyo. La página que vas a
+        hacer no tiene que estar bien: tiene que existir, para que alguien que no eres tú te
+        diga qué no se entiende. Versiones, no lanzamientos.</p>
     </div>
   );
 }

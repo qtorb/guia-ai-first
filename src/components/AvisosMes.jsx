@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useToast } from './Toast';
-import { programar, parar, leerAviso } from '../lib/avisos';
+import { fechaLarga } from '../lib/protocoloAiFirst';
+import { programar, parar, leerAviso, pausar, reanudar } from '../lib/avisos';
 
 // «Que te escriba»: la casilla que pide los avisos de tu mes. Sin plan no
 // hay fechas que avisar, y sin cuenta no hay a quién escribir.
@@ -12,6 +13,7 @@ export default function AvisosMes({ n }) {
   const toast = useToast();
   const [d] = useState(leerMetodo);
   const [activo, setActivo] = useState(false);
+  const [pausaHasta, setPausaHasta] = useState(null);
   const [ocupado, setOcupado] = useState(false);
   const hayPlan = !!(d.persona || '').trim() && !!(d.cuando || '').trim();
   const dentro = n?.estado === 'dentro';
@@ -23,9 +25,10 @@ export default function AvisosMes({ n }) {
     if (!hayPlan || !dentro) return undefined;
     let vivo = true;
     leerAviso()
-      .then(({ activo: a }) => {
+      .then(({ activo: a, pausaHasta: p }) => {
         if (!vivo) return;
         setActivo(a);
+        setPausaHasta(p);
         if (a) programar(d).catch(() => {});
       })
       .catch(() => {});
@@ -44,7 +47,7 @@ export default function AvisosMes({ n }) {
     try {
       if (marcar) {
         await programar(d);
-        toast('Hecho: te escribo el día que cierra cada semana');
+        toast('Hecho: te escribo cada semana, el día de tu checkpoint');
       } else {
         await parar();
         toast('No te escribo más');
@@ -57,11 +60,41 @@ export default function AvisosMes({ n }) {
     }
   }
 
+  async function pausarAvisos() {
+    if (ocupado) return;
+    setOcupado(true);
+    try {
+      const fecha = await pausar();
+      setPausaHasta(fecha);
+      toast(`Hecho: no te escribo hasta el ${fechaLarga(String(fecha || '').slice(0, 10))}`);
+    } catch {
+      toast('No he podido guardarlo. Inténtalo otra vez en un momento.');
+    } finally {
+      setOcupado(false);
+    }
+  }
+
+  async function reanudarAvisos() {
+    if (ocupado) return;
+    setOcupado(true);
+    try {
+      await reanudar();
+      setPausaHasta(null);
+      toast('Hecho: vuelvo a escribirte');
+    } catch {
+      toast('No he podido guardarlo. Inténtalo otra vez en un momento.');
+    } finally {
+      setOcupado(false);
+    }
+  }
+
+  const enPausa = pausaHasta && new Date(pausaHasta) > new Date();
+
   return (
     <div className="aviso">
       <p className="rotulo">Que te escriba</p>
       {!dentro ? (
-        <p>Si entras con tu cuenta —arriba a la derecha—, te escribo el día que cierra cada semana de tu plan, a la hora de tu checkpoint, con lo que toca esa semana. Y después, una vez al mes.</p>
+        <p>Si entras con tu cuenta —arriba a la derecha—, te escribo cada semana el día de tu checkpoint, a su hora: el primer mes con lo que toca esa semana y, después, con las cuatro preguntas. Sin fecha de fin, hasta que me digas que pare.</p>
       ) : (
         <>
           <label className="chk" aria-busy={ocupado ? 'true' : undefined}>
@@ -71,9 +104,18 @@ export default function AvisosMes({ n }) {
               checked={activo}
               onChange={(e) => cambiar(e.target.checked)}
             />
-            <span>Escríbeme el día que cierra cada semana, a la hora de mi checkpoint, y después una vez al mes.</span>
+            <span>Escríbeme cada semana, el día y a la hora de mi checkpoint.</span>
           </label>
-          <p className="ayuda">Te llegan a {n.usuario?.email || ''}. No llevan nada de lo que has escrito: el texto de cada semana y un enlace a tu plan. Te das de baja desmarcando esto o desde cualquiera de los correos.</p>
+          <p className="ayuda">Te llegan a {n.usuario?.email || ''}. Llevan el texto de cada semana y un enlace. Puedes pausarlos dos semanas o darte de baja desde cualquiera de los correos, o desmarcando esto.</p>
+          {activo && (
+            enPausa ? (
+              <p className="ayuda">En pausa hasta el {fechaLarga(String(pausaHasta).slice(0, 10))}. {' '}
+                <button className="lnk" onClick={reanudarAvisos}>Reanudar</button></p>
+            ) : (
+              <p className="ayuda">Te escribo cada semana, el día de tu checkpoint. {' '}
+                <button className="lnk" onClick={pausarAvisos}>Pausar dos semanas</button></p>
+            )
+          )}
         </>
       )}
     </div>
