@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import sesionesData from '../data/sesiones.json';
 import { bajar } from '../lib/portapapeles';
 import { slug } from '../lib/protocolo';
+import { segundaSentada } from '../lib/segundaSentada';
 
 // Port de pintarSesiones()/estadoDe() — guia-ai-first-src/index.html
 // L2800-2825.
@@ -10,6 +11,11 @@ function estadoDe(dossier, n) {
   if (!d) return null;
   const total = d._total || 0;
   const hechos = Object.keys(d).filter((k) => k[0] !== '_' && d[k] !== '' && d[k] !== false).length;
+  // La hoja 0 se hace en dos sentadas: si la segunda espera, eso va antes.
+  if (Number(n) === 10) {
+    const vuelta = segundaSentada(d);
+    if (vuelta) return { txt: 'Te espera la segunda sentada →', cls: 'curso', destino: vuelta.destino };
+  }
   if (d._fin) return { txt: '✓ Terminada', cls: 'fin' };
   if (hechos) return { txt: `Paso ${d._paso || 1}${total ? ' de ' + total : ''} · Continuar →`, cls: 'curso' };
   return null;
@@ -60,12 +66,13 @@ export default function IaLabList({ dossierCtl }) {
           const st = estadoDe(dossier, s.n);
           const hay = !!s.fichero;
           const Tag = hay ? 'a' : 'div';
+          const destino = st?.destino || `/ia-lab/${s.n}`;
           return (
             <Tag
               key={s.n}
               className={'sc' + (hay ? '' : ' off') + (st && st.cls === 'fin' ? ' hecha' : '')}
-              href={hay ? `#/ia-lab/${s.n}` : undefined}
-              onClick={hay ? (e) => { e.preventDefault(); navigate(`/ia-lab/${s.n}`); } : undefined}
+              href={hay ? `#${destino}` : undefined}
+              onClick={hay ? (e) => { e.preventDefault(); navigate(destino); } : undefined}
             >
               <div className="scn">{s.etiqueta || s.n}</div>
               <div className="scb">

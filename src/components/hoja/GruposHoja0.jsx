@@ -1,9 +1,9 @@
 import TextoInline from '../TextoInline';
 import Campo from './Campo';
-import hojasData from '../../data/hojas.json';
 import { bajar } from '../../lib/portapapeles';
 import { calendario } from '../../lib/ics';
 import { fechaLarga } from '../../lib/protocoloAiFirst';
+import { PASO_VUELTA } from '../../lib/segundaSentada';
 
 // --------------------------------------------------------------------------
 // Los tipos de grupo que estrena la hoja 0 rediseñada. Viven aparte de
@@ -33,7 +33,7 @@ export function Fichas({ g, datos, onChange }) {
         return (
           <div className="ficha" key={pre}>
             <div className="ficha-cab">
-              <span className="ficha-n">{g.rotulo || 'Ficha'} {i + 1}</span>
+              <span className="ficha-n">{g.rotulo || 'Ficha'}{g.n === 1 ? '' : ` ${i + 1}`}</span>
             </div>
             {CAMPOS_FICHA.map((c) => {
               const k = `${pre}_${c.s}`;
@@ -188,10 +188,6 @@ export function Finalistas({ g, datos, onChange }) {
     </>
   );
 }
-
-// El paso del bloque con `vuelta` en la hoja 0: el enlace del .ics lleva ahí.
-const HOJA0 = hojasData['hojas/mmdd31/0.json'];
-const PASO_VUELTA = HOJA0.bloques.findIndex((b) => b.vuelta) + 2;
 
 function isoLocal(d) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;

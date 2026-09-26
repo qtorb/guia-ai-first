@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import sesionesData from '../data/sesiones.json';
 import { plan, dondeEstoy } from '../lib/plan30';
+import { segundaSentada } from '../lib/segundaSentada';
 
 // La portada del sitio: dos puertas, una por cada cosa que aquí se trabaja.
 // Port de portadaHtml() — guia-ai-first-src/index.html:3462-3479 — rehecho en
@@ -12,16 +13,32 @@ const SESIONES = sesionesData.sesiones || [];
 // Qué decirle a quien ya ha empezado. Lo sabe este navegador, no un servidor:
 // si no hay nada guardado, la puerta no dice nada y recibe desde cero.
 function avanceLab(dossier) {
+  // Lo primero, si toca: la segunda sentada de la hoja 0 lleva días esperando.
+  const vuelta = segundaSentada((dossier.hojas || {})[10]);
+  if (vuelta) {
+    return {
+      est: `Tu segunda sentada te espera · escribiste hace ${vuelta.dias} días`,
+      cta: 'Volver a la segunda sentada →',
+      destino: vuelta.destino,
+    };
+  }
   const empezadas = Object.entries(dossier.hojas || {})
     .filter(([, h]) => Object.keys(h).some((k) => k[0] !== '_' && String(h[k] ?? '').trim()));
   if (!empezadas.length) return null;
   // Con una sola hoja empezada, la tarjeta lleva directa a esa hoja; con
   // varias, a la lista.
-  if (empezadas.length > 1) return { est: `${empezadas.length} hojas empezadas`, destino: '/ia-lab' };
+  if (empezadas.length > 1) {
+    const terminadas = empezadas.filter(([, h]) => h._fin).length;
+    const est = terminadas > 0
+      ? `${empezadas.length} hojas empezadas · ${terminadas} terminadas`
+      : `${empezadas.length} hojas empezadas`;
+    return { est, destino: '/ia-lab' };
+  }
   const [n, h] = empezadas[0];
   const ses = SESIONES.find((s) => String(s.n) === String(n));
   const etiqueta = ses ? (ses.etiqueta ?? ses.n) : n;
   const destino = `/ia-lab/${n}`;
+  if (h._fin) return { est: `Sesión ${etiqueta} · terminada`, destino };
   if (h._paso && h._total) return { est: `Sesión ${etiqueta} · paso ${h._paso} de ${h._total}`, destino };
   return { est: `Sesión ${etiqueta}, empezada`, destino };
 }
@@ -75,7 +92,7 @@ export default function Home({ dossierCtl }) {
               las demás llegan con cada sesión. Se hace, no se lee.
             </span>
             {lab && <span className="p-est">{lab.est}</span>}
-            <span className="gpgo">{lab ? 'Seguir donde lo dejaste →' : 'Empezar el recorrido →'}</span>
+            <span className="gpgo">{lab ? (lab.cta || 'Seguir donde lo dejaste →') : 'Empezar el recorrido →'}</span>
           </a>
 
           <a className="gp gp-guia" href={`#${metodo ? metodo.destino : '/metodo'}`} onClick={ir(metodo ? metodo.destino : '/metodo')}>

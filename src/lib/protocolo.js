@@ -6,6 +6,8 @@
 // distinto: tiene() de un checkbox marcado es true aunque val() daría 'x'
 // en vez de un valor de usuario).
 
+import { fechaLarga } from './protocoloAiFirst';
+
 export function recolectarCheckKeys(hoja) {
   const set = new Set();
   const visitarGrupos = (grupos) => {
@@ -22,8 +24,9 @@ export function recolectarCheckKeys(hoja) {
 }
 
 function val(datos, checkKeys, k) {
-  if (!(k in datos)) return '';
+  // Una casilla sale siempre como [ ] o [x], también si nunca se tocó.
   if (checkKeys.has(k)) return datos[k] ? 'x' : ' ';
+  if (!(k in datos)) return '';
   return String(datos[k] ?? '').trim();
 }
 
@@ -172,13 +175,25 @@ export function generarProtocolo(hoja, datos, checkKeys, nombre, kicker, salida)
     });
     grupos.push(g);
 
+    // Con `omitirLineasVacias`, una línea cuyas claves de texto están todas
+    // vacías no se imprime: tres huecos para respuestas no son tres
+    // «[pendiente]». Las líneas de solo casillas salen siempre.
+    const vacia = (l) => {
+      if (!hoja.omitirLineasVacias) return false;
+      const ks = claves(l).filter((k) => !checkKeys.has(k));
+      return ks.length > 0 && !ks.some((k) => tiene(datos, checkKeys, k));
+    };
+    // Las fechas AAAA-MM-DD salen como se leen: «sábado 26 de septiembre».
+    const legible = (v) => (/^\d{4}-\d{2}-\d{2}$/.test(v) ? fechaLarga(v) : v);
     const lineas = [];
     grupos.forEach((grupo) => {
       const ks = grupo.flatMap(claves);
       if (ks.length && !ks.some((k) => tiene(datos, checkKeys, k)) && !ks.every((k) => checkKeys.has(k))) return;
+      const salen = grupo.filter((l) => !vacia(l));
+      if (!salen.length) return;
       if (lineas.length) lineas.push('');
-      grupo.forEach((l) => lineas.push(
-        l.replace(/\{(\w+)\}/g, (_, k) => (checkKeys.has(k) ? val(datos, checkKeys, k) : (tiene(datos, checkKeys, k) ? val(datos, checkKeys, k) : '[pendiente]')))
+      salen.forEach((l) => lineas.push(
+        l.replace(/\{(\w+)\}/g, (_, k) => (checkKeys.has(k) ? val(datos, checkKeys, k) : (tiene(datos, checkKeys, k) ? legible(val(datos, checkKeys, k)) : '[pendiente]')))
       ));
     });
     while (lineas.length && !lineas[lineas.length - 1].trim()) lineas.pop();

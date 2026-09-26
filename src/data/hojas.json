@@ -1431,7 +1431,8 @@
   "donde": {
    "cuando": "Cuando quieras, antes de cerrar proyecto el 22 de octubre. Son dos sentadas, con dos o tres días en medio.",
    "encaja": "No es de ninguna sesión: es la hoja de la que sale la idea que vas a trabajar en las seis."
-  }
+  },
+  "omitirLineasVacias": true
  },
  "hojas/mmdd31/encargo.json": {
   "titulo": "Tu plantilla de encargo",

@@ -181,7 +181,11 @@ export default function IaLabHoja({ dossierCtl }) {
     // «Terminada» solo cuando lo está: generar con bloques sin escribir deja
     // constancia de que se generó, pero no cierra la hoja.
     const completa = bloquesSinEscribir(hoja, datos, checkKeys).length === 0;
-    guardaHoja(sesionN, { ...datos, _paso: paso, _total: NPASOS, _salidas: nuevos, _generada: hoy, ...(completa ? { _fin: hoy } : {}) });
+    // Lo que guarda el sistema entra también en `datos`: el autoguardado y
+    // irPaso() reescriben la hoja desde ahí, y si no lo encontraban lo borraban.
+    const sistema = { _salidas: nuevos, _generada: hoy, ...(completa ? { _fin: hoy } : {}) };
+    setDatos((d) => ({ ...d, ...sistema }));
+    guardaHoja(sesionN, { ...datos, ...sistema, _paso: paso, _total: NPASOS });
     toast((sal.parte ? sal.parte + ' · ' : '') + 'documento generado');
     setTimeout(() => document.getElementById('texto-' + clave)?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
   }
