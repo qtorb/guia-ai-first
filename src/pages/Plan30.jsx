@@ -63,6 +63,11 @@ export default function Plan30({ n }) {
   const cambios = Number(m.cambios || 0);
   const sup = Number(m.sup || 0);
   const comp = Number(m.comp || 0);
+  const contactos = Number(m.contactos || 0);
+  const semanasCerradas = useMemo(() => {
+    try { return (JSON.parse(localStorage.getItem('metodo-checkpoints'))?.semanas || []).length; }
+    catch (e) { return 0; }
+  }, []);
 
   function copiar(clave, aviso) {
     const t = TEXTOS[clave];
@@ -113,6 +118,11 @@ export default function Plan30({ n }) {
                 <span key={n} className={'tramo' + (m['s' + n] ? ' lleno' : '')} />
               ))}
             </div>
+            <label className="marcador">
+              <input type="number" min="0" inputMode="numeric" value={contactos}
+                onChange={(e) => setM({ ...m, contactos: e.target.value })} />
+              <span>conversaciones con gente de fuera</span>
+            </label>
             <label className="marcador">
               <input type="number" min="0" inputMode="numeric" value={cambios}
                 onChange={(e) => setM({ ...m, cambios: e.target.value })} />
@@ -227,6 +237,18 @@ export default function Plan30({ n }) {
                 </div>
               </section>
             ))}
+          </div>
+
+          <div className="aviso bien">
+            <p className="rotulo">Cada semana, sin fecha de fin</p>
+            <p>Cada {p.checkpoint.dia} a las {p.checkpoint.hora}, tu checkpoint: cuatro
+              preguntas y un veredicto que firmas tú. Durante el mes y después.</p>
+            {semanasCerradas > 0 && (
+              <p>Llevas {semanasCerradas} {semanasCerradas === 1 ? 'semana cerrada' : 'semanas cerradas'}.</p>
+            )}
+            <div className="acciones">
+              <button className="btn" onClick={() => navigate('/metodo/checkpoint')}>Cerrar esta semana</button>
+            </div>
           </div>
 
           <div className="acciones">

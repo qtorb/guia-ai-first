@@ -156,9 +156,10 @@ export function dondeEstoy(p) {
 }
 
 // --------------------------------------------------------------------------
-// El .ics. Seis eventos: los cuatro cierres de semana, la conversación y el
-// día del lanzamiento. Cada uno lleva EN EL CUERPO el texto que toca esa
-// semana: un evento titulado «Checkpoint» y vacío es teatro.
+// El .ics. Siete eventos: los cuatro cierres de semana, la conversación, el
+// día del lanzamiento y el checkpoint, que se repite cada semana sin fecha
+// de fin. Cada uno lleva EN EL CUERPO el texto que toca esa semana: un evento
+// titulado «Checkpoint» y vacío es teatro.
 // --------------------------------------------------------------------------
 
 export function ics(d, p) {
@@ -181,7 +182,8 @@ export function ics(d, p) {
         (s.uxm
           ? 'Antes de enseñar la página a nadie, pásala por uxmachine.app: mide lo que declara, no lo que promete.\n\n'
           : '') +
-        'Si esta semana se te ha ido, muévelo y ya está. Lo que no se mueve es el orden.',
+        'Si esta semana se te ha ido, muévelo y ya está. Lo que no se mueve es el orden.' +
+        '\n\nY tu checkpoint de esta semana: guia.qtorb.com/#/metodo/checkpoint',
     });
   });
 
@@ -208,6 +210,22 @@ export function ics(d, p) {
       'Hay una página en internet que explica qué ofreces y a quién.\n' +
       'Cinco personas de ese «a quién» la han mirado.\n' +
       'Y has cambiado algo por lo que te dijeron.',
+  });
+
+  ev.push({
+    uid: uid('checkpoint'),
+    dia: iso(mas(deIso(p.semanas[3].cierre), 7)),
+    hora: p.checkpoint.hora,
+    rrule: 'FREQ=WEEKLY',
+    titulo: 'Checkpoint · cuatro preguntas',
+    cuerpo:
+      '1. ¿Qué decisión concreta ha mejorado esta semana gracias a lo que he hecho?\n' +
+      '2. ¿Qué estamos haciendo por inercia y ya no sé justificar?\n' +
+      '3. ¿Qué contacto con el mundo real he tenido?\n' +
+      '4. ¿Sigue cada cosa en su columna?\n\n' +
+      'Y un veredicto que firmas tú: seguimos, cambiamos o paramos.\n\n' +
+      'En la web: guia.qtorb.com/#/metodo/checkpoint\n' +
+      'Con tu IA: el texto 5 de tu carpeta (textos/5_checkpoint.md).',
   });
 
   return calendario(ev);
@@ -243,6 +261,10 @@ ${s.pone ? `\n**${s.pone}**\n` : ''}${s.siNo ? `\n**Si resulta falso:** ${s.siNo
 Texto que pegas esta semana: **${s.texto}** — abre \`${s.fichero}\`.
 Cierras el ${l(s.cierre)} a las ${s.hora}.
 `).join('\n')}
+## Después del mes
+
+Cada ${p.checkpoint.dia} a las ${p.checkpoint.hora}, tu checkpoint: cuatro preguntas fijas y un veredicto que firmas tú —seguimos, cambiamos o paramos—. Sin fecha de fin. Está en \`metodo-mi-mes.ics\` como evento que se repite, y el bloque que sale va a \`metodo/07_CIERRE.md\`.
+
 ---
 
 Las fechas son tuyas y se mueven, y el mes se estira: si la conversación cae
@@ -305,6 +327,7 @@ Está en \`PLAN.md\`, con las fechas. En corto:
 | Semana 2 | Una dirección que puedas mandar por WhatsApp |
 | Semana 3 | Saber qué no se entiende sin ti delante |
 | Semana 4 | Publicado, y escrito qué cambiaste |
+| Cada semana | Tu checkpoint, sin fecha de fin |
 
 El ${l(p.lanzamiento)} deberías tener: una página en internet que explica qué
 ofreces y a quién, cinco personas de ese «a quién» que la han mirado, y algo que
@@ -318,17 +341,24 @@ añade. Cada evento lleva dentro el texto que toca esa semana.
 ## Qué hay en cada sitio
 
 \`metodo/\` — tus ficheros. Para quién es esto, quién decide qué, lo que no se
-toca, lo que supones y todavía no sabes, y dónde te quedaste.
+toca, lo que supones y todavía no sabes, y dónde te quedaste. Están todos desde
+el primer día; algunos se quedan vacíos hasta que los necesitas.
 
 \`metodo/encargos/\` — lo que le vas pidiendo a una IA. El primero ya está escrito.
 
 \`metodo/activos/\` — **lo que te entreguen, con la fecha en el nombre.** Se olvida
 siempre y luego no puedes saber por qué algo quedó como quedó.
 
-\`textos/\` — los cuatro textos que se pegan en cualquier chat. Empieza por su
+\`textos/\` — los cinco textos que se pegan en cualquier chat. Empieza por su
 \`LEEME.md\`: dice cuál usar en cada momento.
 
 \`PLAN.md\` y \`metodo-mi-mes.ics\` — tu mes.
+
+\`docs/MANUAL.md\` — el manual entero, por si lo quieres sin conexión.
+
+\`roles/\` — los textos para pegar en tu asistente de IA como asesor o especialista.
+
+\`.claude/skills/\` — los cinco textos como atajos, si trabajas con Claude Code. En algunos sistemas esta carpeta sale oculta.
 
 ---
 
@@ -341,8 +371,8 @@ no sea un chat. Nada de esto vive en ninguna web: es tuyo y está en tu disco.
 revisa, y eso vale también para una IA: en el mismo chat va a defender lo que
 acaba de hacer.
 
-**Si tu IA te da la razón en todo a la primera, no te está ayudando.** Los cuatro
-textos le piden explícitamente que te diga qué es lo más flojo. Eso es lo que no
+**Si tu IA te da la razón en todo a la primera, no te está ayudando.** Los textos
+le piden explícitamente que te diga qué es lo más flojo. Eso es lo que no
 vas a conseguir pidiéndole las cosas de la forma normal.
 `;
 }

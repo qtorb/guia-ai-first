@@ -24,6 +24,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npm run comprobar-fuente
       - run: npm run build
         env:
           # Sin estas dos, la capa de sincronización queda apagada y la web
