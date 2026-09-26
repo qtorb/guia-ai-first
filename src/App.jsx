@@ -14,6 +14,7 @@ import Mapa from './pages/Mapa';
 import MetodoPortada from './pages/MetodoPortada';
 import Plan30 from './pages/Plan30';
 import Panel from './pages/Panel';
+import Baja from './pages/Baja';
 
 function Barra({ n }) {
   const navigate = useNavigate();
@@ -75,8 +76,9 @@ function Shell({ dossierCtl, n }) {
           <Route path="/ia-lab/:n" element={<IaLabHoja dossierCtl={dossierCtl} />} />
           <Route path="/metodo" element={<MetodoPortada />} />
           <Route path="/metodo/mapa" element={<Mapa />} />
-          <Route path="/metodo/plan" element={<Plan30 />} />
-          <Route path="/metodo/recorrido" element={<ProtocoloIA />} />
+          <Route path="/metodo/plan" element={<Plan30 n={n} />} />
+          <Route path="/metodo/recorrido" element={<ProtocoloIA n={n} />} />
+          <Route path="/baja" element={<Baja />} />
           <Route path="/guia" element={<GuiaIndex />} />
           <Route path="/guia/:ident" element={<GuiaCapitulo />} />
           {/* El panel de actividad. No sale en ningún menú y solo funciona
