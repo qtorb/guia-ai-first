@@ -26,14 +26,13 @@ Mínimo cuatro roles. El especialista técnico, solo desde la columna B.
 
 *Te da criterio, no ejecución. Sus cautelas no son decisiones tuyas hasta que las firmes (manual 6.3<!--cap:consulta-recibir-->).*
 
-| Decide | NO decide |
-|---|---|
-| Qué se construye y en qué orden | Arquitectura, datos, orden técnico |
-| A quién sirve y cuál es la unidad de valor | Si un cambio es seguro de publicar |
-| Qué se puede afirmar en público | **Qué está prohibido** |
-| Qué deuda se tolera y a cambio de qué | **Qué cautelas asume el proyecto** |
+**Propone** (y lo firmas tú en `08_DECISIONES.md`): qué se construye y en qué orden · a quién sirve y cuál es la unidad de valor · qué se puede afirmar en público · qué deuda se tolera y a cambio de qué.
 
-Las dos últimas de la derecha son las que más se cuelan. Si no están escritas, el asesor se las queda sin que se lo pidas.
+**NO decide:**
+
+{{asesor_no}}
+
+Las dos últimas son las que más se cuelan. Si no están escritas, el asesor se las queda sin que se lo pidas.
 
 ---
 
@@ -55,11 +54,11 @@ Cuando aparece algo que el encargo no contempla: para y pregunta. No elige. Lo n
 
 | Decide | NO decide |
 |---|---|
-| Cuándo se para | Qué se construye |
+| Cuándo se mira si hay que parar | Qué se construye, ni parar: el STOP lo firmas tú |
 
-**Cita en el calendario:** ____________ (día y hora)
+**Cita en el calendario:** {{checkpoint}}
 
-Puede ser una persona, un agente con instrucciones propias, o tú con el móvil en silencio. Lo que no puede ser es implícito. Sus cuatro preguntas fijas están en el manual, capítulo 9<!--cap:checkpoint-->.
+Puede ser una persona, un agente con instrucciones propias, o tú con el móvil en silencio. Lo que no puede ser es implícito. Sus cuatro preguntas fijas están en el manual, 3.5<!--cap:checkpoint-cita-->, y lo que se hace con ellas, en el 9<!--cap:checkpoint-->. Lo que sale de cada checkpoint se escribe en `07_CIERRE.md`.
 
 ---
 

@@ -1,15 +1,15 @@
 # Valor y fase
 
 > El fichero que gobierna todo lo demás. Se rellena el primer día y se relee en cada checkpoint.
-> Manual: capítulo 1<!--cap:plan-vs-proyecto-->.
+> Manual: capítulos 2.1<!--cap:ejes--> y 2.2<!--cap:fase-->.
 
 ---
 
 ## La frase
 
-Este trabajo produce valor cuando ______________________ puede tomar mejor la decisión de ______________________.
+Este trabajo produce valor cuando {{quien}} puede tomar mejor la decisión de {{que}}.
 
-**Fecha:** ____________
+**Fecha:** {{fecha}}
 
 Una frase. Con nombres propios y sin adjetivos. Si necesitas dos, no la tienes.
 
@@ -24,7 +24,7 @@ Fecha: 14/09/2026
 
 ## La columna
 
-**Columna:** ____ desde ____________
+**Columna:** {{columna}} desde {{fecha}}
 
 <!-- BLOQUE: columnas-abc -->
 - **A — Todavía no sé qué estoy construyendo.** Tienes una idea y ganas. Puede que hasta tengas claro para quién es. Lo que no tienes es ninguna prueba de que a alguien le importe. *La mayoría de la gente empieza aquí, y no es un problema: es el principio.*
@@ -32,7 +32,7 @@ Fecha: 14/09/2026
 - **C — Funciona, y hay gente usándolo.** Personas que no eres tú lo usan sin que tú estés delante. A partir de aquí, cada error lo paga alguien más.
 <!-- /BLOQUE: columnas-abc -->
 
-La columna decide qué controles y qué stack tocan (manual, capítulos 2.2<!--cap:fase--> y 15). Se cambia en las dos direcciones: volver de B a A es normal cuando descubres que el destinatario era otro. Al cambiar, se retiran controles (10.3<!--cap:retirar-controles-->), no se acumulan.
+La columna decide qué controles y qué stack tocan (manual, capítulos 2.2<!--cap:fase--> y 15<!--cap:stack-->). Se cambia en las dos direcciones: volver de B a A es normal cuando descubres que el destinatario era otro. Al cambiar, se retiran controles (10.3<!--cap:retirar-controles-->), no se acumulan. En cada checkpoint, la cuarta pregunta es si sigue siendo esta.
 
 ---
 

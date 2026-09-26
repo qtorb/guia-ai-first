@@ -1,6 +1,6 @@
 # Texto 3 · Cerrar el día en cinco líneas
 
-*Uno de los cuatro textos que acompañan al método fuera de la web. Se pega en cualquier chat: ChatGPT, Claude, Gemini.*
+*Uno de los cinco textos que acompañan al método fuera de la web. Se pega en cualquier chat: ChatGPT, Claude, Gemini.*
 
 ---
 

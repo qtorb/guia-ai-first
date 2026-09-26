@@ -1,6 +1,6 @@
 # Texto 4 · Cerrar la tanda y abrir la siguiente
 
-*Uno de los cuatro textos que acompañan al método fuera de la web. Se pega en cualquier chat: ChatGPT, Claude, Gemini.*
+*Uno de los cinco textos que acompañan al método fuera de la web. Se pega en cualquier chat: ChatGPT, Claude, Gemini.*
 
 ---
 

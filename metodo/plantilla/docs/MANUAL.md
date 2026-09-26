@@ -2,7 +2,7 @@
 
 ### Procedimiento para arrancar y sostener un proyecto trabajando con agentes de IA
 
-*v1.5 · 15 de septiembre de 2026 · Albert Garcia Pujadas @qtorb*
+*v1.6 · 26 de septiembre de 2026 · Albert Garcia Pujadas @qtorb*
 *Derivado de la Guía AI-First v2.3. Este documento no desarrolla el porqué: explica solo el motivo operativo que hace falta para aplicar cada regla. El desarrollo está en la guía.*
 
 ---
@@ -598,9 +598,9 @@ Saltarse el segundo paso es cómo se acaba «arreglando» algo que funcionaba.
 5. Lee `08_DECISIONES.md`: cada restricción que propuso un asesor y no firmaste tú, se firma ahora o se borra.
 6. `03_HIPOTESIS.md`: lo que lleva tres semanas sin comprobar, fuera.
 7. `09_STACK.md`: ¿ha entrado o salido algo esta semana sin fila? Se añade ahora.
-8. Una línea en `07_CIERRE.md`: «Checkpoint: seguimos / cambiamos / paramos» y por qué.
+8. El bloque de checkpoint en `07_CIERRE.md`, con el formato de su cabecera: las cuatro respuestas, los tres números y el veredicto —seguimos, cambiamos o paramos— con su porqué.
 
-**Hecho cuando:** la línea del punto 8 existe.
+**Hecho cuando:** el bloque del punto 8 existe.
 
 ---
 
@@ -1040,6 +1040,14 @@ Abierto: ...
 Mañana empiezo por: ...
 Coste del día: ...
 [REVISAR MAÑANA: ...]  (solo si hubo decisión estructural tarde)
+
+## Checkpoint · [fecha]   (una vez por semana)
+1. Decisión que ha mejorado: ...
+2. Lo que hacemos por inercia: ...
+3. Contacto con el mundo real: ... (N conversaciones)
+4. Columna: sigue en [A/B/C]
+Cambiado por lo que me dijeron: N · Suposiciones comprobadas: N
+Veredicto: seguimos / cambiamos / paramos — porque ...
 ```
 
 **08_DECISIONES.md**

@@ -91,7 +91,7 @@ Cada *Commit changes* guarda una versión nueva sin borrar la anterior. No exist
 | `metodo/` | Tus ficheros de trabajo | Aquí escribes tú |
 | `roles/` | Textos para pegar en tu asistente de IA | Copias y pegas |
 | `CLAUDE.md`, `AGENTS.md` | Instrucciones para un agente de código | Solo desde la columna B |
-| `.claude/skills/` | Cuatro atajos, si trabajas con Claude Code | Se activan solos |
+| `.claude/skills/` | Cinco atajos, si trabajas con Claude Code | Se activan solos |
 | `README.md`, `VERSION.md` | Resumen y número de versión | Nada |
 
 Los ficheros de `metodo/` vienen con el formato puesto y un ejemplo dentro, marcado `<!-- EJEMPLO -->`. Bórralo cuando escribas lo tuyo.
@@ -100,14 +100,15 @@ Los ficheros de `metodo/` vienen con el formato puesto y un ejemplo dentro, marc
 
 ## Si trabajas con Claude Code
 
-En la carpeta `.claude/skills/` hay cuatro atajos que se activan solos al abrir este proyecto. No hay que instalarlos ni invocarlos por su nombre: basta con decir lo que quieres hacer.
+En la carpeta `.claude/skills/` hay cinco atajos que se activan solos al abrir este proyecto. No hay que instalarlos ni invocarlos por su nombre: basta con decir lo que quieres hacer.
 
 - **Escribir un encargo** — te pregunta lo que hace falta, en orden, y se niega a terminar sin condición de parada ni criterio de aceptación.
 - **Cerrar el día** — las cinco líneas, con lo que ya sabe de la conversación propuesto para que solo corrijas.
 - **Recibir una entrega** — los seis pasos de revisión en su orden, y escribe la decisión donde toca.
 - **Cerrar la tanda** — cuando vuelves de hablar con alguien: saca sus frases literales, dice si tu suposición aguanta y abre la siguiente.
+- **El checkpoint de la semana** — las cuatro preguntas fijas de una en una, la regla del contacto, lo que lleva tres semanas sin comprobar, y el bloque en `07_CIERRE.md` con el veredicto que firmas tú.
 
-Si no usas Claude Code, no pasa nada: los cuatro están en el manual y se hacen igual a mano. En `roles/` tienes los textos para pegar en cualquier otro asistente.
+Si no usas Claude Code, no pasa nada: los cinco están en el manual y se hacen igual a mano. En `roles/` tienes los textos para pegar en cualquier otro asistente.
 
 ---
 

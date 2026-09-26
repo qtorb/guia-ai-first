@@ -1,12 +1,7 @@
-// Genera src/data/manual.json a partir de content-source/MANUAL.md +
-// content-source/grupos.txt + content-source/mapa.txt — una copia local de
-// los ficheros que mandan de verdad en el repo ai-first-metodo
-// (docs/MANUAL.md, fuente/grupos.txt, fuente/mapa.txt). Este repo
-// (guia-ai-first) no tiene acceso a ese otro repo en CI, así que la copia
-// vive aquí; cuando el manual cambie en ai-first-metodo, hay que volver a
-// copiar estos tres ficheros a mano (o montar una sincronización — no
-// forma parte de este corte).
-//
+// Genera src/data/manual.json a partir de metodo/plantilla/docs/MANUAL.md +
+// metodo/web/grupos.txt + metodo/web/mapa.txt. Esos ficheros son la ÚNICA
+// fuente del método: la plantilla pública (qtorb/metodo-ai-first-plantilla)
+// se genera desde metodo/plantilla/ en cada merge a main y no se edita a mano.
 // Es un port fiel de herramientas/sitio.py: cargar_grupos(), cargar_mapa()
 // (metodo.py:111-126), trocear_manual(), ficha(), md() y
 // neutralizar_cabeceras_en_cercas(). Mismo comportamiento, incluidas sus
@@ -18,9 +13,11 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { cargarMapa } from './capitulos.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const RAIZ = path.resolve(__dirname, '..', 'content-source');
+const WEB = path.resolve(__dirname, '..', 'metodo', 'web');
+const MANUAL = path.resolve(__dirname, '..', 'metodo', 'plantilla', 'docs', 'MANUAL.md');
 const OUT_DIR = path.resolve(__dirname, '..', 'src', 'data');
 
 const MARCA_CERCA = '​';
@@ -99,7 +96,7 @@ function md(texto) {
 
 // --- cargar_grupos(): port de sitio.py:1868-1879 ----------------------------
 function cargarGrupos() {
-  const texto = readFileSync(path.join(RAIZ, 'grupos.txt'), 'utf-8');
+  const texto = readFileSync(path.join(WEB, 'grupos.txt'), 'utf-8');
   const grupos = [];
   let actual = null;
   for (let l of texto.split('\n')) {
@@ -115,23 +112,9 @@ function cargarGrupos() {
   return grupos;
 }
 
-// --- cargar_mapa(): port de metodo.py:111-126 -------------------------------
-function cargarMapa() {
-  const texto = readFileSync(path.join(RAIZ, 'mapa.txt'), 'utf-8');
-  const mapa = {};
-  for (const linea0 of texto.split('\n')) {
-    const linea = linea0.trim();
-    if (!linea || linea.startsWith('#')) continue;
-    if (!linea.includes('=')) throw new Error(`mapa.txt: se esperaba 'id = capitulo' en: ${linea}`);
-    const [k, v] = linea.split('=');
-    mapa[k.trim()] = v.trim();
-  }
-  return mapa;
-}
-
 // --- trocear_manual(): port de sitio.py:1882-1913 ---------------------------
 function trocearManual() {
-  let texto = readFileSync(path.join(RAIZ, 'MANUAL.md'), 'utf-8');
+  let texto = readFileSync(MANUAL, 'utf-8');
   texto = limpiarComentarios(texto);
   texto = neutralizarCabecerasEnCercas(texto);
 

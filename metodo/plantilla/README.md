@@ -52,20 +52,21 @@ A partir de ahí, el capítulo 3<!--cap:dia-cero--> es el ciclo que repites y el
 
 | Fichero | Qué es | Capítulo |
 |---|---|---|
-| `metodo/00_VALOR.md` | La frase de valor, con fecha, y tu columna | 1.2 |
-| `metodo/01_ROLES.md` | Quién decide qué, y **qué no decide** | 2.1 |
-| `metodo/02_LINEAS_ROJAS.md` | Límites con fecha y firma | 2.3 |
-| `metodo/03_HIPOTESIS.md` | Todo lo que sale de una conversación con IA | 6 |
-| `metodo/04_TAREAS.md` | Solo lo que trae evidencia | 6 |
-| `metodo/05_VISTO_NO_TOCADO.md` | Lo no previsto que aparece durante un encargo | 3.5 |
-| `metodo/06_CATALOGO.md` | Fallos con nombre | 10 |
-| `metodo/07_CIERRE.md` | El diario. Cinco líneas al terminar el día | 4 |
-| `metodo/08_DECISIONES.md` | Qué se decidió, por qué, **quién lo propuso** | 3.7 |
-| `metodo/09_STACK.md` | Qué herramienta entra, cuál sale y por qué | 14 |
-| `metodo/encargos/` | Un fichero por encargo | 3.3 |
-| `metodo/activos/` | Lo usado tres veces, con destino | 3.8 |
-| `roles/` | Bloques para pegar en tus asistentes | 2.2 |
-| `CLAUDE.md` · `AGENTS.md` | Instrucciones para el agente de código | 14.4 |
+| `metodo/00_VALOR.md` | La frase de valor, con fecha, y tu columna | 2.1<!--cap:ejes--> y 2.2<!--cap:fase--> |
+| `metodo/01_ROLES.md` | Quién decide qué, y **qué no decide** | 3.1<!--cap:roles--> |
+| `metodo/02_LINEAS_ROJAS.md` | Límites con fecha y firma | 3.3<!--cap:lineas-rojas--> |
+| `metodo/03_HIPOTESIS.md` | Todo lo que sale de una conversación con IA | 7<!--cap:hipotesis-tarea--> |
+| `metodo/04_TAREAS.md` | Solo lo que trae evidencia | 7<!--cap:hipotesis-tarea--> |
+| `metodo/05_VISTO_NO_TOCADO.md` | Lo no previsto que aparece durante un encargo | 4.5<!--cap:recibir--> |
+| `metodo/06_CATALOGO.md` | Fallos con nombre | 11<!--cap:fallo--> |
+| `metodo/07_CIERRE.md` | El diario: cinco líneas al terminar el día y, cada semana, el checkpoint | 5<!--cap:cierre-dia--> y 9<!--cap:checkpoint--> |
+| `metodo/08_DECISIONES.md` | Qué se decidió, por qué, **quién lo propuso** | 4.7<!--cap:decidir--> |
+| `metodo/09_STACK.md` | Qué herramienta entra, cuál sale y por qué | 15.6<!--cap:stack-movimientos--> |
+| `metodo/encargos/` | Un fichero por encargo | 4.3<!--cap:escribir-encargo--> |
+| `metodo/activos/` | Lo usado tres veces, con destino | 4.8<!--cap:cerrar-tanda--> |
+| `textos/` | Cinco textos para pegar en cualquier chat | — |
+| `roles/` | Bloques para pegar en tus asistentes | 3.2<!--cap:instalar-roles--> |
+| `CLAUDE.md` · `AGENTS.md` | Instrucciones para el agente de código | 15.4<!--cap:stack-instalar--> |
 
 ## Las seis palabras
 

@@ -1,6 +1,6 @@
 # Texto 2 · Recibir lo que te entreguen
 
-*Uno de los cuatro textos que acompañan al método fuera de la web. Se pega en cualquier chat: ChatGPT, Claude, Gemini.*
+*Uno de los cinco textos que acompañan al método fuera de la web. Se pega en cualquier chat: ChatGPT, Claude, Gemini.*
 
 ---
 

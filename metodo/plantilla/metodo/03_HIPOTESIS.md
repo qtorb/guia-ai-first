@@ -15,10 +15,11 @@ Una recomendación de un modelo no es una tarea: es una afirmación que necesita
 
 Una sola, y no es la que más preocupa: es la que lo sostiene todo. Si esta resulta falsa no se corrige nada — se cambia de plan.
 
-**Lo que supongo:**
-**Quién puede decir si es verdad:**
-**Cuándo se lo pregunto:**
-**Si resulta falso, lo que hago es:**
+**Lo que supongo:** {{suposicion}}
+**Estado:** supuesto. No comprobado.
+**Quién puede decir si es verdad:** {{persona}}
+**Cuándo se lo pregunto:** {{cuando}}
+**Si resulta falso, lo que hago es:** {{sino}}
 
 Esa última línea se escribe **ahora**, antes de la conversación y mientras todavía no se sabe la respuesta. Después siempre aparece una manera de que lo que oíste encaje con lo que ya querías hacer.
 
@@ -28,6 +29,18 @@ Esa última línea se escribe **ahora**, antes de la conversación y mientras to
 **Cuándo se lo pregunto:** jueves 24
 **Si resulta falso, lo que hago es:** no monto la página de servicios y me dedico a buscar tres casos más antes de construir nada
 -->
+
+---
+
+## Lo que salga de esa conversación
+
+Tres frases suyas literales, no tu resumen. Y una cosa que te haya sorprendido: si no hay ninguna, o preguntaste mal o te dijeron lo que querías oír.
+
+| Fecha | Con quién | Tres frases suyas | Qué me sorprendió | Qué decisión cambia |
+|---|---|---|---|---|
+| | | | | |
+
+*Si lo único que puedes escribir es «le gustó», la conversación cuenta como cero.*
 
 ---
 
