@@ -1234,13 +1234,13 @@
       "n": 3
      },
      {
-      "tipo": "checks",
-      "campos": [
-       {
-        "k": "r_nadie",
-        "txt": "No ha contestado nadie. Elijo igual, y lo dejo escrito."
-       }
-      ]
+      "tipo": "nadie",
+      "k": "r_nadie",
+      "txt": "No ha contestado nadie. Elijo igual, y lo dejo escrito.",
+      "de": {
+       "pre": "r",
+       "n": 3
+      }
      }
     ],
     "aviso": "Si no ha contestado nadie, no se bloquea nada: marca la casilla de abajo y eliges igual. Es un dato sobre tu acceso, y de los buenos: significa que la parte más difícil del proyecto sigue sin resolver y ya lo sabes ahora, no en marzo.",
@@ -1305,11 +1305,14 @@
     ],
     "grupos": [
      {
+      "tipo": "ganadora"
+     },
+     {
       "tipo": "campo",
       "campos": [
        {
         "k": "w0",
-        "label": "La idea elegida",
+        "label": "Cómo la cuentas ahora",
         "ph": "qué se vende, a quién, y qué hace hoy esa persona",
         "hint": "Dos líneas. Si necesitas más, todavía no la tienes.",
         "rows": 3
@@ -1340,6 +1343,8 @@
     "aviso": "**Un elefante te lo puedes comer, pero no de un solo bocado.** Si lo que has descrito no cabe en ocho meses trabajando en paralelo, la idea no está mal: está mal recortada. Recórtala aquí. Y con ocho meses por delante, la fecha que importa no es la del final: es la primera, porque un proyecto largo no se muere por falta de tiempo, se muere por deriva.",
     "plantilla": [
      "LA QUE GANA",
+     "",
+     "{w0_de}",
      "",
      "{w0}",
      "",

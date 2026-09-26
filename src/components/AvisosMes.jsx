@@ -34,7 +34,10 @@ export default function AvisosMes({ n }) {
 
   if (!n?.hay || !hayPlan) return null;
 
+  // Mientras se guarda no se desactiva la casilla —el foco se perdería—:
+  // simplemente no hace nada, y la etiqueta avisa de que está ocupada.
   async function cambiar(marcar) {
+    if (ocupado) return;
     const antes = activo;
     setActivo(marcar);
     setOcupado(true);
@@ -61,12 +64,11 @@ export default function AvisosMes({ n }) {
         <p>Si entras con tu cuenta —arriba a la derecha—, te escribo el día que cierra cada semana de tu plan, a la hora de tu checkpoint, con lo que toca esa semana. Y después, una vez al mes.</p>
       ) : (
         <>
-          <label className="chk">
+          <label className="chk" aria-busy={ocupado ? 'true' : undefined}>
             <input
               type="checkbox"
               className="c"
               checked={activo}
-              disabled={ocupado}
               onChange={(e) => cambiar(e.target.checked)}
             />
             <span>Escríbeme el día que cierra cada semana, a la hora de mi checkpoint, y después una vez al mes.</span>

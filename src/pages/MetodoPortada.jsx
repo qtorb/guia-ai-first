@@ -122,7 +122,7 @@ export default function MetodoPortada() {
         </p>
       )}
       <p style={{ marginTop: 'var(--e5)' }}>
-        <a href="#/metodo/mapa" onClick={(e) => { e.preventDefault(); navigate('/metodo/mapa'); }}>
+        <a href="#/metodo/mapa" onClick={(e) => { e.preventDefault(); navigate('/metodo/mapa'); }} style={{ display: 'inline-flex', alignItems: 'center', minHeight: 44 }}>
           Ver el mapa completo: piezas, roles, pasos y qué te llevas →
         </a>
       </p>

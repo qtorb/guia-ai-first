@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import TextoInline from '../TextoInline';
 import Campo from './Campo';
 import { bajar } from '../../lib/portapapeles';
@@ -172,8 +173,8 @@ export function Finalistas({ g, datos, onChange }) {
           <div className="asiento" key={k}>
             <div className="row g3">
               <div className="field">
-                <label>Finalista {i}</label>
-                <select className="c" value={valor} onChange={(e) => elegir(e.target.value)}>
+                <label htmlFor={`fin-${i}`}>Finalista {i}</label>
+                <select id={`fin-${i}`} className="c" value={valor} onChange={(e) => elegir(e.target.value)}>
                   <option value="">— elige una —</option>
                   {elegibles.map((x) => <option key={x.pre} value={x.pre}>{x.txt}</option>)}
                   {escrita && <option value="_mano">{`${datos[k]} (escrita a mano)`}</option>}
@@ -185,6 +186,50 @@ export function Finalistas({ g, datos, onChange }) {
           </div>
         );
       })}
+    </>
+  );
+}
+
+// La que gana sale de las finalistas del paso 9, no se vuelve a escribir.
+export function Ganadora({ datos, onChange }) {
+  const opciones = ['d1', 'd2', 'd3'].map((k) => String(datos[k] ?? '').trim()).filter(Boolean);
+  if (opciones.length === 0) {
+    return <p className="ayuda">Elige primero tus finalistas en el paso 9.</p>;
+  }
+  return (
+    <div className="field">
+      <label htmlFor="ganadora">La que gana, de tus finalistas</label>
+      <select id="ganadora" className="c" value={datos.w0_de ?? ''} onChange={(e) => onChange('w0_de', e.target.value)}>
+        <option value="">— elige una —</option>
+        {opciones.map((t, i) => <option key={i} value={t}>{t}</option>)}
+      </select>
+    </div>
+  );
+}
+
+// «Nadie contestó» no convive con una respuesta escrita: si hay alguna, la
+// casilla se apaga y, si estaba marcada, se desmarca.
+export function Nadie({ g, datos, onChange }) {
+  const d = g.de || {};
+  const hay = Array.from({ length: d.n || 3 }, (_, i) => String(datos[`${d.pre}${i + 1}_dijo`] ?? '').trim())
+    .some(Boolean);
+  const marcada = !!datos[g.k];
+  useEffect(() => {
+    if (hay && marcada) onChange(g.k, false);
+  }, [hay, marcada, g.k, onChange]);
+  return (
+    <>
+      <label className="chk">
+        <input
+          type="checkbox"
+          className="c"
+          checked={marcada}
+          disabled={hay}
+          onChange={(e) => onChange(g.k, e.target.checked)}
+        />
+        <TextoInline as="span" texto={g.txt} />
+      </label>
+      {hay && <p className="ayuda">Ya tienes una respuesta escrita: esta casilla es para cuando no ha contestado nadie.</p>}
     </>
   );
 }

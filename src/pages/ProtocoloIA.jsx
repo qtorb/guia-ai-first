@@ -250,6 +250,7 @@ function Progreso({ paso, onIr }) {
             <span
               key={n}
               className={cls}
+              role="img"
               aria-current={n === paso ? 'step' : undefined}
               aria-label={n === paso ? `Paso ${n}, aquí` : `Paso ${n}, todavía no`}
             >
@@ -934,7 +935,7 @@ function Listo({ d, fs, onCopiar, onIr, navigate, toast, n }) {
       <p>Todo lo demás del método —leer antes de tocar, comprobar una entrega, cerrar
         el día— está en el manual.</p>
       <p>
-        <a href="#/guia" onClick={(e) => { e.preventDefault(); navigate('/guia'); }}>Abrir el método</a>
+        <a href="#/guia" onClick={(e) => { e.preventDefault(); navigate('/guia'); }} style={{ display: 'inline-flex', alignItems: 'center', minHeight: 44 }}>Abrir el método</a>
       </p>
     </>
   );

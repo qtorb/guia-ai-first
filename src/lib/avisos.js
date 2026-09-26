@@ -51,6 +51,8 @@ export async function leerAviso() {
   return { activo: !!data?.activo };
 }
 
+// Si la llamada falla —sin conexión, por ejemplo— lanza: «no he podido
+// comprobarlo» no es lo mismo que «ese enlace no sirve».
 export function darseDeBaja(t) {
   return rpc('baja_avisos', { t });
 }
