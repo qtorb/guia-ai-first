@@ -26,7 +26,7 @@ import {
 // Mientras esté vacío, la pantalla de GitHub no enseña el botón ni habla de
 // él: antes un enlace inventado llevaba a un 404, que es peor que no tenerlo.
 // Poner aquí la URL real es lo único que hace falta para activarlo.
-const URL_PLANTILLA = '';
+const URL_PLANTILLA = 'https://github.com/qtorb/metodo-ai-first-plantilla';
 
 const N_PASOS = 7;
 const PASO_LISTO = 8;
