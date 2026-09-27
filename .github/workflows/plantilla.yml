@@ -1,0 +1,60 @@
+name: Publicar la plantilla
+
+# Sincroniza metodo/plantilla/ con qtorb/metodo-ai-first-plantilla en cada
+# merge a main que la toque. La plantilla no se edita a mano: esto es lo
+# único que la escribe. Ver VERSION.md de la plantilla.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'metodo/plantilla/**'
+      - 'metodo/web/mapa.txt'
+      - 'scripts/capitulos.mjs'
+      - 'scripts/publicar-plantilla.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run comprobar-fuente
+      - run: node scripts/publicar-plantilla.mjs
+
+      - name: Preparar la clave de despliegue
+        run: |
+          mkdir -p ~/.ssh
+          echo "$PLANTILLA_DEPLOY_KEY" > ~/.ssh/plantilla_deploy_key
+          chmod 600 ~/.ssh/plantilla_deploy_key
+          ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts 2>/dev/null
+          echo "GIT_SSH_COMMAND=ssh -i $HOME/.ssh/plantilla_deploy_key -o IdentitiesOnly=yes" >> "$GITHUB_ENV"
+        env:
+          PLANTILLA_DEPLOY_KEY: ${{ secrets.PLANTILLA_DEPLOY_KEY }}
+
+      - name: Clonar la plantilla
+        run: git clone git@github.com:qtorb/metodo-ai-first-plantilla.git plantilla
+
+      - name: Sincronizar dist-plantilla/ con la plantilla
+        run: rsync -a --delete --exclude .git dist-plantilla/ plantilla/
+
+      - name: Publicar si hay diferencias
+        working-directory: plantilla
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "Sin diferencias: no se publica nada."
+            exit 0
+          fi
+          git config user.name "guia-ai-first"
+          git config user.email "noreply@qtorb.com"
+          git add -A
+          git commit -m "Sincronizada desde guia-ai-first@${GITHUB_SHA::7}"
+          git push origin main

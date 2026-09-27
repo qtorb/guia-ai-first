@@ -67,7 +67,7 @@ function Aviso({ t }) {
 }
 
 function Resumen({ datos }) {
-  const { personas, atascos } = datos;
+  const { personas, atascos, avisos } = datos;
   const hojas = useMemo(hojasIaLab, []);
   const [todasFrases, setTodasFrases] = useState(false);
 
@@ -172,6 +172,18 @@ function Resumen({ datos }) {
         </div>
       </div>
 
+      <h2>Checkpoint</h2>
+      <div className="pb-tiles">
+        <div className="pb-tile">
+          <b>{personas.reduce((s, p) => s + (p.semanas_cerradas || 0), 0)}</b>
+          <span>semanas cerradas</span>
+          <small>en {personas.filter((p) => (p.semanas_cerradas || 0) > 0).length} cuentas</small>
+        </div>
+        <div className="pb-tile"><b>{avisos?.correos_checkpoint ?? 0}</b><span>correos de checkpoint</span><small>enviados desde la semana 5</small></div>
+        <div className="pb-tile"><b>{avisos?.correos_semana ?? 0}</b><span>correos del primer mes</span><small>semanas 1 a 4</small></div>
+        <div className="pb-tile"><b>{avisos?.activos ?? 0}</b><span>reciben avisos</span><small>{avisos?.en_pausa ?? 0} en pausa</small></div>
+      </div>
+
       <h2>Atascos · lo que escriben</h2>
       <div className="pb-two">
         <div>
@@ -250,7 +262,7 @@ function Personas({ datos }) {
           <tr>
             <Cab k="nombre">Persona</Cab><th>Vía</th><Cab k="alta">Alta</Cab><Cab k="ultima">Última actividad</Cab>
             {hojas.map((h) => <Cab key={h.n} k={h.n}>{h.titulo}</Cab>)}
-            <Cab k="metodo">Método</Cab><th>Plan 30</th>
+            <Cab k="metodo">Método</Cab><th>Plan 30</th><th>Semanas</th>
           </tr>
         </thead>
         <tbody>
@@ -263,6 +275,7 @@ function Personas({ datos }) {
               {hojas.map((h) => { const e = estadoHoja(p.hojas?.[h.n]); return <td key={h.n} data-l={h.titulo}><span className={'pb-st ' + e.tipo}>{e.txt}</span></td>; })}
               <td data-l="Método">{p.metodo_paso ? `${p.metodo_paso}/7` : '—'}</td>
               <td data-l="Plan 30">{p.plan30 ? 'sí' : '—'}</td>
+              <td data-l="Semanas">{p.semanas_cerradas || '—'}</td>
             </tr>
           ))}
         </tbody>

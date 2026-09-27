@@ -25,7 +25,7 @@ export default function Baja() {
 
   return (
     <div className="pagina">
-      <p className="rotulo">Los avisos de tu mes</p>
+      <p className="rotulo">Los avisos de tu método</p>
       {estado === 'esperando' && <p>Un momento…</p>}
       {estado === 'hecho' && (
         <>

@@ -11,10 +11,13 @@ import hojasData from '../data/hojas.json';
 
 export async function leerPanel() {
   const c = await cliente();
-  const [p, a] = await Promise.all([c.rpc('panel_personas'), c.rpc('panel_atascos')]);
+  const [p, a, av] = await Promise.all([
+    c.rpc('panel_personas'), c.rpc('panel_atascos'), c.rpc('panel_avisos'),
+  ]);
   if (p.error) throw p.error;
   if (a.error) throw a.error;
-  return { personas: p.data || [], atascos: a.data || [] };
+  if (av.error) throw av.error;
+  return { personas: p.data || [], atascos: a.data || [], avisos: (av.data || [])[0] || null };
 }
 
 // Sin nombre ni cuenta: solo hoja, paso y la frase, si la hay.
@@ -58,7 +61,7 @@ export function usaIaLab(p) { return Object.keys(p.hojas || {}).length > 0; }
 export function usaMetodo(p) { return p.metodo_paso != null || p.plan30; }
 
 export function aCsv(personas, hojas) {
-  const cab = ['nombre', 'correo', 'via', 'alta', 'ultima_actividad', ...hojas.map((h) => 'hoja_' + h.n), 'metodo_paso', 'plan30'];
+  const cab = ['nombre', 'correo', 'via', 'alta', 'ultima_actividad', ...hojas.map((h) => 'hoja_' + h.n), 'metodo_paso', 'plan30', 'semanas_cerradas'];
   const celda = (v) => {
     const s = v == null ? '' : String(v);
     return /[",\n;]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
@@ -70,6 +73,7 @@ export function aCsv(personas, hojas) {
     ...hojas.map((h) => estadoHoja(p.hojas?.[h.n]).txt),
     p.metodo_paso ?? '',
     p.plan30 ? 'sí' : '',
+    p.semanas_cerradas ?? 0,
   ].map(celda).join(','));
   return [cab.join(','), ...filas].join('\n');
 }

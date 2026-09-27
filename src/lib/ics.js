@@ -56,7 +56,9 @@ function plegar(linea) {
   return trozos.join('\r\n ');
 }
 
-// eventos: [{ uid, dia: 'AAAA-MM-DD', hora: 'HH:MM', titulo, cuerpo }]
+// eventos: [{ uid, dia: 'AAAA-MM-DD', hora: 'HH:MM', titulo, cuerpo, rrule? }]
+// rrule, si viene, es la regla de repetición tal cual (p.ej. 'FREQ=WEEKLY'),
+// sin el prefijo 'RRULE:' — para un evento que no se repite, se omite.
 export function calendario(eventos) {
   const lineas = [
     'BEGIN:VCALENDAR',
@@ -72,6 +74,9 @@ export function calendario(eventos) {
       `DTSTAMP:${stamp}`,
       `DTSTART:${selloIcs(e.dia, e.hora)}`,
       `DTEND:${selloMas(e.dia, e.hora, 30)}`,
+    );
+    if (e.rrule) lineas.push(`RRULE:${e.rrule}`);
+    lineas.push(
       `SUMMARY:${escaparIcs(e.titulo)}`,
       `DESCRIPTION:${escaparIcs(e.cuerpo)}`,
       'END:VEVENT'

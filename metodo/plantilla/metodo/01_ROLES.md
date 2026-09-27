@@ -1,0 +1,83 @@
+# Roles
+
+> Quién decide qué. Y sobre todo: **qué no decide cada uno**.
+> Manual: capítulo 3.1<!--cap:roles-->. Cómo se instalan: 3.2<!--cap:instalar-roles--> y 15.4<!--cap:stack-instalar-->.
+
+**La columna de la derecha vale más que la de la izquierda.** Es la que evita que un rol se coma a otro cuando hay prisa, y con prisa siempre se come el que produce al que decide. Rellénala primero.
+
+Mínimo cuatro roles. El especialista técnico, solo desde la columna B.
+
+---
+
+## Fundador
+
+*Eres tú. Ejecuta lo menos posible: cuando el que dirige ejecuta o prueba, no dirige nadie.*
+
+| Decide | NO decide |
+|---|---|
+| Intención, criterio de calidad, prioridad | — |
+| Restricciones y trade-offs | |
+| **Qué está prohibido** y qué riesgos se asumen | |
+| Autoridad final cuando hay desacuerdo | |
+
+---
+
+## Asesor
+
+*Te da criterio, no ejecución. Sus cautelas no son decisiones tuyas hasta que las firmes (manual 6.3<!--cap:consulta-recibir-->).*
+
+**Propone** (y lo firmas tú en `08_DECISIONES.md`): qué se construye y en qué orden · a quién sirve y cuál es la unidad de valor · qué se puede afirmar en público · qué deuda se tolera y a cambio de qué.
+
+**NO decide:**
+
+{{asesor_no}}
+
+Las dos últimas son las que más se cuelan. Si no están escritas, el asesor se las queda sin que se lo pidas.
+
+---
+
+## Ejecutor
+
+*Ejecuta encargos cerrados. Sus instrucciones permanentes están en `CLAUDE.md` / `AGENTS.md`.*
+
+| Decide | NO decide |
+|---|---|
+| Nada | Todo lo demás |
+
+Cuando aparece algo que el encargo no contempla: para y pregunta. No elige. Lo no previsto va a `05_VISTO_NO_TOCADO.md`, en una línea, y no se arregla de paso.
+
+---
+
+## Checkpoint
+
+*El único rol que no produce nada. Por eso es el primero que desaparece cuando hay prisa, y el único que detecta que llevas tres días resolviendo el problema equivocado.*
+
+| Decide | NO decide |
+|---|---|
+| Cuándo se mira si hay que parar | Qué se construye, ni parar: el STOP lo firmas tú |
+
+**Cita en el calendario:** {{checkpoint}}
+
+Puede ser una persona, un agente con instrucciones propias, o tú con el móvil en silencio. Lo que no puede ser es implícito. Sus cuatro preguntas fijas están en el manual, 3.5<!--cap:checkpoint-cita-->, y lo que se hace con ellas, en el 9<!--cap:checkpoint-->. Lo que sale de cada checkpoint se escribe en `07_CIERRE.md`.
+
+---
+
+## Especialista técnico · solo desde la columna B
+
+*Se crea cuando cambia el problema, no cuando aprieta el calendario.*
+
+| Decide | NO decide |
+|---|---|
+| Arquitectura y modelo de datos | Alcance de producto |
+| Orden de ejecución técnica | Afirmaciones públicas |
+| Si un cambio es seguro | Prioridad comercial |
+
+---
+
+## Notas
+
+**Un rol con el que nunca has discutido no está haciendo su trabajo.** La fricción no es un fallo de configuración: es la señal de que hay dos criterios en la mesa y no uno.
+
+**Si el mismo choque se repite tres veces**, no es un mal día: es un campo que falta en la definición del rol. Se escribe aquí y en las instrucciones del rol, no en el chat.
+
+**Tres reglas de trato**, que no dependen de la herramienta: nombrar el rol antes de pedir · no cambiar de rol a mitad de conversación (si hace falta otro papel, otra conversación) · declarar apertura y cierre de sesión, que es lo que hace barato el reinicio de contexto.
