@@ -1,7 +1,7 @@
 // Genera src/data/manual.json a partir de metodo/plantilla/docs/MANUAL.md +
 // metodo/web/grupos.txt + metodo/web/mapa.txt. Esos ficheros son la ÚNICA
-// fuente del método: la plantilla pública (qtorb/metodo-ai-first-plantilla)
-// se genera desde metodo/plantilla/ en cada merge a main y no se edita a mano.
+// fuente del método. La plantilla pública se sincroniza sola una vez al día
+// desde metodo/plantilla/ (workflow en qtorb/metodo-ai-first-plantilla).
 // Es un port fiel de herramientas/sitio.py: cargar_grupos(), cargar_mapa()
 // (metodo.py:111-126), trocear_manual(), ficha(), md() y
 // neutralizar_cabeceras_en_cercas(). Mismo comportamiento, incluidas sus
