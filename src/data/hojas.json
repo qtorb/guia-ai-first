@@ -874,8 +874,8 @@
     "que": "Tres cosas escritas y tres fechas. **Esto se escribe justo cuando todavía no lo tienes claro**, que es el estado normal el 20 de octubre: el 22 cierras proyecto, y en junio vas a querer comparar con lo que pensabas hoy.",
     "ir": {
      "n": 10,
-     "titulo": "Si todavía no tienes idea",
-     "txt": "¿No tienes ninguna idea encima de la mesa? Hay una hoja para eso, y va antes que esta."
+     "titulo": "Busca idea y/o pon a prueba tu idea de TFM",
+     "txt": "Antes que esta va la hoja 0: si no tienes idea, te ayuda a buscarla; si ya la tienes, a ponerla a prueba."
     }
    }
   ],
@@ -938,12 +938,12 @@
   }
  },
  "hojas/mmdd31/0.json": {
-  "titulo": "Si todavía no tienes idea",
+  "titulo": "Busca idea y/o pon a prueba tu idea de TFM",
   "kicker": "IA-LAB · MMDD31 · UPF-BSM",
   "lede": "Una manera ordenada de buscar la idea de tu TFM. No te la da: te da la materia prima, la genera contigo y la filtra con las reglas del máster puestas por delante.",
   "facts": [
    "Dos sentadas, con dos o tres días en medio",
-   "No es obligatoria",
+   "Recomendada para todos",
    "Si ya tienes idea, empieza en el paso 5",
    "Salida: el correo de ideas a dirección"
   ],
@@ -952,7 +952,7 @@
    "que": [
     "Esto no es un formulario. **La idea que elijas aquí se va a llevar una parte importante de tus próximos ocho meses.** Ponle el tiempo que haga falta, y hazla cuando estés despejado: si la haces cansado, la va a hacer tu asistente por ti.",
     "**Son dos sentadas.** La primera acaba con un mensaje enviado a una persona de verdad. La segunda, dos o tres días después, empieza por lo que te haya contestado — y entonces eliges. Eso es lo único que impide que la decisión salga entera de tu cabeza y de la de tu asistente.",
-    "**No es obligatoria.** Si ya tienes una idea —o varias— sáltate hasta el paso 5, que es donde se filtra. Y si tu TFM va a ser el plan de marketing de una empresa a la que ya tienes acceso, esta hoja no es para ti: tu idea es esa empresa."
+    "**Recomendada para todos.** Si ya tienes una idea —o varias—, empieza en el paso 5: es donde se pone a prueba. También si tu TFM va a ser el plan de marketing de una empresa a la que ya tienes acceso: esa empresa es tu idea, y el paso 5 la pone a prueba igual."
    ]
   },
   "paso0": {

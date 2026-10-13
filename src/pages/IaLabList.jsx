@@ -91,7 +91,7 @@ export default function IaLabList({ dossierCtl }) {
       </div>
       {finalizadas >= 2 && (
         <div className="acts" style={{ marginTop: 26 }}>
-          <button className="btn btn-d" onClick={descargarDossier}>Descargar mi dossier ({finalizadas} piezas)</button>
+          <button className="btn btn-d" onClick={descargarDossier}>Descargar mis documentos ({finalizadas})</button>
         </div>
       )}
       <footer>IA-Lab · MMDD31 · UPF-BSM<br />Guía AI-First · Albert Garcia Pujadas · @qtorb</footer>

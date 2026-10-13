@@ -1,57 +1,57 @@
 {
  "edicion": "mmdd31",
  "titulo": "IA-Lab · MMDD31",
- "lede": "Seis sesiones, cada una con una pieza que puedes reutilizar en el TFM, y una hoja opcional al principio para quien todavía no tiene idea de proyecto.",
+ "lede": "Una hoja para buscar idea o poner a prueba la tuya, recomendada para todos, y seis sesiones. De cada una sales con una parte escrita que puedes usar en tu TFM.",
  "sesiones": [
   {
    "n": 10,
    "etiqueta": "0",
    "_nota": "n=10 y no 0 a propósito: el motor comprueba «if (SESION)» en seis sitios y un 0 es falsy — no guardaría ni cargaría. La etiqueta es lo que se ve.",
-   "titulo": "Si todavía no tienes idea",
-   "asignatura": "Antes de empezar · opcional",
-   "salida": "Tus ideas de TFM filtradas con las reglas del máster, y una elegida con su coste y sus fechas",
+   "titulo": "Busca idea y/o pon a prueba tu idea de TFM",
+   "asignatura": "Antes de empezar · recomendada para todos",
+   "salida": "Tu idea, o tus ideas, pasada por el filtro de las reglas del máster, con lo que costará y cuándo la tendrás",
    "fichero": "hojas/mmdd31/0.json"
   },
   {
    "n": 1,
    "titulo": "Mi protocolo y mi TFM en una página",
    "asignatura": "Habilidades Digitales y Management",
-   "salida": "1A · un protocolo de trabajo con IA · 1B · tu proyecto en una página, con tres fechas",
+   "salida": "Unas normas para trabajar con IA y tu proyecto en una página, con tres fechas",
    "fichero": "hojas/mmdd31/1.json"
   },
   {
    "n": 2,
    "titulo": "Mapa de inteligencia",
    "asignatura": "Estrategia de Marca y Marketing Relacional",
-   "salida": "Mercado, consumidor, competencia · con lo que sabes y lo que supones separado",
+   "salida": "Qué sabes y qué supones de tu mercado, tus clientes y tu competencia",
    "fichero": null
   },
   {
    "n": 3,
    "titulo": "Sistema de contenidos",
    "asignatura": "Gestión de Canales Propios",
-   "salida": "Propuesta de valor, mensajes y contenidos por etapa del journey",
+   "salida": "Qué ofreces, con qué mensajes y qué contenidos necesita cada fase de la compra",
    "fichero": null
   },
   {
    "n": 4,
    "titulo": "Matriz de captación",
    "asignatura": "Estrategias de Captación y Medios Pagados",
-   "salida": "Audiencia, insight, oferta, ángulo, canal, métrica y aprendizaje esperado",
+   "salida": "A quién te diriges, qué le ofreces, por qué canal y cómo sabrás si funciona",
    "fichero": null
   },
   {
    "n": 5,
    "titulo": "Blueprint de fidelización",
    "asignatura": "Estrategias de Fidelización",
-   "salida": "Ciclo de vida, segmentos, automatizaciones y sus riesgos",
+   "salida": "Cómo cuidar al cliente después de la compra, qué automatizar y con qué riesgos",
    "fichero": null
   },
   {
    "n": 6,
    "titulo": "Pack de mejora del TFM",
    "asignatura": "TFM",
-   "salida": "Auditoría de coherencia, huecos críticos y preguntas de defensa",
+   "salida": "Comprobar que todo encaja, qué falta y qué te preguntará el tribunal",
    "fichero": null
   }
  ],
@@ -59,7 +59,7 @@
   {
    "n": 12,
    "titulo": "Tu plantilla de encargo",
-   "lede": "Cinco partes. La vas a usar en las seis sesiones y en tu TFM.",
+   "lede": "Cinco apartados para pedirle trabajo a la IA. La usarás en las seis sesiones y en tu TFM.",
    "fichero": "hojas/mmdd31/encargo.json",
    "kicker": "IA-Lab · MMDD31 · UPF-BSM"
   }
