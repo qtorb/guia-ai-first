@@ -83,9 +83,9 @@ export default function Home({ dossierCtl }) {
         <div>
           <p className="entcred">
             Desde mayo de 2026, Albert Garcia Pujadas construye un producto él solo con
-            agentes y anota lo que aprende el día que lo aprende. De ahí salió esto.
+            ayuda de la IA, y anota lo que aprende el mismo día. De ahí salió esto.
           </p>
-          <h1 className="enth1">Tu proyecto, y cómo trabajas con la IA.</h1>
+          <h1 className="enth1">Tu proyecto y tu forma de trabajar con la IA.</h1>
         </div>
 
         <div className="dospuertas">
@@ -93,9 +93,10 @@ export default function Home({ dossierCtl }) {
             <span className="gpk">MMDD31 · UPF-BSM</span>
             <b>IA-Lab</b>
             <span className="gpd">
-              Seis sesiones sobre tu propio TFM. De cada una sales con una pieza escrita.
-              Hoy están la hoja para elegir idea, la sesión 1 y tu plantilla de encargo;
-              las demás llegan con cada sesión. Se hace, no se lee.
+              Seis sesiones para trabajar tu propio TFM. De cada una sales con una parte
+              escrita. Empieza por la hoja 0, para buscar idea o poner a prueba la tuya: la
+              recomendamos a todos. Ya están la hoja 0, la sesión 1 y tu plantilla de encargo;
+              las demás se abren con cada sesión. Aquí no se lee: se escribe.
             </span>
             {lab && <span className="p-est">{lab.est}</span>}
             <span className="gpgo">{lab ? (lab.cta || 'Seguir donde lo dejaste →') : 'Ver las hojas →'}</span>
@@ -105,26 +106,27 @@ export default function Home({ dossierCtl }) {
             <span className="gpk">Abierto a cualquiera</span>
             <b>El Método AI-First</b>
             <span className="gpd">
-              Cómo trabajar con agentes sin que se te vaya de las manos: qué les pides,
-              qué revisas y qué no delegas. Móntalo en quince minutos y sales con los
-              ficheros de tu método escritos. Debajo, 18 capítulos cortos.
+              Para trabajar con IA sin que se te vaya de las manos: qué le pides, qué
+              revisas y qué no le dejas decidir. Lo preparas en quince minutos y te llevas
+              tus ficheros escritos. Incluye un manual de 18 capítulos cortos.
             </span>
             {metodo && <span className="p-est">{metodo.est}</span>}
-            <span className="gpgo">{metodo ? metodo.cta : 'Montar el mío →'}</span>
+            <span className="gpgo">{metodo ? metodo.cta : 'Preparar el mío →'}</span>
           </a>
         </div>
 
         <p className="entorienta">
-          Son dos cosas distintas y se confunden. Fallan igual —semanas de trabajo que no
-          llevan a ningún sitio— y se arreglan en sitios distintos. Si lo que no tienes
-          claro es <b>tu proyecto</b>, entra por IA-Lab. Si lo que no controlas es <b>cómo
-          trabajas con la IA</b>, entra por el método.
+          Son dos problemas distintos que se confunden. Los dos acaban igual —semanas de
+          trabajo que no llevan a ningún sitio—, pero se resuelven en sitios distintos. Si lo
+          que no tienes claro es <b>tu proyecto</b>, entra en IA-Lab. Si lo que no controlas es
+          <b>cómo trabajas con la IA</b>, entra en el método.
         </p>
 
         <div className="entpie">
           <span className="sello">Beta permanente</span>
-          <p>Sin cuenta, lo que escribes es un <b>borrador</b> y no sale de este navegador.
-            Entrando, queda <b>guardado</b> y lo tienes en cualquier dispositivo.</p>
+          <p>Sin cuenta, lo que escribes es un <b>borrador</b> y solo se guarda en este
+            navegador. Si entras con tu cuenta, queda <b>guardado</b> y lo tienes en cualquier
+            dispositivo.</p>
         </div>
       </div>
     </div>

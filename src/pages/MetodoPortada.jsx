@@ -49,13 +49,13 @@ export default function MetodoPortada() {
   return (
     <div className="pagina">
       <p className="rotulo">Método AI-First</p>
-      <h1>En dos semanas tienes algo fuera. En cuatro sabes qué cambiar.</h1>
+      <h1>En dos semanas enseñas algo a alguien de fuera. En cuatro sabes qué cambiar.</h1>
 
       <div className="entradilla">
-        <p>Para quien trabaja con IA, produce mucho y ya no sabe qué de todo eso es verdad.</p>
-        <p>Un sistema de trabajo: quién decide qué, cómo se pide, qué se comprueba antes de
-          darlo por bueno y cuándo hay que parar. Y una cita cada semana para saber si sigues
-          en lo correcto.</p>
+        <p>Para quien usa mucho la IA y ya no sabe qué parte de lo que produce es fiable.</p>
+        <p>Una forma de trabajar: quién decide qué, cómo se le pide a la IA, qué se comprueba
+          antes de darlo por bueno y cuándo hay que parar. Y media hora cada semana para ver si
+          vas bien.</p>
       </div>
 
       {sit && (
@@ -82,9 +82,9 @@ export default function MetodoPortada() {
           ) : (
             <>
               <p className="rotulo">Vas por aquí</p>
-              <h2>Tu mes ha terminado. Ahora, cada semana, tu checkpoint.</h2>
-              <p>Cada {sit.checkpoint.dia} a las {sit.checkpoint.hora}: cuatro preguntas y un
-                veredicto. Media hora.</p>
+              <h2>Tu primer mes ha terminado. A partir de ahora, un checkpoint cada semana.</h2>
+              <p>Cada {sit.checkpoint.dia} a las {sit.checkpoint.hora}: cuatro preguntas y una
+                decisión. Media hora.</p>
               {cont && <p className="ayuda">{cont}</p>}
               <div className="acciones">
                 <button className="btn" onClick={() => navigate('/metodo/checkpoint')}>Cerrar esta semana</button>
@@ -100,9 +100,9 @@ export default function MetodoPortada() {
           estuviera hecho. Ahora el bloque cambia de oficio con el estado. */}
       {terminado ? (
         <>
-          <h2>Tu método ya está montado</h2>
-          <p>Lo escribiste en siete pasos. Desde ahora el método es una cita: cada semana,
-            cuatro preguntas y un veredicto.</p>
+          <h2>Tu método ya está preparado</h2>
+          <p>Lo escribiste en siete pasos. A partir de ahora, cada semana: cuatro preguntas y
+            una decisión.</p>
 
           <div className="acciones">
             <button className="btn" onClick={() => navigate('/metodo/recorrido?paso=7')}>
@@ -116,18 +116,18 @@ export default function MetodoPortada() {
         </>
       ) : (
         <>
-          <h2>Empieza por montar el tuyo</h2>
+          <h2>Empieza preparando el tuyo</h2>
           <p>Quince minutos, siete pasos. No hace falta instalar nada ni saber programar.</p>
 
           <div className="acciones">
             <button className="btn" onClick={() => navigate('/metodo/recorrido')}>
-              {paso > 1 ? `Seguir donde lo dejé · paso ${paso} de 7` : 'Montar el mío · 15 minutos'}
+              {paso > 1 ? `Seguir donde lo dejé · paso ${paso} de 7` : 'Preparar el mío · 15 minutos'}
             </button>
             <button className="btn btn-2" onClick={() => navigate('/guia')}>Leer el manual primero</button>
           </div>
           <p className="ayuda">Funciona sin cuenta: lo que escribes se queda en este navegador.
             Si entras —arriba a la derecha—, lo tienes también en el móvil y, si lo pides, te
-            escribo cada semana el día de tu checkpoint.</p>
+            aviso por correo el día de tu checkpoint.</p>
         </>
       )}
       {paso > 1 && (
@@ -143,36 +143,36 @@ export default function MetodoPortada() {
 
       <h2>Cómo funciona</h2>
       <ol>
-        <li><b>Montas tu método en quince minutos.</b> Siete pasos: para quién es, en qué fase
-          estás, qué no se toca, quién decide qué y la primera suposición que vas a poner a
-          prueba con alguien de fuera.</li>
-        <li><b>Te llevas tu carpeta y un plan con fechas.</b> Ficheros de texto con tus
-          respuestas, los textos para pegar en tu IA y tu primer mes en el calendario.</li>
-        <li><b>Cada semana, un checkpoint de media hora.</b> Cuatro preguntas fijas y un
-          veredicto que firmas tú: seguimos, cambiamos o paramos.</li>
-        <li><b>La web te escribe ese día y lleva la cuenta.</b> Si entras con tu cuenta.
-          Semanas cerradas, conversaciones con gente de fuera, cosas cambiadas por lo que te
+        <li><b>Lo preparas en quince minutos.</b> Siete preguntas: para quién trabajas, en qué
+          punto estás, qué no se puede tocar, quién decide qué y qué idea vas a comprobar
+          primero con alguien de fuera.</li>
+        <li><b>Te llevas tus ficheros y un plan con fechas.</b> Tus respuestas en texto, las
+          instrucciones para pegar en tu IA y tu primer mes en el calendario.</li>
+        <li><b>Cada semana, un checkpoint: media hora de revisión.</b> Cuatro preguntas fijas y
+          una decisión que tomas tú: seguir, cambiar o parar.</li>
+        <li><b>Si entras con tu cuenta, la web te avisa ese día y lleva la cuenta.</b> Semanas
+          cerradas, conversaciones con gente de fuera y cambios que hiciste por lo que te
           dijeron.</li>
       </ol>
 
       <p style={{ marginTop: 'var(--e5)' }}>
         <a href="#/guia" onClick={(e) => { e.preventDefault(); navigate('/guia'); }} style={{ display: 'inline-flex', alignItems: 'center', minHeight: 44 }}>
-          Leer el manual: el porqué y las reglas, por situaciones →
+          Leer el manual: por qué se hace así y qué hacer en cada situación →
         </a>
       </p>
       <p>
         <a href="#/metodo/mapa" onClick={(e) => { e.preventDefault(); navigate('/metodo/mapa'); }} style={{ display: 'inline-flex', alignItems: 'center', minHeight: 44 }}>
-          Ver el mapa completo: piezas, roles, pasos y qué te llevas →
+          Ver el mapa completo: qué partes tiene, quién hace qué y qué te llevas →
         </a>
       </p>
 
       <hr />
 
       <h2>Beta permanente</h2>
-      <p>Esto no está terminado y no lo va a estar: es la versión de hoy, sale antes de estar
-        redonda y lo que no funciona se cambia. Vale igual para lo tuyo. La página que vas a
-        hacer no tiene que estar bien: tiene que existir, para que alguien que no eres tú te
-        diga qué no se entiende. Versiones, no lanzamientos.</p>
+      <p>Esto no está terminado ni lo estará: es la versión de hoy. Sale antes de estar
+        perfecta y lo que no funciona se cambia. Con lo tuyo pasa lo mismo: la página que vas a
+        hacer no tiene que estar bien, tiene que existir, para que alguien que no eres tú te
+        diga qué no se entiende.</p>
     </div>
   );
 }
