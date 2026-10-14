@@ -1135,11 +1135,17 @@
        "1 · El comprador está nombrado",
        "2 · Lo digital es el plato, no la guarnición",
        "3 · Hay una venta que se completa por medios digitales",
-       "4 · Los números se sostienen, y sé de dónde sale cada cifra"
+       "4 · Sé cómo pueden salir las cuentas, aunque aún no tenga cifras"
+      ],
+      "porques": [
+       "quién paga y qué usa hoy en su lugar",
+       "qué es digital en tu proyecto: el producto, el canal, la relación",
+       "por dónde te descubre y dónde paga",
+       "cómo entra el dinero, si captar será barato o caro, y qué tiene que ser cierto"
       ]
      }
     ],
-    "aviso": "Tres estados, no dos: **cumple · no cumple · no sé decirlo.** El tercero también para — no es un aprobado con dudas, es lo siguiente que tienes que averiguar. Y el motivo del descarte se escribe **ahora**, no al final cuando toque redactar el correo: reconstruido después no es un registro, es una coartada.",
+    "aviso": "Tres estados, no dos: **cumple · no cumple · no sé decirlo.** El tercero también para — no es un aprobado con dudas, es lo siguiente que tienes que averiguar. Y el motivo del descarte se escribe **ahora**, no al final cuando toque redactar el correo: reconstruido después no es un registro, es una coartada. Y cada estado lleva **su porqué en una línea**: un «cumple» sin porqué no llega a finalista.",
     "salidaPuertas": {
      "titulo": "LAS IDEAS QUE CONSIDERÉ"
     }

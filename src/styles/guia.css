@@ -1301,6 +1301,8 @@ details.fichero[open]>summary::before{content:none;display:none}
 .estado.on.si { border-color:var(--regla); background:var(--regla-sup); color:var(--regla); font-weight:600 }
 .estado.on.no { border-color:var(--texto); background:var(--superficie-2); font-weight:600 }
 .estado.on.ns { border-color:var(--accion); background:var(--accion-sup); color:var(--accion); font-weight:600 }
+.regla-por-et { display:block; font-size:13.5px; color:var(--texto-2); margin-top:10px }
+.regla-por { width:100%; min-height:44px; margin-top:6px; box-sizing:border-box }
 .puerta-motivo { display:flex; flex-direction:column; gap:6px }
 .puerta-motivo label { font-size:13.5px; color:var(--texto-2) }
 .puerta-motivo input { min-height:48px }
@@ -1348,7 +1350,8 @@ body.ctx-hoja .ficha-val:focus-visible { outline-color:var(--lab) }
 body.ctx-hoja .puerta-fila { border-left:3px solid var(--lab) }
 body.ctx-hoja .blk .num span { color:var(--lab) }
 body.ctx-hoja .resp-dijo textarea:focus-visible,
-body.ctx-hoja .puerta-motivo input:focus-visible { outline-color:var(--lab) }
+body.ctx-hoja .puerta-motivo input:focus-visible,
+body.ctx-hoja .regla-por:focus-visible { outline-color:var(--lab) }
 
 /* ==========================================================================
    EL ANCHO DE LA HOJA

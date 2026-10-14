@@ -116,6 +116,15 @@ export function Puertas({ g, datos, onChange }) {
                       </label>
                     ))}
                   </div>
+                  <label className="regla-por-et" htmlFor={`${nombre}-por`}>Por qué</label>
+                  <input
+                    id={`${nombre}-por`}
+                    type="text"
+                    className="regla-por"
+                    placeholder={(g.porques || [])[i] || 'una línea'}
+                    value={datos[`${k}_por`] ?? ''}
+                    onChange={(e) => onChange(`${k}_por`, e.target.value)}
+                  />
                 </fieldset>
               );
             })}
@@ -136,8 +145,9 @@ export function Puertas({ g, datos, onChange }) {
   );
 }
 
-// Los finalistas salen de las fichas que pasaron las cuatro reglas, no se
-// vuelven a escribir: así no se cuela una que no pasó.
+// Los finalistas salen de las fichas que pasaron las cuatro reglas con su
+// porqué escrito, no se vuelven a escribir: así no se cuela una que no pasó,
+// ni un «cumple» marcado sin pensar.
 export function Finalistas({ g, datos, onChange }) {
   const elegibles = [];
   (g.de || []).forEach((d) => {
@@ -146,14 +156,14 @@ export function Finalistas({ g, datos, onChange }) {
       const asa = (datos[`${pre}_asa`] || '').trim();
       const vende = (datos[`${pre}_vende`] || '').trim();
       if (!(asa || vende)) continue;
-      if (![1, 2, 3, 4].every((r) => datos[`${pre}_r${r}`] === 'si')) continue;
+      if (![1, 2, 3, 4].every((r) => datos[`${pre}_r${r}`] === 'si' && String(datos[`${pre}_r${r}_por`] || '').trim())) continue;
       elegibles.push({ pre, txt: asa || vende });
     }
   });
 
   if (elegibles.length === 0) {
     return (
-      <p className="ayuda">Todavía no ha pasado ninguna ficha las cuatro reglas. Vuelve al paso 5 y termina de pasarlas: lo que se quede en «no sé decirlo» es lo siguiente que tienes que averiguar.</p>
+      <p className="ayuda">Todavía no ha pasado ninguna ficha las cuatro reglas con su porqué escrito. Vuelve al paso de las reglas y termina de pasarlas: lo que se quede en «no sé decirlo» es lo siguiente que tienes que averiguar, y un «cumple» sin porqué no cuenta.</p>
     );
   }
 
