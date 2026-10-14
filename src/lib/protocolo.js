@@ -108,16 +108,23 @@ export function textoPuertas(b, datos) {
     const r = [1, 2, 3, 4].map((i) => datos[`${f.pre}_r${i}`]);
     const motivo = String(datos[`${f.pre}_motivo`] || '').trim();
     const con = (v) => reglas.filter((_, i) => r[i] === v).join('; ');
+    // El porqué de cada regla, en el orden de las reglas. Es lo que lee la
+    // dirección del máster para decidir: el veredicto solo no dice nada.
+    const porques = reglas
+      .map((t, i) => [t, String(datos[`${f.pre}_r${i + 1}_por`] || '').trim()])
+      .filter(([, p]) => p)
+      .map(([t, p]) => `  ${t}: ${p}`);
     if (r.some((v) => v === 'no')) {
-      caen.push([cab, `  No cumple: ${con('no')}.`, `  Por qué: ${motivo || 'sin motivo escrito'}`]);
+      caen.push([cab, `  No cumple: ${con('no')}.`, `  Por qué: ${motivo || 'sin motivo escrito'}`, ...porques]);
     } else if (r.every((v) => v === 'si')) {
-      pasan.push([cab]);
+      pasan.push([cab, ...porques]);
     } else {
       const l = [cab];
       if (r.some((v) => v === 'ns')) l.push(`  No sé decirlo: ${con('ns')}.`);
       const sin = reglas.filter((_, i) => !r[i]).join('; ');
       if (sin) l.push(`  Sin pasar: ${sin}.`);
       if (motivo) l.push(`  Nota: ${motivo}`);
+      l.push(...porques);
       dudan.push(l);
     }
   });
