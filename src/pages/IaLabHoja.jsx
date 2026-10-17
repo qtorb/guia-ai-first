@@ -21,6 +21,34 @@ import { enviarDocumento, hayNube, CORREO_OK } from '../lib/envios';
 // guia-ai-first-src/index.html L2712-2947. Contenido y comportamiento se
 // mantienen; el motor de estado pasa de manipulación de DOM a React.
 
+// Las siete reglas del alumno, en el texto que pega en las instrucciones de
+// su asesor (hoja 1, paso 13). Cada regla sale con lo que escribió en sus
+// campos; las casillas «Hecho» no cuentan.
+function textoReglas(hoja, datos) {
+  const limpio = (t) => String(t).replace(/\*\*/g, '').trim();
+  const bloques = (hoja.bloques || []).filter((b) => b.parte === '1–7');
+  let faltan = false;
+  const lineas = bloques.map((b, i) => {
+    const partes = [];
+    (b.grupos || []).forEach((g) => {
+      if (g.tipo === 'checks') {
+        g.campos.filter((c) => !/^h\d/.test(c.k) && datos[c.k]).forEach((c) => partes.push(limpio((String(c.txt).match(/\*\*([^*]+)\*\*/) || [null, c.txt])[1])));
+        return;
+      }
+      (g.campos || []).forEach((c) => {
+        const v = String(datos[c.k] ?? '').trim();
+        if (v) partes.push((c.label ? c.label + ': ' : '') + v);
+      });
+    });
+    if (!partes.length) faltan = true;
+    return `${i + 1}. ${b.titulo}: ${partes.length ? partes.join('; ') : '(sin escribir)'}`;
+  });
+  const texto = 'Eres el asesor de mi TFM del Máster en Dirección de Marketing Digital (UPF-BSM). Trabajas con estas siete reglas, que he escrito yo:\n'
+    + lineas.join('\n')
+    + '\nAntes de suponer, pregúntame. Si una petición mía se salta una de estas reglas, avísame. No inventes datos: si algo no tiene fuente, dilo.';
+  return { texto, faltan };
+}
+
 function hayApertura(hoja, datos) {
   return (hoja.apertura?.grupos || [])
     .flatMap((g) => g.campos)
@@ -352,6 +380,7 @@ export default function IaLabHoja({ dossierCtl, nube }) {
   // Cada bloque sabe de qué parte es y qué número hace dentro de ella. El
   // contraste no numera: no es una regla más, es el paso que las repasa.
   const partes = hoja.partes || [];
+  const sinNum = !!hoja.aperturaSinNumero;
   const rotulos = (() => {
     const cuenta = {};
     (hoja.bloques || []).forEach((b) => {
@@ -392,8 +421,12 @@ export default function IaLabHoja({ dossierCtl, nube }) {
     : paso <= hoja.bloques.length + 1
       ? rotulos[paso - 2].txt
       : paso === NPASOS ? 'Último paso' : 'Contraste';
-  const sitio = `${posicion}. Es el paso ${paso} de ${NPASOS}.`
-    + (partes.length > 1
+  // La hoja 1 no numera la apertura: el paso 1 es la primera regla, igual
+  // que en el deck de la sesión.
+  const sitio = (sinNum
+    ? `${posicion}.` + (paso > 1 ? ` Es el paso ${paso - 1} de ${NPASOS - 1}.` : '')
+    : `${posicion}. Es el paso ${paso} de ${NPASOS}.`)
+    + (salidas.length > 1 && partes.length > 1
       ? ` Esta hoja tiene ${partes.length} piezas: ${partes.map((p) => `${p.id} (${p.titulo})`).join(' y ')}.`
       : '');
 
@@ -411,10 +444,10 @@ export default function IaLabHoja({ dossierCtl, nube }) {
                 className={'pdot' + (i + 1 < paso ? ' done' : i + 1 === paso ? ' on' : '') + (saltado(i + 1) ? ' salta' : '')}
                 onClick={() => irPaso(i + 1)}
                 title={p.t + (saltado(i + 1) ? ' (no te hace falta si ya tienes idea)' : '')}
-                aria-label={`Paso ${i + 1}: ${p.t}` + (saltado(i + 1) ? ' (no te hace falta si ya tienes idea)' : '')}
+                aria-label={(sinNum && i === 0 ? p.t : `Paso ${sinNum ? i : i + 1}: ${p.t}`) + (saltado(i + 1) ? ' (no te hace falta si ya tienes idea)' : '')}
                 aria-current={i + 1 === paso ? 'step' : undefined}
               >
-                <i>{i + 1}</i>
+                {sinNum && i === 0 ? <i className="sinnum" aria-hidden="true">·</i> : <i>{sinNum ? i : i + 1}</i>}
               </button>
             ))}
           </div>
@@ -489,6 +522,7 @@ export default function IaLabHoja({ dossierCtl, nube }) {
                   ruta={ruta}
                   duda={datos['duda' + hoja.bloques[numPaso - 2].n]}
                   onDuda={onDuda}
+                  reglas={hoja.bloques[numPaso - 2].copiarReglas ? textoReglas(hoja, datos) : null}
                   preparar={numPaso === 2 && hoja.paso0
                     ? { paso0: hoja.paso0, onCopiarPrompt: () => copiarCampo(hoja.paso0.prompt), onCopiarGuia: copiarGuia }
                     : null}
@@ -670,9 +704,10 @@ function Pausa({ p, onGuardar, onCalendario, onSeguir }) {
 // ofrece la salida por si lo que querías era empezar de nuevo.
 function Vuelta({ hoja, datos, checkKeys, onCerrar, onPrincipio }) {
   const sin = bloquesSinEscribir(hoja, datos, checkKeys);
-  const total = (hoja.bloques || []).length;
+  const secs = seccionesConPlantilla(hoja);
+  const total = secs.length;
   const hechos = total - sin.length;
-  const ultimo = [...(hoja.bloques || [])].reverse().find((b) => !sin.includes(b));
+  const ultimo = [...secs].reverse().find((b) => !sin.includes(b));
   return (
     <div className="vuelta">
       <p>
@@ -682,7 +717,7 @@ function Vuelta({ hoja, datos, checkKeys, onCerrar, onPrincipio }) {
           : 'Todavía no has escrito nada: sigues en el paso donde lo dejaste.'}
       </p>
       <div className="va">
-        <button className="lnk" onClick={onPrincipio}>Volver al paso 1</button>
+        <button className="lnk" onClick={onPrincipio}>Volver al principio</button>
         <button className="mini" onClick={onCerrar}>Seguir aquí</button>
       </div>
     </div>

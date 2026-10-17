@@ -19,7 +19,7 @@ import { useToast } from '../Toast';
 // duda para la sesión— se pliega en una fila de botones al pie. No
 // desaparece: deja de estar abierto todo a la vez, y está siempre en el
 // mismo sitio.
-export default function Bloque({ b, datos, onChange, total, rotulo, preparar, duda, onDuda, ruta }) {
+export default function Bloque({ b, datos, onChange, total, rotulo, preparar, duda, onDuda, ruta, reglas }) {
   // b.ask puede venir como cadena (hoja 1) o como {lab, txt} (hoja 0).
   const ask = typeof b.ask === 'string' ? { lab: 'Pregúntale a tu asistente de IA', txt: b.ask } : b.ask;
   // Un grupo marcado para una ruta solo sale en esa ruta: quien trae idea no
@@ -61,6 +61,7 @@ export default function Bloque({ b, datos, onChange, total, rotulo, preparar, du
           {b.thead.map((t, i) => <div key={i}>{esc(t)}</div>)}
         </div>
       )}
+      {b.copiarReglas && reglas && <CopiarReglas cfg={b.copiarReglas} reglas={reglas} />}
       <div className="campos">
         {grupos.map((g, i) => <Grupo key={i} g={g} datos={datos} onChange={onChange} />)}
         {b.aviso && <TextoInline texto={b.aviso} className="aviso" />}
@@ -225,5 +226,34 @@ function Preparar({ paso0, onCopiarPrompt, onCopiarGuia }) {
       </ol>
       {paso0.nota && <p className="p0nota">{paso0.nota}</p>}
     </section>
+  );
+}
+
+// «Copiar mis instrucciones»: las siete reglas que ha escrito el alumno, en
+// un texto listo para pegar en las instrucciones de su asesor. Si falta
+// alguna, lo dice y deja copiar igualmente.
+function CopiarReglas({ cfg, reglas }) {
+  const toast = useToast();
+  const [aviso, setAviso] = useState(false);
+  function copiar(forzar) {
+    if (reglas.faltan && !forzar) { setAviso(true); return; }
+    alPortapapeles(reglas.texto)
+      .then(() => { setAviso(false); toast('Copiado: pégalo en las instrucciones de tu asesor'); })
+      .catch(() => toast('No se pudo copiar: selecciónalo y cópialo a mano'));
+  }
+  return (
+    <div className="copiar-reglas">
+      <button type="button" className="btn btn-p" onClick={() => copiar(false)}>{cfg.boton}</button>
+      {aviso && (
+        <div className="aviso" role="alert">
+          <TextoInline as="span" texto={cfg.faltan} />
+          <div className="va"><button type="button" className="btn btn-g" onClick={() => copiar(true)}>{cfg.igual}</button></div>
+        </div>
+      )}
+      <details className="p0ver">
+        <summary>Ver las instrucciones</summary>
+        <div className="snip">{reglas.texto}</div>
+      </details>
+    </div>
   );
 }
