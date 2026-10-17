@@ -82,10 +82,10 @@ h3{font-size:21px;margin:26px 0 10px;font-weight:700}
 /* campos */
 label{display:block;font-size:16px;font-weight:600;color:var(--ink);margin:0 0 8px}
 .hint{font-size:14px;color:var(--mid);font-weight:400}
-input[type=text],textarea{width:100%;border:2px solid var(--linea-fuerte);border-radius:var(--radio-chico);
+input[type=text],input[type=email],textarea{width:100%;border:2px solid var(--linea-fuerte);border-radius:var(--radio-chico);
   min-height:44px;padding:12px 13px;font-family:var(--sans);font-size:16px;color:var(--ink);
   background:var(--fondo);transition:border-color .15s;resize:vertical}
-input[type=text]:focus,textarea:focus{border-color:var(--blue)}
+input[type=text]:focus,input[type=email]:focus,textarea:focus{border-color:var(--blue)}
 input::placeholder,textarea::placeholder{color:var(--mid);opacity:1}
 .field{margin-bottom:16px}
 .row{display:grid;gap:12px}
@@ -1958,3 +1958,21 @@ p.ctx b{color:var(--ink)}
 .wrap.taller-lab .dndb { width:auto; padding:0 14px; border:2px solid currentColor; border-radius:999px;
   font-family:inherit; font-size:14px; font-weight:600 }
 .wrap.taller-lab .dndb.on { background:var(--red,var(--blue)); border-color:var(--red,var(--blue)); color:var(--fondo) }
+
+/* ---- enviar a la dirección y sugerencias (oct. 2026) ---- */
+.enviar { margin-top:var(--e4); padding:var(--e4); border:2px solid var(--texto); border-radius:var(--radio); background:var(--fondo) }
+.enviar h4 { margin:0 0 6px; font-size:16px }
+.enviar .row { margin:10px 0 }
+.enviar.ok { border-color:var(--regla); background:var(--regla-sup) }
+.enviar.ok p { margin:0 }
+.sug-abrir { background:none; border:0; padding:0; font:inherit; font-size:13px; color:var(--ctx); cursor:pointer;
+  min-height:44px; display:inline-flex; align-items:center; text-decoration:underline; text-underline-offset:3px }
+.sug { flex-basis:100%; max-width:640px; display:flex; flex-direction:column; gap:8px; padding:var(--e4);
+  border:1px solid var(--linea-fuerte); border-radius:var(--radio); background:var(--fondo); color:var(--texto); font-size:15px }
+.sug label { font-size:15px }
+.sug textarea, .sug input { font:inherit; padding:10px 12px; border:2px solid var(--linea-fuerte); border-radius:var(--radio-chico);
+  background:var(--fondo); color:var(--texto); min-height:44px }
+.sug textarea:focus-visible, .sug input:focus-visible { outline:3px solid var(--foco); outline-offset:2px }
+.sug-n { margin:0; font-size:13.5px; color:var(--texto-2) }
+.sug-a { display:flex; gap:10px; flex-wrap:wrap }
+.sug p { margin:0 }

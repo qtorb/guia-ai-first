@@ -884,7 +884,7 @@
     "fichero": "protocolo",
     "titulo": "Tu protocolo",
     "que": "Esto es lo que te llevas. **Cópialo y pégalo en tu asistente de IA al empezar a trabajar**: a partir de ahí sabe con qué reglas trabajas. Y guárdalo donde lo vuelvas a ver: un protocolo que no relees es un documento más.",
-    "entrega": "Descarga el archivo y súbelo donde se indique en clase. Lleva tu nombre y la fecha al principio.",
+    "entrega": "Envíalo a la dirección del máster con el botón de abajo. Llevará tu nombre y la fecha al principio. Descárgalo también para guardarlo.",
     "pegar": "Detrás de cualquier conversación de trabajo. A partir de ahí sabe con qué reglas trabajas.",
     "guardar": "Un protocolo que no relees es un documento más. En la sesión 6 lo vuelves a abrir.",
     "tfm": [
@@ -908,7 +908,7 @@
     "fichero": "tfm-en-una-pagina",
     "titulo": "Tu TFM en una página",
     "que": "Esto es lo que defiendes. **Léelo en voz alta antes de darlo por bueno**: si al decirlo te oyes vago, todavía no está. Y guárdalo — en junio vas a querer comparar.",
-    "entrega": "Descarga el archivo y súbelo donde se indique en clase. Lleva tu nombre y la fecha al principio.",
+    "entrega": "Envíalo a la dirección del máster con el botón de abajo. Llevará tu nombre y la fecha al principio. Descárgalo también para guardarlo.",
     "pegar": "Al principio de cualquier conversación sobre el TFM. Con esto delante, el asistente deja de proponerte proyectos y empieza a trabajar sobre el tuyo.",
     "guardar": "En junio vas a escribir el capítulo de viabilidad. Esta página es contra lo que lo vas a contrastar.",
     "tfm": [
@@ -1532,7 +1532,7 @@
   "salida": {
    "titulo": "Tus ideas y el correo para la dirección del máster",
    "que": "Este es el correo que tienes que enviar a la dirección del máster con tus ideas: las que consideraste, por qué descartaste algunas y cuál eliges. Empieza con un resumen y debajo va el registro completo. Los motivos ya los escribiste en el paso 5; aquí solo se copian. Guárdalo también para ti: te servirá para el apartado «motivaciones y punto de partida», que es obligatorio en el TFM.",
-   "entrega": "Preparar el correo no lo envía: cópialo y mándalo tú.",
+   "entrega": "Envíalo desde aquí con el botón «Enviar a la dirección del máster». Si lo prefieres, también puedes copiarlo y mandarlo tú por correo.",
    "decision": {
     "titulo": "Una última decisión (obligatoria)",
     "gana": "Elijo esta idea.",
@@ -1801,7 +1801,7 @@
     "fichero": "encargo",
     "titulo": "Tu encargo",
     "que": "Ya está escrito: lo has ido construyendo en las cinco pantallas. Compruébalo con las dos pruebas de abajo, cópialo y pégalo en tu asistente de IA.",
-    "entrega": "No hay que entregarlo. Es tuyo y lo reutilizarás en las seis sesiones.",
+    "entrega": "No es obligatorio entregarlo: es tuyo y lo reutilizarás en las seis sesiones. Si quieres que lo vea la dirección del máster, envíalo con el botón de abajo.",
     "pegar": "Tal cual, al principio de la conversación. Y si no funciona, mira cuál de las cinco partes estaba floja.",
     "guardar": "Descárgalo. En noviembre lo abrirás para el mapa de mercado y no te acordarás de los cinco apartados.",
     "plantilla": [

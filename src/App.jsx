@@ -4,6 +4,7 @@ import { ToastProvider } from './components/Toast';
 import { useDossier } from './hooks/useDossier';
 import { useNube } from './hooks/useNube';
 import Cuenta from './components/Cuenta';
+import Sugerencia from './components/Sugerencia';
 import Home from './pages/Home';
 import IaLabList from './pages/IaLabList';
 import IaLabHoja from './pages/IaLabHoja';
@@ -106,6 +107,7 @@ function Shell({ dossierCtl, n }) {
 function PieLegal() {
   return (
     <div className="pielegal">
+      <Sugerencia />
       <a href="/privacidad.html">Qué guarda esta web</a>
       <a href="/condiciones.html">Condiciones de uso</a>
       <span>Guía AI-First · Albert Garcia Pujadas · @qtorb</span>
