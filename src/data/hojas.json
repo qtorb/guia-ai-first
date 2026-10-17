@@ -1556,7 +1556,7 @@
   "omitirLineasVacias": true
  },
  "hojas/mmdd31/encargo.json": {
-  "titulo": "Tu plantilla para dar instrucciones a la IA",
+  "titulo": "Cómo pedirle trabajo a la IA: tu plantilla",
   "doc": "Mi encargo",
   "kicker": "IA-Lab · Máster en Dirección de Marketing Digital (edición 31) · UPF Barcelona School of Management",
   "lede": "Un encargo es una instrucción completa para tu asistente de IA. No es una petición más larga: dice también **qué no quieres**, **cómo vas a saber si sirve** y **cuándo tiene que parar y preguntarte**. Son cinco apartados y los usarás en las seis sesiones.",
