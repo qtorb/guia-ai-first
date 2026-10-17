@@ -1954,6 +1954,13 @@ p.ctx b{color:var(--ink)}
 .decision legend { font-weight:700; padding:0 6px; font-size:16px }
 .decision .row { margin-top:10px }
 .nadie-op { border:0; padding:0; margin:12px 0 0 }
+.opciones { border:0; padding:0; margin:0 0 var(--e3) }
+.opciones legend { font-weight:700; font-size:16px; margin-bottom:8px; padding:0 }
+.opciones .aviso { margin-top:10px }
+.copiar-reglas { margin:var(--e3) 0 }
+.copiar-reglas .aviso { margin-top:10px }
+.copiar-reglas .va { display:flex; flex-wrap:wrap; gap:10px; margin-top:10px }
+.pdot i.sinnum { font-size:18px; line-height:1 }
 .nadie-op legend { font-size:15px; margin-bottom:6px }
 
 .guardado-est { margin:10px 0 0; font-size:13.5px; color:var(--texto-2); text-align:center }
@@ -1981,3 +1988,101 @@ p.ctx b{color:var(--ink)}
 .sug-n { margin:0; font-size:13.5px; color:var(--texto-2) }
 .sug-a { display:flex; gap:10px; flex-wrap:wrap }
 .sug p { margin:0 }
+
+/* Enlaces dentro de la lista «Paso a paso» (hoja 1, paso 10): el color de
+   enlace no llegaba a AAA sobre el fondo de la caja en tema oscuro. Heredan
+   el color del texto y se distinguen por el subrayado. */
+.blk .contraste a { color:inherit; text-decoration:underline; text-underline-offset:2px; font-weight:600 }
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Hoja 1 «clara» (17-10-2026). Tres partes, como el deck; un paso, una
+   tarea; el mismo orden en todos: 1 · Hazlo, 2 · Anota, 3 · Compruébalo; y
+   un solo botón para acabar, después de comprobar.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ─── Las tres partes, arriba ─────────────────────────────────────────── */
+#pbar.con-tramos .pb-top{gap:14px}
+.tramos{flex:1 1 auto;display:flex;gap:8px;min-width:0}
+.tramo{flex:1 1 0;min-width:0;min-height:44px;border:0;background:none;padding:6px 0 0;cursor:pointer;
+  display:flex;flex-direction:column;gap:6px;text-align:left;font-family:var(--sans);color:var(--mid)}
+.tramo b{display:block;height:6px;border-radius:3px;background:var(--linea)}
+.tramo span{font-size:14px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tramo.done b{background:var(--red)}
+.tramo.on b{background:var(--red);height:10px;margin-top:-4px}
+.tramo.on span{color:var(--red);font-weight:700}
+.tramo:hover span{color:var(--red);text-decoration:underline}
+.tr-pasos{display:flex;flex-wrap:wrap;gap:2px;padding:6px 0 2px}
+@media(max-width:620px){
+  #pbar.con-tramos .pb-top{flex-wrap:wrap;row-gap:4px}
+  #pbar.con-tramos .pb-r{margin-left:auto}
+  #pbar.con-tramos .tramos{order:3;flex-basis:100%}
+}
+
+/* ─── Dónde estás: «Paso 9 de 16» y la slide ──────────────────────────── */
+.donde-p{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 14px;
+  font-size:15px;color:var(--mid)}
+.donde-p .clase{display:inline-flex;align-items:center;min-height:32px;padding:3px 12px;
+  border:2px solid var(--red);border-radius:999px;color:var(--red);font-weight:600;font-size:15px}
+
+/* ─── El paso ─────────────────────────────────────────────────────────── */
+.blk.claro{border-top:0;padding-top:28px}
+.blk.claro .cab{display:flex;gap:16px;align-items:flex-start;justify-content:space-between}
+.blk.claro .cab-t{min-width:0}
+#pasos .blk.claro h2{margin:0;font-size:clamp(27px,5.4vw,34px);letter-spacing:-.02em;line-height:1.14}
+.blk.claro p.tarea{margin-top:12px;font-weight:400;color:var(--texto-2);font-size:clamp(17px,3.4vw,19px)}
+.blk.claro p.tarea b{color:var(--ink)}
+.cebolla{flex:0 0 auto;margin-top:2px}
+.cebolla circle{fill:var(--lab-sup,var(--soft));stroke:var(--red);stroke-width:1.5}
+.cebolla circle.on{fill:var(--red)}
+.sec{margin:30px 0 0}
+.sec-h{display:flex;align-items:center;gap:12px;margin:0 0 14px;font-size:21px;line-height:1.25}
+.sec-h label{font:inherit;cursor:pointer}
+.sec-n{flex:0 0 auto;width:32px;height:32px;border-radius:50%;background:var(--red);color:var(--fondo);
+  display:inline-flex;align-items:center;justify-content:center;font-family:var(--sans);font-size:17px;font-weight:700}
+ol.hazlo{margin:0;padding-left:24px}
+ol.hazlo li{margin:0 0 12px;font-size:17px;line-height:1.55;color:var(--ink)}
+ol.hazlo li::marker{color:var(--red);font-weight:700}
+.blk.claro .pegar{margin:10px 0 4px;padding:14px 16px;border-left:4px solid var(--red);background:var(--soft);
+  border-radius:0 8px 8px 0;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.blk.claro .pegar p{margin:0;font-size:17px;line-height:1.5;color:var(--ink)}
+.blk.claro .campos{margin-top:0}
+.blk.claro .qc{margin:0;padding:16px 18px;border-left-width:4px}
+.blk.claro .qc li{font-size:17px}
+.blk.claro .copiar-reglas{margin-top:16px}
+
+/* ─── Acabar el paso ──────────────────────────────────────────────────── */
+.cta{margin:32px 0 0;display:flex;flex-direction:column;gap:12px}
+.cta .btn{width:100%;min-height:52px;font-size:18px;justify-content:center}
+.hecho-ok{margin:0;font-size:15px;color:var(--green);font-weight:600}
+.falla{padding:16px 18px;border:2px solid var(--red);border-radius:10px;background:var(--fondo)}
+.falla ul{margin:0 0 10px;padding-left:20px}
+.falla li{margin:0 0 8px;font-size:16px;line-height:1.5}
+.falla p{margin:0;font-size:15px;color:var(--mid)}
+@media(min-width:760px){ .cta .btn{width:auto;min-width:340px;align-self:flex-start} }
+
+/* ─── Las ayudas, en una línea de enlaces ─────────────────────────────── */
+.ayu.enl{border-top:0;margin-top:18px;padding-top:0}
+.ayu.enl .ayu-r{gap:4px 20px}
+.ayu.enl .ayb{border:0;border-radius:0;padding:0;background:none;color:var(--red);
+  text-decoration:underline;text-underline-offset:3px;font-size:15px}
+.ayu.enl .ayb.on{font-weight:700;background:none}
+.wrap.taller-lab.claro .pnav{border-top:1px solid var(--linea);margin-top:36px}
+.lnk.saltar{min-height:44px;font-size:15px}
+
+/* ─── La entrada ──────────────────────────────────────────────────────── */
+.mapa-s{padding:28px 0 0}
+.mapa-s h1{margin:0 0 12px}
+.mapa-s .lede{margin:0 0 22px}
+.mapa-tr{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.mapa-tr li{display:flex;gap:14px;padding:14px 16px;border:1px solid var(--linea-fuerte);border-radius:12px}
+.mapa-tr .n{flex:0 0 72px;font-weight:800;font-size:20px;color:var(--red);white-space:nowrap}
+.mapa-tr b{font-size:18px}
+.mapa-tr p{margin:2px 0 0;font-size:16px;line-height:1.5;color:var(--texto-2)}
+p.tener{margin:16px 0 0;padding:14px 16px;background:var(--soft);border-radius:10px;font-size:16px}
+@media(min-width:760px){ .mapa-tr{grid-template-columns:repeat(3,1fr)} .mapa-tr li{flex-direction:column;gap:6px} .mapa-tr .n{flex:0 0 auto} }
+
+/* ─── El último paso ──────────────────────────────────────────────────── */
+#out.blk.claro .field input{width:100%}
+#out.blk.claro .pieza{margin-top:4px}
+#out.blk.claro .chk{font-size:17px}

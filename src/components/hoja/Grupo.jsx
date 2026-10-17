@@ -15,6 +15,26 @@ export default function Grupo({ g, datos, onChange }) {
   if (g.tipo === 'mensaje') return <Mensaje g={g} datos={datos} onChange={onChange} />;
   if (g.tipo === 'respuestas') return <Respuestas g={g} datos={datos} onChange={onChange} />;
 
+  // Elegir una opción entre pocas (dónde vive tu asesor, tu revisor…). Con
+  // `distintoDe`, avisa si coincide con otra elección: el revisor no puede ser
+  // el mismo asistente que el asesor.
+  if (g.tipo === 'opciones') {
+    const v = datos[g.k] ?? '';
+    const choca = g.distintoDe && v && v === datos[g.distintoDe];
+    return (
+      <fieldset className="opciones">
+        <legend>{g.label}</legend>
+        {g.opciones.map((o) => (
+          <label className="chk" key={o}>
+            <input type="radio" className="c" name={'op-' + g.k} checked={v === o} onChange={() => onChange(g.k, o)} />
+            <span>{o}</span>
+          </label>
+        ))}
+        {choca && <p className="aviso" role="alert">{g.aviso}</p>}
+      </fieldset>
+    );
+  }
+
   if (g.tipo === 'checks') {
     return (
       <>
