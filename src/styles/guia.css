@@ -494,7 +494,8 @@ a.sc:hover{border-color:var(--blue);background:var(--acento-sup)}
    -------------------------------------------------------------------------- */
 body.ctx-hoja {
   --ctx: var(--lab);
-  --lab: #8C1D2F;
+  --lab: #9E0B24;             /* el rojo del deck de IA-Lab (17-10-2026): 7,92:1 sobre el papel, 7,27:1 sobre la superficie */
+  --hecho: #F6D5DB; --hecho-t: #7A0A1D;   /* lo hecho, rosa como en el deck: 8,19:1 */
   --lab-sup: #F7EDEE;
   --fondo: #FCF9F6;           /* papel cálido: 17,35:1 con el texto */
   --superficie: #F4EFEA;
@@ -509,7 +510,7 @@ body.ctx-hoja {
 }
 @media (prefers-color-scheme: dark) {
   body.ctx-hoja:not([data-tema="claro"]) {
-    --lab: #FF9C93; --lab-sup: #2B1515;
+    --lab: #FF9C93; --lab-sup: #2B1515; --hecho: #3A1A1E; --hecho-t: #FF9C93;
     --fondo: #14110F; --superficie: #1E1A18; --superficie-2: #272220; --linea: #332C28;
     /* Faltaba --mid, y era el agujero AAA más caro del sitio: el barrio de
        IA-Lab redefine el papel en cálido pero se dejaba el gris del papel
@@ -737,7 +738,7 @@ body.ctx-hoja #pinfo{color:var(--gray)}
   text-decoration:none;color:inherit;transition:border-color .15s}
 .gp:hover{border-color:var(--barrio)}
 .gp:focus-visible{outline:3px solid var(--barrio);outline-offset:2px}
-.gp-lab{--barrio:#8C1D2F;--barrio-sup:#F7EDEE}
+.gp-lab{--barrio:#9E0B24;--barrio-sup:#F7EDEE}
 /* La puerta de IA-Lab traía el rojo y el tinte escritos a mano, así que en
    modo oscuro conservaba el fondo rosa claro mientras el texto lo ponía la
    paleta oscura: el título de la puerta quedaba en 1,03:1 —invisible— y el
@@ -2086,3 +2087,9 @@ p.tener{margin:16px 0 0;padding:14px 16px;background:var(--soft);border-radius:1
 #out.blk.claro .field input{width:100%}
 #out.blk.claro .pieza{margin-top:4px}
 #out.blk.claro .chk{font-size:17px}
+
+/* Lo hecho, en la hoja 1, en rosa como en el deck (no en verde). */
+.wrap.taller-lab.claro .pdot.done i{background:var(--hecho);border-color:var(--red);color:var(--hecho-t)}
+.tramo.done b{background:var(--hecho);box-shadow:inset 0 0 0 1px var(--red)}
+.tramo.done span{color:var(--hecho-t)}
+.hecho-ok{color:var(--hecho-t);background:var(--hecho);padding:8px 12px;border-radius:8px;align-self:flex-start}
