@@ -1909,3 +1909,52 @@ p.ctx b{color:var(--ink)}
   .pb-personas td:first-child{display:block}
   .pb-personas td:first-child::before{content:none}
 }
+
+/* ---- hoja 0, lenguaje claro (oct. 2026) ---- */
+/* Los rótulos de la tarjeta de idea eran mono, en mayúsculas y a 12 px: con
+   frases de seis palabras se leían como siglas. Pasan a texto normal. */
+.ficha-et { font-family:inherit; font-size:14px; letter-spacing:0; text-transform:none;
+  font-weight:600; flex-direction:column; align-items:flex-start; justify-content:center; gap:2px }
+.ficha-mano { display:block; font-weight:400; font-size:13px }
+.ficha-col { flex:1; min-width:0; display:flex; flex-direction:column }
+.ficha-seg { border:0; margin:0; padding:0 10px 10px; display:flex; gap:6px; flex-wrap:wrap }
+.seg { display:inline-flex; align-items:center; min-height:44px; padding:0 10px; border:1px solid var(--linea-fuerte);
+  border-radius:var(--radio-chico); font-size:13.5px; cursor:pointer; background:var(--fondo); color:var(--texto) }
+.seg input { position:absolute; opacity:0; width:0; height:0 }
+.seg:focus-within { outline:3px solid var(--foco); outline-offset:2px }
+.seg.on { border-width:2px; border-color:var(--texto); font-weight:600 }
+.puerta-asa { font-family:inherit; font-size:16px }
+
+.p0-visible { margin:0 0 24px; border:2px solid var(--linea-fuerte) }
+.p0-visible h3 { margin:0 0 12px; font-size:17px }
+.p0-visible h3 span { font-weight:400; color:var(--texto-2) }
+.p0ver { margin:10px 0 0 }
+.p0ver > summary { cursor:pointer; min-height:44px; display:inline-flex; align-items:center; font-size:14px }
+
+.rutas { margin:var(--e5) 0 0; padding-top:var(--e4); border-top:1px solid var(--linea) }
+.rutas h2 { margin:0 0 var(--e3); font-size:20px }
+.rutas-g { display:grid; grid-template-columns:1fr 1fr; gap:var(--e4) }
+.ruta { border:1px solid var(--linea); border-radius:var(--radio); padding:var(--e4) }
+.ruta.on { border:2px solid var(--texto) }
+.ruta .btn { width:100% }
+.ruta .ayuda { margin:10px 0 0 }
+@media(max-width:620px){ .rutas-g { grid-template-columns:1fr } }
+
+.pausa { margin:var(--e5) 0 0; padding:var(--e4); border:2px solid var(--accion); border-radius:var(--radio);
+  background:var(--accion-sup) }
+.pausa h3 { margin:0 0 8px; font-size:18px }
+.pausa-a { display:flex; flex-wrap:wrap; gap:10px; margin-top:var(--e3) }
+
+.decision { border:2px solid var(--texto); border-radius:var(--radio); padding:var(--e4); margin:var(--e4) 0 }
+.decision legend { font-weight:700; padding:0 6px; font-size:16px }
+.decision .row { margin-top:10px }
+.nadie-op { border:0; padding:0; margin:12px 0 0 }
+.nadie-op legend { font-size:15px; margin-bottom:6px }
+
+.guardado-est { margin:10px 0 0; font-size:13.5px; color:var(--texto-2); text-align:center }
+.pdot.salta i { border-style:dashed; opacity:.75 }
+/* La «i» pasa a ser un botón con texto: un icono sin palabra no dice que
+   detrás está la ayuda, cómo guardar y cómo empezar de nuevo. */
+.wrap.taller-lab .dndb { width:auto; padding:0 14px; border:2px solid currentColor; border-radius:999px;
+  font-family:inherit; font-size:14px; font-weight:600 }
+.wrap.taller-lab .dndb.on { background:var(--red,var(--blue)); border-color:var(--red,var(--blue)); color:var(--fondo) }

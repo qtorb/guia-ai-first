@@ -75,7 +75,7 @@ function Shell({ dossierCtl, n }) {
           <Route path="/" element={<Navigate to="/dos-puertas" replace />} />
           <Route path="/dos-puertas" element={<Home dossierCtl={dossierCtl} />} />
           <Route path="/ia-lab" element={<IaLabList dossierCtl={dossierCtl} />} />
-          <Route path="/ia-lab/:n" element={<IaLabHoja dossierCtl={dossierCtl} />} />
+          <Route path="/ia-lab/:n" element={<IaLabHoja dossierCtl={dossierCtl} nube={n} />} />
           <Route path="/metodo" element={<MetodoPortada />} />
           <Route path="/metodo/mapa" element={<Mapa />} />
           <Route path="/metodo/plan" element={<Plan30 n={n} />} />

@@ -1,15 +1,15 @@
 {
  "edicion": "mmdd31",
- "titulo": "IA-Lab · MMDD31",
- "lede": "Una hoja para buscar idea o poner a prueba la tuya, recomendada para todos, y seis sesiones. De cada una sales con una parte escrita que puedes usar en tu TFM.",
+ "titulo": "IA-Lab · Máster en Dirección de Marketing Digital (edición 31)",
+ "lede": "Una hoja para encontrar o poner a prueba la idea de tu Trabajo Final de Máster (TFM), recomendada para todos, y seis hojas más, una por sesión. Cada una te deja un texto que puedes usar en tu TFM.",
  "sesiones": [
   {
    "n": 10,
    "etiqueta": "0",
    "_nota": "n=10 y no 0 a propósito: el motor comprueba «if (SESION)» en seis sitios y un 0 es falsy — no guardaría ni cargaría. La etiqueta es lo que se ve.",
-   "titulo": "Busca idea y/o pon a prueba tu idea de TFM",
-   "asignatura": "Antes de empezar · recomendada para todos",
-   "salida": "Tu idea, o tus ideas, pasada por el filtro de las reglas del máster, con lo que costará y cuándo la tendrás",
+   "titulo": "Encuentra o pon a prueba tu idea de TFM",
+   "asignatura": "Antes de empezar · Recomendada para todos",
+   "salida": "Tus ideas, comparadas con los cuatro criterios del máster, y la que eliges, con lo que te costará comprobarla",
    "fichero": "hojas/mmdd31/0.json"
   },
   {
@@ -42,14 +42,14 @@
   },
   {
    "n": 5,
-   "titulo": "Blueprint de fidelización",
+   "titulo": "Plan de fidelización",
    "asignatura": "Estrategias de Fidelización",
    "salida": "Cómo cuidar al cliente después de la compra, qué automatizar y con qué riesgos",
    "fichero": null
   },
   {
    "n": 6,
-   "titulo": "Pack de mejora del TFM",
+   "titulo": "Revisión y mejora del TFM",
    "asignatura": "TFM",
    "salida": "Comprobar que todo encaja, qué falta y qué te preguntará el tribunal",
    "fichero": null
@@ -58,10 +58,10 @@
  "herramientas": [
   {
    "n": 12,
-   "titulo": "Tu plantilla de encargo",
-   "lede": "Cinco apartados para pedirle trabajo a la IA. La usarás en las seis sesiones y en tu TFM.",
+   "titulo": "Tu plantilla para dar instrucciones a la IA",
+   "lede": "Cinco apartados para pedirle trabajo a tu asistente de IA de forma clara. La usarás en las seis sesiones y en tu TFM.",
    "fichero": "hojas/mmdd31/encargo.json",
-   "kicker": "IA-Lab · MMDD31 · UPF-BSM"
+   "kicker": "IA-Lab · Máster en Dirección de Marketing Digital (edición 31) · UPF Barcelona School of Management"
   }
  ]
 }
