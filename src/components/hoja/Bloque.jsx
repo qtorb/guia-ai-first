@@ -5,6 +5,7 @@ import TextoInline from '../TextoInline';
 import { esc } from '../../lib/inline';
 import { alPortapapeles } from '../../lib/portapapeles';
 import { useToast } from '../Toast';
+import Cebolla from './Cebolla';
 
 // Una pantalla, una tarea, un campo visible.
 //
@@ -19,7 +20,111 @@ import { useToast } from '../Toast';
 // duda para la sesión— se pliega en una fila de botones al pie. No
 // desaparece: deja de estar abierto todo a la vez, y está siempre en el
 // mismo sitio.
-export default function Bloque({ b, datos, onChange, total, rotulo, preparar, duda, onDuda, ruta, reglas }) {
+export default function Bloque(props) {
+  if (props.claro) return <BloqueClaro {...props} />;
+  return <BloqueClasico {...props} />;
+}
+
+// La hoja 1: el mismo orden en todos los pasos —1 · Hazlo, 2 · Anota,
+// 3 · Compruébalo— y un solo botón para acabar, después de comprobar.
+// La casilla «Hecho» pasa a ser ese botón: antes se marcaba antes de saber
+// si funcionaba.
+function BloqueClaro({ b, datos, onChange, numero, totalVisible, duda, onDuda, reglas, hecho, onHecho }) {
+  const toast = useToast();
+  const [falla, setFalla] = useState(false);
+  const grupos = (b.grupos || []).filter((g) => !(g.tipo === 'checks' && g.campos.every((c) => /^h\d/.test(c.k))));
+  const secs = [];
+  if (b.pruebas) secs.push('hazlo');
+  if (grupos.length) secs.push('anota');
+  if (b.check) secs.push('comprueba');
+  const nsec = (s) => secs.indexOf(s) + 1;
+  const etiqueta = { hazlo: b.hazlo || 'Hazlo', anota: b.escribe || (b.pruebas ? 'Anota' : 'Escribe'), comprueba: 'Compruébalo' };
+  const resto = b.porque || (b.que || []).slice(1);
+
+  function copiar(txt) {
+    alPortapapeles(txt)
+      .then(() => toast('Copiado'))
+      .catch(() => toast('No se pudo copiar: selecciónalo y cópialo a mano'));
+  }
+  const Sec = ({ s }) => (
+    <h3 className="sec-h"><span className="sec-n">{nsec(s)}</span>{etiqueta[s]}</h3>
+  );
+
+  return (
+    <div className="blk claro" id={`b${b.n}`}>
+      <div className="donde-p">
+        <span>Paso {numero} de {totalVisible}</span>
+        {b.clase && <span className="clase">{b.clase}</span>}
+      </div>
+      <div className="cab">
+        <div className="cab-t">
+          <h2>{b.titulo}</h2>
+          <TextoInline texto={b.tarea || ''} className="tarea" />
+        </div>
+        {b.capa && <Cebolla capa={b.capa} />}
+      </div>
+
+      {secs.includes('hazlo') && (
+        <section className="sec">
+          <Sec s="hazlo" />
+          <ol className="hazlo">
+            {b.pruebas.map((p, i) => (
+              <li key={i}>
+                <TextoInline as="span" texto={p} />
+                {b.copiar && b.copiar.tras === i && (
+                  <div className="pegar">
+                    <p>{b.copiar.txt}</p>
+                    <button type="button" className="btn btn-g" onClick={() => copiar(b.copiar.txt)}>Copiar</button>
+                  </div>
+                )}
+              </li>
+            ))}
+          </ol>
+          {b.copiarReglas && reglas && <CopiarReglas cfg={b.copiarReglas} reglas={reglas} />}
+        </section>
+      )}
+
+      {secs.includes('anota') && (
+        <section className="sec">
+          <Sec s="anota" />
+          <div className="campos">
+            {grupos.map((g, i) => <Grupo key={i} g={g} datos={datos} onChange={onChange} />)}
+            {b.aviso && <TextoInline texto={b.aviso} className="aviso" />}
+          </div>
+        </section>
+      )}
+
+      {secs.includes('comprueba') && (
+        <section className="sec">
+          <Sec s="comprueba" />
+          <div className="qc">
+            <ul>{b.check.map((c, i) => <TextoInline key={i} as="li" texto={c} />)}</ul>
+          </div>
+        </section>
+      )}
+
+      <div className="cta">
+        {hecho && <p className="hecho-ok">✓ Ya lo marcaste como hecho.</p>}
+        <button type="button" className="btn btn-p cta-p" onClick={onHecho}>{b.siguiente || 'Hecho · siguiente paso →'}</button>
+        {b.siFalla && (
+          <button type="button" className="btn btn-g cta-g" aria-expanded={falla} aria-controls={`falla-${b.n}`} onClick={() => setFalla((f) => !f)}>
+            No funciona: qué hago
+          </button>
+        )}
+        {falla && (
+          <div className="falla" id={`falla-${b.n}`}>
+            <ul>{b.siFalla.map((t, i) => <TextoInline key={i} as="li" texto={t} />)}</ul>
+            <p>Si sigue sin funcionar, pulsa «Necesito ayuda con este paso», al pie, y sigue con el paso siguiente.</p>
+          </div>
+        )}
+      </div>
+
+      <Ayudas b={b} ask={typeof b.ask === 'string' ? { lab: 'Pregúntale a tu asistente de IA', txt: b.ask } : b.ask} resto={resto} duda={duda} onDuda={onDuda} enlaces />
+    </div>
+  );
+}
+
+function BloqueClasico({ b, datos, onChange, total, rotulo, preparar, duda, onDuda, ruta, reglas }) {
   // b.ask puede venir como cadena (hoja 1) o como {lab, txt} (hoja 0).
   const ask = typeof b.ask === 'string' ? { lab: 'Pregúntale a tu asistente de IA', txt: b.ask } : b.ask;
   // Un grupo marcado para una ruta solo sale en esa ruta: quien trae idea no
@@ -86,7 +191,7 @@ export default function Bloque({ b, datos, onChange, total, rotulo, preparar, du
 
 // La fila de ayudas. Una abierta cada vez: dos paneles abiertos a la vez
 // devuelven la pantalla al estado del que veníamos.
-function Ayudas({ b, ask, resto, duda, onDuda }) {
+function Ayudas({ b, ask, resto, duda, onDuda, enlaces }) {
   const toast = useToast();
   const [abierta, setAbierta] = useState(null);
   const marcada = duda !== undefined && duda !== null;
@@ -98,10 +203,19 @@ function Ayudas({ b, ask, resto, duda, onDuda }) {
   }
 
   const items = [];
-  if (b.encargo || ask) items.push({ id: 'ia', rot: 'Pedir ayuda a la IA' });
-  if (b.ejemplo) items.push({ id: 'ej', rot: 'Ver un ejemplo inventado' });
-  if (b.cicatriz || resto.length) items.push({ id: 'de', rot: 'Por qué se pide esto' });
-  if (onDuda) items.push({ id: 'du', rot: 'Tengo una duda sobre este paso', marca: marcada });
+  if (enlaces) {
+    // La hoja 1 los pone en el orden de la slide «Tres botones»: primero el
+    // ejemplo y la duda; lo demás, detrás.
+    if (b.ejemplo) items.push({ id: 'ej', rot: 'Ver un ejemplo inventado' });
+    if (onDuda) items.push({ id: 'du', rot: 'Tengo una duda sobre este paso', marca: marcada });
+    if (b.cicatriz || resto.length) items.push({ id: 'de', rot: 'Por qué se pide esto' });
+    if (b.encargo || ask) items.push({ id: 'ia', rot: 'Pedir ayuda a la IA' });
+  } else {
+    if (b.encargo || ask) items.push({ id: 'ia', rot: 'Pedir ayuda a la IA' });
+    if (b.ejemplo) items.push({ id: 'ej', rot: 'Ver un ejemplo inventado' });
+    if (b.cicatriz || resto.length) items.push({ id: 'de', rot: 'Por qué se pide esto' });
+    if (onDuda) items.push({ id: 'du', rot: 'Tengo una duda sobre este paso', marca: marcada });
+  }
   if (!items.length) return null;
 
   function toggle(id) {
@@ -112,7 +226,7 @@ function Ayudas({ b, ask, resto, duda, onDuda }) {
   }
 
   return (
-    <div className="ayu">
+    <div className={'ayu' + (enlaces ? ' enl' : '')}>
       <div className="ayu-r">
         {items.map((it) => (
           <button

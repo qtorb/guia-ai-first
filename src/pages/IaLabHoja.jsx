@@ -430,13 +430,51 @@ export default function IaLabHoja({ dossierCtl, nube }) {
       ? ` Esta hoja tiene ${partes.length} piezas: ${partes.map((p) => `${p.id} (${p.titulo})`).join(' y ')}.`
       : '');
 
+  const tramoActual = hoja.tramos ? hoja.tramos.find((t) => paso - 1 >= t.de && paso - 1 <= t.a) : null;
+  const claro = !!hoja.claro;
+
+  // Acabar un paso de la hoja 1: se marca su «Hecho» y se pasa al siguiente.
+  function hechoYSigue(b, numPaso) {
+    const k = claveHecho(b);
+    if (k) {
+      setDatos((d) => ({ ...d, [k]: true }));
+      guardaHoja(sesionN, { ...datos, [k]: true, _paso: siguiente(numPaso, 1), _total: NPASOS });
+    }
+    irPaso(siguiente(numPaso, 1));
+  }
+  function claveHecho(b) {
+    return b.hecho || (b.grupos || []).flatMap((g) => (g.tipo === 'checks' ? g.campos : [])).map((c) => c.k).find((x) => /^h\d/.test(x));
+  }
+
   return (
-    <div className="wrap taller-lab">
-      <div id="pbar" ref={barraRef}>
+    <div className={'wrap taller-lab' + (claro ? ' claro' : '')}>
+      <div id="pbar" ref={barraRef} className={hoja.tramos ? 'con-tramos' : ''}>
         <div className="pb-top">
           <button className="volver" onClick={() => navigate('/ia-lab')} aria-label="Todas mis hojas">
             ←<span> Todas mis hojas</span>
           </button>
+          {hoja.tramos ? (
+            <nav className="tramos" aria-label="Partes de la hoja">
+              {hoja.tramos.map((t) => {
+                const vis = paso - 1;
+                const on = vis >= t.de && vis <= t.a;
+                const hecho = vis > t.a;
+                return (
+                  <button
+                    key={t.t}
+                    type="button"
+                    className={'tramo' + (on ? ' on' : '') + (hecho ? ' done' : '')}
+                    onClick={() => irPaso(t.de + 1)}
+                    aria-current={on ? 'step' : undefined}
+                    aria-label={`${t.t}, pasos ${t.de} a ${t.a}` + (hecho ? ', hecho' : '')}
+                  >
+                    <b aria-hidden="true" />
+                    <span>{t.t}{hecho ? ' ✓' : ''}</span>
+                  </button>
+                );
+              })}
+            </nav>
+          ) : (
           <div className="pb-in">
             {pasos.map((p, i) => (
               <button
@@ -451,8 +489,9 @@ export default function IaLabHoja({ dossierCtl, nube }) {
               </button>
             ))}
           </div>
+          )}
           <div className="pb-r">
-            <span id="pinfo">{posicion}</span>
+            {!hoja.tramos && <span id="pinfo">{posicion}</span>}
             <button
               className={'dndb' + (verDonde ? ' on' : '')}
               onClick={() => setVerDonde((v) => !v)}
@@ -463,6 +502,22 @@ export default function IaLabHoja({ dossierCtl, nube }) {
             </button>
           </div>
         </div>
+        {tramoActual && (
+          <div className="tr-pasos" role="group" aria-label={`Pasos de ${tramoActual.t}`}>
+            {Array.from({ length: tramoActual.a - tramoActual.de + 1 }, (_, j) => tramoActual.de + j).map((v) => (
+              <button
+                key={v}
+                type="button"
+                className={'pdot' + (v + 1 < paso ? ' done' : v + 1 === paso ? ' on' : '')}
+                onClick={() => irPaso(v + 1)}
+                aria-label={`Paso ${v}: ${pasos[v]?.t || ''}`}
+                aria-current={v + 1 === paso ? 'step' : undefined}
+              >
+                <i>{v}</i>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {verDonde && (
@@ -501,13 +556,15 @@ export default function IaLabHoja({ dossierCtl, nube }) {
         {(verTodo ? pasos.map((_, i) => i + 1) : [paso]).map((numPaso) => (
           <section className={'wstep' + (numPaso === paso ? ' on' : '')} data-p={numPaso} key={numPaso}>
             {numPaso === 1 && (
-              hoja.apertura
+              hoja.apertura?.mapa
+                ? <PasoMapa m={hoja.apertura.mapa} onEmpezar={() => irPaso(2)} />
+                : hoja.apertura
                 ? <PasoApertura hoja={hoja} datos={datos} onChange={onCampoChange} cerrada={!!datos._cerrada} onAtajo={() => irPaso(NPASOS)} />
                 : <PasoPreparar hoja={hoja} ruta={ruta} onRuta={elegirRuta} />
             )}
             {numPaso > 1 && numPaso <= hoja.bloques.length + 1 && (
               <>
-                {rotulos[numPaso - 2].banda && (
+                {!claro && rotulos[numPaso - 2].banda && (
                   <ParteBanda parte={rotulos[numPaso - 2].banda} onIrAHoja={(nh) => navigate('/ia-lab/' + nh)} />
                 )}
                 {hoja.bloques[numPaso - 2].vuelta && (
@@ -523,6 +580,11 @@ export default function IaLabHoja({ dossierCtl, nube }) {
                   duda={datos['duda' + hoja.bloques[numPaso - 2].n]}
                   onDuda={onDuda}
                   reglas={hoja.bloques[numPaso - 2].copiarReglas ? textoReglas(hoja, datos) : null}
+                  claro={claro}
+                  numero={sinNum ? numPaso - 1 : numPaso}
+                  totalVisible={sinNum ? NPASOS - 1 : NPASOS}
+                  hecho={!!datos[claveHecho(hoja.bloques[numPaso - 2])]}
+                  onHecho={() => hechoYSigue(hoja.bloques[numPaso - 2], numPaso)}
                   preparar={numPaso === 2 && hoja.paso0
                     ? { paso0: hoja.paso0, onCopiarPrompt: () => copiarCampo(hoja.paso0.prompt), onCopiarGuia: copiarGuia }
                     : null}
@@ -558,13 +620,19 @@ export default function IaLabHoja({ dossierCtl, nube }) {
                 datos={datos}
                 onChange={onCampoChange}
                 hojaId={sesionN}
+                numero={sinNum ? numPaso - 1 : numPaso}
+                claro={claro}
               />
             )}
             {!verTodo && (
               <div className="pnav">
                 {numPaso > 1 ? <button className="btn btn-g" onClick={() => irPaso(siguiente(numPaso, -1))}>← Atrás</button> : <span />}
                 <AtascoEnlace onAbrir={() => setAtasco(numPaso)} />
-                {numPaso === 1 && hoja.intro?.rutas
+                {claro
+                  ? (numPaso > 1 && numPaso < NPASOS
+                    ? <button className="lnk saltar" onClick={() => irPaso(siguiente(numPaso, 1))}>Saltar este paso →</button>
+                    : <span />)
+                  : numPaso === 1 && hoja.intro?.rutas
                   ? <span />
                   : numPaso < NPASOS
                   ? <button className="btn btn-p" onClick={() => irPaso(siguiente(numPaso, 1))}>Siguiente →</button>
@@ -582,7 +650,7 @@ export default function IaLabHoja({ dossierCtl, nube }) {
           </section>
         ))}
       </div>
-      <footer>{hoja.pie}<br />Guía AI-First · Albert Garcia Pujadas · @qtorb</footer>
+      {!claro && <footer>{hoja.pie}<br />Guía AI-First · Albert Garcia Pujadas · @qtorb</footer>}
     </div>
   );
 }
@@ -630,6 +698,33 @@ function PasoApertura({ hoja, datos, onChange, cerrada, onAtajo }) {
         )}
       </div>
     </>
+  );
+}
+
+// La entrada de la hoja 1: el mapa de la sesión en las mismas tres partes
+// que el deck, y lo que hay que tener abierto.
+function PasoMapa({ m, onEmpezar }) {
+  return (
+    <div className="mapa-s">
+      <div className="donde-p">
+        <span>{m.kicker}</span>
+        {m.clase && <span className="clase">{m.clase}</span>}
+      </div>
+      <h1>{m.titulo}</h1>
+      <p className="lede">{m.lede}</p>
+      <ol className="mapa-tr">
+        {m.tramos.map((t) => (
+          <li key={t.n}>
+            <span className="n">{t.n}</span>
+            <div><b>{t.t}</b><p>{t.txt}</p></div>
+          </li>
+        ))}
+      </ol>
+      <TextoInline texto={m.tener} className="tener" />
+      <div className="cta">
+        <button type="button" className="btn btn-p cta-p" onClick={onEmpezar}>{m.boton}</button>
+      </div>
+    </div>
   );
 }
 
@@ -797,8 +892,65 @@ function ParteBanda({ parte, onIrAHoja }) {
 // las acciones en texto, y un solo cierre compartido.
 function PasoSalida({
   hoja, nombre, setNombre, onNombreBlur, salidas, textos, onGenerar, onEntregar, onCopiarTexto,
-  faltan, onIrABloque, onGenerarIgual, onIrAHoja, datos, onChange, hojaId,
+  faltan, onIrABloque, onGenerarIgual, onIrAHoja, datos, onChange, hojaId, numero, claro,
 }) {
+  if (claro && salidas[0]?.claro) {
+    const sal = salidas[0];
+    const c = sal.claro;
+    const texto = textos[sal.parte || '_'] || '';
+    const reg = (hoja.apertura?.grupos || [])[0];
+    return (
+      <div id="out" className="blk claro">
+        <div className="donde-p">
+          <span>Paso {numero} de {numero}</span>
+          {c.clase && <span className="clase">{c.clase}</span>}
+        </div>
+        <h2>{c.titulo}</h2>
+        <TextoInline texto={c.tarea} className="tarea" />
+
+        <section className="sec">
+          <h3 className="sec-h"><span className="sec-n">1</span>{c.registro}</h3>
+          <p className="ctx">{c.registroTxt}</p>
+          {reg && <Grupo g={reg} datos={datos} onChange={onChange} />}
+        </section>
+
+        <section className="sec">
+          <h3 className="sec-h"><span className="sec-n">2</span><label htmlFor="nombre">{c.nombre}</label></h3>
+          <div className="field">
+            <input type="text" id="nombre" placeholder="Nombre y apellido" autoComplete="name" value={nombre}
+              onChange={(e) => setNombre(e.target.value)} onBlur={onNombreBlur} />
+          </div>
+        </section>
+
+        <section className="sec">
+          <h3 className="sec-h"><span className="sec-n">3</span>{c.generar}</h3>
+          <Pieza
+            sal={sal}
+            hoja={hoja}
+            texto={texto}
+            faltan={faltan && faltan.parte === (sal.parte || '_') ? faltan.lista : null}
+            onGenerar={() => onGenerar(sal)}
+            onGenerarIgual={() => onGenerarIgual(sal)}
+            onEntregar={() => onEntregar(sal)}
+            onCopiarTexto={() => onCopiarTexto(texto)}
+            onIrABloque={onIrABloque}
+            hojaId={hojaId}
+            nombre={nombre}
+            claro
+          />
+        </section>
+
+        <section className="sec">
+          <h3 className="sec-h"><span className="sec-n">4</span>{c.enviar}</h3>
+          {!texto.trim()
+            ? <p className="ctx">{c.antes}</p>
+            : hayNube
+              ? <EnviarDireccion hojaId={hojaId} titulo={sal.doc || sal.titulo} texto={texto} nombre={nombre} sinTitulo />
+              : <p className="ctx">Descarga el documento y envíalo por correo a la dirección del máster.</p>}
+        </section>
+      </div>
+    );
+  }
   const ap = hoja.apertura;
   const camposAp = ap ? (ap.grupos || []).flatMap((g) => g.campos) : [];
   const hayAp = camposAp.some((c) => String(datos?.[c.k] ?? '').trim());
@@ -910,16 +1062,18 @@ function PasoSalida({
 // Una pieza: su texto, su puerta y sus tres acciones en una línea. Las tres
 // tarjetas de antes decían en sesenta palabras lo que dice el párrafo de
 // arriba; lo que hacía falta era el botón, no la tarjeta.
-function Pieza({ sal, hoja, texto, faltan, onGenerar, onGenerarIgual, onEntregar, onCopiarTexto, onIrABloque, varias, hojaId, nombre }) {
+function Pieza({ sal, hoja, texto, faltan, onGenerar, onGenerarIgual, onEntregar, onCopiarTexto, onIrABloque, varias, hojaId, nombre, claro }) {
   const clave = sal.parte || '_';
   const totalSecciones = seccionesConPlantilla(hoja, sal.parte).length;
   const hay = !!texto.trim();
   return (
     <div className="pieza">
-      <div className="pz-h">
-        {varias && <span className="pz-id">{sal.parte}</span>}
-        <h3>{sal.titulo}</h3>
-      </div>
+      {!claro && (
+        <div className="pz-h">
+          {varias && <span className="pz-id">{sal.parte}</span>}
+          <h3>{sal.titulo}</h3>
+        </div>
+      )}
       <TextoInline texto={sal.que} className="pz-q" />
       <button className="btn btn-p" onClick={onGenerar}>{sal.accion || (varias ? `Generar ${sal.parte}` : 'Generar documento')}</button>
 
@@ -950,8 +1104,8 @@ function Pieza({ sal, hoja, texto, faltan, onGenerar, onGenerarIgual, onEntregar
         <button className="lnka" onClick={onEntregar} disabled={!hay}>Descargar archivo</button>
         <button className="lnka" onClick={() => window.print()} disabled={!hay}>Imprimir</button>
       </div>
-      {sal.entrega && <p className="pz-n">{sal.entrega}</p>}
-      {hay && hayNube && <EnviarDireccion hojaId={hojaId} titulo={sal.doc || sal.titulo} texto={texto} nombre={nombre} />}
+      {!claro && sal.entrega && <p className="pz-n">{sal.entrega}</p>}
+      {!claro && hay && hayNube && <EnviarDireccion hojaId={hojaId} titulo={sal.doc || sal.titulo} texto={texto} nombre={nombre} />}
     </div>
   );
 }
@@ -960,7 +1114,7 @@ function Pieza({ sal, hoja, texto, faltan, onGenerar, onGenerarIgual, onEntregar
 // entonces nada de lo escrito sale de su navegador. Pide nombre y correo
 // porque sin cuenta la web no sabe quién es, y el correo sirve para
 // contestarle.
-function EnviarDireccion({ hojaId, titulo, texto, nombre }) {
+function EnviarDireccion({ hojaId, titulo, texto, nombre, sinTitulo }) {
   const [quien, setQuien] = useState(nombre || '');
   const [correo, setCorreo] = useState(() => {
     try { return localStorage.getItem('ialab-correo') || ''; } catch (e) { return ''; }
@@ -994,8 +1148,8 @@ function EnviarDireccion({ hojaId, titulo, texto, nombre }) {
   }
 
   return (
-    <form className="enviar" onSubmit={enviar} aria-labelledby={id + '-h'}>
-      <h4 id={id + '-h'}>Enviar a la dirección del máster</h4>
+    <form className="enviar" onSubmit={enviar} aria-labelledby={sinTitulo ? undefined : id + '-h'} aria-label={sinTitulo ? 'Enviar a la dirección del máster' : undefined}>
+      {!sinTitulo && <h4 id={id + '-h'}>Enviar a la dirección del máster</h4>}
       <p className="pz-n">Se envía este documento tal como está arriba. Escribe tu nombre y el correo donde quieres que te contesten.</p>
       <div className="row g2">
         <div className="field">
