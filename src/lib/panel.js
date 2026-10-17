@@ -11,13 +11,16 @@ import hojasData from '../data/hojas.json';
 
 export async function leerPanel() {
   const c = await cliente();
-  const [p, a, av] = await Promise.all([
+  const [p, a, av, sg, en] = await Promise.all([
     c.rpc('panel_personas'), c.rpc('panel_atascos'), c.rpc('panel_avisos'),
+    c.rpc('panel_sugerencias'), c.rpc('panel_envios'),
   ]);
   if (p.error) throw p.error;
   if (a.error) throw a.error;
   if (av.error) throw av.error;
-  return { personas: p.data || [], atascos: a.data || [], avisos: (av.data || [])[0] || null };
+  // Sugerencias y envíos no tumban el panel si fallan: son un añadido.
+  return { personas: p.data || [], atascos: a.data || [], avisos: (av.data || [])[0] || null,
+    sugerencias: sg.error ? [] : (sg.data || []), envios: en.error ? [] : (en.data || []) };
 }
 
 // Sin nombre ni cuenta: solo hoja, paso y la frase, si la hay.

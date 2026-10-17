@@ -15,6 +15,7 @@ import { eventoVuelta } from '../lib/segundaSentada';
 import { guiaEntera } from '../lib/guiaTexto';
 import { bajar, alPortapapeles } from '../lib/portapapeles';
 import { fechaLarga } from '../lib/protocoloAiFirst';
+import { enviarDocumento, hayNube, CORREO_OK } from '../lib/envios';
 
 // Port de pintarHoja()/irPaso()/auto()/generar()/entregar() —
 // guia-ai-first-src/index.html L2712-2947. Contenido y comportamiento se
@@ -519,6 +520,7 @@ export default function IaLabHoja({ dossierCtl, nube }) {
                 onIrAHoja={(nh) => navigate('/ia-lab/' + nh)}
                 datos={datos}
                 onChange={onCampoChange}
+                hojaId={sesionN}
               />
             )}
             {!verTodo && (
@@ -757,7 +759,7 @@ function ParteBanda({ parte, onIrAHoja }) {
 // las acciones en texto, y un solo cierre compartido.
 function PasoSalida({
   hoja, nombre, setNombre, onNombreBlur, salidas, textos, onGenerar, onEntregar, onCopiarTexto,
-  faltan, onIrABloque, onGenerarIgual, onIrAHoja, datos, onChange,
+  faltan, onIrABloque, onGenerarIgual, onIrAHoja, datos, onChange, hojaId,
 }) {
   const ap = hoja.apertura;
   const camposAp = ap ? (ap.grupos || []).flatMap((g) => g.campos) : [];
@@ -807,6 +809,8 @@ function PasoSalida({
             onCopiarTexto={() => onCopiarTexto(textos[sal.parte || '_'] || '')}
             onIrABloque={onIrABloque}
             varias={varias}
+            hojaId={hojaId}
+            nombre={nombre}
           />
         ))}
       </div>
@@ -868,7 +872,7 @@ function PasoSalida({
 // Una pieza: su texto, su puerta y sus tres acciones en una línea. Las tres
 // tarjetas de antes decían en sesenta palabras lo que dice el párrafo de
 // arriba; lo que hacía falta era el botón, no la tarjeta.
-function Pieza({ sal, hoja, texto, faltan, onGenerar, onGenerarIgual, onEntregar, onCopiarTexto, onIrABloque, varias }) {
+function Pieza({ sal, hoja, texto, faltan, onGenerar, onGenerarIgual, onEntregar, onCopiarTexto, onIrABloque, varias, hojaId, nombre }) {
   const clave = sal.parte || '_';
   const totalSecciones = seccionesConPlantilla(hoja, sal.parte).length;
   const hay = !!texto.trim();
@@ -909,7 +913,68 @@ function Pieza({ sal, hoja, texto, faltan, onGenerar, onGenerarIgual, onEntregar
         <button className="lnka" onClick={() => window.print()} disabled={!hay}>Imprimir</button>
       </div>
       {sal.entrega && <p className="pz-n">{sal.entrega}</p>}
+      {hay && hayNube && <EnviarDireccion hojaId={hojaId} titulo={sal.doc || sal.titulo} texto={texto} nombre={nombre} />}
     </div>
+  );
+}
+
+// Enviar el documento a la dirección del máster. Lo pulsa el alumno: hasta
+// entonces nada de lo escrito sale de su navegador. Pide nombre y correo
+// porque sin cuenta la web no sabe quién es, y el correo sirve para
+// contestarle.
+function EnviarDireccion({ hojaId, titulo, texto, nombre }) {
+  const [quien, setQuien] = useState(nombre || '');
+  const [correo, setCorreo] = useState(() => {
+    try { return localStorage.getItem('ialab-correo') || ''; } catch (e) { return ''; }
+  });
+  const [estado, setEstado] = useState('listo'); // listo · enviando · enviado · error
+  const [fallo, setFallo] = useState('');
+  const id = 'env-' + hojaId + '-' + slug(titulo || 'doc');
+  const correoMal = correo.trim() && !CORREO_OK.test(correo.trim());
+  const puede = quien.trim() && correo.trim() && !correoMal;
+
+  async function enviar(e) {
+    e.preventDefault();
+    if (!puede) return;
+    setEstado('enviando');
+    try {
+      await enviarDocumento({ hoja: hojaId, titulo, nombre: quien, correo, texto });
+      try { localStorage.setItem('ialab-correo', correo.trim()); } catch (err) { /* noop */ }
+      setEstado('enviado');
+    } catch (err) {
+      setFallo(/demasiados/.test(String(err?.message)) ? 'Has enviado varios seguidos. Inténtalo de nuevo en unos minutos.' : 'No se pudo enviar. Inténtalo de nuevo en unos minutos o copia el texto y mándalo por correo.');
+      setEstado('error');
+    }
+  }
+
+  if (estado === 'enviado') {
+    return (
+      <div className="enviar ok" role="status">
+        <p><b>Enviado a la dirección del máster.</b> Si hace falta, te contestarán a {correo.trim()}. Si cambias algo, puedes volver a generar el documento y enviarlo otra vez.</p>
+      </div>
+    );
+  }
+
+  return (
+    <form className="enviar" onSubmit={enviar} aria-labelledby={id + '-h'}>
+      <h4 id={id + '-h'}>Enviar a la dirección del máster</h4>
+      <p className="pz-n">Se envía este documento tal como está arriba. Escribe tu nombre y el correo donde quieres que te contesten.</p>
+      <div className="row g2">
+        <div className="field">
+          <label htmlFor={id + '-n'}>Tu nombre y apellido</label>
+          <input id={id + '-n'} type="text" className="c" value={quien} onChange={(e) => setQuien(e.target.value)} autoComplete="name" />
+        </div>
+        <div className="field">
+          <label htmlFor={id + '-c'}>Tu correo</label>
+          <input id={id + '-c'} type="email" className="c" value={correo} onChange={(e) => setCorreo(e.target.value)} autoComplete="email" placeholder="nombre@alum.upf.edu" aria-invalid={correoMal ? 'true' : undefined} />
+        </div>
+      </div>
+      {correoMal && <p className="pz-n" role="alert">Revisa el correo: parece incompleto.</p>}
+      {estado === 'error' && <p className="pz-n" role="alert">{fallo}</p>}
+      <button type="submit" className="btn btn-p" disabled={!puede || estado === 'enviando'}>
+        {estado === 'enviando' ? 'Enviando…' : 'Enviar a la dirección del máster'}
+      </button>
+    </form>
   );
 }
 

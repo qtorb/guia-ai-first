@@ -206,6 +206,21 @@ function Resumen({ datos }) {
           {frases.length > 8 && !todasFrases && <button className="btn btn-g" onClick={() => setTodasFrases(true)}>Ver todas ({frases.length})</button>}
         </div>
       </div>
+
+      <h2>Documentos enviados a la dirección</h2>
+      {(datos.envios || []).length === 0 && <div className="pb-mute">Todavía nadie ha enviado ninguno.</div>}
+      {(datos.envios || []).slice(0, 30).map((e, i) => (
+        <div className="pb-mute" key={i}>{tituloHoja(e.hoja)} · {e.nombre} · {e.correo} · {haceCuanto(e.creado)}</div>
+      ))}
+
+      <h2>Sugerencias de mejora</h2>
+      {(datos.sugerencias || []).length === 0 && <div className="pb-mute">Sin sugerencias todavía.</div>}
+      {(datos.sugerencias || []).slice(0, 30).map((s, i) => (
+        <div className="pb-quote" key={i}>
+          <div className="pb-mute">{s.pagina || '—'} · {s.correo || 'sin correo'} · {haceCuanto(s.creado)}</div>
+          «{s.texto}»
+        </div>
+      ))}
     </>
   );
 }
