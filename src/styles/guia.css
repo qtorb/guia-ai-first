@@ -536,6 +536,11 @@ body.ctx-hoja .pdot.on i{background:var(--red);border-color:var(--red)}
 body.ctx-hoja .pdot:not(.on):not(.done):hover i{border-color:var(--red);color:var(--red)}
 body.ctx-hoja .btn-p{background:var(--red)}
 body.ctx-hoja .btn-p:hover{background:#6E1523}
+/* En oscuro el botón es rosa claro con texto oscuro: el granate del hover
+   claro lo dejaba en 1,6:1. Se aclara en vez de oscurecerse. */
+@media (prefers-color-scheme: dark){
+  body.ctx-hoja:not([data-tema="claro"]) .btn-p:hover{background:#FFB8B1}
+}
 body.ctx-hoja .btn-g:hover{border-color:var(--red);color:var(--red)}
 body.ctx-hoja .lnk,body.ctx-hoja .verg{color:var(--red)}
 body.ctx-hoja .verg:hover{border-color:var(--red);background:var(--rbg2)}

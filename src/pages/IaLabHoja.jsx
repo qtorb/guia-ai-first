@@ -360,13 +360,16 @@ export default function IaLabHoja({ dossierCtl, nube }) {
       cuenta[k] = (cuenta[k] || 0) + 1;
     });
     const va = {};
-    let ultima = null;
+    // La banda abre una parte la primera vez que aparece. El contraste de la
+    // hoja 1 es de 1A pero va detrás de 1B, como en clase: no reabre 1A.
+    const vistas = new Set();
     return (hoja.bloques || []).map((b, i) => {
       // Sin partes, una sola numeración: la de la tira.
       if (partes.length === 0) return { txt: `Paso ${i + 2} de ${NPASOS}`, banda: null };
       const k = b.parte || '_';
-      const banda = b.parte && b.parte !== ultima ? partes.find((x) => x.id === b.parte) : null;
-      ultima = b.parte || ultima;
+      const banda = b.parte && !vistas.has(b.parte) ? partes.find((x) => x.id === b.parte) : null;
+      if (b.parte) vistas.add(b.parte);
+      if (b.rotulo) return { txt: b.rotulo, banda };
       if (b.esContraste) return { txt: (b.parte ? b.parte + ' · ' : '') + 'Repasa lo escrito', banda };
       va[k] = (va[k] || 0) + 1;
       const n = `apartado ${va[k]} de ${cuenta[k]}`;

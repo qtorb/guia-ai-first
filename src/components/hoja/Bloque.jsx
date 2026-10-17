@@ -29,12 +29,15 @@ export default function Bloque({ b, datos, onChange, total, rotulo, preparar, du
   // Sin `tarea` en los datos, el primer párrafo hace de instrucción: la hoja
   // sigue funcionando, sólo se lee peor.
   const tarea = b.tarea || que[0] || '';
-  const contexto = b.tarea ? que[0] : null;
-  const resto = que.slice(b.tarea ? 1 : 1);
+  // Con `porque`, la pantalla se queda en la tarea y una frase: todo lo que
+  // explica pasa entero a «Por qué se pide esto». Es la hoja 1, que se
+  // rellena en clase mientras la explicación la da el profesor de viva voz.
+  const contexto = b.porque ? null : (b.tarea ? que[0] : null);
+  const resto = b.porque || que.slice(1);
 
   return (
     <div className="blk" id={`b${b.n}`}>
-      <div className="bk">{rotulo || `Bloque ${+b.n}${total ? ` de ${total}` : ''}`}{b.min && <em>{b.min}</em>}</div>
+      <div className="bk">{rotulo || `Bloque ${+b.n}${total ? ` de ${total}` : ''}`}{b.clase && <em>{b.clase}</em>}{b.min && <em>{b.min}</em>}</div>
       <h2>{b.titulo}</h2>
       <TextoInline texto={tarea} className="tarea" />
       {contexto && <TextoInline texto={contexto} className="ctx" />}
@@ -49,7 +52,7 @@ export default function Bloque({ b, datos, onChange, total, rotulo, preparar, du
       {/* Las tres pruebas del contraste son la tarea de ese bloque. */}
       {b.pruebas && (
         <div className="contraste">
-          <h3>Tres pruebas</h3>
+          <h3>{b.pruebasTitulo || 'Tres pruebas'}</h3>
           <ol>{b.pruebas.map((x, i) => <TextoInline key={i} as="li" texto={x} />)}</ol>
         </div>
       )}
@@ -95,7 +98,7 @@ function Ayudas({ b, ask, resto, duda, onDuda }) {
 
   const items = [];
   if (b.encargo || ask) items.push({ id: 'ia', rot: 'Pedir ayuda a la IA' });
-  if (b.ejemplo) items.push({ id: 'ej', rot: 'Ver un ejemplo' });
+  if (b.ejemplo) items.push({ id: 'ej', rot: 'Ver un ejemplo inventado' });
   if (b.cicatriz || resto.length) items.push({ id: 'de', rot: 'Por qué se pide esto' });
   if (onDuda) items.push({ id: 'du', rot: 'Tengo una duda sobre este paso', marca: marcada });
   if (!items.length) return null;
