@@ -17,8 +17,8 @@ function avanceLab(dossier) {
   const vuelta = segundaSentada((dossier.hojas || {})[10]);
   if (vuelta) {
     return {
-      est: `Tu segunda sentada te espera · escribiste hace ${vuelta.dias} días`,
-      cta: 'Volver a la segunda sentada →',
+      est: `Te espera la segunda parte de la hoja 0 · escribiste hace ${vuelta.dias} días`,
+      cta: 'Ir a la segunda parte →',
       destino: vuelta.destino,
     };
   }
@@ -40,13 +40,13 @@ function avanceLab(dossier) {
   // Terminada: lo que queda por hacer ahí es volver a su documento.
   if (h._fin) {
     return {
-      est: `Sesión ${etiqueta} · terminada`,
+      est: `Hoja ${etiqueta} · terminada`,
       cta: 'Ver tu documento →',
       destino: h._total ? `/ia-lab/${n}?paso=${h._total}` : destino,
     };
   }
-  if (h._paso && h._total) return { est: `Sesión ${etiqueta} · paso ${h._paso} de ${h._total}`, destino };
-  return { est: `Sesión ${etiqueta}, empezada`, destino };
+  if (h._paso && h._total) return { est: `Hoja ${etiqueta} · paso ${h._paso} de ${h._total}`, destino };
+  return { est: `Hoja ${etiqueta}, empezada`, destino };
 }
 
 // Devuelve {est, cta, destino} porque las dos cosas van juntas: «ver dónde vas» solo

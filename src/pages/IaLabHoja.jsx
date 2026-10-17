@@ -11,6 +11,7 @@ import { recolectarCheckKeys, generarProtocolo, algoRellenado, slug, bloquesSinE
 import Comparacion from '../components/hoja/Comparacion';
 import Donde from '../components/hoja/Donde';
 import { AtascoEnlace, AtascoHoja } from '../components/hoja/Atasco';
+import { eventoVuelta } from '../lib/segundaSentada';
 import { guiaEntera } from '../lib/guiaTexto';
 import { bajar, alPortapapeles } from '../lib/portapapeles';
 import { fechaLarga } from '../lib/protocoloAiFirst';
@@ -25,7 +26,7 @@ function hayApertura(hoja, datos) {
     .some((c) => String(datos[c.k] ?? '').trim().length > 0);
 }
 
-export default function IaLabHoja({ dossierCtl }) {
+export default function IaLabHoja({ dossierCtl, nube }) {
   const { n } = useParams();
   const navigate = useNavigate();
   const toast = useToast();
@@ -178,6 +179,27 @@ export default function IaLabHoja({ dossierCtl }) {
     });
   }
 
+  // Quien ya trae idea no necesita los pasos de generar: se saltan al
+  // avanzar y al retroceder, pero siguen en la tira por si quiere verlos.
+  const ruta = datos._ruta || null;
+  function saltado(numPaso) {
+    const b = hoja && numPaso > 1 && numPaso <= hoja.bloques.length + 1 ? hoja.bloques[numPaso - 2] : null;
+    return !!(b && b.soloRuta && ruta && ruta !== b.soloRuta);
+  }
+  function siguiente(desde, dir) {
+    let p = desde + dir;
+    while (p > 1 && p < NPASOS && saltado(p)) p += dir;
+    return p;
+  }
+
+  function elegirRuta(r) {
+    const destino = r === 'tengo' ? hoja.bloques.findIndex((b) => b.salidaPuertas) + 2 : 2;
+    setDatos((d) => ({ ...d, _ruta: r }));
+    guardaHoja(sesionN, { ...datos, _ruta: r, _paso: destino, _total: NPASOS });
+    setPaso(destino);
+    window.scrollTo(0, 0);
+  }
+
   function irPaso(nuevo) {
     const clamp = Math.max(1, Math.min(NPASOS, nuevo));
     setPaso(clamp);
@@ -247,14 +269,14 @@ export default function IaLabHoja({ dossierCtl }) {
 
   function copiarGuia() {
     alPortapapeles(guiaEntera())
-      .then(() => toast('Guía copiada — pégasela al asistente'))
-      .catch(() => toast('No se ha podido copiar'));
+      .then(() => toast('Guía copiada: pégala en tu asistente de IA'))
+      .catch(() => toast('No se pudo copiar'));
   }
 
   function copiarCampo(valorTexto) {
     if (!valorTexto.trim()) { toast('Nada que copiar todavía'); return; }
     alPortapapeles(valorTexto).then(() => toast('Copiado al portapapeles'))
-      .catch(() => toast('Selecciónalo a mano y cópialo con Ctrl+C'));
+      .catch(() => toast('No se pudo copiar: selecciónalo y cópialo con Ctrl+C'));
   }
 
   // Port de guardar()/cargar()/borrar() — L3020-3049. Trabajan sobre el
@@ -283,7 +305,7 @@ export default function IaLabHoja({ dossierCtl }) {
       try {
         j = JSON.parse(e.target.result);
       } catch (err) {
-        toast('Ese fichero no se puede leer');
+        toast('No se puede leer ese archivo');
         return;
       }
       let hojaNueva;
@@ -304,7 +326,7 @@ export default function IaLabHoja({ dossierCtl }) {
   }
 
   function borrarTodo() {
-    if (!window.confirm('¿Seguro? Se borra lo que has escrito en esta hoja.')) return;
+    if (!window.confirm('¿Borrar todo lo que has escrito en esta hoja? Se pierden todos los pasos y no se puede deshacer. Si quieres conservar una copia, antes usa «Guardar mi avance en un archivo».')) return;
     borraHoja(sesionN);
     setDatos({});
     setNombre('');
@@ -316,7 +338,7 @@ export default function IaLabHoja({ dossierCtl }) {
   if (!sesion || !hoja) {
     return (
       <div className="wrap">
-        <p>No he podido cargar esta sesión.</p>
+        <p>No se ha podido cargar esta hoja.</p>
         <button className="btn btn-g" onClick={() => navigate('/ia-lab')}>← Todas mis hojas</button>
       </div>
     );
@@ -346,7 +368,7 @@ export default function IaLabHoja({ dossierCtl }) {
       ultima = b.parte || ultima;
       if (b.esContraste) return { txt: (b.parte ? b.parte + ' · ' : '') + 'Repasa lo escrito', banda };
       va[k] = (va[k] || 0) + 1;
-      const n = `Bloque ${va[k]} de ${cuenta[k]}`;
+      const n = `apartado ${va[k]} de ${cuenta[k]}`;
       return { txt: (b.parte ? b.parte + ' · ' : '') + n, banda };
     });
   })();
@@ -382,10 +404,10 @@ export default function IaLabHoja({ dossierCtl }) {
             {pasos.map((p, i) => (
               <button
                 key={i}
-                className={'pdot' + (i + 1 < paso ? ' done' : i + 1 === paso ? ' on' : '')}
+                className={'pdot' + (i + 1 < paso ? ' done' : i + 1 === paso ? ' on' : '') + (saltado(i + 1) ? ' salta' : '')}
                 onClick={() => irPaso(i + 1)}
-                title={p.t}
-                aria-label={`Paso ${i + 1}: ${p.t}`}
+                title={p.t + (saltado(i + 1) ? ' (no te hace falta si ya tienes idea)' : '')}
+                aria-label={`Paso ${i + 1}: ${p.t}` + (saltado(i + 1) ? ' (no te hace falta si ya tienes idea)' : '')}
                 aria-current={i + 1 === paso ? 'step' : undefined}
               >
                 <i>{i + 1}</i>
@@ -399,10 +421,8 @@ export default function IaLabHoja({ dossierCtl }) {
               onClick={() => setVerDonde((v) => !v)}
               aria-expanded={verDonde}
               aria-controls="dnd"
-              aria-label="Dónde estoy"
-              title="Dónde estoy"
             >
-              <span aria-hidden="true">i</span>
+              Ayuda
             </button>
           </div>
         </div>
@@ -446,7 +466,7 @@ export default function IaLabHoja({ dossierCtl }) {
             {numPaso === 1 && (
               hoja.apertura
                 ? <PasoApertura hoja={hoja} datos={datos} onChange={onCampoChange} cerrada={!!datos._cerrada} onAtajo={() => irPaso(NPASOS)} />
-                : <PasoPreparar hoja={hoja} />
+                : <PasoPreparar hoja={hoja} ruta={ruta} onRuta={elegirRuta} />
             )}
             {numPaso > 1 && numPaso <= hoja.bloques.length + 1 && (
               <>
@@ -462,12 +482,21 @@ export default function IaLabHoja({ dossierCtl }) {
                   onChange={onCampoChange}
                   total={hoja.bloques.length}
                   rotulo={rotulos[numPaso - 2].txt}
+                  ruta={ruta}
                   duda={datos['duda' + hoja.bloques[numPaso - 2].n]}
                   onDuda={onDuda}
                   preparar={numPaso === 2 && hoja.paso0
                     ? { paso0: hoja.paso0, onCopiarPrompt: () => copiarCampo(hoja.paso0.prompt), onCopiarGuia: copiarGuia }
                     : null}
                 />
+                {hoja.bloques[numPaso - 2].pausa && (
+                  <Pausa
+                    p={hoja.bloques[numPaso - 2].pausa}
+                    onGuardar={() => { persistirYa(); toast('Guardado. Puedes cerrar la página y volver cuando tengas respuesta.'); }}
+                    onCalendario={() => bajar(eventoVuelta(datos, 'msg'), 'ia-lab-segunda-parte.ics', 'text/calendar;charset=utf-8')}
+                    onSeguir={() => irPaso(numPaso + 1)}
+                  />
+                )}
               </>
             )}
             {hoja.contraste && numPaso === hoja.bloques.length + 2 && (
@@ -489,16 +518,24 @@ export default function IaLabHoja({ dossierCtl }) {
                 onCopiarTexto={(t) => copiarCampo(t)}
                 onIrAHoja={(nh) => navigate('/ia-lab/' + nh)}
                 datos={datos}
+                onChange={onCampoChange}
               />
             )}
             {!verTodo && (
               <div className="pnav">
-                {numPaso > 1 ? <button className="btn btn-g" onClick={() => irPaso(numPaso - 1)}>← Atrás</button> : <span />}
+                {numPaso > 1 ? <button className="btn btn-g" onClick={() => irPaso(siguiente(numPaso, -1))}>← Atrás</button> : <span />}
                 <AtascoEnlace onAbrir={() => setAtasco(numPaso)} />
-                {numPaso < NPASOS
-                  ? <button className="btn btn-p" onClick={() => irPaso(numPaso + 1)}>Siguiente →</button>
+                {numPaso === 1 && hoja.intro?.rutas
+                  ? <span />
+                  : numPaso < NPASOS
+                  ? <button className="btn btn-p" onClick={() => irPaso(siguiente(numPaso, 1))}>Siguiente →</button>
                   : (datos._fin ? <span className="fin">Ya está. Has terminado.</span> : <span />)}
               </div>
+            )}
+            {!verTodo && (
+              <p className="guardado-est" aria-live="polite">
+                {nube?.usuario ? 'Lo que escribes se guarda en tu cuenta.' : 'Lo que escribes se guarda en este navegador. Inicia sesión para tenerlo en cualquier dispositivo.'}
+              </p>
             )}
             {!verTodo && atasco === numPaso && (
               <AtascoHoja hoja={sesionN} paso={numPaso} onCerrar={() => setAtasco(null)} />
@@ -522,7 +559,7 @@ function PasoApertura({ hoja, datos, onChange, cerrada, onAtajo }) {
       <header>
         <div className="kicker">{hoja.kicker}</div>
         <h1>{hoja.titulo}</h1>
-        <p className="lede">{hoja.lede}</p>
+        <TextoInline texto={hoja.lede} className="lede" />
         <div className="facts">{hoja.facts.map((f, i) => <span className="fact" key={i}>{f}</span>)}</div>
         {(hoja.nota || []).length > 0 && (
           <ul className="permisos">{hoja.nota.map((t, i) => <li key={i}>{t}</li>)}</ul>
@@ -557,33 +594,69 @@ function PasoApertura({ hoja, datos, onChange, cerrada, onAtajo }) {
   );
 }
 
-function PasoPreparar({ hoja }) {
+function PasoPreparar({ hoja, ruta, onRuta }) {
+  const r = hoja.intro?.rutas;
   return (
     <>
       <header>
         <div className="kicker">{hoja.kicker}</div>
         <h1>{hoja.titulo}</h1>
-        <p className="lede">{hoja.lede}</p>
+        <TextoInline texto={hoja.lede} className="lede" />
         <div className="facts">{hoja.facts.map((f, i) => <span className="fact" key={i}>{f}</span>)}</div>
         {(hoja.nota || []).length > 0 && (
           <ul className="permisos">{hoja.nota.map((t, i) => <li key={i}>{t}</li>)}</ul>
         )}
       </header>
       {hoja.intro.que.map((p, i) => <TextoInline key={i} texto={p} className="que" />)}
-      <div className="cic">
-        <div className="lab">De dónde sale esto</div>
-        <TextoInline texto={hoja.intro.cicatriz} />
-      </div>
+      {hoja.intro.cicatriz && (
+        <div className="cic">
+          <div className="lab">Por qué se hace así</div>
+          <TextoInline texto={hoja.intro.cicatriz} />
+        </div>
+      )}
       {(hoja.intro.extra || []).map(([t, txt], i) => (
         <div key={i}>
           <h3>{t}</h3>
           <TextoInline texto={txt} className="que" />
         </div>
       ))}
-      <p className="que p0ref">
-        Va mejor con tu asistente preparado. Te digo cómo en el primer bloque, y son dos minutos.
-      </p>
+      {/* Dos entradas de verdad. Antes había un «empieza en el paso 5» y un
+          solo botón de «Siguiente»: quien traía idea no tenía cómo saltar, y
+          luego se encontraba preguntas sobre ideas que nunca generó. */}
+      {r ? (
+        <div className="rutas" role="group" aria-labelledby="rutas-h">
+          <h2 id="rutas-h">{r.pregunta}</h2>
+          <div className="rutas-g">
+            <div className={'ruta' + (ruta === 'busco' ? ' on' : '')}>
+              <button className="btn btn-p" onClick={() => onRuta('busco')}>{r.busco}</button>
+              <p className="ayuda">{r.buscoTxt}</p>
+            </div>
+            <div className={'ruta' + (ruta === 'tengo' ? ' on' : '')}>
+              <button className="btn btn-p" onClick={() => onRuta('tengo')}>{r.tengo}</button>
+              <p className="ayuda">{r.tengoTxt}</p>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <p className="que p0ref">En el paso siguiente preparas tu asistente de IA. Son dos minutos.</p>
+      )}
     </>
+  );
+}
+
+// La pausa entre las dos partes de la hoja 0. Tres salidas a la vista en vez
+// de una frase que decía «aquí se para» y nada más.
+function Pausa({ p, onGuardar, onCalendario, onSeguir }) {
+  return (
+    <div className="pausa">
+      <h3>{p.titulo}</h3>
+      <TextoInline texto={p.txt} className="que" />
+      <div className="pausa-a">
+        <button className="btn btn-g" onClick={onGuardar}>{p.guardar}</button>
+        <button className="btn btn-g" onClick={onCalendario}>{p.calendario}</button>
+        <button className="btn btn-p" onClick={onSeguir}>{p.seguir}</button>
+      </div>
+    </div>
   );
 }
 
@@ -600,11 +673,11 @@ function Vuelta({ hoja, datos, checkKeys, onCerrar, onPrincipio }) {
       <p>
         <b>Vuelves donde lo dejaste.</b>{' '}
         {hechos > 0
-          ? `Llevas ${hechos} de ${total} bloques. El último que escribiste fue «${ultimo.titulo}».`
-          : 'Todavía no has escrito nada: sigues donde estabas mirando.'}
+          ? `Llevas ${hechos} de ${total} apartados con algo escrito. El último fue «${ultimo.titulo}».`
+          : 'Todavía no has escrito nada: sigues en el paso donde lo dejaste.'}
       </p>
       <div className="va">
-        <button className="lnk" onClick={onPrincipio}>Empezar por el principio</button>
+        <button className="lnk" onClick={onPrincipio}>Volver al paso 1</button>
         <button className="mini" onClick={onCerrar}>Seguir aquí</button>
       </div>
     </div>
@@ -618,7 +691,7 @@ function AvisoVuelta({ datos, onVolver }) {
   if (datos.msg_enviado !== true) {
     return (
       <div className="vuelta">
-        <TextoInline texto="**Todavía no has marcado que lo enviaste.** Esta parte empieza por lo que te contesten. Si ya lo mandaste, márcalo en el paso anterior; si no, ese es el siguiente movimiento." />
+        <TextoInline texto="**Todavía no has marcado que enviaste el mensaje.** Esta parte empieza con lo que te contesten. Si ya lo enviaste, márcalo en el paso anterior; si no, ese es tu siguiente paso." />
         <div className="va">
           <button className="lnk" onClick={onVolver}>← Volver al mensaje</button>
         </div>
@@ -633,7 +706,7 @@ function AvisoVuelta({ datos, onVolver }) {
   const h = n < 1 ? 'menos de una hora' : n === 1 ? '1 hora' : `${n} horas`;
   return (
     <div className="vuelta">
-      <TextoInline texto={`**Le escribiste hace ${h}.** La segunda sentada va mejor con dos o tres días en medio: es lo que tarda alguien en contestar. Puedes seguir igual; si no contesta nadie, también es un dato.`} />
+      <TextoInline texto={`**Le escribiste hace ${h}.** La segunda parte funciona mejor con dos o tres días de pausa, que es lo que suele tardar alguien en contestar. Puedes seguir igualmente.`} />
     </div>
   );
 }
@@ -684,7 +757,7 @@ function ParteBanda({ parte, onIrAHoja }) {
 // las acciones en texto, y un solo cierre compartido.
 function PasoSalida({
   hoja, nombre, setNombre, onNombreBlur, salidas, textos, onGenerar, onEntregar, onCopiarTexto,
-  faltan, onIrABloque, onGenerarIgual, onIrAHoja, datos,
+  faltan, onIrABloque, onGenerarIgual, onIrAHoja, datos, onChange,
 }) {
   const ap = hoja.apertura;
   const camposAp = ap ? (ap.grupos || []).flatMap((g) => g.campos) : [];
@@ -701,12 +774,12 @@ function PasoSalida({
       <p className="tarea">
         {varias
           ? `${salidas.length} documentos. Ponle tu nombre una vez y genera cada uno.`
-          : 'Ponle tu nombre y genera tu documento.'}
+          : (salidas[0]?.decision ? 'Ponle tu nombre, toma la última decisión y genera tu documento.' : 'Ponle tu nombre y genera tu documento.')}
       </p>
 
       <div className="nombre">
         <div className="field">
-          <label htmlFor="nombre">Tu nombre <span className="hint">va en la cabecera de {varias ? 'los dos ficheros' : 'tu fichero'}</span></label>
+          <label htmlFor="nombre">Tu nombre <span className="hint">aparecerá al principio de {varias ? 'los dos documentos' : 'tu documento'}</span></label>
           <input
             type="text"
             id="nombre"
@@ -717,6 +790,8 @@ function PasoSalida({
           />
         </div>
       </div>
+
+      {salidas[0]?.decision && <Decision dec={salidas[0].decision} datos={datos} onChange={onChange} />}
 
       <div className={'piezas' + (varias ? ' dos' : '')}>
         {salidas.map((sal) => (
@@ -804,16 +879,16 @@ function Pieza({ sal, hoja, texto, faltan, onGenerar, onGenerarIgual, onEntregar
         <h3>{sal.titulo}</h3>
       </div>
       <TextoInline texto={sal.que} className="pz-q" />
-      <button className="btn btn-p" onClick={onGenerar}>{sal.accion || (varias ? `Generar ${sal.parte}` : 'Generar')}</button>
+      <button className="btn btn-p" onClick={onGenerar}>{sal.accion || (varias ? `Generar ${sal.parte}` : 'Generar documento')}</button>
 
       {faltan && faltan.length > 0 && (
         <div className="antesgen" id="antesgen">
           {faltan.length === totalSecciones ? (
-            <p><b>Todavía no hay nada que generar.</b> Esta pieza está entera por escribir. Empieza por el bloque que quieras: el orden no es sagrado.</p>
+            <p><b>Todavía no hay nada que generar.</b> Empieza por el paso que prefieras: no hace falta seguir el orden.</p>
           ) : (
             <p>
-              <b>Te {faltan.length === 1 ? 'falta un bloque' : `faltan ${faltan.length} bloques`}.</b>{' '}
-              Puedes dejar{faltan.length === 1 ? 'lo' : 'los'}, pero el fichero no dirá nada sobre {faltan.length === 1 ? 'eso' : 'ellos'}.
+              <b>Te {faltan.length === 1 ? 'falta un paso' : `faltan ${faltan.length} pasos`}.</b>{' '}
+              Puedes generar igualmente, pero el documento no incluirá esa información.
             </p>
           )}
           <div className="agl">
@@ -822,18 +897,51 @@ function Pieza({ sal, hoja, texto, faltan, onGenerar, onGenerarIgual, onEntregar
             ))}
           </div>
           {faltan.length < totalSecciones && (
-            <button className="lnk sig" onClick={onGenerarIgual}>Generar con lo que hay</button>
+            <button className="lnk sig" onClick={onGenerarIgual}>Generar con lo que he escrito</button>
           )}
         </div>
       )}
 
-      <textarea id={'texto-' + clave} value={texto} readOnly placeholder="Pulsa «Generar» y aparecerá aquí." />
+      <textarea id={'texto-' + clave} value={texto} readOnly placeholder="Pulsa el botón de generar y aparecerá aquí." />
       <div className="pz-a">
-        <button className="lnka" onClick={onCopiarTexto} disabled={!hay}>Copiar</button>
-        <button className="lnka" onClick={onEntregar} disabled={!hay}>Descargar</button>
+        <button className="lnka" onClick={onCopiarTexto} disabled={!hay}>Copiar texto</button>
+        <button className="lnka" onClick={onEntregar} disabled={!hay}>Descargar archivo</button>
         <button className="lnka" onClick={() => window.print()} disabled={!hay}>Imprimir</button>
       </div>
       {sal.entrega && <p className="pz-n">{sal.entrega}</p>}
     </div>
+  );
+}
+
+// La decisión con la que se cierra la hoja 0. Antes era texto con dos
+// casillas dibujadas que acababa copiado, instrucciones incluidas, en el
+// correo a la dirección.
+function Decision({ dec, datos, onChange }) {
+  const v = datos.fin_decision || '';
+  return (
+    <fieldset className="decision">
+      <legend>{dec.titulo}</legend>
+      <label className="chk">
+        <input type="radio" className="c" name="fin-decision" checked={v === 'gana'} onChange={() => onChange('fin_decision', 'gana')} />
+        <span>{dec.gana}</span>
+      </label>
+      <label className="chk">
+        <input type="radio" className="c" name="fin-decision" checked={v === 'aun'} onChange={() => onChange('fin_decision', 'aun')} />
+        <span>{dec.aun}</span>
+      </label>
+      {v === 'aun' && (
+        <div className="row g2">
+          <div className="field">
+            <label htmlFor="fin-quien">{dec.quien}</label>
+            <input id="fin-quien" type="text" className="c" placeholder={dec.quienPh} value={datos.fin_quien ?? ''} onChange={(e) => onChange('fin_quien', e.target.value)} />
+          </div>
+          <div className="field">
+            <label htmlFor="fin-cuando">{dec.cuando}</label>
+            <input id="fin-cuando" type="date" className="c" value={datos.fin_cuando ?? ''} onChange={(e) => onChange('fin_cuando', e.target.value)} />
+          </div>
+        </div>
+      )}
+      <p className="ayuda">{dec.ayuda}</p>
+    </fieldset>
   );
 }

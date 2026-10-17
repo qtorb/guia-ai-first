@@ -1,10 +1,6 @@
 import { useEffect } from 'react';
 import TextoInline from '../TextoInline';
 import Campo from './Campo';
-import { bajar } from '../../lib/portapapeles';
-import { calendario } from '../../lib/ics';
-import { fechaLarga } from '../../lib/protocoloAiFirst';
-import { PASO_VUELTA } from '../../lib/segundaSentada';
 
 // --------------------------------------------------------------------------
 // Los tipos de grupo que estrena la hoja 0 rediseñada. Viven aparte de
@@ -17,12 +13,24 @@ import { PASO_VUELTA } from '../../lib/segundaSentada';
 // recuperar el avance siga funcionando sin tocar nada.
 // --------------------------------------------------------------------------
 
+// El orden es el de escribir: lo que se vende, a quién, qué usa hoy, cómo
+// llegas tú, y el nombre corto al final —la ayuda dice «se escribe al
+// final», así que no puede ser el primer campo—. La clave interna del
+// nombre sigue siendo `asa` para no perder lo que ya hay guardado.
 const CAMPOS_FICHA = [
-  { s: 'asa', lab: 'Asa · 3-4 palabras', ph: 'se escribe al final', clase: 'asa' },
-  { s: 'vende', lab: 'Se vende', ph: 'qué, en una línea' },
-  { s: 'quien', lab: 'A quién · y quién firma', ph: 'una persona o una empresa, nombrada' },
-  { s: 'hoy', lab: 'Hoy lo resuelve con __ y le cuesta __', ph: 'lo que hace ahora, y lo que le cuesta' },
-  { s: 'llego', lab: 'Yo llego así', ph: 'con un nombre propio dentro', clase: 'mano', mano: true },
+  { s: 'vende', lab: 'Qué se vende', ph: 'en una línea' },
+  { s: 'quien', lab: 'Quién compra y quién decide la compra', ph: 'una persona o una empresa concreta' },
+  { s: 'hoy', lab: 'Cómo lo resuelve hoy y cuánto le cuesta', ph: 'tiempo, dinero o esfuerzo', seguridad: true },
+  { s: 'llego', lab: 'Cómo llegas tú a esa persona o empresa', ph: 'un nombre real', clase: 'mano', mano: true },
+  { s: 'asa', lab: 'Nombre corto de la idea (3 o 4 palabras)', ph: 'por ejemplo: Taller Bici', clase: 'asa' },
+];
+
+// Lo que se escribe en «cómo lo resuelve hoy» casi nunca está comprobado
+// todavía. Sin una forma de decirlo, la tarjeta empuja a inventar.
+const SEGURIDAD = [
+  { v: 'comp', et: 'comprobado' },
+  { v: 'est', et: 'estimación' },
+  { v: 'ns', et: 'aún no lo sé' },
 ];
 
 export function Fichas({ g, datos, onChange }) {
@@ -34,7 +42,7 @@ export function Fichas({ g, datos, onChange }) {
         return (
           <div className="ficha" key={pre}>
             <div className="ficha-cab">
-              <span className="ficha-n">{g.rotulo || 'Ficha'}{g.n === 1 ? '' : ` ${i + 1}`}</span>
+              <span className="ficha-n">{g.rotulo || 'Tarjeta de idea'}{g.n === 1 ? '' : ` · idea ${i + 1}`}</span>
             </div>
             {CAMPOS_FICHA.map((c) => {
               const k = `${pre}_${c.s}`;
@@ -42,17 +50,36 @@ export function Fichas({ g, datos, onChange }) {
               return (
                 <div className={'ficha-fila' + (c.clase ? ' ' + c.clase : '')} key={c.s}>
                   <label className="ficha-et" htmlFor={id}>
-                    {c.lab}{c.mano && <span className="a-mano" aria-hidden="true"> ✎</span>}
-                    {c.mano && <span className="sr-only"> — este campo lo escribes tú</span>}
+                    <span>{c.lab}</span>
+                    {c.mano && <span className="ficha-mano">Esto lo escribes tú, no la IA.</span>}
                   </label>
-                  <input
-                    id={id}
-                    type="text"
-                    className="ficha-val"
-                    placeholder={c.ph}
-                    value={datos[k] ?? ''}
-                    onChange={(e) => onChange(k, e.target.value)}
-                  />
+                  <div className="ficha-col">
+                    <input
+                      id={id}
+                      type="text"
+                      className="ficha-val"
+                      placeholder={c.ph}
+                      value={datos[k] ?? ''}
+                      onChange={(e) => onChange(k, e.target.value)}
+                    />
+                    {c.seguridad && (
+                      <fieldset className="ficha-seg">
+                        <legend className="sr-only">¿Cómo de seguro estás de esto?</legend>
+                        {SEGURIDAD.map((o) => (
+                          <label key={o.v} className={'seg' + (datos[`${k}_seg`] === o.v ? ' on' : '')}>
+                            <input
+                              type="radio"
+                              name={`seg-${k}`}
+                              value={o.v}
+                              checked={datos[`${k}_seg`] === o.v}
+                              onChange={() => onChange(`${k}_seg`, o.v)}
+                            />
+                            <span>{o.et}</span>
+                          </label>
+                        ))}
+                      </fieldset>
+                    )}
+                  </div>
                 </div>
               );
             })}
@@ -64,9 +91,9 @@ export function Fichas({ g, datos, onChange }) {
 }
 
 const ESTADOS = [
-  { v: 'si', et: 'cumple', clase: 'si' },
+  { v: 'si', et: 'sí cumple', clase: 'si' },
   { v: 'no', et: 'no cumple', clase: 'no' },
-  { v: 'ns', et: 'no sé decirlo', clase: 'ns' },
+  { v: 'ns', et: 'aún no lo sé', clase: 'ns' },
 ];
 
 export function Puertas({ g, datos, onChange }) {
@@ -88,7 +115,7 @@ export function Puertas({ g, datos, onChange }) {
     <div className="puertas">
       {generadas.length === 0 && (
         <>
-          <TextoInline className="ayuda" texto="¿Ya traes tu idea? Escríbela aquí y pásala por las reglas. Si vienes de generar, tus fichas aparecen solas." />
+          <TextoInline className="ayuda" texto="**¿Ya tienes una idea?** Escríbela aquí y compárala con los cuatro criterios. Si vienes del paso 4, tus ideas aparecen aquí solas." />
           <Fichas g={{ pre: 'fp', n: 1, rotulo: 'Tu idea' }} datos={datos} onChange={onChange} />
         </>
       )}
@@ -116,7 +143,7 @@ export function Puertas({ g, datos, onChange }) {
                       </label>
                     ))}
                   </div>
-                  <label className="regla-por-et" htmlFor={`${nombre}-por`}>Por qué</label>
+                  <label className="regla-por-et" htmlFor={`${nombre}-por`}>Motivo</label>
                   <input
                     id={`${nombre}-por`}
                     type="text"
@@ -130,11 +157,11 @@ export function Puertas({ g, datos, onChange }) {
             })}
           </div>
           <div className="puerta-motivo">
-            <label htmlFor={`m-${f.pre}`}>Si se cae, por qué — escríbelo ahora</label>
+            <label htmlFor={`m-${f.pre}`}>Si la descartas, explica por qué (escríbelo ahora)</label>
             <input
               id={`m-${f.pre}`}
               type="text"
-              placeholder="una línea, en el momento de descartarla"
+              placeholder="una línea"
               value={datos[`${f.pre}_motivo`] ?? ''}
               onChange={(e) => onChange(`${f.pre}_motivo`, e.target.value)}
             />
@@ -163,7 +190,7 @@ export function Finalistas({ g, datos, onChange }) {
 
   if (elegibles.length === 0) {
     return (
-      <p className="ayuda">Todavía no ha pasado ninguna ficha las cuatro reglas con su porqué escrito. Vuelve al paso de las reglas y termina de pasarlas: lo que se quede en «no sé decirlo» es lo siguiente que tienes que averiguar, y un «cumple» sin porqué no cuenta.</p>
+      <p className="ayuda">Todavía ninguna idea cumple los cuatro criterios con su motivo escrito. Vuelve al paso 5 y complétalo. Las que marcaste como «aún no lo sé» necesitan más información, y un «sí cumple» sin motivo no cuenta.</p>
     );
   }
 
@@ -183,15 +210,15 @@ export function Finalistas({ g, datos, onChange }) {
           <div className="asiento" key={k}>
             <div className="row g3">
               <div className="field">
-                <label htmlFor={`fin-${i}`}>Finalista {i}</label>
+                <label htmlFor={`fin-${i}`}>Idea {i}</label>
                 <select id={`fin-${i}`} className="c" value={valor} onChange={(e) => elegir(e.target.value)}>
                   <option value="">— elige una —</option>
                   {elegibles.map((x) => <option key={x.pre} value={x.pre}>{x.txt}</option>)}
-                  {escrita && <option value="_mano">{`${datos[k]} (escrita a mano)`}</option>}
+                  {escrita && <option value="_mano">{`${datos[k]} (escrita por ti)`}</option>}
                 </select>
               </div>
-              <Campo c={{ k: `${k}d`, label: 'Diferente en', ph: i === 1 ? 'único / más rápido / menor coste / mejores prestaciones' : '…' }} valor={datos[`${k}d`]} onChange={onChange} />
-              <Campo c={{ k: `${k}q`, label: 'Frente a quién — tres nombres', ph: i === 1 ? 'tres alternativas concretas, con nombre' : '…' }} valor={datos[`${k}q`]} onChange={onChange} />
+              <Campo c={{ k: `${k}d`, label: 'En qué es diferente', ph: i === 1 ? 'única / más rápida / más barata / mejor' : '…' }} valor={datos[`${k}d`]} onChange={onChange} />
+              <Campo c={{ k: `${k}q`, label: 'Frente a qué alternativas', ph: i === 1 ? 'tres competidores o soluciones reales, con su nombre' : '…' }} valor={datos[`${k}q`]} onChange={onChange} />
             </div>
           </div>
         );
@@ -204,11 +231,11 @@ export function Finalistas({ g, datos, onChange }) {
 export function Ganadora({ datos, onChange }) {
   const opciones = ['d1', 'd2', 'd3'].map((k) => String(datos[k] ?? '').trim()).filter(Boolean);
   if (opciones.length === 0) {
-    return <p className="ayuda">Elige primero tus finalistas en el paso 9.</p>;
+    return <p className="ayuda">Primero elige tus ideas en el paso 9.</p>;
   }
   return (
     <div className="field">
-      <label htmlFor="ganadora">La que gana, de tus finalistas</label>
+      <label htmlFor="ganadora">La idea que eliges</label>
       <select id="ganadora" className="c" value={datos.w0_de ?? ''} onChange={(e) => onChange('w0_de', e.target.value)}>
         <option value="">— elige una —</option>
         {opciones.map((t, i) => <option key={i} value={t}>{t}</option>)}
@@ -225,8 +252,8 @@ export function Nadie({ g, datos, onChange }) {
     .some(Boolean);
   const marcada = !!datos[g.k];
   useEffect(() => {
-    if (hay && marcada) onChange(g.k, false);
-  }, [hay, marcada, g.k, onChange]);
+    if (hay && marcada) { onChange(g.k, false); if (g.opciones) onChange(g.opciones.k, ''); }
+  }, [hay, marcada, g.k, g.opciones, onChange]);
   return (
     <>
       <label className="chk">
@@ -235,44 +262,35 @@ export function Nadie({ g, datos, onChange }) {
           className="c"
           checked={marcada}
           disabled={hay}
-          onChange={(e) => onChange(g.k, e.target.checked)}
+          onChange={(e) => {
+            onChange(g.k, e.target.checked);
+            if (!e.target.checked && g.opciones) onChange(g.opciones.k, '');
+          }}
         />
         <TextoInline as="span" texto={g.txt} />
       </label>
       {hay && <p className="ayuda">Ya tienes una respuesta escrita: esta casilla es para cuando no ha contestado nadie.</p>}
+      {/* Que nadie conteste en dos días no dice tanto como para decidir
+          por el alumno. Se le ofrecen las dos salidas y se apunta cuál. */}
+      {marcada && !hay && g.opciones && (
+        <fieldset className="nadie-op">
+          <legend><TextoInline as="span" texto={g.opciones.txt} /></legend>
+          {g.opciones.lista.map(([v, t]) => (
+            <label className="chk" key={v}>
+              <input
+                type="radio"
+                className="c"
+                name="nadie-op"
+                checked={datos[g.opciones.k] === t}
+                onChange={() => onChange(g.opciones.k, t)}
+              />
+              <span>{t}</span>
+            </label>
+          ))}
+        </fieldset>
+      )}
     </>
   );
-}
-
-function isoLocal(d) {
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-}
-
-function eventoVuelta(datos, pre) {
-  const hoy = new Date();
-  hoy.setHours(0, 0, 0, 0);
-  let base = hoy;
-  const m = String(datos[`${pre}_dia`] || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if (m) {
-    const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
-    if (!Number.isNaN(d.getTime()) && d > hoy) base = d;
-  }
-  const dia = new Date(base);
-  dia.setDate(dia.getDate() + 2);
-  const quien = String(datos[`${pre}_quien`] || '').trim();
-  const cuando = String(datos[`${pre}_dia`] || '').trim();
-  const url = `${window.location.origin}${window.location.pathname}#/ia-lab/10?paso=${PASO_VUELTA}`;
-  const cuerpo =
-    (quien ? `Le escribiste a ${quien}` + (cuando ? ` el ${fechaLarga(cuando)}` : '') + '.\n\n' : '') +
-    'Hoy toca la segunda sentada. Empieza por copiar lo que te haya contestado, literal y con nombre. Si no ha contestado nadie, márcalo y eliges igual: eso también es un dato.\n\n' +
-    `Vuelve aquí: ${url}`;
-  return calendario([{
-    uid: `ialab-vuelta-${Date.now()}@ai-first`,
-    dia: isoLocal(dia),
-    hora: '10:00',
-    titulo: 'IA-Lab · segunda sentada: lo que te contestaron',
-    cuerpo,
-  }]);
 }
 
 export function Mensaje({ g, datos, onChange }) {
@@ -286,7 +304,7 @@ export function Mensaje({ g, datos, onChange }) {
     <div className="mensaje">
       <div className="msg-campo">
         <label htmlFor="msg-quien">A quién le escribes</label>
-        <p className="ayuda">Sale de lo que escribiste a mano en «yo llego así». Nombre y por dónde le escribes.</p>
+        <p className="ayuda">Sale de lo que escribiste en «Cómo llegas tú a esa persona». Pon su nombre y por dónde le escribes (WhatsApp, correo, LinkedIn).</p>
         <input
           id="msg-quien"
           type="text"
@@ -296,7 +314,7 @@ export function Mensaje({ g, datos, onChange }) {
         />
       </div>
       <div className="msg-borrador">
-        <p className="rotulo">El borrador</p>
+        <p className="rotulo">El mensaje</p>
         <TextoInline texto={g.borrador} />
       </div>
       <div className="msg-campo">
@@ -315,21 +333,8 @@ export function Mensaje({ g, datos, onChange }) {
           checked={enviado}
           onChange={(e) => marcar(e.target.checked)}
         />
-        <span>Ya lo he enviado</span>
+        <span>Ya envié el mensaje</span>
       </label>
-      {enviado && (
-        <div className="msg-campo">
-          <p className="rotulo">La vuelta, en tu calendario</p>
-          <p className="ayuda">Un evento para dentro de dos días, con lo que toca hacer y el enlace para volver justo aquí.</p>
-          <button
-            type="button"
-            className="btn btn-g"
-            onClick={() => bajar(eventoVuelta(datos, g.pre), 'ia-lab-segunda-sentada.ics', 'text/calendar;charset=utf-8')}
-          >
-            Descargar el evento (.ics)
-          </button>
-        </div>
-      )}
     </div>
   );
 }
@@ -353,11 +358,11 @@ export function Respuestas({ g, datos, onChange }) {
               />
             </div>
             <div className="resp-dijo">
-              <label htmlFor={`rd-${pre}`}>Lo que dijo, tal cual</label>
+              <label htmlFor={`rd-${pre}`}>Lo que dijo, con sus palabras</label>
               <textarea
                 id={`rd-${pre}`}
                 rows={3}
-                placeholder="literal. Si lo parafraseas, ya es tuyo y no suyo."
+                placeholder="cópialo tal como te lo dijo"
                 value={datos[`${pre}_dijo`] ?? ''}
                 onChange={(e) => onChange(`${pre}_dijo`, e.target.value)}
               />

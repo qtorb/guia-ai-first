@@ -5,18 +5,22 @@
 // Se han retirado. La hoja acompaña una sesión; no evalúa a quien escribe.
 // La pregunta por la genericidad la hace Albert en clase, por parejas, y la
 // pantalla no tiene que adelantarse ni sustituirle.
+// La etiqueta va asociada al campo: sin el `htmlFor`, un lector de pantalla
+// leía el campo sin nombre en cuanto no tenía texto de ejemplo (WCAG 1.3.1).
 export default function Campo({ c, valor, onChange }) {
+  const id = 'c-' + c.k;
   const monoStyle = c.mono ? { fontFamily: 'var(--mono)', fontSize: '13px' } : undefined;
   return (
     <div className="field">
       {c.label && (
-        <label>
+        <label htmlFor={id}>
           {c.label}
           {c.hint && <span className="hint"> {c.hint}</span>}
         </label>
       )}
       {c.rows ? (
         <textarea
+          id={id}
           className="c"
           rows={c.rows}
           placeholder={c.ph || ''}
@@ -25,6 +29,7 @@ export default function Campo({ c, valor, onChange }) {
         />
       ) : (
         <input
+          id={id}
           type="text"
           className="c"
           style={monoStyle}

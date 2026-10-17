@@ -90,7 +90,8 @@ function fichasVivas(b, datos) {
   return filas.filter((f) => f.asa || f.vende);
 }
 
-const ORIGEN = { fp: 'mía', fa: 'tanda A', fb: 'tanda B', fc: 'tanda C' };
+const ORIGEN = { fp: 'mía', fa: 'ronda A', fb: 'ronda B', fc: 'ronda C' };
+const SEG = { comp: 'comprobado', est: 'estimación', ns: 'aún no lo sé' };
 
 // Las ideas que se consideraron, con su veredicto y sus motivos. El bloque
 // de las reglas no tiene plantilla porque sus claves dependen de cuántas
@@ -105,6 +106,15 @@ export function textoPuertas(b, datos) {
     const quien = String(datos[`${f.pre}_quien`] || '').trim();
     const cab = '· ' + (f.asa && f.vende ? `${f.asa} — ${f.vende}` : f.asa || f.vende) +
       (quien ? `, para ${quien}` : '') + ` (${ORIGEN[f.origen] || f.origen})`;
+    // El resto de la tarjeta también va: la dirección necesita la información
+    // completa, no solo el veredicto.
+    const hoyTxt = String(datos[`${f.pre}_hoy`] || '').trim();
+    const seg = SEG[datos[`${f.pre}_hoy_seg`]];
+    const llego = String(datos[`${f.pre}_llego`] || '').trim();
+    const ficha = [
+      hoyTxt ? `  Cómo lo resuelve hoy: ${hoyTxt}${seg ? ` (${seg})` : ''}` : null,
+      llego ? `  Cómo llego: ${llego}` : null,
+    ].filter(Boolean);
     const r = [1, 2, 3, 4].map((i) => datos[`${f.pre}_r${i}`]);
     const motivo = String(datos[`${f.pre}_motivo`] || '').trim();
     const con = (v) => reglas.filter((_, i) => r[i] === v).join('; ');
@@ -115,24 +125,71 @@ export function textoPuertas(b, datos) {
       .filter(([, p]) => p)
       .map(([t, p]) => `  ${t}: ${p}`);
     if (r.some((v) => v === 'no')) {
-      caen.push([cab, `  No cumple: ${con('no')}.`, `  Por qué: ${motivo || 'sin motivo escrito'}`, ...porques]);
+      caen.push([cab, ...ficha, `  No cumple: ${con('no')}.`, `  Por qué la descarto: ${motivo || 'sin motivo escrito'}`, ...porques]);
     } else if (r.every((v) => v === 'si')) {
-      pasan.push([cab, ...porques]);
+      pasan.push([cab, ...ficha, ...porques]);
     } else {
-      const l = [cab];
-      if (r.some((v) => v === 'ns')) l.push(`  No sé decirlo: ${con('ns')}.`);
+      const l = [cab, ...ficha];
+      if (r.some((v) => v === 'ns')) l.push(`  Aún no lo sé: ${con('ns')}.`);
       const sin = reglas.filter((_, i) => !r[i]).join('; ');
-      if (sin) l.push(`  Sin pasar: ${sin}.`);
+      if (sin) l.push(`  Sin responder: ${sin}.`);
       if (motivo) l.push(`  Nota: ${motivo}`);
       l.push(...porques);
       dudan.push(l);
     }
   });
   const secciones = [b.salidaPuertas.titulo];
-  [['PASAN LAS CUATRO REGLAS', pasan], ['SE CAEN', caen], ['SIN DECIDIR', dudan]].forEach(([tit, fichas]) => {
+  [['CUMPLEN LOS CUATRO CRITERIOS', pasan], ['DESCARTADAS', caen], ['PENDIENTES DE AVERIGUAR', dudan]].forEach(([tit, fichas]) => {
     if (fichas.length) secciones.push([tit, ...fichas.flat()].join('\n'));
   });
   return secciones.join('\n\n');
+}
+
+// La decisión final de la hoja 0. Era una línea de instrucciones pegada al
+// final del documento —«Y una línea más, que es obligatoria…»— y salía tal
+// cual en el correo. Ahora se elige en pantalla y al documento solo va lo
+// elegido.
+export function textoDecision(dec, datos) {
+  if (datos.fin_decision === 'gana') return dec.gana;
+  if (datos.fin_decision === 'aun') {
+    const quien = String(datos.fin_quien || '').trim() || '[falta el nombre]';
+    const c = String(datos.fin_cuando || '').trim();
+    const cuando = c ? (/^\d{4}-\d{2}-\d{2}$/.test(c) ? fechaLarga(c) : c) : '[falta la fecha]';
+    return `Todavía no la elijo: antes necesito hablar con ${quien} antes del ${cuando}.`;
+  }
+  return '[Falta la decisión final]';
+}
+
+// El resumen que abre el correo. La dirección necesita la información
+// completa, pero no para leerla primero: arriba lo que se decide y debajo
+// el registro entero.
+function resumenHoja0(hoja, datos, dec) {
+  const b = (hoja.bloques || []).find((x) => x.salidaPuertas);
+  const pasan = []; const caen = []; const dudan = [];
+  (b ? fichasVivas(b, datos) : []).forEach((f) => {
+    const nom = f.asa || f.vende;
+    const r = [1, 2, 3, 4].map((i) => datos[`${f.pre}_r${i}`]);
+    const motivo = String(datos[`${f.pre}_motivo`] || '').trim();
+    if (r.some((v) => v === 'no')) caen.push(`${nom}${motivo ? ` (${motivo})` : ''}`);
+    else if (r.every((v) => v === 'si')) pasan.push(nom);
+    else dudan.push(nom);
+  });
+  const elegida = String(datos.w0_de || '').trim();
+  const desc = String(datos.w0 || '').trim();
+  const l = ['RESUMEN', ''];
+  l.push('La idea que elijo: ' + (elegida ? elegida + (desc ? ` — ${desc}` : '') : '[todavía sin elegir]'));
+  l.push('Decisión: ' + textoDecision(dec, datos));
+  const n = pasan.length + caen.length + dudan.length;
+  if (n) {
+    l.push('');
+    l.push(`Ideas que consideré: ${n}`);
+    if (pasan.length) l.push(`  Cumplen los cuatro criterios: ${pasan.join('; ')}`);
+    if (caen.length) l.push(`  Descartadas: ${caen.join('; ')}`);
+    if (dudan.length) l.push(`  Pendientes de averiguar: ${dudan.join('; ')}`);
+  }
+  const s1 = String(datos.s1 || '').trim();
+  if (s1) l.push('', `Lo que todavía no sé: ${s1}`);
+  return l.join('\n');
 }
 
 function claves(linea) {
@@ -153,6 +210,8 @@ export function generarProtocolo(hoja, datos, checkKeys, nombre, kicker, salida)
   const hoy = new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
   let t = cabecera + '\n' + (nombre.trim() ? nombre.trim() + ' · ' : '') +
     (kicker || '') + '\nEscrito el ' + hoy + '\n' + L + '\n\n';
+  const dec = (salida || hoja.salida)?.decision;
+  if (dec) t += resumenHoja0(hoja, datos, dec) + '\n\n' + L + '\n\nREGISTRO COMPLETO\n\n' + L + '\n\n';
 
   // La apertura entra en el documento pero NO en la puerta: son dos preguntas
   // de arranque, no un bloque que se pueda «dejar sin hacer». Y sólo en 1A,
@@ -210,19 +269,20 @@ export function generarProtocolo(hoja, datos, checkKeys, nombre, kicker, salida)
 
   const dudas = dudasApuntadas(hoja, datos, parte);
   if (dudas.length) {
-    t += 'LO QUE TODAVÍA NO ENTIENDO\n\n';
+    t += 'MIS DUDAS PARA LA SESIÓN\n\n';
     // Sin partes, la hoja numera por pasos, igual que la tira.
     const porPasos = !(hoja.partes || []).length;
     dudas.forEach((d) => {
       const donde = porPasos
         ? 'Paso ' + ((hoja.bloques || []).findIndex((b) => b.n === d.n) + 2)
-        : 'Bloque ' + (+d.n);
+        : 'Apartado ' + (+d.n);
       t += '  ' + donde + ' · ' + d.titulo + '\n';
       if (d.txt) t += '     ' + d.txt + '\n';
     });
     t += '\n' + L + '\n\n';
   }
 
+  if (dec) t += 'DECISIÓN FINAL\n\n' + textoDecision(dec, datos) + '\n';
   t += ((salida || hoja.salida)?.cierre || []).join('\n') + '\n';
   t = t.replace(/\n{4,}/g, '\n\n\n');
   return t;

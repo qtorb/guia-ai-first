@@ -6,6 +6,11 @@ import TextoInline from '../TextoInline';
 // fecha debajo. Es lo que permite que el alumno vea el efecto sin tener nada
 // abierto, y lo que obliga a revisarlas cuando el sello se queda viejo.
 export default function Comparacion({ c }) {
+  // Mientras no estén pegadas las salidas reales del ensayo, la comparación
+  // no se pinta: un «[ PENDIENTE … ]» a la vista del alumno confunde más que
+  // la ausencia del panel.
+  const pendiente = [c.izq?.salida, c.der?.salida, c.sello].some((t) => /PENDIENTE|\[ modelo y fecha/.test(String(t || '')));
+  if (pendiente) return null;
   return (
     <div className="cmpg">
       <div className="cmpc">

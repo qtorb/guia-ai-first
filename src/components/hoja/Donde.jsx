@@ -25,44 +25,44 @@ export default function Donde({
   }, [onCerrar]);
 
   return (
-    <div className="dnd" role="dialog" aria-modal="false" aria-label="Dónde estás" tabIndex={-1} ref={ref}>
+    <div className="dnd" id="dnd" role="dialog" aria-modal="false" aria-label="Ayuda de esta hoja" tabIndex={-1} ref={ref}>
       <div className="dnd-h">
-        <h2>Dónde estás</h2>
+        <h2>Ayuda de esta hoja</h2>
         <button className="ayb" onClick={onCerrar}>Cerrar</button>
       </div>
       <div className="dnd-g">
         <div>
-          <div className="lab">En esta hoja</div>
+          <div className="lab">Dónde estás</div>
           <p>{sitio}</p>
         </div>
         <div>
-          <div className="lab">Qué sale de aquí</div>
+          <div className="lab">Qué obtienes al final</div>
           <p>
             {salidas.length > 1
-              ? `${salidas.length === 2 ? 'Dos' : salidas.length} documentos que te descargas: ${salidas.map((s) => `«${s.titulo}»`).join(' y ')}.`
-              : `Un documento que te descargas: «${salidas[0]?.titulo || 'tu hoja'}».`}
+              ? `${salidas.length === 2 ? 'Dos' : salidas.length} documentos que puedes copiar o descargar: ${salidas.map((s) => `«${s.titulo}»`).join(' y ')}.`
+              : `Un documento que puedes copiar o descargar: «${salidas[0]?.titulo || 'tu hoja'}».`}
           </p>
         </div>
         <div>
-          <div className="lab">Cuándo se hace</div>
-          <p>{d.cuando || 'En casa, después de la sesión. No hace falta acabarla de una sentada.'}</p>
+          <div className="lab">Cuándo hacerla</div>
+          <p>{d.cuando || 'En casa, después de la sesión. No hace falta terminarla de una vez.'}</p>
         </div>
         <div>
-          <div className="lab">Dónde se guarda</div>
-          <p>Sin cuenta, como <b>borrador</b>: vive en este navegador y no viaja contigo a otro
-            dispositivo. Entrando, queda <b>guardado</b> y lo retomas donde sea.</p>
+          <div className="lab">Dónde se guarda lo que escribes</div>
+          <p>Sin cuenta, lo que escribes se guarda <b>solo en este navegador</b>. Si inicias
+            sesión, se guarda <b>en tu cuenta</b> y puedes seguir desde cualquier dispositivo.</p>
         </div>
         <div>
-          <div className="lab">Dónde encaja en el máster</div>
-          <p>{d.encaja || 'Es una de las hojas de IA-Lab. Cada una deja una pieza de tu TFM.'}</p>
+          <div className="lab">Cómo encaja en el máster</div>
+          <p>{d.encaja || 'Es una de las hojas de IA-Lab. Cada una te deja un texto que puedes usar en tu TFM.'}</p>
         </div>
       </div>
       <div className="dnd-a">
-        <button className="ayb" onClick={onVerTodo}>{verTodo ? 'Volver a un paso cada vez' : 'Ver todos los pasos de una vez'}</button>
-        <button className="ayb" onClick={onPrincipio}>Empezar por el principio</button>
-        <button className="ayb" onClick={onGuardarAvance}>Guardar mi avance</button>
-        <button className="ayb" onClick={() => fileRef.current?.click()}>Retomar desde un fichero</button>
-        <button className="ayb" onClick={onBorrarTodo}>Empezar de cero</button>
+        <button className="ayb" onClick={onVerTodo}>{verTodo ? 'Volver a un paso cada vez' : 'Ver todos los pasos juntos'}</button>
+        <button className="ayb" onClick={onPrincipio}>Volver al paso 1</button>
+        <button className="ayb" onClick={onGuardarAvance}>Guardar mi avance en un archivo</button>
+        <button className="ayb" onClick={() => fileRef.current?.click()}>Cargar un archivo guardado</button>
+        <button className="ayb" onClick={onBorrarTodo}>Borrar todo y empezar de nuevo</button>
         <input
           type="file"
           ref={fileRef}
@@ -75,7 +75,7 @@ export default function Donde({
           }}
         />
       </div>
-      <p className="dnd-n">Si vas a seguir en otro ordenador, descarga tu avance y cárgalo allí.</p>
+      <p className="dnd-n">Si vas a seguir en otro dispositivo sin iniciar sesión, guarda tu avance en un archivo y cárgalo allí.</p>
     </div>
   );
 }

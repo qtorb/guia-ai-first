@@ -19,9 +19,12 @@ import { useToast } from '../Toast';
 // duda para la sesión— se pliega en una fila de botones al pie. No
 // desaparece: deja de estar abierto todo a la vez, y está siempre en el
 // mismo sitio.
-export default function Bloque({ b, datos, onChange, total, rotulo, preparar, duda, onDuda }) {
+export default function Bloque({ b, datos, onChange, total, rotulo, preparar, duda, onDuda, ruta }) {
   // b.ask puede venir como cadena (hoja 1) o como {lab, txt} (hoja 0).
-  const ask = typeof b.ask === 'string' ? { lab: 'Pregúntale a tu asistente', txt: b.ask } : b.ask;
+  const ask = typeof b.ask === 'string' ? { lab: 'Pregúntale a tu asistente de IA', txt: b.ask } : b.ask;
+  // Un grupo marcado para una ruta solo sale en esa ruta: quien trae idea no
+  // ha generado nada y no se le pregunta cuándo dejó de generar.
+  const grupos = (b.grupos || []).filter((g) => !g.soloRuta || !ruta || g.soloRuta === ruta);
   const que = b.que || [];
   // Sin `tarea` en los datos, el primer párrafo hace de instrucción: la hoja
   // sigue funcionando, sólo se lee peor.
@@ -35,6 +38,10 @@ export default function Bloque({ b, datos, onChange, total, rotulo, preparar, du
       <h2>{b.titulo}</h2>
       <TextoInline texto={tarea} className="tarea" />
       {contexto && <TextoInline texto={contexto} className="ctx" />}
+
+      {/* Preparar el asistente estaba escondido dentro de un desplegable de
+          ayuda: quien no lo abría, nunca lo veía. Ahora va arriba, a la vista. */}
+      {preparar && <Preparar {...preparar} />}
 
       {/* La comparación grabada se queda a la vista: es el mecanismo, no una
           ayuda. Dos ejecuciones reales del mismo caso, una al lado de otra. */}
@@ -52,7 +59,7 @@ export default function Bloque({ b, datos, onChange, total, rotulo, preparar, du
         </div>
       )}
       <div className="campos">
-        {(b.grupos || []).map((g, i) => <Grupo key={i} g={g} datos={datos} onChange={onChange} />)}
+        {grupos.map((g, i) => <Grupo key={i} g={g} datos={datos} onChange={onChange} />)}
         {b.aviso && <TextoInline texto={b.aviso} className="aviso" />}
       </div>
       {b.check && (
@@ -66,7 +73,6 @@ export default function Bloque({ b, datos, onChange, total, rotulo, preparar, du
         b={b}
         ask={ask}
         resto={resto}
-        preparar={preparar}
         duda={duda}
         onDuda={onDuda}
       />
@@ -76,7 +82,7 @@ export default function Bloque({ b, datos, onChange, total, rotulo, preparar, du
 
 // La fila de ayudas. Una abierta cada vez: dos paneles abiertos a la vez
 // devuelven la pantalla al estado del que veníamos.
-function Ayudas({ b, ask, resto, preparar, duda, onDuda }) {
+function Ayudas({ b, ask, resto, duda, onDuda }) {
   const toast = useToast();
   const [abierta, setAbierta] = useState(null);
   const marcada = duda !== undefined && duda !== null;
@@ -84,19 +90,19 @@ function Ayudas({ b, ask, resto, preparar, duda, onDuda }) {
   function copiar(txt, ok) {
     alPortapapeles((txt || '').trim())
       .then(() => toast(ok))
-      .catch(() => toast('No se ha podido copiar — selecciónalo a mano'));
+      .catch(() => toast('No se pudo copiar: selecciónalo y cópialo a mano'));
   }
 
   const items = [];
-  if (b.encargo || ask || preparar) items.push({ id: 'ia', rot: 'Pedírselo a la IA' });
+  if (b.encargo || ask) items.push({ id: 'ia', rot: 'Pedir ayuda a la IA' });
   if (b.ejemplo) items.push({ id: 'ej', rot: 'Ver un ejemplo' });
-  if (b.cicatriz || resto.length) items.push({ id: 'de', rot: 'De dónde sale' });
-  if (onDuda) items.push({ id: 'du', rot: 'No me cuadra', marca: marcada });
+  if (b.cicatriz || resto.length) items.push({ id: 'de', rot: 'Por qué se pide esto' });
+  if (onDuda) items.push({ id: 'du', rot: 'Tengo una duda sobre este paso', marca: marcada });
   if (!items.length) return null;
 
   function toggle(id) {
     setAbierta((a) => (a === id ? null : id));
-    // Abrir «No me cuadra» ya marca el bloque: quien lo abre es porque tiene
+    // Abrir «Tengo una duda» ya marca el bloque: quien lo abre es porque tiene
     // algo que preguntar, y escribir qué es sigue siendo opcional.
     if (id === 'du' && !marcada) onDuda(b.n, '');
   }
@@ -120,21 +126,20 @@ function Ayudas({ b, ask, resto, preparar, duda, onDuda }) {
 
       {abierta === 'ia' && (
         <div className="ayp" id={`ayp-${b.n}-ia`}>
-          {preparar && <Preparar {...preparar} />}
           {b.encargo && (
             <div className="encargo">
               <div className="lab">
-                <span>El encargo · listo para ejecutar</span>
-                <button className="mini" onClick={() => copiar(b.encargo, 'Encargo copiado — pégaselo a tu asistente')}>Copiar</button>
+                <span>Las instrucciones, listas para copiar</span>
+                <button className="mini" onClick={() => copiar(b.encargo, 'Copiado: pégalo en tu asistente de IA')}>Copiar</button>
               </div>
               <pre>{b.encargo}</pre>
-              <p className="n">Las cinco partes son las de la sesión. Tú lo ejecutas y decides qué aceptas.</p>
+              <p className="n">Son los cinco apartados de la sesión. Tú lo pegas en tu asistente de IA y decides qué aceptas de lo que te devuelve.</p>
             </div>
           )}
           {ask && (
             <div className="ask">
               <div className="lab">
-                <span>{ask.lab || 'Pregúntale a tu asistente'}</span>
+                <span>{ask.lab || 'Pregúntale a tu asistente de IA'}</span>
                 <button className="mini" onClick={() => copiar(ask.txt, 'Pregunta copiada')}>Copiar</button>
               </div>
               <p>{ask.txt}</p>
@@ -145,7 +150,7 @@ function Ayudas({ b, ask, resto, preparar, duda, onDuda }) {
 
       {abierta === 'ej' && (
         <div className="ayp" id={`ayp-${b.n}-ej`}>
-          <p className="ayn">Ábrelo después de escribir el tuyo, no antes.</p>
+          <p className="ayn">Ábrelo después de escribir lo tuyo, no antes.</p>
           <div className="ej">
             {b.ejemplo.map(([k, v], i) => (
               <div className="r" key={i}>
@@ -162,7 +167,7 @@ function Ayudas({ b, ask, resto, preparar, duda, onDuda }) {
           {resto.map((p, i) => <TextoInline key={i} texto={p} className="que" />)}
           {b.cicatriz && (
             <div className="cic">
-              <div className="lab">De dónde sale esta regla</div>
+              <div className="lab">Por qué se pide esto</div>
               <TextoInline texto={b.cicatriz} />
             </div>
           )}
@@ -173,17 +178,18 @@ function Ayudas({ b, ask, resto, preparar, duda, onDuda }) {
         <div className="ayp" id={`ayp-${b.n}-du`}>
           <div className="duda on">
             <div className="lab">
-              <span>Lo pregunto en la sesión</span>
+              <span>Me la llevo a clase</span>
               <button className="mini" onClick={() => { onDuda(b.n, null); setAbierta(null); }}>Quitar</button>
             </div>
             <input
               type="text"
               className="c"
-              placeholder="Qué es lo que no te cuadra (opcional)"
+              placeholder="Escribe tu duda (opcional)"
+              aria-label="Tu duda sobre este paso"
               value={duda ?? ''}
               onChange={(e) => onDuda(b.n, e.target.value)}
             />
-            <p className="n">Sale al final de tu documento, con el nombre del bloque.</p>
+            <p className="n">Aparecerá al final de tu documento, con el nombre del paso, para que la lleves a clase.</p>
           </div>
         </div>
       )}
@@ -191,30 +197,30 @@ function Ayudas({ b, ask, resto, preparar, duda, onDuda }) {
   );
 }
 
-// Preparar el asistente. Vivía suelto en el primer bloque; ahora entra por
-// «Pedírselo a la IA», que es exactamente cuando hace falta.
+// Preparar el asistente de IA. Primero vivió suelto en el primer bloque y
+// luego dentro de «Pedírselo a la IA», donde casi nadie lo veía. Ahora va a
+// la vista, en tres pasos numerados.
 function Preparar({ paso0, onCopiarPrompt, onCopiarGuia }) {
+  const pasos = paso0.pasos || [];
   return (
-    <details className="p0f">
-      <summary>{paso0.titulo} <span>— dos minutos, y las preguntas funcionan mejor</span></summary>
-      <div className="p0b">
-        <TextoInline texto={paso0.texto} />
-        <ol className="p0l">
-          <li>
-            <b>Abre tu asistente.</b> ChatGPT, Claude, Gemini, el que uses.
-          </li>
-          <li>
-            <b>Pégale la guía entera.</b> Son unas cuarenta páginas. Se pega de una vez y la lee sola.
-            <div className="p0a"><button className="btn btn-g" onClick={onCopiarGuia}>Copiar la guía entera</button></div>
-          </li>
-          <li>
-            <b>Y después, estas instrucciones.</b> Es lo que hace que deje de contestar por ti y empiece a preguntarte.
+    <section className="p0b p0-visible" aria-labelledby="p0-h">
+      <h3 id="p0-h">{paso0.titulo}{paso0.min && <span> · {paso0.min}</span>}</h3>
+      <ol className="p0l">
+        <li><TextoInline as="span" texto={pasos[0] || ''} /></li>
+        <li>
+          <TextoInline as="span" texto={pasos[1] || ''} />
+          <div className="p0a"><button className="btn btn-p" onClick={onCopiarPrompt}>Copiar instrucciones</button></div>
+          <details className="p0ver">
+            <summary>Ver las instrucciones</summary>
             <div className="snip">{paso0.prompt}</div>
-            <div className="p0a"><button className="btn btn-g" onClick={onCopiarPrompt}>Copiar las instrucciones</button></div>
-          </li>
-        </ol>
-        <p className="p0nota">¿Sin asistente a mano? Puedes hacer la hoja igual — solo perderás las preguntas.</p>
-      </div>
-    </details>
+          </details>
+        </li>
+        <li>
+          <TextoInline as="span" texto={pasos[2] || ''} />
+          <div className="p0a"><button className="btn btn-g" onClick={onCopiarGuia}>Copiar la guía</button></div>
+        </li>
+      </ol>
+      {paso0.nota && <p className="p0nota">{paso0.nota}</p>}
+    </section>
   );
 }

@@ -14,7 +14,7 @@ function estadoDe(dossier, n) {
   // La hoja 0 se hace en dos sentadas: si la segunda espera, eso va antes.
   if (Number(n) === 10) {
     const vuelta = segundaSentada(d);
-    if (vuelta) return { txt: 'Te espera la segunda sentada →', cls: 'curso', destino: vuelta.destino };
+    if (vuelta) return { txt: 'Te espera la segunda parte →', cls: 'curso', destino: vuelta.destino };
   }
   if (d._fin) return { txt: '✓ Terminada', cls: 'fin' };
   if (hechos) return { txt: `Paso ${d._paso || 1}${total ? ' de ' + total : ''} · Continuar →`, cls: 'curso' };
@@ -83,7 +83,7 @@ export default function IaLabList({ dossierCtl }) {
               <div className="sce">
                 {hay
                   ? (st ? <em className={st.cls}>{st.txt}</em> : <em className="disp">Disponible →</em>)
-                  : <em className="aun">Aún no</em>}
+                  : <em className="aun">Disponible más adelante</em>}
               </div>
             </Tag>
           );
