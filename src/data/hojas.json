@@ -871,17 +871,7 @@
     "En clase: slides 3 a 5",
     "Hoy montas tu sistema de trabajo con IA. Primero escribes tus siete reglas (pasos 1 a 7), luego montas tu sistema (pasos 8 a 14), lo contrastas con un compañero (paso 15) y envías la hoja (paso 16)."
    ],
-   "grupos": [
-    {
-     "tipo": "checks",
-     "campos": [
-      {
-       "k": "s_registro",
-       "txt": "**Lo he creado.**"
-      }
-     ]
-    }
-   ],
+   "grupos": [],
    "plantilla": [
     "0 · MI SISTEMA",
     "",
@@ -890,7 +880,6 @@
     "  Fuentes              : {s_fuentes}",
     "  Revisor              : {s_revisor}",
     "  Lo que no subo nunca : {s_no}",
-    "  Registro de errores  : [{s_registro}] creado en 05_registro_de_errores",
     "",
     "  Lo que señaló la prueba:",
     "     {s_prueba}"
@@ -950,14 +939,12 @@
     ],
     "claro": {
      "titulo": "Envía tu hoja",
-     "clase": "En clase: slides 109 y 110",
+     "clase": "En clase: slide 103",
      "tarea": "Tu sistema y tus siete reglas, en un documento. **Te lo llevas y lo envías a la dirección del máster.**",
-     "registro": "Crea tu registro de errores",
-     "registroTxt": "En tu carpeta, dentro de 05_registro_de_errores. Aunque esté vacío: un error con nombre se reconoce cuando vuelve.",
      "nombre": "Pon tu nombre",
      "generar": "Genera tu documento",
      "enviar": "Envíalo a la dirección del máster",
-     "antes": "Primero genera el documento, en el punto 3."
+     "antes": "Primero genera el documento, en el punto 2."
     }
    }
   ],

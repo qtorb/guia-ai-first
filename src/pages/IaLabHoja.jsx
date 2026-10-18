@@ -898,7 +898,6 @@ function PasoSalida({
     const sal = salidas[0];
     const c = sal.claro;
     const texto = textos[sal.parte || '_'] || '';
-    const reg = (hoja.apertura?.grupos || [])[0];
     return (
       <div id="out" className="blk claro">
         <div className="donde-p">
@@ -909,13 +908,7 @@ function PasoSalida({
         <TextoInline texto={c.tarea} className="tarea" />
 
         <section className="sec">
-          <h3 className="sec-h"><span className="sec-n">1</span>{c.registro}</h3>
-          <p className="ctx">{c.registroTxt}</p>
-          {reg && <Grupo g={reg} datos={datos} onChange={onChange} />}
-        </section>
-
-        <section className="sec">
-          <h3 className="sec-h"><span className="sec-n">2</span><label htmlFor="nombre">{c.nombre}</label></h3>
+          <h3 className="sec-h"><span className="sec-n">1</span><label htmlFor="nombre">{c.nombre}</label></h3>
           <div className="field">
             <input type="text" id="nombre" placeholder="Nombre y apellido" autoComplete="name" value={nombre}
               onChange={(e) => setNombre(e.target.value)} onBlur={onNombreBlur} />
@@ -923,7 +916,7 @@ function PasoSalida({
         </section>
 
         <section className="sec">
-          <h3 className="sec-h"><span className="sec-n">3</span>{c.generar}</h3>
+          <h3 className="sec-h"><span className="sec-n">2</span>{c.generar}</h3>
           <Pieza
             sal={sal}
             hoja={hoja}
@@ -941,7 +934,7 @@ function PasoSalida({
         </section>
 
         <section className="sec">
-          <h3 className="sec-h"><span className="sec-n">4</span>{c.enviar}</h3>
+          <h3 className="sec-h"><span className="sec-n">3</span>{c.enviar}</h3>
           {!texto.trim()
             ? <p className="ctx">{c.antes}</p>
             : hayNube
