@@ -43,7 +43,7 @@ function textoReglas(hoja, datos) {
     if (!partes.length) faltan = true;
     return `${i + 1}. ${b.titulo}: ${partes.length ? partes.join('; ') : '(sin escribir)'}`;
   });
-  const texto = 'Eres el asesor de mi TFM del Máster en Dirección de Marketing Digital (UPF-BSM). Trabajas con estas siete reglas, que he escrito yo:\n'
+  const texto = 'Eres el asesor de mi TFM del Máster en Dirección de Marketing Digital (UPF-BSM). Trabajas con estas siete reglas: seis las he escrito yo y la quinta son tres comprobaciones comunes del máster.\n'
     + lineas.join('\n')
     + '\nAntes de suponer, pregúntame. Si una petición mía se salta una de estas reglas, avísame. No inventes datos: si algo no tiene fuente, dilo.';
   return { texto, faltan };
