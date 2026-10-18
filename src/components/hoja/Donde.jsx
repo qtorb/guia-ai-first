@@ -54,7 +54,7 @@ export default function Donde({
         </div>
         <div>
           <div className="lab">Cómo encaja en el máster</div>
-          <p>{d.encaja || 'Es una de las hojas de IA-Lab. Cada una te deja un texto que puedes usar en tu TFM.'}</p>
+          <p>{d.encaja || 'Es una de las hojas de IA-Lab. Cada una te deja algo que usarás en tu TFM.'}</p>
         </div>
       </div>
       <div className="dnd-a">

@@ -43,7 +43,7 @@ function textoReglas(hoja, datos) {
     if (!partes.length) faltan = true;
     return `${i + 1}. ${b.titulo}: ${partes.length ? partes.join('; ') : '(sin escribir)'}`;
   });
-  const texto = 'Eres el asesor de mi TFM del Máster en Dirección de Marketing Digital (UPF-BSM). Trabajas con estas siete reglas, que he escrito yo:\n'
+  const texto = 'Eres el asesor de mi TFM del Máster en Dirección de Marketing Digital (UPF-BSM). Trabajas con estas siete reglas: seis las he escrito yo y la quinta son tres comprobaciones comunes del máster.\n'
     + lineas.join('\n')
     + '\nAntes de suponer, pregúntame. Si una petición mía se salta una de estas reglas, avísame. No inventes datos: si algo no tiene fuente, dilo.';
   return { texto, faltan };
@@ -75,7 +75,8 @@ export default function IaLabHoja({ dossierCtl, nube }) {
 
   // paso 0 + bloques + (contraste, si la hoja lo trae aparte) + salida.
   // La hoja 0 rediseñada mueve el contraste a un bloque, así que ya no es fijo.
-  const NPASOS = hoja ? hoja.bloques.length + 2 + (hoja.contraste ? 1 : 0) : 0;
+  // La hoja 1 no tiene paso de documento ni de envío: acaba en el último bloque.
+  const NPASOS = hoja ? hoja.bloques.length + 2 + (hoja.contraste ? 1 : 0) - (hoja.sinSalida ? 1 : 0) : 0;
 
   // Un enlace con ?paso=N —el del evento de calendario de la hoja 0— entra
   // directo en ese paso, por encima del guardado.
@@ -410,7 +411,7 @@ export default function IaLabHoja({ dossierCtl, nube }) {
     { t: hoja.apertura ? 'Antes de empezar' : 'Preparar' },
     ...hoja.bloques.map((b) => ({ t: (b.parte ? b.parte + ' · ' : '') + b.titulo })),
     ...(hoja.contraste ? [{ t: 'Contraste' }] : []),
-    { t: salidas.length > 1 ? 'Tus dos piezas' : (salidas[0]?.titulo || 'Tu protocolo') },
+    ...(hoja.sinSalida ? [] : [{ t: salidas.length > 1 ? 'Tus dos piezas' : (salidas[0]?.titulo || 'Tu protocolo') }]),
   ];
 
   // Lo que orienta ya no son los rótulos de la tira —truncados a sesenta y
@@ -436,6 +437,13 @@ export default function IaLabHoja({ dossierCtl, nube }) {
   // Acabar un paso de la hoja 1: se marca su «Hecho» y se pasa al siguiente.
   function hechoYSigue(b, numPaso) {
     const k = claveHecho(b);
+    if (numPaso === NPASOS) {
+      const fin = { ...(k ? { [k]: true } : {}), _fin: new Date().toISOString().slice(0, 10) };
+      setDatos((d) => ({ ...d, ...fin }));
+      guardaHoja(sesionN, { ...datos, ...fin, _paso: numPaso, _total: NPASOS });
+      toast(b.fin || 'Hoja terminada');
+      return;
+    }
     if (k) {
       setDatos((d) => ({ ...d, [k]: true }));
       guardaHoja(sesionN, { ...datos, [k]: true, _paso: siguiente(numPaso, 1), _total: NPASOS });
@@ -602,7 +610,7 @@ export default function IaLabHoja({ dossierCtl, nube }) {
             {hoja.contraste && numPaso === hoja.bloques.length + 2 && (
               <PasoContraste hoja={hoja} datos={datos} onChange={onCampoChange} />
             )}
-            {numPaso === NPASOS && (
+            {numPaso === NPASOS && !hoja.sinSalida && (
               <PasoSalida
                 hoja={hoja}
                 nombre={nombre}
@@ -898,7 +906,6 @@ function PasoSalida({
     const sal = salidas[0];
     const c = sal.claro;
     const texto = textos[sal.parte || '_'] || '';
-    const reg = (hoja.apertura?.grupos || [])[0];
     return (
       <div id="out" className="blk claro">
         <div className="donde-p">
@@ -909,13 +916,7 @@ function PasoSalida({
         <TextoInline texto={c.tarea} className="tarea" />
 
         <section className="sec">
-          <h3 className="sec-h"><span className="sec-n">1</span>{c.registro}</h3>
-          <p className="ctx">{c.registroTxt}</p>
-          {reg && <Grupo g={reg} datos={datos} onChange={onChange} />}
-        </section>
-
-        <section className="sec">
-          <h3 className="sec-h"><span className="sec-n">2</span><label htmlFor="nombre">{c.nombre}</label></h3>
+          <h3 className="sec-h"><span className="sec-n">1</span><label htmlFor="nombre">{c.nombre}</label></h3>
           <div className="field">
             <input type="text" id="nombre" placeholder="Nombre y apellido" autoComplete="name" value={nombre}
               onChange={(e) => setNombre(e.target.value)} onBlur={onNombreBlur} />
@@ -923,7 +924,7 @@ function PasoSalida({
         </section>
 
         <section className="sec">
-          <h3 className="sec-h"><span className="sec-n">3</span>{c.generar}</h3>
+          <h3 className="sec-h"><span className="sec-n">2</span>{c.generar}</h3>
           <Pieza
             sal={sal}
             hoja={hoja}
@@ -941,7 +942,7 @@ function PasoSalida({
         </section>
 
         <section className="sec">
-          <h3 className="sec-h"><span className="sec-n">4</span>{c.enviar}</h3>
+          <h3 className="sec-h"><span className="sec-n">3</span>{c.enviar}</h3>
           {!texto.trim()
             ? <p className="ctx">{c.antes}</p>
             : hayNube
