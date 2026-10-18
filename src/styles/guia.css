@@ -496,6 +496,7 @@ body.ctx-hoja {
   --ctx: var(--lab);
   --lab: #9E0B24;             /* el rojo del deck de IA-Lab (17-10-2026): 7,92:1 sobre el papel, 7,27:1 sobre la superficie */
   --hecho: #F6D5DB; --hecho-t: #7A0A1D;   /* lo hecho, rosa como en el deck: 8,19:1 */
+  --relleno: var(--lab); --relleno-t: var(--fondo); --relleno-h: #6E1523;  /* rellenos con texto encima: botones, círculos */
   --lab-sup: #F7EDEE;
   --fondo: #FCF9F6;           /* papel cálido: 17,35:1 con el texto */
   --superficie: #F4EFEA;
@@ -511,6 +512,9 @@ body.ctx-hoja {
 @media (prefers-color-scheme: dark) {
   body.ctx-hoja:not([data-tema="claro"]) {
     --lab: #FF9C93; --lab-sup: #2B1515; --hecho: #3A1A1E; --hecho-t: #FF9C93;
+    /* En oscuro los rellenos llevan el rojo de las slides «Hazlo ahora» (#A50D26) con texto blanco: 7,82:1.
+       El texto rojo sigue en salmón, porque el rojo oscuro sobre negro no se lee. */
+    --relleno: #A50D26; --relleno-t: #FFFFFF; --relleno-h: #7E0A1D;
     --fondo: #14110F; --superficie: #1E1A18; --superficie-2: #272220; --linea: #332C28;
     /* Faltaba --mid, y era el agujero AAA más caro del sitio: el barrio de
        IA-Lab redefine el papel en cálido pero se dejaba el gris del papel
@@ -529,18 +533,18 @@ body.ctx-guia .tab[data-v="guia"].on b,body.ctx-hoja .tab[data-v="hoja"].on b{co
 body.ctx-guia .tab[data-v="guia"].on,body.ctx-hoja .tab[data-v="hoja"].on{
   background:#fff;border-color:var(--ctx);box-shadow:inset 0 -2px 0 var(--ctx)}
 /* el cromo de la hoja toma el color de contexto */
-body.ctx-hoja .pdot.on i{background:var(--red);border-color:var(--red)}
+body.ctx-hoja .pdot.on i{background:var(--relleno);border-color:var(--relleno);color:var(--relleno-t)}
 /* El hover NO se aplica al paso actual ni a los ya hechos: en el barrio de
    IA-Lab esta regla tiene más peso que .pdot.on i, así que al pasar el ratón
    por encima del paso en el que estás, el número se pintaba del mismo rojo
    que su fondo y desaparecía (contraste 1:1). */
 body.ctx-hoja .pdot:not(.on):not(.done):hover i{border-color:var(--red);color:var(--red)}
-body.ctx-hoja .btn-p{background:var(--red)}
-body.ctx-hoja .btn-p:hover{background:#6E1523}
+body.ctx-hoja .btn-p{background:var(--relleno);color:var(--relleno-t)}
+body.ctx-hoja .btn-p:hover{background:var(--relleno-h)}
 /* En oscuro el botón es rosa claro con texto oscuro: el granate del hover
    claro lo dejaba en 1,6:1. Se aclara en vez de oscurecerse. */
 @media (prefers-color-scheme: dark){
-  body.ctx-hoja:not([data-tema="claro"]) .btn-p:hover{background:#FFB8B1}
+  body.ctx-hoja:not([data-tema="claro"]) .btn-p:hover{background:var(--relleno-h)}
 }
 body.ctx-hoja .btn-g:hover{border-color:var(--red);color:var(--red)}
 body.ctx-hoja .lnk,body.ctx-hoja .verg{color:var(--red)}
@@ -2093,3 +2097,9 @@ p.tener{margin:16px 0 0;padding:14px 16px;background:var(--soft);border-radius:1
 .tramo.done b{background:var(--hecho);box-shadow:inset 0 0 0 1px var(--red)}
 .tramo.done span{color:var(--hecho-t)}
 .hecho-ok{color:var(--hecho-t);background:var(--hecho);padding:8px 12px;border-radius:8px;align-self:flex-start}
+
+/* Rellenos de IA-Lab con su texto encima (ver --relleno). */
+body.ctx-hoja .dndb.on > span,body.ctx-hoja .wrap.taller-lab .dndb.on{background:var(--relleno);border-color:var(--relleno);color:var(--relleno-t)}
+body.ctx-hoja .sec-n{background:var(--relleno);color:var(--relleno-t)}
+body.ctx-hoja .tramo.on b{background:var(--relleno)}
+body.ctx-hoja .cebolla circle.on{fill:var(--relleno)}
