@@ -64,7 +64,7 @@
     "encargo": "CONTEXTO\nEstoy en un máster de marketing digital. Mi proyecto —o, si todavía no lo\ntengo cerrado, el trabajo del máster— es [dos líneas]. Trabajo solo y con un\nasistente de IA, así que pido, ejecuto y valido yo.\n\nOBJETIVO\nEncontrar tres decisiones que tomé esta semana sin darme cuenta de que eran\ndecisiones. Las necesito para repartir los roles.\n\nQUÉ NO ES\nNo me propongas un reparto de roles. No me des una plantilla ni una teoría.\n\nCRITERIOS\nPregúntame de una en una, sobre lo que hice esta semana, hasta sacar tres.\nDe cada una, dime quién la tomó: yo, tú, o nadie.\n\nCONDICIÓN DE PARADA\nSi no te he contado qué hice esta semana, no lo supongas: pregúntamelo y para.",
     "parte": "1–7",
     "rotulo": "Tus reglas · 1 de 7",
-    "clase": "En clase: slide 69",
+    "clase": "En clase: slide 71",
     "porque": [
      "Trabajando con IA lo haces todo tú: pides, ejecutas y validas. Y como los tres roles los hace la misma persona, **el que valida casi siempre le da la razón al que pidió**.",
      "Un rol no es una forma de trabajar que te pones y te quitas. Es un límite, y el límite solo existe si está escrito, sobre todo **lo que ese rol NO decide**."
@@ -119,7 +119,7 @@
     "encargo": "CONTEXTO\nMi trabajo del máster es [dos líneas]. Mi semana es [cómo es de verdad, con\nhorarios]. Quiero fijar un rato semanal para parar y revisar lo hecho.\n\nOBJETIVO\nElegir el momento de la semana en que de verdad puedo parar veinte minutos.\n\nQUÉ NO ES\nNo quiero una rutina de productividad ni consejos de organización.\n\nCRITERIOS\nUn solo momento, con día y hora. Dime qué lo puede hacer fallar.\n\nCONDICIÓN DE PARADA\nSi no te he contado cómo es mi semana, pregúntamelo y para.",
     "parte": "1–7",
     "rotulo": "Tus reglas · 2 de 7",
-    "clase": "En clase: slide 70",
+    "clase": "En clase: slide 72",
     "porque": [
      "La revisión de cada semana es un momento fijo, por ejemplo veinte minutos cada viernes. No produce nada: solo sirve para parar y preguntarte **¿sigo resolviendo el problema correcto?**",
      "En una empresa eso pasa solo: alguien discute, alguien frena, alguien pregunta en una reunión. Trabajando solo con IA **desaparecen esos frenos**. Ganas velocidad y pierdes los controles que antes tenías sin esfuerzo. La revisión de cada semana los recupera."
@@ -173,7 +173,7 @@
      ],
      [
       "No comparto con una IA",
-      "Las notas de las entrevistas con peluqueras, ni siquiera con los nombres cambiados."
+      "Una entrevista con una peluquera solo entra sin nada que la identifique y con su permiso. Nunca los teléfonos de sus clientas."
      ]
     ],
     "plantilla": [
@@ -185,7 +185,7 @@
     "encargo": "CONTEXTO\nTrabajo en marketing digital y estoy en un máster. Estas son mis tres líneas\nrojas, escritas hoy: [pégalas].\n\nOBJETIVO\nEncontrar el hueco. Quiero una situación realista de mi trabajo en la que\nlas tres se cumplan y aun así yo haya hecho algo que no debía.\n\nQUÉ NO ES\nNo me digas si están bien escritas. No me propongas una cuarta.\n\nCRITERIOS\nUna situación concreta, de mi proyecto, con el mes y lo que estaría haciendo.\nSi no se te ocurre ninguna, dímelo claro: significa que son tan amplias que\nno me van a frenar nunca.\n\nCONDICIÓN DE PARADA\nSi te faltan datos sobre cómo trabajo, pídemelos antes de inventarte nada.",
     "parte": "1–7",
     "rotulo": "Tus reglas · 3 de 7",
-    "clase": "En clase: slide 71",
+    "clase": "En clase: slide 73",
     "porque": [
      "Los límites que no están escritos **se olvidan justo cuando hay prisa**, por ejemplo la noche antes de una entrega. Por eso se escriben antes de necesitarlos. Después ya no funcionan como límites, sino como excusas.",
      "Y un matiz: **un principio no es un límite.** «Ser riguroso» no frena a nadie. Un límite dice qué no vas a hacer, en concreto."
@@ -248,7 +248,7 @@
     "encargo": "CONTEXTO\nMi frase de unidad de valor, rellenada, queda así: [pégala]. Lo que tengo\nentre manos es [dos líneas: tu proyecto, o el trabajo del máster].\n\nOBJETIVO\nTres cosas que estoy haciendo en mi proyecto y que NO caben dentro de esa\nfrase.\n\nQUÉ NO ES\nNo me digas si la frase está bien. No me la reescribas.\n\nCRITERIOS\nTres actividades concretas, no categorías. Si no sabes qué estoy haciendo,\npregúntamelo primero: sin eso te lo estarías inventando.\n\nCONDICIÓN DE PARADA\nSi la frase tiene un hueco sin rellenar, no lo completes tú: dímelo y para.",
     "parte": "1–7",
     "rotulo": "Tus reglas · 4 de 7",
-    "clase": "En clase: slide 72",
+    "clase": "En clase: slide 74",
     "porque": [
      "Si no defines qué cuenta como resultado útil, **todo parece avance**: el documento bonito, la conversación interesante, el prototipo que nadie ha visto. Y entonces no puedes saber si avanzas ni qué descartar."
     ],
@@ -270,7 +270,7 @@
        },
        {
         "k": "r2",
-        "txt": "**Se comprueba sobre el resultado real, nunca sobre un sustituto.** No doy algo por bueno porque se aprobó el borrador: lo doy por bueno por lo que se publicó."
+        "txt": "**Se comprueba sobre la versión que vas a entregar o usar, nunca sobre un borrador.** No doy algo por bueno porque se aprobó el borrador: reviso la versión final, con sus datos y conclusiones."
        },
        {
         "k": "r3",
@@ -292,13 +292,13 @@
      "5 · LAS TRES REGLAS DEL ENCARGO",
      "",
      "  [{r1}] Ninguna cifra que yo dé en un encargo es un dato fiable.",
-     "  [{r2}] Se comprueba sobre el resultado real, nunca sobre un sustituto.",
+     "  [{r2}] Se comprueba sobre la versión que voy a entregar o usar, nunca sobre un borrador.",
      "  [{r3}] Toda entrega termina con «¿cómo podría estar esto mal de una forma que no he previsto?»."
     ],
     "encargo": "CONTEXTO\nTrabajo en marketing digital, y en concreto en [tu terreno]. Acabo de\nadoptar una regla que dice que la aceptación se observa sobre lo real y\nnunca sobre un sustituto.\n\nOBJETIVO\nSaber cuál es el sustituto que en mi terreno se valida por comodidad en\nlugar de lo real.\n\nQUÉ NO ES\nNo quiero la definición de sustituto. No quiero ejemplos de otros sectores.\n\nCRITERIOS\nTres candidatos, de mi terreno. Después pregúntame cuál reconozco como mío,\ny no me digas cuál crees que es hasta que yo haya contestado.\n\nCONDICIÓN DE PARADA\nSi no te he dicho en qué trabajo exactamente, pregúntamelo y para.",
     "parte": "1–7",
     "rotulo": "Tus reglas · 5 de 7",
-    "clase": "En clase: slide 73",
+    "clase": "En clase: slide 75",
     "porque": [
      "Un **encargo** es una instrucción completa para la IA. Una petición normal (un prompt) dice qué quieres; un encargo dice también qué no se puede tocar, cómo se comprueba que está bien y cuándo hay que parar.",
      "Estas tres reglas son las únicas del método que **se copian tal cual, sin adaptar**. No hace falta que las entiendas del todo hoy: las entenderás la primera vez que te eviten un error."
@@ -369,7 +369,7 @@
     "encargo": "CONTEXTO\nEste es un fallo que ya me ha pasado trabajando —en el máster, en el trabajo\no donde sea—: [dos líneas]. Lo arreglé [dónde lo arreglaste].\n\nOBJETIVO\nSaber si lo arreglé donde lo vi o donde se produce. Y ponerle un nombre con\nel que lo reconozca cuando vuelva por otro sitio.\n\nQUÉ NO ES\nNo me consueles y no me digas que es normal.\n\nCRITERIOS\nUna sola pregunta cada vez, y no aceptes mi primera respuesta sobre dónde lo\narreglé. El nombre, en mayúsculas con guiones y feo: se recuerda mejor.\n\nCONDICIÓN DE PARADA\nSi todavía no tengo ningún fallo que contarte, no te inventes uno: dime que\ndeje el catálogo abierto y vacío, y para.",
     "parte": "1–7",
     "rotulo": "Tus reglas · 6 de 7",
-    "clase": "En clase: slide 74",
+    "clase": "En clase: slide 76",
     "porque": [
      "Los errores sin nombre se repiten, porque cada vez parecen nuevos. Un fallo descrito en un párrafo no se reconoce cuando vuelve con otra forma. Con un nombre, sí. **El nombre sirve para reconocerlo la próxima vez.**",
      "Hoy solo hay que **abrirlo**. Si todavía no tienes ningún fallo que apuntar, déjalo vacío: lo importante es que ya existe un sitio donde apuntar el primero."
@@ -393,8 +393,8 @@
        },
        {
         "k": "g3",
-        "label": "Qué día",
-        "ph": "Ej. Jueves 22"
+        "label": "Qué día y a qué hora",
+        "ph": "Ej. Jueves 22 a las 19:00"
        }
       ]
      },
@@ -434,7 +434,7 @@
     "encargo": "CONTEXTO\nLo que tengo entre manos es [dos líneas]. Llevo [cuánto tiempo] sin hablar de\nesto con nadie de fuera.\n\nOBJETIVO\nSaber qué me diría alguien de fuera que yo no me estoy diciendo.\n\nQUÉ NO ES\nNo quiero una lista de perfiles ni un guion de entrevista.\n\nCRITERIOS\nAntes de contestar, pregúntame quién es esa persona en concreto y qué sabe\nque yo no. Después, una sola cosa: la que más me costaría oír.\n\nCONDICIÓN DE PARADA\nSi no puedo nombrar a nadie concreto, no sigas: dímelo, porque ese es el\nproblema de verdad.",
     "parte": "1–7",
     "rotulo": "Tus reglas · 7 de 7",
-    "clase": "En clase: slide 75",
+    "clase": "En clase: slide 77",
     "porque": [
      "Puedes trabajar semanas con un sistema impecable **sin contrastarlo nunca con el mundo real**. Y desde dentro parece que vas bien: siempre hay una siguiente pregunta interesante, y contestarla parece progreso, aunque no lo sea para tu proyecto.",
      "Este es el único control del método que **no puedes delegar**. Los demás se escriben o se automatizan. Este exige que salgas tú a hablar con alguien."
@@ -446,7 +446,7 @@
     "parte": "8–14",
     "titulo": "Crea tu carpeta",
     "rotulo": "Monta tu sistema · capa Memoria",
-    "clase": "En clase: slides 81 y 82",
+    "clase": "En clase: slides 83 y 84",
     "tarea": "Capa **Memoria**. Tu asesor y tú leéis lo mismo, y cada cambio queda guardado.",
     "que": [],
     "pruebas": [
@@ -495,13 +495,13 @@
     "parte": "8–14",
     "titulo": "Crea tu asesor",
     "rotulo": "Monta tu sistema · capa Roles",
-    "clase": "En clase: slides 83 a 88",
+    "clase": "En clase: slides 85 a 90",
     "tarea": "Capa **Roles**. Te conoce sin que se lo repitas: sabe tus reglas y lee tus documentos.",
     "que": [],
     "pruebas": [
      "Elige uno: un Gem de Gemini, o un proyecto de ChatGPT o de Claude.",
      "Llámalo «Asesor de mi TFM». En sus instrucciones, de momento, pega solo esta línea:",
-     "Dale tu documento Estado, desde tu carpeta."
+     "Dale tu documento Estado, desde tu carpeta. Si luego lo cambias, vuelve a dárselo."
     ],
     "grupos": [
      {
@@ -550,7 +550,7 @@
     "parte": "8–14",
     "titulo": "Crea tu cuaderno de fuentes",
     "rotulo": "Monta tu sistema · capa Herramientas",
-    "clase": "En clase: slide 89",
+    "clase": "En clase: slide 91",
     "tarea": "Capa **Herramientas**. Cada respuesta dice de qué documento sale. Ningún dato sin su fuente.",
     "que": [],
     "pruebas": [
@@ -584,7 +584,7 @@
     "ejemplo": [
      [
       "Fuentes",
-      "Un cuaderno de NotebookLM, «Fuentes de mi TFM», con la plantilla del encargo y, más adelante, las entrevistas a peluquerías."
+      "Un cuaderno de NotebookLM, «Fuentes de mi TFM», con la plantilla del encargo y, más adelante, las entrevistas a peluquerías, sin nombres y con su permiso."
      ]
     ],
     "capa": "Herramientas",
@@ -599,7 +599,7 @@
     "parte": "8–14",
     "titulo": "Abre tu revisor",
     "rotulo": "Monta tu sistema · capa Roles",
-    "clase": "En clase: slide 90",
+    "clase": "En clase: slide 92",
     "tarea": "Capa **Roles**. Tu asesor ya piensa como tú. El revisor ve lo que vosotros dos ya no veis.",
     "que": [],
     "pruebas": [
@@ -631,7 +631,7 @@
      }
     ],
     "check": [
-     "Si te señala algo débil que no habías visto, está bien. Si te dice que está muy bien, repite el encargo."
+     "Está bien si señala algo concreto y te dice cómo comprobarlo, o si explica qué ha revisado. Si solo te da la razón, repite el encargo."
     ],
     "ejemplo": [
      [
@@ -642,11 +642,11 @@
     "capa": "Roles",
     "copiar": {
      "tras": 2,
-     "txt": "Busca la debilidad más grave. No me des la razón."
+     "txt": "Busca la debilidad más grave y dime cómo comprobarla. Si no encuentras ninguna importante, dime qué has revisado."
     },
     "siFalla": [
      "**No tienes otro asistente.** Crea una cuenta gratis en uno distinto del de tu asesor: ChatGPT si tu asesor es Gemini, por ejemplo.",
-     "**Te dice que está muy bien.** Repite el encargo y añade: «Elige una, aunque te parezca buena»."
+     "**Solo te da la razón.** Pídele que te diga qué ha revisado y cómo lo comprobaría."
     ],
     "siguiente": "Funciona · siguiente paso →"
    },
@@ -655,12 +655,12 @@
     "parte": "8–14",
     "titulo": "Revisa lo que no le das",
     "rotulo": "Monta tu sistema · capa Memoria",
-    "clase": "En clase: slide 91",
+    "clase": "En clase: slide 93",
     "tarea": "Capa **Memoria**. Lo que subes a un asistente sale de tu control.",
     "que": [],
     "pruebas": [
      "Repasa tu carpeta, los archivos de tu asesor y tu cuaderno.",
-     "Busca lo de la lista: clientes reales, tu empresa, nombres, contratos, contraseñas.",
+     "Busca lo de la lista: clientes reales, tu empresa, nombres, contratos, contraseñas, entrevistas sin permiso.",
      "Si hay algo, bórralo de los tres sitios, no solo de la carpeta."
     ],
     "grupos": [
@@ -704,7 +704,7 @@
     "parte": "8–14",
     "titulo": "Mete tus reglas dentro de tu asesor",
     "rotulo": "Monta tu sistema · capa Tú",
-    "clase": "En clase: slides 92 y 93",
+    "clase": "En clase: slides 94 y 95",
     "tarea": "Capa **Tú**. Así el asesor las aplica en cada conversación, sin que te acuerdes.",
     "que": [],
     "pruebas": [
@@ -749,7 +749,7 @@
     "parte": "8–14",
     "titulo": "La prueba: que tu asesor revise tus reglas",
     "rotulo": "Monta tu sistema · capa Controles",
-    "clase": "En clase: slides 94 y 95",
+    "clase": "En clase: slides 96 y 97",
     "tarea": "Capa **Controles**. El primer encargo de verdad a tu sistema.",
     "que": [],
     "pruebas": [
@@ -779,7 +779,7 @@
      }
     ],
     "check": [
-     "**Te da la razón en todo:** no ha revisado. Pídele que elija la regla más floja.",
+     "**Te da la razón en todo:** pídele que te diga, regla por regla, qué ha mirado.",
      "**Señala una regla genérica:** reescríbela con algo que solo sea verdad en tu caso.",
      "**Propone reglas nuevas:** son opciones, no correcciones. Decides tú.",
      "Lo que cambies, cámbialo en tus reglas (pasos 1 a 7) y vuelve a pegarlas en tu asesor."
@@ -793,7 +793,7 @@
     "capa": "Controles",
     "copiar": {
      "tras": 1,
-     "txt": "Revisa mis reglas. Señala la que podría haber escrito cualquiera, la que me saltaré primero cuando tenga prisa y la que no puedo comprobar. No me des la razón. Si te falta información, pregúntame."
+     "txt": "Revisa mis reglas. Señala la que podría haber escrito cualquiera, la que me saltaré primero cuando tenga prisa y la que no puedo comprobar. Si alguna está bien, dime por qué. Si te falta información, pregúntame."
     },
     "siFalla": [
      "**Contesta sin conocer tus reglas.** Haz antes el paso 13: tus reglas tienen que estar en sus instrucciones."
@@ -853,7 +853,7 @@
      "     {cc2}"
     ],
     "rotulo": "Contraste por parejas",
-    "clase": "En clase: slides 99 y 100",
+    "clase": "En clase: slides 101 y 102",
     "porque": [
      "Este paso es el que convierte el protocolo en algo tuyo y no en un formulario relleno. Quien escucha no consuela: busca la línea más floja y te ayuda a reescribirla."
     ],
@@ -950,7 +950,7 @@
     ],
     "claro": {
      "titulo": "Envía tu hoja",
-     "clase": "En clase: slides 107 y 108",
+     "clase": "En clase: slides 109 y 110",
      "tarea": "Tu sistema y tus siete reglas, en un documento. **Te lo llevas y lo envías a la dirección del máster.**",
      "registro": "Crea tu registro de errores",
      "registroTxt": "En tu carpeta, dentro de 05_registro_de_errores. Aunque esté vacío: un error con nombre se reconoce cuando vuelve.",
