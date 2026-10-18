@@ -4,8 +4,7 @@
   "kicker": "IA-Lab 1 · Máster en Dirección de Marketing Digital (edición 31) · UPF Barcelona School of Management",
   "lede": "La hoja de la sesión del 20 de octubre. **Se rellena en clase, a la vez que avanza la sesión.**",
   "facts": [
-   "Se hace en clase, paso a paso",
-   "Al final, se envía a la dirección del máster"
+   "Se hace en clase, paso a paso"
   ],
   "bloques": [
    {
@@ -858,9 +857,10 @@
      "Este paso es el que convierte el protocolo en algo tuyo y no en un formulario relleno. Quien escucha no consuela: busca la línea más floja y te ayuda a reescribirla."
     ],
     "escribe": "Anota lo que salga",
-    "siguiente": "Hecho · último paso →",
+    "siguiente": "Hecho · he terminado",
     "hecho": "h15",
-    "hazlo": "Las tres preguntas"
+    "hazlo": "Las tres preguntas",
+    "fin": "Hoja terminada. Tus reglas ya están dentro de tu asesor."
    }
   ],
   "pie": "IA-Lab 1 · MMDD31 · UPF-BSM",
@@ -869,7 +869,7 @@
    "titulo": "Antes de empezar",
    "que": [
     "En clase: slides 3 a 5",
-    "Hoy montas tu sistema de trabajo con IA. Primero escribes tus siete reglas (pasos 1 a 7), luego montas tu sistema (pasos 8 a 14), lo contrastas con un compañero (paso 15) y envías la hoja (paso 16)."
+    "Hoy montas tu sistema de trabajo con IA. Primero escribes tus siete reglas (pasos 1 a 7), luego montas tu sistema (pasos 8 a 14) y lo contrastas con un compañero (paso 15)."
    ],
    "grupos": [],
    "plantilla": [
@@ -901,9 +901,9 @@
       "txt": "Carpeta, asesor, fuentes y revisor, y tus reglas dentro del asesor. Cada paso acaba con una prueba."
      },
      {
-      "n": "15–16",
+      "n": "15",
       "t": "Y después",
-      "txt": "Las contrastas con un compañero y envías la hoja."
+      "txt": "Las contrastas con un compañero."
      }
     ],
     "tener": "**Ten abierto:** el portátil, tu cuenta de Google de la UPF y esta web, con tu correo.",
@@ -968,9 +968,10 @@
    {
     "t": "Y después",
     "de": 15,
-    "a": 16
+    "a": 15
    }
-  ]
+  ],
+  "sinSalida": true
  },
  "hojas/mmdd31/0.json": {
   "titulo": "Encuentra o pon a prueba tu idea de TFM",
