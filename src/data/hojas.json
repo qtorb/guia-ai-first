@@ -255,7 +255,7 @@
    },
    {
     "n": "05",
-    "titulo": "Usa las tres reglas del encargo",
+    "titulo": "Tres frases fijas en cada encargo",
     "tarea": "Son las únicas reglas que **se copian tal cual. Márcalas.**",
     "que": [],
     "cicatriz": "Al principio dejé que la IA decidiera mucho por su cuenta para ir más rápido. Decidía qué hacer, cuándo y con qué criterio; no con el mío, porque el mío no estaba escrito. La velocidad era solo aparente y me costó el primer prototipo entero.",
@@ -288,7 +288,7 @@
      }
     ],
     "plantilla": [
-     "5 · LAS TRES REGLAS DEL ENCARGO",
+     "5 · TRES FRASES FIJAS EN CADA ENCARGO",
      "",
      "  [{r1}] Ninguna cifra que yo dé en un encargo es un dato fiable.",
      "  [{r2}] Se comprueba sobre la versión que voy a entregar o usar, nunca sobre un borrador.",
@@ -803,12 +803,12 @@
     "n": "15",
     "esContraste": true,
     "titulo": "Léele tus reglas a un compañero",
-    "tarea": "Por parejas. **Quien escucha busca la línea más floja** con estas tres preguntas.",
+    "tarea": "Por parejas, cinco minutos cada uno. Lees tus reglas y **tu compañero te dice cuál es la más floja**, con estas tres preguntas. La reescribes y lo apuntas aquí.",
     "que": [],
     "pruebas": [
-     "**¿Qué línea podría haber escrito cualquiera de la clase?** Reescríbela con algo que solo sea verdad en tu caso.",
-     "**¿Qué regla te saltarás primero cuando tengas prisa?** Refuérzala, o hazla más fácil de cumplir.",
-     "**¿Qué das por hecho y no has comprobado?** Márcalo como suposición. No resta: te protege."
+     "**¿Esta regla la podría haber escrito cualquiera de la clase?** Reescríbela con algo que solo pase en tu proyecto.",
+     "**¿Cuál te saltarás primero cuando vayas con prisa?** Hazla más fácil de cumplir.",
+     "**¿Qué das por hecho sin haberlo comprobado?** Apúntalo como algo que aún no puedes demostrar."
     ],
     "grupos": [
      {
@@ -893,7 +893,7 @@
      {
       "n": "1–7",
       "t": "Tus reglas",
-      "txt": "Escribes seis reglas con tus palabras y marcas tres comprobaciones comunes."
+      "txt": "Escribes seis reglas con tus palabras; la 5 ya viene hecha."
      },
      {
       "n": "8–14",
@@ -914,7 +914,7 @@
    {
     "id": "1–7",
     "titulo": "Tus siete reglas",
-    "que": "Cómo vas a trabajar con IA en el máster: seis reglas cortas que **escribes tú, con tus palabras**, y tres comprobaciones comunes en la quinta."
+    "que": "Cómo vas a trabajar con IA en el máster: siete reglas cortas. Seis las **escribes tú, con tus palabras**; la 5 ya viene hecha."
    },
    {
     "id": "8–14",
