@@ -538,8 +538,8 @@
      "txt": "Eres el asesor de mi TFM. Pregúntame antes de suponer."
     },
     "siFalla": [
-     "**No te deja crear un Gem.** Haz tu asesor en un proyecto de ChatGPT o de Claude. Es gratis.",
-     "**No te deja conectar Drive.** Es la UPF, no tú. Descarga el documento Estado y súbelo a mano.",
+     "**Gemini te dice que has llegado al límite.** Tu cuenta no es la Pro. Sigue en el otro asistente y vuelve más tarde.",
+     "**No ves la opción de Drive.** Descarga el documento Estado y súbelo a mano.",
      "**No nombra tu documento Estado.** Comprueba que lo has subido a los archivos del asesor, no a una conversación."
     ],
     "siguiente": "Funciona · siguiente paso →"
@@ -588,7 +588,7 @@
     ],
     "capa": "Herramientas",
     "siFalla": [
-     "**No ves NotebookLM.** Usa los archivos del proyecto de tu asesor y pídele siempre la cita.",
+     "**No ves NotebookLM o Gems.** Comprueba que has entrado con la cuenta de la UPF, no con la personal. Si sigue sin salir, usa los archivos del proyecto de tu asesor y pídele siempre la cita.",
      "**Contesta pero no dice de dónde sale.** Pídeselo: «Dime de qué documento sale cada respuesta»."
     ],
     "siguiente": "Funciona · siguiente paso →"
