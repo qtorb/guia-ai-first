@@ -810,6 +810,9 @@
      "**¿Cuál te saltarás primero cuando vayas con prisa?** Hazla más fácil de cumplir.",
      "**¿Qué das por hecho sin haberlo comprobado?** Apúntalo como algo que aún no puedes demostrar."
     ],
+    "check": [
+     "Una regla está bien si solo vale para tu proyecto, la cumplirías con prisa y se puede comprobar si la cumples."
+    ],
     "grupos": [
      {
       "tipo": "fila2",
