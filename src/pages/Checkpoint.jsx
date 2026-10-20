@@ -138,8 +138,8 @@ export default function Checkpoint({ n }) {
 
   return (
     <div className="pagina">
-      <p className="rotulo">El método · cierre de semana</p>
-      <h1>Cierre de semana</h1>
+      <p className="rotulo">El método · checkpoint</p>
+      <h1>Checkpoint</h1>
 
       <div className="entradilla">
         <p>Media hora, una vez por semana. Cuatro preguntas fijas, tres números y un
@@ -265,7 +265,7 @@ export default function Checkpoint({ n }) {
 
       <div className="acciones">
         <button className="btn" onClick={guardar} disabled={!puedeGuardar}>
-          {entradaHoy || guardado ? 'Guardar los cambios' : 'Guardar el cierre de semana'}
+          {entradaHoy || guardado ? 'Guardar los cambios' : 'Guardar el checkpoint'}
         </button>
       </div>
       <p className="ayuda">{n?.estado === 'dentro'

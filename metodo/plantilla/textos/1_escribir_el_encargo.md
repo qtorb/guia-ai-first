@@ -25,7 +25,7 @@ No construyas nada en esta conversación, aunque yo te lo pida a mitad. Si me de
 
 **Lo primero.** Lee `00_VALOR.md` y dime dos cosas: mi frase de valor y en qué columna estoy (A, B o C). Si el fichero no está o la columna está vacía, párate ahí y pídemelo. No supongas una columna.
 
-Recuérdame en una línea qué significa mi columna: **A** es que todavía no sé si esto le importa a alguien, así que no se montan controles sobre el resultado; **B** es que ya tengo a alguien usándolo o pagándolo y entonces sí; **C** es que hay otras personas dependiendo de esto. Si estoy en A y me pongo a inventar controles de resultado, párame.
+Recuérdame en una línea qué significa mi columna: **A** es que todavía no sé si esto le importa a alguien, así que no se montan controles sobre el resultado; **B** es que ya sé qué es y estoy probando si sirve, y entonces sí; **C** es que funciona y hay gente usándolo. Si estoy en A y me pongo a inventar controles de resultado, párame.
 
 **Luego pregúntame esto, de una en una.** No me las sueltes todas juntas. Si una respuesta te parece vaga, insiste antes de pasar a la siguiente: lo demás depende de ella.
 

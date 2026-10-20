@@ -10,10 +10,10 @@
 ```
 CONTEXTO DEL PROYECTO
 
-  Valor: este trabajo produce valor cuando [quién] puede tomar mejor
-  la decisión de [qué].
+  Valor: este trabajo produce valor cuando {{quien}} puede tomar mejor
+  la decisión de {{que}}.
 
-  Fase: columna [A/B/C].
+  Fase: columna {{columna}}.
     A — no sé aún qué construyo
     B — ya sé qué, y pruebo si sirve
     C — sirve, y lo usa alguien

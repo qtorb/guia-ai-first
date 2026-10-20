@@ -39,6 +39,12 @@ const HUECOS = {
   cuando: '',
   sino: '',
   fecha_entrada: '[fecha]',
+  cierre_hoy: '',
+  cambiar_columna: '',
+  stack_asesor: '',
+  stack_ejecutor: '',
+  stack_fuera: '',
+  presupuesto: '________',
   asesor_no: '- Arquitectura, datos, orden técnico\n'
     + '- Si un cambio es seguro de publicar\n'
     + '- **Qué está prohibido**\n'

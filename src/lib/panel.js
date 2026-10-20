@@ -54,7 +54,7 @@ export function nombrePaso(hoja, p) {
 }
 
 export const PASOS_METODO = [
-  'Frase de valor', 'Fase', 'Líneas rojas', 'Quién decide', 'Cuándo usas IA', 'Qué pones a prueba', 'Primer encargo',
+  'Frase de valor', 'Columna', 'Líneas rojas', 'Roles', 'Stack', 'Memoria', 'Gate', 'Qué pones a prueba', 'Primer encargo', 'Llévatelo',
 ];
 
 const DIA = 86400000;

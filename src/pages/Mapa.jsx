@@ -127,16 +127,18 @@ export default function Mapa() {
 
       <hr />
 
-      <h2>Los siete pasos</h2>
+      <h2>Los nueve pasos</h2>
       <p>Quince minutos. Cada paso escribe en un fichero real, y puedes volver a
         cualquiera que ya hayas hecho.</p>
       <ol className="mapa-pasos">
         {[
           'Tu frase de valor — para quién es esto',
           'Tu columna — A, B o C',
-          'Tus líneas rojas',
-          'Tus roles — asesor y checkpoint',
-          'Cuándo usas IA y cuándo no',
+          'Líneas rojas y protocolo de uso',
+          'Quién decide qué, y dónde vive cada uno',
+          'Tu stack',
+          'La memoria del proyecto',
+          'Tu primer gate',
           'Lo que pones a prueba esta semana',
           'Tu primer encargo',
         ].map((t, i) => (

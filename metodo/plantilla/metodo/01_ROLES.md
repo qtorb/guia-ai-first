@@ -48,7 +48,7 @@ Cuando aparece algo que el encargo no contempla: para y pregunta. No elige. Lo n
 
 ---
 
-## Checkpoint
+## Revisor
 
 *El único rol que no produce nada. Por eso es el primero que desaparece cuando hay prisa, y el único que detecta que llevas tres días resolviendo el problema equivocado.*
 

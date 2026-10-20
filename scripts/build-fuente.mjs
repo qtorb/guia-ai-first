@@ -2,9 +2,10 @@
 // resuelve los números de capítulo con capitulos.mjs, y escribe dos JSON
 // que consume la web:
 //
-//   src/data/fuente-ligera.json — textos/* y los cinco ficheros con huecos
+//   src/data/fuente-ligera.json — textos/* y los ficheros con huecos
 //   {{...}} (metodo/00_VALOR.md, 01_ROLES.md, 02_LINEAS_ROJAS.md,
-//   03_HIPOTESIS.md, 07_CIERRE.md), con los huecos SIN rellenar: la web los
+//   03_HIPOTESIS.md, 07_CIERRE.md, 08_DECISIONES.md, 09_STACK.md y
+//   roles/asesor.md), con los huecos SIN rellenar: la web los
 //   rellena ella misma, según quién los lea (ficheros(d, marcado) en
 //   src/lib/protocoloAiFirst.js).
 //
@@ -38,6 +39,9 @@ const LIGEROS = new Set([
   'metodo/02_LINEAS_ROJAS.md',
   'metodo/03_HIPOTESIS.md',
   'metodo/07_CIERRE.md',
+  'metodo/08_DECISIONES.md',
+  'metodo/09_STACK.md',
+  'roles/asesor.md',
 ]);
 const EXCLUIDOS_DE_FUENTE = new Set(['README.md', 'LEEME_PRIMERO.md', '.gitignore']);
 

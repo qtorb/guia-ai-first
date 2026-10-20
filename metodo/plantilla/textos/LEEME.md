@@ -26,7 +26,7 @@ El más importante de todos. Saca las tres frases literales, decide si tu idea s
 
 **Una vez por semana, el día de tu checkpoint** → `5_checkpoint.md`
 
-Media hora, cuatro preguntas fijas y un veredicto que firmas tú: seguimos, cambiamos o paramos. En una conversación nueva, con tus ficheros delante. También puedes hacerlo en guia.qtorb.com, en «Cierre de semana», y llevarte el bloque hecho.
+Media hora, cuatro preguntas fijas y un veredicto que firmas tú: seguimos, cambiamos o paramos. En una conversación nueva, con tus ficheros delante. También puedes hacerlo en guia.qtorb.com, en «Checkpoint», y llevarte el bloque hecho.
 
 ---
 
@@ -38,8 +38,8 @@ Media hora, cuatro preguntas fijas y un veredicto que firmas tú: seguimos, camb
 
 **Columna.** En qué fase estás, y lo verás en `00_VALOR.md`:
 - **A** — todavía no sabes si esto le importa a alguien. Aquí no se montan controles sobre el resultado: no puedes controlar un resultado que aún no sabes reconocer. Casi todo el mundo empieza aquí y se queda un buen rato.
-- **B** — ya hay alguien usándolo o pagándolo. Ahora sí, controles.
-- **C** — hay otras personas dependiendo de esto. Todo se documenta.
+- **B** — ya sabes qué es y estás probando si sirve. Ahora sí, controles.
+- **C** — funciona y hay gente usándolo. Todo se documenta.
 
 Sales de A cuando alguien de fuera usa lo que has hecho, no cuando tú crees que está listo.
 

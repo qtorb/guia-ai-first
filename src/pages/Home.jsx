@@ -65,8 +65,8 @@ function avanceMetodo() {
       }
     } catch (e) { /* sin plan legible: se cae al paso */ }
   }
-  const paso = Math.min(Number(d._paso) || 1, 7);
-  return { est: `Empezado · paso ${paso} de 7`, cta: 'Seguir montándolo →', destino: '/metodo/recorrido' };
+  const paso = Math.min(Number(d._paso) || 1, 9);
+  return { est: `Empezado · paso ${paso} de 9`, cta: 'Seguir montándolo →', destino: '/metodo/recorrido' };
 }
 
 export default function Home({ dossierCtl }) {

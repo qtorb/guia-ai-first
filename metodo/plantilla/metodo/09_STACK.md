@@ -15,7 +15,8 @@ Una herramienta es lo que abres. Un stack es lo que abres, qué rol ocupa cada c
 
 | Fecha | Entra | Sale | Rol que ocupa | Motivo | Coste/mes |
 |---|---|---|---|---|---|
-| | | | | | |
+| {{fecha}} | {{stack_asesor}} | — | Asesor | Día cero, columna {{columna}} | — |
+| {{fecha}} | {{stack_ejecutor}} | — | Ejecutor | Día cero, columna {{columna}} | — |
 
 <!-- EJEMPLO
 | 14/09 | [producto] | — | Asesor | Día cero, columna A | 20 € |
@@ -32,10 +33,10 @@ Una herramienta es lo que abres. Un stack es lo que abres, qué rol ocupa cada c
 
 | Rol | Herramienta | Desde | Qué lo haría cambiar |
 |---|---|---|---|
-| Asesor | | | |
-| Ejecutor | | | |
+| Asesor | {{stack_asesor}} | {{fecha}} | |
+| Ejecutor | {{stack_ejecutor}} | {{fecha}} | |
 | Especialista técnico *(B+)* | | | |
-| Revisión independiente *(B+)* | | | |
+| Revisores de fuera *(B+)* | {{stack_fuera}} | {{fecha}} | |
 | En evaluación | | | No adoptado hasta un trabajo real con consecuencias |
 
 ### Capas que no son IA — las que sostienen
@@ -54,7 +55,7 @@ Una herramienta es lo que abres. Un stack es lo que abres, qué rol ocupa cada c
 
 ## Coste
 
-**Presupuesto mensual:** ________ · **Umbral de alarma:** ________
+**Presupuesto mensual:** {{presupuesto}} · **Umbral de alarma:** ________
 
 Tres sitios donde se mira, ya montados por el resto del método: el coste de cada tanda (manual 4.8<!--cap:cerrar-tanda-->) · la línea del cierre del día (4) · la división coste entre decisiones que mejoraron, en la revisión (10).
 
