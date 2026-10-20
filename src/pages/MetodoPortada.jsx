@@ -117,11 +117,11 @@ export default function MetodoPortada() {
       ) : (
         <>
           <h2>Empieza preparando el tuyo</h2>
-          <p>Quince minutos, nueve pasos. No hace falta instalar nada ni saber programar.</p>
+          <p>Media hora, nueve pasos. No hace falta instalar nada ni saber programar.</p>
 
           <div className="acciones">
             <button className="btn" onClick={() => navigate('/metodo/recorrido')}>
-              {paso > 1 ? `Seguir donde lo dejé · paso ${paso} de 7` : 'Preparar el mío · 15 minutos'}
+              {paso > 1 ? `Seguir donde lo dejé · paso ${paso} de 9` : 'Preparar el mío · media hora'}
             </button>
             <button className="btn btn-2" onClick={() => navigate('/guia')}>Leer el manual primero</button>
           </div>
@@ -143,7 +143,7 @@ export default function MetodoPortada() {
 
       <h2>Cómo funciona</h2>
       <ol>
-        <li><b>Lo preparas en quince minutos.</b> Nueve preguntas: para quién trabajas, en qué
+        <li><b>Lo preparas en media hora.</b> Nueve preguntas: para quién trabajas, en qué
           punto estás, qué no se puede tocar, quién decide qué y qué idea vas a comprobar
           primero con alguien de fuera.</li>
         <li><b>Te llevas tus ficheros y un plan con fechas.</b> Tus respuestas en texto, las

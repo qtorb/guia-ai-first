@@ -128,7 +128,7 @@ export default function Mapa() {
       <hr />
 
       <h2>Los nueve pasos</h2>
-      <p>Quince minutos. Cada paso escribe en un fichero real, y puedes volver a
+      <p>Media hora. Cada paso escribe en un fichero real, y puedes volver a
         cualquiera que ya hayas hecho.</p>
       <ol className="mapa-pasos">
         {[
@@ -170,7 +170,7 @@ export default function Mapa() {
         {/* El mapa ofrecía montar el método aunque ya lo tuvieras montado. Lee
             el mismo sitio que la portada y dice lo que toca. */}
         <button className="btn" onClick={() => navigate(yaEmpezado ? '/metodo/plan' : '/metodo/recorrido')}>
-          {yaEmpezado ? 'Ver mi plan' : 'Montar el mío · 15 minutos'}
+          {yaEmpezado ? 'Ver mi plan' : 'Montar el mío · media hora'}
         </button>
         <button className="btn btn-2" onClick={() => navigate('/guia')}>Ver el método completo</button>
       </div>
