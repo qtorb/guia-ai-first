@@ -288,7 +288,7 @@ function Personas({ datos }) {
               <td data-l="Alta">{fecha(p.alta)}</td>
               <td data-l="Última actividad" className={viejo(p) ? 'pb-viejo' : ''}>{haceCuanto(p.ultima_actividad)}</td>
               {hojas.map((h) => { const e = estadoHoja(p.hojas?.[h.n]); return <td key={h.n} data-l={h.titulo}><span className={'pb-st ' + e.tipo}>{e.txt}</span></td>; })}
-              <td data-l="Método">{p.metodo_paso ? `${p.metodo_paso}/7` : '—'}</td>
+              <td data-l="Método">{p.metodo_paso ? `${p.metodo_paso}/${PASOS_METODO.length}` : '—'}</td>
               <td data-l="Plan 30">{p.plan30 ? 'sí' : '—'}</td>
               <td data-l="Semanas">{p.semanas_cerradas || '—'}</td>
             </tr>

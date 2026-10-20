@@ -10,12 +10,12 @@ function pasoGuardado() {
   try {
     const d = JSON.parse(localStorage.getItem('metodo-ai-first')) || {};
     const hay = Object.keys(d).some((k) => k[0] !== '_' && String(d[k] ?? '').trim());
-    return hay ? Math.min(Number(d._paso) || 1, 7) : 0;
+    return hay ? Math.min(Number(d._paso) || 1, 10) : 0;
   } catch (e) { return 0; }
 }
 
 // Port de dist/sitio/index.html (Método AI-First). Es la entrada del método:
-// desde aquí se monta el tuyo (el recorrido de siete pasos), se lee el manual
+// desde aquí se monta el tuyo (el recorrido de nueve pasos), se lee el manual
 // o se ve el mapa completo.
 // Si el recorrido está terminado, la portada deja de recibir desde cero: dice
 // por dónde vas del mes y qué toca esta semana. Después del mes, dice que
@@ -42,9 +42,9 @@ export default function MetodoPortada() {
   const navigate = useNavigate();
   const paso = pasoGuardado();
   const sit = situacion();
-  // «Terminado» no es haber llegado al paso 7: es haber contestado el 6, que
-  // es lo que produce la carpeta y el plan. Se puede estar en el 7 sin nada.
-  const terminado = paso >= 7 && !!sit;
+  // «Terminado» no es haber llegado al paso 9: es haber contestado el 8, que
+  // es lo que produce la carpeta y el plan. Se puede estar en el 9 sin nada.
+  const terminado = paso >= 9 && !!sit;
   const cont = contador();
   return (
     <div className="pagina">
@@ -101,11 +101,11 @@ export default function MetodoPortada() {
       {terminado ? (
         <>
           <h2>Tu método ya está preparado</h2>
-          <p>Lo escribiste en siete pasos. A partir de ahora, cada semana: cuatro preguntas y
+          <p>Lo escribiste en nueve pasos. A partir de ahora, cada semana: cuatro preguntas y
             una decisión.</p>
 
           <div className="acciones">
-            <button className="btn" onClick={() => navigate('/metodo/recorrido?paso=7')}>
+            <button className="btn" onClick={() => navigate('/metodo/recorrido?paso=10')}>
               Descargar la carpeta otra vez
             </button>
             <button className="btn btn-2" onClick={() => navigate('/metodo/recorrido?paso=1')}>
@@ -117,7 +117,7 @@ export default function MetodoPortada() {
       ) : (
         <>
           <h2>Empieza preparando el tuyo</h2>
-          <p>Quince minutos, siete pasos. No hace falta instalar nada ni saber programar.</p>
+          <p>Quince minutos, nueve pasos. No hace falta instalar nada ni saber programar.</p>
 
           <div className="acciones">
             <button className="btn" onClick={() => navigate('/metodo/recorrido')}>
@@ -143,7 +143,7 @@ export default function MetodoPortada() {
 
       <h2>Cómo funciona</h2>
       <ol>
-        <li><b>Lo preparas en quince minutos.</b> Siete preguntas: para quién trabajas, en qué
+        <li><b>Lo preparas en quince minutos.</b> Nueve preguntas: para quién trabajas, en qué
           punto estás, qué no se puede tocar, quién decide qué y qué idea vas a comprobar
           primero con alguien de fuera.</li>
         <li><b>Te llevas tus ficheros y un plan con fechas.</b> Tus respuestas en texto, las

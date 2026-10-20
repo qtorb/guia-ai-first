@@ -15,7 +15,7 @@ Cuatro palabras, y solo cuatro: <!-- BLOQUE: decision-cuatro -->
 
 | Fecha | Decisión | Por qué | Alternativa descartada | Quién lo propuso | Qué me haría cambiar de opinión |
 |---|---|---|---|---|---|
-| | | | | | |
+| {{fecha}} | aceptar: empiezo el método en columna {{columna}} | Es donde está hoy el proyecto | Seguir sin método | yo | {{cambiar_columna}} |
 
 *Decisión: aceptar · iterar · revertir · aparcar. Quién lo propuso: yo · asesor · ejecutor · fuera.*
 

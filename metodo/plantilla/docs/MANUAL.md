@@ -800,7 +800,7 @@ Los nombres de productos van fechados: **septiembre de 2026**. Las cifras son ó
 - *Repositorio remoto*: el historial real. Es lo que convierte «tirar el 75 %» en una decisión y no en una pérdida.
 - *Un sitio donde corra*: que lo construido esté funcionando, no solo en local. Infraestructura gestionada de bajo coste.
 - *Datos gestionados*: una base de datos administrada donde vive lo que el producto guarda.
-- *Segundo proveedor*: para revisión independiente (capítulo 12<!--cap:contrastar-->). Que no comparta proveedor con el asesor.
+- *Segundo proveedor*: para los revisores de fuera (capítulo 12<!--cap:contrastar-->). Que no comparta proveedor con el asesor.
 - *Lectura y escritura separadas físicamente*: un entorno o rol solo lectura para 4.2<!--cap:leer-antes-->, otro para 4.4<!--cap:ejecutar-->. Cuando el que lee no tiene permiso para escribir, la regla no se puede incumplir por descuido.
 - *Especialista técnico*, si la complejidad lo pide (3.1<!--cap:roles-->).
 
@@ -1018,7 +1018,7 @@ NO decide: nada de lo anterior. Firmo yo.
 ## Ejecutor
 Decide: nada. Ejecuta encargos cerrados.
 
-## Checkpoint
+## Revisor
 Mira si hay que parar. No para.
 Cita: [día] a las [hora]
 ```

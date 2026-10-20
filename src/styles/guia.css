@@ -2103,3 +2103,83 @@ body.ctx-hoja .dndb.on > span,body.ctx-hoja .wrap.taller-lab .dndb.on{background
 body.ctx-hoja .sec-n{background:var(--relleno);color:var(--relleno-t)}
 body.ctx-hoja .tramo.on b{background:var(--relleno)}
 body.ctx-hoja .cebolla circle.on{fill:var(--relleno)}
+
+/* ==========================================================================
+   Recorrido del método v2 (spec 2026-10-20): panel «Tu carpeta», fichas
+   «Este paso escribe en tu carpeta» y paso 10 «Llévatelo».
+   ========================================================================== */
+
+/* desde 960 px: el paso con su ancho y el panel a la derecha */
+@media (min-width:960px){
+  .taller.taller-carpeta{grid-template-columns:minmax(0,640px) 320px;gap:24px;align-items:start}
+}
+/* la vista del fichero vive plegada dentro del paso, a todos los anchos */
+.taller-carpeta .vista{position:static}
+.taller-carpeta .vista>summary{cursor:pointer}
+
+.carpeta-panel{background:var(--fondo);border:1px solid var(--linea);border-radius:var(--radio);
+  padding:16px;display:flex;flex-direction:column;gap:12px;position:sticky;top:24px;width:320px;
+  box-sizing:border-box}
+.carpeta-tit{font-family:var(--familia-titulo);font-size:18px;font-weight:600;margin:0;color:var(--texto)}
+.carpeta-sub{font-size:14px;color:var(--texto-2);margin:0}
+.carpeta-filas{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.carpeta-fila{display:flex;justify-content:space-between;gap:8px;align-items:center;
+  padding:6px 8px;border-radius:var(--radio-chico)}
+.carpeta-ruta{font-family:var(--familia-mono);font-size:13px;overflow-wrap:anywhere;min-width:0}
+.carpeta-etq{font-size:12px;white-space:nowrap}
+.carpeta-fila.ahora{background:var(--acento-sup)}
+.carpeta-fila.ahora .carpeta-ruta{color:var(--texto)}
+.carpeta-fila.ahora .carpeta-etq{color:var(--acento);font-weight:600}
+.carpeta-fila.hecho{background:var(--regla-sup)}
+.carpeta-fila.hecho .carpeta-ruta{color:var(--texto)}
+.carpeta-fila.hecho .carpeta-etq{color:var(--regla)}
+.carpeta-fila.pendiente,.carpeta-fila.fija{background:transparent}
+.carpeta-fila.pendiente .carpeta-ruta,.carpeta-fila.pendiente .carpeta-etq,
+.carpeta-fila.fija .carpeta-ruta,.carpeta-fila.fija .carpeta-etq{color:var(--texto-2)}
+
+/* por debajo de 960 px: plegado bajo el título del paso */
+.carpeta-movil{border:1px solid var(--linea);border-radius:var(--radio);background:var(--fondo);
+  margin:0 0 var(--e5)}
+.carpeta-movil>summary{padding:var(--e3) var(--e4);min-height:44px;display:flex;align-items:center;
+  cursor:pointer;font-family:var(--familia-cuerpo);font-size:17px;font-weight:600;color:var(--texto)}
+.carpeta-movil>summary::before,details.carpeta-movil[open]>summary::before{content:none;display:none}
+.carpeta-movil .carpeta-filas{padding:0 var(--e3) var(--e3)}
+
+/* al final de cada paso: lo que escribe */
+.escribe{margin-top:var(--e6)}
+.escribe-rot{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--texto-2);
+  font-weight:600;margin:0 0 var(--e2)}
+.escribe-fichas{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.escribe-fichas li{font-family:var(--familia-mono);font-size:14px;background:var(--acento-sup);
+  color:var(--acento);border-radius:var(--radio-chico);padding:4px 8px;overflow-wrap:anywhere}
+
+/* paso 10 */
+.paso.paso-listo{max-width:none}
+.listo-h1{margin:0 0 var(--e3)}
+.listo-entrada{color:var(--texto);max-width:var(--medida);margin:0 0 var(--e5)}
+.salidas{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin:0 0 20px}
+.salida{background:var(--fondo);border:1px solid var(--linea);border-radius:var(--radio);padding:24px;
+  display:flex;flex-direction:column;gap:var(--e2)}
+.salida h2{font-family:var(--familia-titulo);font-size:26px;margin:0}
+.salida-para{color:var(--texto-2);margin:0 0 var(--e2)}
+.salida-rot{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--acento);
+  font-weight:600;margin:var(--e3) 0 0}
+.salida ul,.salida ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.salida p{margin:0}
+.salida-botones{margin-top:auto;padding-top:var(--e4);display:flex;flex-direction:column;gap:var(--e2)}
+.salida-botones .btn{width:100%;text-align:center;text-decoration:none;justify-content:center;
+  display:inline-flex;align-items:center;min-height:44px;box-sizing:border-box}
+.listo-cajas{display:flex;flex-wrap:wrap;gap:20px;margin:0 0 var(--e6)}
+.listo-caja{flex:1 1 300px;border-radius:var(--radio);padding:24px}
+.listo-caja h2{margin:0 0 var(--e3);font-size:22px}
+.listo-caja ul{margin:0;padding-left:20px}
+.listo-caja p{margin:0}
+.listo-caja.siempre{background:var(--superficie)}
+.listo-caja.siguiente{background:var(--fondo);border:1px solid var(--linea)}
+.pliegue-ficheros{max-width:none;margin-top:var(--e6)}
+/* diez puntos no caben en una fila a 390 px: dos filas de cinco, cada punto
+   con sus 44 × 44 px pulsables */
+@media (max-width:480px){
+  .progreso{flex-wrap:wrap;max-width:220px}
+  .punto{min-width:44px;width:44px;height:44px}
+}

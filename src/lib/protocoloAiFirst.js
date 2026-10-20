@@ -9,7 +9,7 @@
 // checkpoint…) son EXACTAMENTE los de sitio.py, para que paso a paso y el
 // fichero de vista previa usen las mismas claves sin traducción.
 //
-// Cinco de los siete ficheros (00, 01, 02, 03, 07) salen ahora de
+// Ocho de los diez ficheros (00, 01, 02, 03, 07, 08, 09 y roles/asesor.md) salen de
 // fuente-ligera.json — la misma plantilla que se publica en
 // metodo-ai-first-plantilla, con sus huecos {{...}} sin rellenar— y aquí solo
 // se rellenan esos huecos. Los otros dos (encargos/primera-tanda.md y
@@ -173,6 +173,12 @@ function rellenarHuecos(plantilla, d, marcado) {
     cuando: M(fechaLarga(d.cuando), '[una fecha de esta semana]'),
     sino: M(d.siNo, '[por escribir, y antes de la conversación]'),
     fecha_entrada: fe,
+    cierre_hoy: M(d.cierre_hoy, '[dónde lo dejas hoy]'),
+    cambiar_columna: M(d.cambiar_columna, '[qué te haría cambiar de columna]'),
+    stack_asesor: M(d.stack_asesor, '[dónde trabaja tu asesor]'),
+    stack_ejecutor: M(d.stack_ejecutor, '[dónde trabaja lo que ejecuta]'),
+    stack_fuera: M(d.stack_fuera, '—'),
+    presupuesto: M(d.presupuesto, '[por poner]'),
   };
 
   const texto = marcado ? plantilla.replace(/<!--[\s\S]*?-->\n?/g, '') : plantilla;
@@ -193,6 +199,9 @@ export function ficheros(d, marcado) {
     'metodo/01_ROLES.md': rellenarHuecos(fuenteLigera['metodo/01_ROLES.md'], d, marcado),
     'metodo/02_LINEAS_ROJAS.md': rellenarHuecos(fuenteLigera['metodo/02_LINEAS_ROJAS.md'], d, marcado),
     'metodo/03_HIPOTESIS.md': rellenarHuecos(fuenteLigera['metodo/03_HIPOTESIS.md'], d, marcado),
+    'metodo/08_DECISIONES.md': rellenarHuecos(fuenteLigera['metodo/08_DECISIONES.md'], d, marcado),
+    'metodo/09_STACK.md': rellenarHuecos(fuenteLigera['metodo/09_STACK.md'], d, marcado),
+    'roles/asesor.md': rellenarHuecos(fuenteLigera['roles/asesor.md'], d, marcado),
     'metodo/encargos/primera-tanda.md':
 `# Primera tanda — ${fe}
 
@@ -233,11 +242,10 @@ PROHIBIDO
   Si cerrar el alcance exigiera salirse de aquí: STOP FUERA_DE_ALCANCE.
 
 GATES
-${(d.columna || 'A') === 'A' ? '  sin gates de resultado: columna A' : `  G-1 · [nombre del control] · condición: [qué tiene que cumplirse para
-  que la pieza sirva]
+${(d.columna || 'A') === 'A' ? '  sin gates de resultado: columna A' : `  G-1 · ${M(d.gate, '[qué comprueba, sobre lo entregado]')}
   Estados: cumple · incumple · no clasificado
-  Prueba que debe fallar: [el caso concreto que el gate tiene que rechazar
-  — provócalo hoy; si no salta, el gate no existe todavía]`}
+  Prueba que debe fallar: ${M(d.gate_falla, '[el caso concreto que el gate tiene que rechazar]')}
+  — provócalo hoy; si no salta, el gate no existe todavía.`}
 
 CRITERIO DE ACEPTACIÓN — sobre el artefacto real
   No se acepta: el borrador dentro del chat.

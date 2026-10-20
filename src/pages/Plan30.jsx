@@ -102,7 +102,7 @@ export default function Plan30({ n }) {
       {sinRecorrido ? (
         <div className="aviso">
           <p className="rotulo">Todavía no hay plan</p>
-          <p>Este plan se hace con lo que escribes en el paso 6 del recorrido: con
+          <p>Este plan se hace con lo que escribes en el paso 8 del recorrido: con
             quién hablas, qué día, y qué harás si esa conversación te tumba la
             suposición. Sin un nombre y un día son cuatro fechas vacías.</p>
           <div className="acciones">
@@ -175,7 +175,7 @@ export default function Plan30({ n }) {
                 <button className="btn" onClick={() => copiar(TEXTO_DE['Cerrar la tanda'], 'Texto copiado')}>
                   Copiar «Cerrar la tanda»
                 </button>
-                <button className="btn btn-2" onClick={() => navigate('/metodo/recorrido?paso=6')}>
+                <button className="btn btn-2" onClick={() => navigate('/metodo/recorrido?paso=8')}>
                   Reescribir la suposición
                 </button>
               </div>

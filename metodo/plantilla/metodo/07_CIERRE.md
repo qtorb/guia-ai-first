@@ -33,7 +33,7 @@ Si algo ha cambiado de columna, la línea 4 es `4. Columna: cambia — ` y qué 
 **Por qué:**
 **Descarté:**
 **Abierto:**
-**Mañana empiezo por:**
+**Mañana empiezo por:** {{cierre_hoy}}
 **Coste del día:**
 
 ---
