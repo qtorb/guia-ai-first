@@ -144,8 +144,8 @@ export default function MetodoPortada() {
       <h2>Cómo funciona</h2>
       <ol>
         <li><b>Lo preparas en media hora.</b> Nueve preguntas: para quién trabajas, en qué
-          punto estás, qué no se puede tocar, quién decide qué y qué idea vas a comprobar
-          primero con alguien de fuera.</li>
+          punto estás, qué no se toca, quién decide qué, con qué herramientas, dónde guardas lo
+          que decides, cómo compruebas, qué pones a prueba y qué le pides primero a la IA.</li>
         <li><b>Te llevas tus ficheros y un plan con fechas.</b> Tus respuestas en texto, las
           instrucciones para pegar en tu IA y tu primer mes en el calendario.</li>
         <li><b>Cada semana, un checkpoint: media hora de revisión.</b> Cuatro preguntas fijas y
