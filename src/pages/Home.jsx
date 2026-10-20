@@ -107,7 +107,7 @@ export default function Home({ dossierCtl }) {
             <b>El Método AI-First</b>
             <span className="gpd">
               Para trabajar con IA sin que se te vaya de las manos: qué le pides, qué
-              revisas y qué no le dejas decidir. Lo preparas en quince minutos y te llevas
+              revisas y qué no le dejas decidir. Lo preparas en media hora y te llevas
               tus ficheros escritos. Incluye un manual de 18 capítulos cortos.
             </span>
             {metodo && <span className="p-est">{metodo.est}</span>}
