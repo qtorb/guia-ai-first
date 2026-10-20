@@ -2183,3 +2183,76 @@ body.ctx-hoja .cebolla circle.on{fill:var(--relleno)}
   .progreso{flex-wrap:wrap;max-width:220px}
   .punto{min-width:44px;width:44px;height:44px}
 }
+
+/* recorrido v2: paso 0 «Cómo funciona» y ayuda */
+.progreso-fila .ayuda-btn{margin-left:auto}
+.ayuda-btn.on{border-color:var(--acento);color:var(--acento);background:var(--acento-sup)}
+.intro-entrada{font-size:20px;line-height:1.5;max-width:var(--medida);margin:0 0 var(--e6)}
+.intro-partes{list-style:none;margin:0 0 var(--e6);padding:0;display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+.intro-parte{border:2px solid var(--linea);border-radius:var(--radio);padding:24px;background:var(--fondo);
+  display:flex;flex-direction:column;gap:12px}
+.intro-parte h2{margin:0;font-family:var(--familia-titulo);font-size:24px}
+.intro-parte p{margin:0}
+.intro-parte ul{margin:0;padding-left:20px}
+.intro-cab{display:flex;align-items:center;gap:12px}
+.intro-ico{width:56px;height:56px;border-radius:50%;background:var(--acento-sup);color:var(--acento);
+  display:grid;place-items:center;flex:none}
+.intro-n{font-family:var(--familia-mono);font-size:14px;color:var(--texto-2)}
+.intro-muestra.carpeta-filas{padding:0}
+.intro-mapa{background:var(--superficie);border-radius:var(--radio);padding:24px;margin:0 0 var(--e6)}
+.intro-mapa h2{margin:0 0 16px;font-family:var(--familia-titulo);font-size:24px}
+.intro-grupos{list-style:none;margin:0;padding:0;display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.intro-grupo{background:var(--fondo);border:1px solid var(--linea);border-left:6px solid var(--acento);
+  border-radius:var(--radio);padding:14px 16px}
+.intro-capa{margin:0 0 6px;font-family:var(--familia-mono);font-size:13px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--acento);font-weight:500}
+.intro-grupo ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.intro-grupo li{display:flex;gap:10px;align-items:center}
+.intro-num{flex:none;width:28px;height:28px;border-radius:50%;border:2px solid var(--acento);
+  display:grid;place-items:center;font-family:var(--familia-mono);font-size:13px;color:var(--acento)}
+.intro-pie{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;
+  border-top:1px solid var(--linea);padding-top:24px}
+.intro-pie p{margin:0;font-size:15px;color:var(--texto-2);max-width:640px}
+
+.ayuda-rec{border:2px solid var(--acento);border-radius:var(--radio);background:var(--fondo);
+  padding:24px;margin:0 0 var(--e6);display:flex;flex-direction:column;gap:20px}
+.ayuda-rec:focus{outline:3px solid var(--foco);outline-offset:2px}
+.ayuda-rec-cab{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center}
+.ayuda-rec-cab h2{margin:0;font-family:var(--familia-titulo);font-size:26px}
+.ayuda-rec h3{margin:0 0 6px;font-family:var(--familia-cuerpo);font-size:15px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--acento)}
+.ayuda-rec p{margin:0}
+.ayuda-rec-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.ayuda-rec-g > div{background:var(--superficie);border-radius:var(--radio);padding:16px}
+.ayuda-marcas{list-style:none;margin:0;padding:0;display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px}
+.ayuda-marcas .carpeta-fila{justify-content:flex-start;gap:12px;padding:8px 10px}
+.ayuda-marcas .carpeta-fila.pendiente,.ayuda-marcas .carpeta-fila.fija{border:1px solid var(--linea)}
+.ayuda-marcas .carpeta-etq{font-size:14px;font-weight:600}
+.ayuda-glosario{margin:0;display:grid;gap:8px}
+.ayuda-glosario dt{font-weight:600}
+.ayuda-glosario dd{margin:0 0 4px;color:var(--texto-2)}
+.ayuda-rec-acc{display:flex;flex-wrap:wrap;gap:10px;border-top:1px solid var(--linea);padding-top:16px;align-items:center}
+.pagina .btn-2.peligro{border-color:var(--coste);color:var(--coste)}
+.pagina .btn.peligro-si{background:var(--coste);color:var(--fondo)}
+.ayuda-confirma{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px;border-radius:var(--radio-chico);
+  background:var(--coste-sup)}
+.ayuda-confirma p{color:var(--texto);font-weight:600}
+/* en una columna, la rejilla del taller no puede crecer más que la pantalla */
+.taller.taller-carpeta{grid-template-columns:minmax(0,1fr)}
+.taller-carpeta > *{min-width:0}
+@media (min-width:960px){
+  .taller.taller-carpeta{grid-template-columns:minmax(0,640px) 320px}
+}
+/* las tres partes, una debajo de otra: icono a la izquierda y texto a la derecha */
+.intro-partes{grid-template-columns:minmax(0,1fr)}
+.intro-parte{display:grid;grid-template-columns:56px minmax(0,1fr);column-gap:20px;row-gap:8px;align-items:start}
+.intro-parte .intro-cab{grid-row:1 / span 6;flex-direction:column;align-items:center;gap:8px}
+.intro-parte > :not(.intro-cab){grid-column:2}
+@media (max-width:480px){
+  .intro-parte{grid-template-columns:minmax(0,1fr)}
+  .intro-parte .intro-cab{grid-row:auto;flex-direction:row}
+  .intro-parte > :not(.intro-cab){grid-column:1}
+}

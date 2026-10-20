@@ -110,7 +110,8 @@ function estadoCarpeta(paso, col) {
     else if (f.pasos.some((p) => p < paso)) estado = 'hecho';
     else estado = 'pendiente';
     const etiqueta = f.fija || (estado === 'ahora' ? 'se escribe ahora' : estado === 'hecho' ? 'hecho' : 'pendiente');
-    return { ...f, estado, etiqueta };
+    const simbolo = f.fija ? '◦' : estado === 'ahora' ? '✎' : estado === 'hecho' ? '✓' : '·';
+    return { ...f, estado, etiqueta, simbolo };
   });
   const listos = filas.filter((f) => f.estado === 'hecho' || f.estado === 'ahora').length;
   return { filas, listos, total: filas.length };
@@ -144,6 +145,12 @@ function leerGuardado() {
   return g;
 }
 
+// La pantalla «Cómo funciona» sale la primera vez: cuando todavía no hay
+// nada escrito. Quien vuelve o llega con ?paso=N entra donde toca.
+function hayAlgo(g) {
+  return Object.keys(g).some((k) => k[0] !== '_' && k !== 'fecha' && String(g[k] ?? '').trim());
+}
+
 function pasoDeQuery(query) {
   const p = Number(query.get('paso'));
   return p >= 1 && p <= PASO_LISTO ? p : null;
@@ -157,7 +164,9 @@ export default function ProtocoloIA({ n }) {
 
   const [d, setD] = useState(() => ({ fecha: hoy(), ...guardadas }));
   // El mapa enlaza a un paso concreto (?paso=N), como paso-N.html en el sitio.
-  const [paso, setPaso] = useState(() => pasoDeQuery(query) || guardadas._paso || 1);
+  const [paso, setPaso] = useState(() => pasoDeQuery(query) || (hayAlgo(guardadas) ? guardadas._paso || 1 : 0));
+  const [verAyuda, setVerAyuda] = useState(false);
+  const botonAyuda = useRef(null);
   const [verGate, setVerGate] = useState(false);
   const debounce = useRef(null);
   const tituloRef = useRef(null);
@@ -199,6 +208,7 @@ export default function ProtocoloIA({ n }) {
 
   function irPaso(n) {
     setVerGate(false);
+    setVerAyuda(false);
     setPaso(n);
     guarda(d, n);
     window.scrollTo(0, 0);
@@ -246,7 +256,21 @@ export default function ProtocoloIA({ n }) {
   const fs = useMemo(() => ficheros(d, false), [d]);
   const carpeta = estadoCarpeta(paso, d.columna);
 
-  const enPaso = paso <= N_PASOS;
+  function borrarTodo() {
+    try { localStorage.removeItem(LLAVE); window.dispatchEvent(new Event('guia-local')); } catch (e) { /* noop */ }
+    setD({ fecha: hoy() });
+    setVerAyuda(false);
+    setPaso(0);
+    window.scrollTo(0, 0);
+    toast('Borrado. Empiezas de cero');
+  }
+
+  function cerrarAyuda() {
+    setVerAyuda(false);
+    setTimeout(() => botonAyuda.current?.focus(), 0);
+  }
+
+  const enPaso = paso >= 1 && paso <= N_PASOS;
   const vista = FICHERO_DE[paso];
   const escribe = escribeEn(paso, d.columna);
 
@@ -257,9 +281,23 @@ export default function ProtocoloIA({ n }) {
         <button className="lnk volver" onClick={() => navigate('/metodo/mapa')}>Ver el mapa completo →</button>
       </div>
 
-      <Progreso paso={paso} onIr={irPaso} />
+      <Progreso paso={paso} onIr={irPaso} botonAyuda={botonAyuda} verAyuda={verAyuda}
+        onAyuda={() => (verAyuda ? cerrarAyuda() : setVerAyuda(true))} />
 
-      {enPaso ? (
+      {verAyuda && (
+        <Ayuda paso={paso} carpeta={carpeta} onCerrar={cerrarAyuda}
+          onComo={() => irPaso(0)} onPrincipio={() => irPaso(1)} onBorrar={borrarTodo} />
+      )}
+
+      {paso === 0 ? (
+        <div className="taller taller-carpeta">
+          <div className="paso paso-listo">
+            <Intro tituloRef={tituloRef} onEmpezar={() => irPaso(1)}
+              carpetaMovil={!conPanel ? <Carpeta carpeta={carpeta} movil /> : null} />
+          </div>
+          {conPanel && <Carpeta carpeta={carpeta} />}
+        </div>
+      ) : enPaso ? (
         <div className="taller taller-carpeta">
           <div className="paso">
             <p className="rotulo">Paso {paso} de {N_PASOS} · {CABECERA[paso].rotulo}</p>
@@ -298,7 +336,7 @@ export default function ProtocoloIA({ n }) {
               <button className="btn" onClick={siguiente}>
                 {paso === N_PASOS ? 'Ver lo que me llevo' : 'Siguiente'}
               </button>
-              <button className="btn btn-2" onClick={() => (paso === 1 ? navigate('/metodo') : irPaso(paso - 1))}>
+              <button className="btn btn-2" onClick={() => irPaso(paso - 1)}>
                 Atrás
               </button>
             </div>
@@ -321,7 +359,7 @@ export default function ProtocoloIA({ n }) {
 
 /* ------------------------------------------------------------------ */
 
-function Progreso({ paso, onIr }) {
+function Progreso({ paso, onIr, onAyuda, verAyuda, botonAyuda }) {
   return (
     <div className="progreso-fila">
       <nav className="progreso" aria-label="Progreso del recorrido">
@@ -349,7 +387,9 @@ function Progreso({ paso, onIr }) {
           );
         })}
       </nav>
-      <p className="progreso-txt">{paso <= N_PASOS ? `paso ${paso} de ${N_PASOS}` : 'Llévatelo'}</p>
+      <p className="progreso-txt">{paso === 0 ? 'antes de empezar' : paso <= N_PASOS ? `paso ${paso} de ${N_PASOS}` : 'Llévatelo'}</p>
+      <button type="button" ref={botonAyuda} className={'btn btn-2 chico ayuda-btn' + (verAyuda ? ' on' : '')}
+        onClick={onAyuda} aria-expanded={verAyuda} aria-controls="ayuda-recorrido">Ayuda</button>
     </div>
   );
 }
@@ -360,7 +400,7 @@ function ListaCarpeta({ filas }) {
       {filas.map((f) => (
         <li key={f.ruta} className={'carpeta-fila ' + f.estado}>
           <span className="carpeta-ruta">{f.ruta}</span>
-          <span className="carpeta-etq">{f.etiqueta}</span>
+          <span className="carpeta-etq"><span aria-hidden="true">{f.simbolo} </span>{f.etiqueta}</span>
         </li>
       ))}
     </ul>
@@ -406,6 +446,182 @@ function Vista({ d, fichero, campos }) {
         )}
       </pre>
     </details>
+  );
+}
+
+/* --------------------------- paso 0: cómo funciona --------------------------- */
+
+const GRUPOS_PASOS = [
+  { capa: 'Para qué', pasos: [[1, 'Frase de valor'], [2, 'Columna']] },
+  { capa: 'Capa Tú', pasos: [[3, 'Líneas rojas y protocolo de uso']] },
+  { capa: 'Capa Roles', pasos: [[4, 'Quién decide qué']] },
+  { capa: 'Capa Herramientas', pasos: [[5, 'Tu stack']] },
+  { capa: 'Capa Memoria', pasos: [[6, 'La memoria del proyecto']] },
+  { capa: 'Capa Controles', pasos: [[7, 'Tu primer gate']] },
+  { capa: 'Fuera de tu mesa', pasos: [[8, 'Lo que pones a prueba'], [9, 'Tu primer encargo']] },
+];
+
+const LO_QUE_HACES = 'Contestas nueve preguntas sobre tu proyecto: para quién trabajas, en qué punto estás, qué no se toca, quién decide qué, con qué herramientas, dónde guardas lo que decides, cómo compruebas, qué pones a prueba y qué le pides primero a la IA.';
+
+function Icono({ d }) {
+  return (
+    <span className="intro-ico" aria-hidden="true">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+        strokeLinecap="round" strokeLinejoin="round">{d}</svg>
+    </span>
+  );
+}
+
+function Intro({ tituloRef, onEmpezar, carpetaMovil }) {
+  return (
+    <>
+      <p className="rotulo">Antes de empezar</p>
+      <h1 tabIndex={-1} ref={tituloRef}>Cómo funciona</h1>
+      <p className="intro-entrada">Nueve pasos, media hora. Cada paso escribe un fichero de tu método con tus respuestas. Al final eliges cómo te lo llevas.</p>
+      {carpetaMovil}
+
+      <ol className="intro-partes" aria-label="Las tres partes del recorrido">
+        <li className="intro-parte">
+          <div className="intro-cab">
+            <Icono d={<><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" /></>} />
+            <span className="intro-n">1 de 3</span>
+          </div>
+          <h2>Lo que haces</h2>
+          <p>{LO_QUE_HACES}</p>
+        </li>
+        <li className="intro-parte">
+          <div className="intro-cab">
+            <Icono d={<><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" /><path d="m9 13 2 2 4-4" /></>} />
+            <span className="intro-n">2 de 3</span>
+          </div>
+          <h2>Lo que se va escribiendo</h2>
+          <p>Tu carpeta, al lado. Cada fichero se marca cuando un paso lo escribe, y puedes abrirlo para ver tu texto dentro.</p>
+          <ul className="carpeta-filas intro-muestra" aria-label="Ejemplo de tu carpeta">
+            <li className="carpeta-fila hecho"><span className="carpeta-ruta">00_VALOR.md</span><span className="carpeta-etq"><span aria-hidden="true">✓ </span>hecho</span></li>
+            <li className="carpeta-fila ahora"><span className="carpeta-ruta">02_LINEAS_ROJAS.md</span><span className="carpeta-etq"><span aria-hidden="true">✎ </span>se escribe ahora</span></li>
+            <li className="carpeta-fila pendiente"><span className="carpeta-ruta">01_ROLES.md</span><span className="carpeta-etq"><span aria-hidden="true">· </span>pendiente</span></li>
+          </ul>
+        </li>
+        <li className="intro-parte">
+          <div className="intro-cab">
+            <Icono d={<><path d="M12 3v12" /><path d="m7 10 5 5 5-5" /><path d="M5 21h14" /></>} />
+            <span className="intro-n">3 de 3</span>
+          </div>
+          <h2>Lo que te llevas</h2>
+          <p>Tu carpeta completa, como prefieras:</p>
+          <ul>
+            <li><strong>GitHub</strong>, si trabajas con repositorio</li>
+            <li><strong>Skills</strong>, para Claude</li>
+            <li><strong>Markdown</strong>, para cualquier chat</li>
+          </ul>
+        </li>
+      </ol>
+
+      <section className="intro-mapa" aria-labelledby="intro-mapa-tit">
+        <h2 id="intro-mapa-tit">Los nueve pasos, por capas</h2>
+        <ol className="intro-grupos">
+          {GRUPOS_PASOS.map((g) => (
+            <li key={g.capa} className="intro-grupo">
+              <p className="intro-capa">{g.capa}</p>
+              <ul>
+                {g.pasos.map(([n, t]) => (
+                  <li key={n}>
+                    <span className="intro-num" aria-hidden="true">{n}</span>
+                    <span><span className="sr">Paso {n}: </span>{t}</span>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <div className="intro-pie">
+        <p>Se guarda solo mientras escribes, en este navegador; si entras con tu cuenta, también en la nube. Puedes dejarlo y volver.</p>
+        <button className="btn" onClick={onEmpezar}>Empezar por el paso 1 →</button>
+      </div>
+    </>
+  );
+}
+
+/* --------------------------- ayuda --------------------------- */
+
+function Ayuda({ paso, carpeta, onCerrar, onComo, onPrincipio, onBorrar }) {
+  const ref = useRef(null);
+  const [glosario, setGlosario] = useState(null);
+  const [confirmar, setConfirmar] = useState(false);
+
+  useEffect(() => {
+    ref.current?.focus();
+    const esc = (e) => { if (e.key === 'Escape') onCerrar(); };
+    document.addEventListener('keydown', esc);
+    return () => document.removeEventListener('keydown', esc);
+  }, [onCerrar]);
+
+  async function verGlosario() {
+    if (glosario) { setGlosario(null); return; }
+    const { default: fuente } = await import('../data/fuente.json');
+    const lineas = (fuente['GLOSARIO.md'] || '').split('\n')
+      .map((l) => l.match(/^- \*\*(.+?)\*\* — (.+)$/)).filter(Boolean)
+      .map((m) => [m[1], m[2]]);
+    setGlosario(lineas);
+  }
+
+  const donde = paso === 0 ? 'Antes de empezar: aquí ves cómo funciona el recorrido.'
+    : paso <= N_PASOS ? `Paso ${paso} de ${N_PASOS} · ${CABECERA[paso].rotulo}. Llevas ${carpeta.listos} de ${carpeta.total} ficheros listos.`
+      : 'Llévatelo: eliges cómo te llevas tu carpeta.';
+
+  return (
+    <section className="ayuda-rec" id="ayuda-recorrido" role="dialog" aria-modal="false"
+      aria-labelledby="ayuda-rec-tit" tabIndex={-1} ref={ref}>
+      <div className="ayuda-rec-cab">
+        <h2 id="ayuda-rec-tit">Ayuda</h2>
+        <button type="button" className="btn btn-2 chico" onClick={onCerrar}>Cerrar · Esc</button>
+      </div>
+
+      <div className="ayuda-rec-g">
+        <div><h3>Dónde estás</h3><p>{donde}</p></div>
+        <div><h3>Qué obtienes al final</h3><p>Tu carpeta completa, para llevártela en GitHub, como skills para Claude o en Markdown.</p></div>
+        <div><h3>Dónde se guarda</h3><p>Sin cuenta, solo en este navegador. Si entras con tu cuenta, también en la nube, y sigues desde cualquier dispositivo.</p></div>
+        <div><h3>Si te atascas</h3><p>Escribe lo que tengas, aunque sea corto. Puedes volver a cualquier paso desde la barra de arriba.</p></div>
+      </div>
+
+      <div>
+        <h3>Qué significa cada marca de tu carpeta</h3>
+        <ul className="ayuda-marcas">
+          <li className="carpeta-fila hecho"><span className="carpeta-etq"><span aria-hidden="true">✓ </span>hecho</span><span>ya tiene tus respuestas</span></li>
+          <li className="carpeta-fila ahora"><span className="carpeta-etq"><span aria-hidden="true">✎ </span>se escribe ahora</span><span>lo rellena este paso</span></li>
+          <li className="carpeta-fila pendiente"><span className="carpeta-etq"><span aria-hidden="true">· </span>pendiente</span><span>lo escribe un paso de más adelante</span></li>
+          <li className="carpeta-fila fija"><span className="carpeta-etq"><span aria-hidden="true">◦ </span>se llena al trabajar</span><span>sale vacío y lo llenas tú cada día</span></li>
+        </ul>
+      </div>
+
+      {glosario && (
+        <div>
+          <h3>Glosario</h3>
+          <dl className="ayuda-glosario">
+            {glosario.map(([t, def]) => (<div key={t}><dt>{t}</dt><dd>{def}</dd></div>))}
+          </dl>
+        </div>
+      )}
+
+      <div className="ayuda-rec-acc">
+        <button type="button" className="btn chico" onClick={onComo}>Ver cómo funciona</button>
+        <button type="button" className="btn btn-2 chico" onClick={verGlosario} aria-expanded={!!glosario}>
+          {glosario ? 'Ocultar el glosario' : 'Ver el glosario'}
+        </button>
+        <button type="button" className="btn btn-2 chico" onClick={onPrincipio}>Volver al paso 1</button>
+        {!confirmar ? (
+          <button type="button" className="btn btn-2 chico peligro" onClick={() => setConfirmar(true)}>Borrar todo y empezar de nuevo</button>
+        ) : (
+          <div className="ayuda-confirma" role="alert">
+            <p>Se borra todo lo que has escrito en el recorrido. ¿Seguro?</p>
+            <button type="button" className="btn chico peligro-si" onClick={onBorrar}>Sí, borrar</button>
+            <button type="button" className="btn btn-2 chico" onClick={() => setConfirmar(false)}>No</button>
+          </div>
+        )}
+      </div>
+    </section>
   );
 }
 
