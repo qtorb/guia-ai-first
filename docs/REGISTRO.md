@@ -505,14 +505,12 @@ Consecuencia práctica: se diseñó, se corrigió y se pegó la plantilla equivo
 
 ## 11 de noviembre de 2026 · la hoja 2, primera versión
 
-**La hoja de IA-Lab 2 (13 de noviembre, con Caterina Alonso) pasa de «Disponible más adelante» a existir.** Es una primera versión para la sesión, pendiente de la firma de Albert antes de publicarse.
+**La hoja de IA-Lab 2 pasa de «Disponible más adelante» a existir.** Es una primera versión, pendiente de la firma de Albert antes de publicarse.
 
-**Cómo está hecha.** Calca la hoja 1: va a la par que el deck de la sesión (`MMDD31_IALab2_13nov_v2.pptx`), cada paso dice qué slides le corresponden, tramos con los mismos nombres que la barra del deck y un último paso para generar el documento y enviarlo a la dirección. Diez pasos más la salida. El documento que genera es **«Mi mapa de inteligencia · Cinfa»**: lo que sé, lo que supongo y lo que tengo que comprobar, con la frase a ciegas, las dos pruebas y lo que marcó el revisor.
+**Es la tarea para casa, no la hoja de clase.** En la sesión del 13 de noviembre, con Caterina Alonso, los alumnos trabajan el caso Cinfa en un documento de Drive por alumno, en una carpeta que comparte Albert, porque es lo que se proyecta en las puestas en común y la web no deja ver a nadie lo que escribe el alumno. La hoja 2 repite lo mismo sobre su TFM, en casa y con su asesor: frase a ciegas, las dos líneas en el asesor, cliente y competencia según la IA leídos con dos pruebas (cambiar el nombre y de dónde sale), qué habría que investigar, tres preguntas sin IA, el mapa y guardarlo en su carpeta. Siete pasos y la salida, «Mi mapa de inteligencia · TFM», que se envía a la dirección.
 
-**Una decisión de diseño, con su porqué.** Lo que devuelve la IA no se pega en la web: va al documento de cada alumno en la carpeta de Drive de la sesión, porque es lo que se proyecta en las puestas en común y la web no deja ver a nadie lo que escribe el alumno. **En la web se escribe solo lo que piensa el alumno.**
+**Un cambio de estilo que toca a las dos hojas:** el texto para copiar (`.pegar p`) respeta los saltos de línea. En la hoja 1 no cambia nada porque sus textos son de una línea; en la 2 hace falta, porque el encargo tiene cinco apartados.
 
-**Un cambio de estilo que toca a las dos hojas:** el texto para copiar (`.pegar p`) respeta los saltos de línea. En la hoja 1 no cambia nada porque sus textos son de una línea; en la 2 hacía falta, porque se copian dos líneas y un encargo juntos.
+**Castellano neutro**: muchos alumnos son de Latinoamérica. Sin «vosotros».
 
-**Medido antes de entregar,** con `?paso=N` sobre un build local: los doce pasos de la hoja 2 × 390/768/1440 × claro y oscuro, **0 fallos** de contraste AAA y de área táctil. La pantalla que más pesa es el paso 9 a 390 px: 2.068 px · 164 palabras · 15 cajas · 4 botones.
-
-**Lo que queda abierto.** `scripts/medir.mjs` ya no consigue abrir pasos pulsando la tira en las hojas con tramos (la 1 y la 2): avisa «¡sin punto N!» y mide el paso 1. Se midió la hoja 2 con una copia que entra por `?paso=N`. Falta llevar ese cambio al script.
+**Lo que queda abierto.** `scripts/medir.mjs` ya no consigue abrir pasos pulsando la tira en las hojas con tramos (la 1 y la 2): avisa «¡sin punto N!» y mide el paso 1. La primera versión de la hoja se midió con una copia que entra por `?paso=N`: 0 fallos AAA y táctiles. Falta llevar ese cambio al script.
