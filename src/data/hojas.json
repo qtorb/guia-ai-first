@@ -979,7 +979,7 @@
  "hojas/mmdd31/2.json": {
   "titulo": "Mi mapa de inteligencia",
   "kicker": "IA-Lab 2 · Máster en Dirección de Marketing Digital (edición 31) · UPF Barcelona School of Management",
-  "lede": "La tarea de la sesión del 13 de noviembre: **lo mismo que hiciste en clase con Cinfa, ahora con tu TFM.**",
+  "lede": "La tarea de la sesión del 13 de noviembre: **lo de Cinfa, sobre tu TFM.**",
   "facts": [
    "En casa, con tu asesor"
   ],
@@ -990,7 +990,7 @@
     "tarea": "Antes de abrir la IA: **¿por qué alguien elegiría tu proyecto?** Una frase, sin buscar nada.",
     "que": [],
     "pruebas": [
-     "Escríbela aquí. No la toques hasta el final: la volverás a leer."
+     "Escríbela aquí. No la toques hasta el paso 7."
     ],
     "grupos": [
      {
@@ -1268,7 +1268,7 @@
    {
     "n": "06",
     "titulo": "Tu mapa",
-    "tarea": "Completa las dos columnas que faltan. **La tercera son tus tres preguntas.**",
+    "tarea": "Completa las dos columnas que faltan. La tercera son tus tres preguntas.",
     "que": [],
     "pruebas": [
      "**Lo que sé:** solo lo que sabes de dónde sale y de cuándo es. Si no lo sabes, no va aquí.",
@@ -1318,7 +1318,7 @@
    {
     "n": "07",
     "titulo": "Guárdalo en tu sistema",
-    "tarea": "Lo que acabas de hacer va a tu carpeta, para que tu asesor lo lea la próxima vez. **Y vuelve a tu frase del principio.**",
+    "tarea": "Guarda lo que has hecho en tu carpeta y **vuelve a tu frase del paso 1**.",
     "que": [],
     "pruebas": [
      "Tus tres preguntas, en «Qué falta» de tu documento Estado.",
@@ -1333,7 +1333,7 @@
         "k": "t_cambio",
         "label": "Tu frase a ciegas, ahora: ¿qué ha cambiado?",
         "rows": 2,
-        "ph": "Si es la misma, di si es porque tenías razón"
+        "ph": "Una o dos líneas"
        }
       ]
      },
@@ -1379,7 +1379,7 @@
    "mapa": {
     "kicker": "IA-Lab 2 · tarea para casa",
     "titulo": "Tu mapa de inteligencia, sobre tu TFM",
-    "lede": "En clase lo hiciste con Cinfa. Ahora, lo mismo con tu proyecto: qué sabes, qué supones y qué tienes que comprobar de tu cliente y tu competencia.",
+    "lede": "Lo mismo que en clase con Cinfa, ahora con tu proyecto.",
     "tramos": [
      {
       "n": "1–2",
@@ -1458,7 +1458,7 @@
   ],
   "donde": {
    "cuando": "En casa, después de la sesión del 13 de noviembre. No hace falta hacerla de una vez: queda guardada.",
-   "encaja": "La tercera columna de tu mapa es lo que tienes que ir a investigar. En el TFM, es la base del diagnóstico."
+   "encaja": "En el TFM, la tercera columna es la base del diagnóstico."
   },
   "aperturaSinNumero": true,
   "claro": true,
