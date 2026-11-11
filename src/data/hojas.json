@@ -1110,8 +1110,8 @@
     "tarea": "Lee la respuesta con dos pruebas y **apunta aquí lo que encuentres**.",
     "que": [],
     "pruebas": [
-     "**Prueba de sustitución.** Cambia Cinfa por Normon, Kern Pharma o Bayer. Copia la frase que seguiría valiendo igual.",
-     "**Pregunta de origen.** Para el propósito, la propuesta de valor y los valores: ¿en qué dato sobre Cinfa o sus clientes se apoya? Si en ninguno, escribe «ninguno»."
+     "**Cambia el nombre.** Pon Normon, Kern Pharma o Bayer donde dice Cinfa. ¿Qué frases seguirían valiendo igual? Cópialas.",
+     "**¿De dónde sale?** El propósito, la propuesta de valor y los valores: ¿en qué dato sobre Cinfa o sus clientes se apoya cada uno? Si en ninguno, escribe «ninguno»."
     ],
     "grupos": [
      {
@@ -1161,7 +1161,7 @@
     "titulo": "Dos líneas para tu asesor",
     "clase": "En clase: slides 23 y 24",
     "capa": "Controles",
-    "tarea": "Cuando la IA falla, no se repite el prompt: se cambia el sistema. **Añade estas dos líneas a las instrucciones de tu asesor.**",
+    "tarea": "Cuando la IA falla, no se repite la pregunta: se cambia el sistema. **Añade estas dos líneas a las instrucciones de tu asesor.**",
     "que": [],
     "pruebas": [
      "Abre las instrucciones de tu asesor.",
@@ -1170,7 +1170,7 @@
     ],
     "copiar": {
      "tras": 1,
-     "txt": "Separa en cada frase lo que sale de mis documentos, lo que es un patrón general de la categoría y lo que supones. Márcalo.\nAntes de entregar, marca como genérica cualquier frase que valdría igual para otra marca de la misma categoría."
+     "txt": "En cada frase, marca si sale de mis documentos, si vale para todo el sector o si lo supones tú.\nAntes de entregarme algo, marca cualquier frase que valdría igual para otra marca del mismo sector."
     },
     "grupos": [
      {
@@ -1205,7 +1205,7 @@
     ],
     "copiar": {
      "tras": 0,
-     "txt": "Señala las afirmaciones que no tienen fuente y las que valdrían igual para cualquier marca de la categoría. Si no encuentras ninguna, dime qué has revisado."
+     "txt": "Señala las frases que no dicen de dónde salen y las que valdrían igual para cualquier marca del sector. Si no encuentras ninguna, dime qué has revisado."
     },
     "grupos": [
      {
@@ -1230,7 +1230,7 @@
      }
     ],
     "check": [
-     "Si marca algo, funciona. Si dice que todo está bien, pídele qué ha revisado: un control que nunca dice que no, no controla nada."
+     "Si marca algo, funciona. Si dice que todo está bien, pídele qué ha revisado: una revisión que nunca encuentra nada no sirve."
     ],
     "plantilla": [
      "3 · LO QUE MARCÓ MI REVISOR",
@@ -1240,19 +1240,19 @@
    },
    {
     "n": "07",
-    "titulo": "La pauta de investigación",
+    "titulo": "Qué habría que investigar",
     "clase": "En clase: slides 29 y 30",
     "tarea": "Pídele a la IA qué habría que investigar, ahora **con tus dos líneas delante**, y cuenta cuánto podrías hacer tú.",
     "que": [],
     "pruebas": [
      "Vuelve a la conversación de Cinfa.",
      "Pega esto: tus dos líneas nuevas y el encargo, todo junto:",
-     "Copia la pauta en tu documento de Drive, tal cual.",
+     "Copia la respuesta en tu documento de Drive, tal cual.",
      "Al lado de cada estudio o método, escribe sí o no: ¿podrías hacerlo tú en una semana, con tus recursos?"
     ],
     "copiar": {
      "tras": 1,
-     "txt": "Separa en cada frase lo que sale de mis documentos, lo que es un patrón general de la categoría y lo que supones. Márcalo.\nAntes de entregar, marca como genérica cualquier frase que valdría igual para otra marca de la misma categoría.\n\nPara construir esta plataforma con fundamento, ¿qué investigación habría que hacer? Dame una pauta completa: objetivos, preguntas, métodos, públicos y fuentes."
+     "txt": "En cada frase, marca si sale de mis documentos, si vale para todo el sector o si lo supones tú.\nAntes de entregarme algo, marca cualquier frase que valdría igual para otra marca del mismo sector.\n\nPara construir esta plataforma con fundamento, ¿qué investigación habría que hacer? Dame una pauta completa: objetivos, preguntas, métodos, públicos y fuentes."
     },
     "grupos": [
      {
@@ -1286,7 +1286,7 @@
      "Las dos líneas van delante del encargo: en esta conversación no está tu asesor."
     ],
     "plantilla": [
-     "4 · LA PAUTA DE LA IA",
+     "4 · LO QUE LA IA PROPONE INVESTIGAR",
      "  Lo que podría hacer yo en una semana: {m_si} sí · {m_no} no"
     ],
     "siguiente": "Hecho · siguiente paso →"
@@ -1295,7 +1295,7 @@
     "n": "08",
     "titulo": "Tus tres preguntas",
     "clase": "En clase: slides 34 y 35",
-    "tarea": "**Sin IA.** De toda la pauta, elige las tres preguntas que más necesitarías contestar antes de dar por buena la plataforma.",
+    "tarea": "**Sin IA.** De todo lo que propone la IA, elige las tres preguntas que más necesitarías contestar antes de dar por buena la plataforma.",
     "que": [],
     "pruebas": [
      "Para cada una, la prueba: si la respuesta te sorprendiera, ¿qué cambiarías del propósito, la propuesta de valor o los valores? Si nada, cámbiala por otra.",
@@ -1401,8 +1401,8 @@
     "tarea": "Lo que acabas de hacer es un mapa de inteligencia. **Completa las dos columnas que faltan.** La tercera son tus tres preguntas.",
     "que": [],
     "pruebas": [
-     "**Lo que sé:** solo lo que tiene fuente, fecha y alcance. Si no sabes de dónde sale, no va aquí.",
-     "**Lo que supongo:** plausible, sin prueba. Lo que tu asesor ya marca como supuesto."
+     "**Lo que sé:** solo lo que sabes de dónde sale y de cuándo es. Si no lo sabes, no va aquí.",
+     "**Lo que supongo:** lo que suena bien pero no tiene prueba. Tu asesor ya lo marca."
     ],
     "grupos": [
      {
@@ -1529,7 +1529,7 @@
      },
      {
       "n": "7–9",
-      "t": "La pauta y tus preguntas",
+      "t": "Qué investigar",
       "txt": "Qué habría que investigar, tus tres preguntas sin IA y tu mapa."
      },
      {
@@ -1565,7 +1565,7 @@
      "LO QUE MARCÓ MI REVISOR",
      "  {m_revisor}",
      "",
-     "LA PAUTA DE LA IA",
+     "LO QUE LA IA PROPONE INVESTIGAR",
      "  Lo que podría hacer yo en una semana: {m_si} sí · {m_no} no",
      "",
      "MI MAPA DE INTELIGENCIA",
@@ -1602,7 +1602,7 @@
   ],
   "donde": {
    "cuando": "En clase, el 13 de noviembre, a la vez que la sesión. Si no terminas, sigue en casa: queda guardada.",
-   "encaja": "Es la segunda de seis. La tercera columna de tu mapa es tu agenda de investigación, y en el TFM sostiene el diagnóstico."
+   "encaja": "Es la segunda de seis. La tercera columna de tu mapa es lo que tienes que ir a investigar. En el TFM, es la base del diagnóstico."
   },
   "aperturaSinNumero": true,
   "claro": true,
@@ -1623,7 +1623,7 @@
     "a": 6
    },
    {
-    "t": "La pauta",
+    "t": "Qué investigar",
     "de": 7,
     "a": 9
    },
