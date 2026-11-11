@@ -500,3 +500,19 @@ Consecuencia práctica: se diseñó, se corrigió y se pegó la plantilla equivo
 **Las otras cuatro plantillas de esa pantalla no se disparan con este montaje** —no hay contraseñas, ni invitaciones, ni forma de cambiar el correo desde la web—. Queda escrito en `SUPABASE.md` para no volver a descubrirlo por correo.
 
 **De la misma tanda, el botón.** En la captura que llegó, «Entrar» aparecía como texto con un recuadro pegado: el tamaño del botón salía del `padding` del `<a>`, y el cliente se lo comió. Rehecho para que salga de la celda —`padding`, `height` y `bgcolor` como atributo, además del estilo— más la altura de línea. Comprobado quitando a la vez el bloque `<style>` y el `padding` del enlace: sigue midiendo 109×48 y sigue pareciendo un botón. Sólo desaparece si un cliente tira las dos cosas, y para eso debajo está el enlace en texto.
+
+---
+
+## 11 de noviembre de 2026 · la hoja 2, primera versión
+
+**La hoja de IA-Lab 2 (13 de noviembre, con Caterina Alonso) pasa de «Disponible más adelante» a existir.** Es una primera versión para la sesión, pendiente de la firma de Albert antes de publicarse.
+
+**Cómo está hecha.** Calca la hoja 1: va a la par que el deck de la sesión (`MMDD31_IALab2_13nov_v2.pptx`), cada paso dice qué slides le corresponden, tramos con los mismos nombres que la barra del deck y un último paso para generar el documento y enviarlo a la dirección. Diez pasos más la salida. El documento que genera es **«Mi mapa de inteligencia · Cinfa»**: lo que sé, lo que supongo y lo que tengo que comprobar, con la frase a ciegas, las dos pruebas y lo que marcó el revisor.
+
+**Una decisión de diseño, con su porqué.** Lo que devuelve la IA no se pega en la web: va al documento de cada alumno en la carpeta de Drive de la sesión, porque es lo que se proyecta en las puestas en común y la web no deja ver a nadie lo que escribe el alumno. **En la web se escribe solo lo que piensa el alumno.**
+
+**Un cambio de estilo que toca a las dos hojas:** el texto para copiar (`.pegar p`) respeta los saltos de línea. En la hoja 1 no cambia nada porque sus textos son de una línea; en la 2 hacía falta, porque se copian dos líneas y un encargo juntos.
+
+**Medido antes de entregar,** con `?paso=N` sobre un build local: los doce pasos de la hoja 2 × 390/768/1440 × claro y oscuro, **0 fallos** de contraste AAA y de área táctil. La pantalla que más pesa es el paso 9 a 390 px: 2.068 px · 164 palabras · 15 cajas · 4 botones.
+
+**Lo que queda abierto.** `scripts/medir.mjs` ya no consigue abrir pasos pulsando la tira en las hojas con tramos (la 1 y la 2): avisa «¡sin punto N!» y mide el paso 1. Se midió la hoja 2 con una copia que entra por `?paso=N`. Falta llevar ese cambio al script.

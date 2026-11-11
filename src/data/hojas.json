@@ -976,6 +976,664 @@
   ],
   "sinSalida": true
  },
+ "hojas/mmdd31/2.json": {
+  "titulo": "Mi hoja de la sesión 2",
+  "kicker": "IA-Lab 2 · Máster en Dirección de Marketing Digital (edición 31) · UPF Barcelona School of Management",
+  "lede": "La hoja de la sesión del 13 de noviembre, con Caterina Alonso. **Se rellena en clase, a la vez que avanza la sesión.**",
+  "facts": [
+   "Se hace en clase, paso a paso"
+  ],
+  "bloques": [
+   {
+    "n": "01",
+    "titulo": "Tu sistema, comprobado",
+    "clase": "En clase: slides 6 y 7",
+    "capa": "Tú",
+    "tarea": "Comprueba que tu asesor sigue sabiendo tus reglas, y **apunta la que se te ha roto desde el 20 de octubre**.",
+    "que": [],
+    "pruebas": [
+     "Abre una conversación nueva con tu asesor y pregúntale: «¿Qué reglas tienes conmigo?».",
+     "Si no te dice tus siete, vuelve a pegarlas desde la hoja 1, paso 13: «Copiar mis instrucciones».",
+     "Relee tus reglas y elige la que no has cumplido. Todos tenéis una."
+    ],
+    "grupos": [
+     {
+      "tipo": "campo",
+      "campos": [
+       {
+        "k": "m_regla",
+        "label": "La regla que se me ha roto",
+        "rows": 2,
+        "ph": "Ej. La de parar los viernes a revisar. Llevo tres semanas sin hacerlo"
+       }
+      ]
+     },
+     {
+      "tipo": "checks",
+      "campos": [
+       {
+        "k": "h01",
+        "txt": "Hecho"
+       }
+      ]
+     }
+    ],
+    "check": [
+     "Tu asesor te ha dicho tus siete reglas, no unas parecidas.",
+     "No arregles la regla ahora: solo nómbrala. Al final decides qué haces con ella."
+    ],
+    "siFalla": [
+     "**No encuentras tu asesor.** Mira con qué cuenta has entrado: tiene que ser la de la UPF si lo hiciste en Gemini.",
+     "**No lo llegaste a montar.** Sigue con la sesión y móntalo en la pausa: un Gem o proyecto con tus siete reglas dentro."
+    ],
+    "plantilla": [
+     "0 · LA REGLA QUE SE ME HA ROTO",
+     "  {m_regla}"
+    ],
+    "siguiente": "Hecho · siguiente paso →"
+   },
+   {
+    "n": "02",
+    "titulo": "Tu frase a ciegas",
+    "clase": "En clase: slide 16",
+    "tarea": "Antes de tocar la IA: **¿por qué alguien elegiría Cinfa?** Una frase, sin buscar nada.",
+    "que": [],
+    "pruebas": [
+     "Escríbela aquí. No la toques hasta el final: la volverás a leer."
+    ],
+    "grupos": [
+     {
+      "tipo": "campo",
+      "campos": [
+       {
+        "k": "m_ciegas",
+        "label": "Por qué alguien elegiría Cinfa",
+        "rows": 2,
+        "ph": "Una frase"
+       }
+      ]
+     },
+     {
+      "tipo": "checks",
+      "campos": [
+       {
+        "k": "h02",
+        "txt": "Hecho"
+       }
+      ]
+     }
+    ],
+    "check": [
+     "Es una sola frase y no has buscado nada."
+    ],
+    "plantilla": [
+     "1 · MI FRASE A CIEGAS",
+     "  {m_ciegas}"
+    ],
+    "siguiente": "Hecho · siguiente paso →"
+   },
+   {
+    "n": "03",
+    "titulo": "La plataforma de marca, sin sistema",
+    "clase": "En clase: slide 18",
+    "tarea": "Pídele a la IA la plataforma de marca de Cinfa con el encargo de todos. **Sin tu asesor: Cinfa no es tu TFM.**",
+    "que": [],
+    "pruebas": [
+     "Abre una conversación nueva, fuera de tu asesor.",
+     "Pega este encargo y, debajo, el caso de Cinfa:",
+     "Copia la respuesta en tu documento de la carpeta «IA-Lab 2» de Drive, tal cual. No la retoques: es lo que proyectaremos."
+    ],
+    "copiar": {
+     "tras": 1,
+     "txt": "Actúa como estratega de marca. Te paso el caso de Laboratorios Cinfa. Construye una plataforma estratégica de marca con tres elementos: un propósito, una propuesta de valor y entre tres y cinco valores. Justifica cada uno."
+    },
+    "grupos": [
+     {
+      "tipo": "checks",
+      "campos": [
+       {
+        "k": "h03",
+        "txt": "Hecho"
+       }
+      ]
+     }
+    ],
+    "check": [
+     "La respuesta está en tu documento de Drive, sin retocar."
+    ],
+    "siguiente": "Hecho · siguiente paso →"
+   },
+   {
+    "n": "04",
+    "titulo": "Dos pruebas",
+    "clase": "En clase: slide 19",
+    "tarea": "Lee la respuesta con dos pruebas y **apunta aquí lo que encuentres**.",
+    "que": [],
+    "pruebas": [
+     "**Prueba de sustitución.** Cambia Cinfa por Normon, Kern Pharma o Bayer. Copia la frase que seguiría valiendo igual.",
+     "**Pregunta de origen.** Para el propósito, la propuesta de valor y los valores: ¿en qué dato sobre Cinfa o sus clientes se apoya? Si en ninguno, escribe «ninguno»."
+    ],
+    "grupos": [
+     {
+      "tipo": "fila2",
+      "campos": [
+       {
+        "k": "m_sust",
+        "label": "Las frases que valdrían para cualquier laboratorio",
+        "rows": 4,
+        "ph": "Copia las frases tal cual. Si no hay ninguna, escribe «ninguna»"
+       },
+       {
+        "k": "m_origen",
+        "label": "En qué dato se apoya cada elemento",
+        "rows": 4,
+        "ph": "Propósito: …\nPropuesta de valor: …\nValores: …"
+       }
+      ]
+     },
+     {
+      "tipo": "checks",
+      "campos": [
+       {
+        "k": "h04",
+        "txt": "Hecho"
+       }
+      ]
+     }
+    ],
+    "check": [
+     "Has copiado frases de la respuesta, no has escrito frases nuevas.",
+     "Si un elemento no se apoya en ningún dato, pone «ninguno»."
+    ],
+    "plantilla": [
+     "2 · LO QUE DIJO LA IA, SIN SISTEMA",
+     "",
+     "  Frases que valdrían para cualquier laboratorio:",
+     "     {m_sust}",
+     "",
+     "  En qué dato se apoya cada elemento:",
+     "     {m_origen}"
+    ],
+    "siguiente": "Hecho · siguiente paso →"
+   },
+   {
+    "n": "05",
+    "titulo": "Dos líneas para tu asesor",
+    "clase": "En clase: slides 23 y 24",
+    "capa": "Controles",
+    "tarea": "Cuando la IA falla, no se repite el prompt: se cambia el sistema. **Añade estas dos líneas a las instrucciones de tu asesor.**",
+    "que": [],
+    "pruebas": [
+     "Abre las instrucciones de tu asesor.",
+     "Pega estas dos líneas al final, debajo de tus reglas:",
+     "Guarda."
+    ],
+    "copiar": {
+     "tras": 1,
+     "txt": "Separa en cada frase lo que sale de mis documentos, lo que es un patrón general de la categoría y lo que supones. Márcalo.\nAntes de entregar, marca como genérica cualquier frase que valdría igual para otra marca de la misma categoría."
+    },
+    "grupos": [
+     {
+      "tipo": "checks",
+      "campos": [
+       {
+        "k": "h05",
+        "txt": "Hecho"
+       }
+      ]
+     }
+    ],
+    "check": [
+     "En una conversación nueva, pregúntale: «¿Qué haces antes de entregarme algo?». Si nombra las dos, está bien."
+    ],
+    "siFalla": [
+     "**No encuentras dónde se editan.** Gemini: Gems → tu Gem → editar. ChatGPT: tu proyecto → ••• → Ajustes del proyecto. Claude: tu proyecto → Instrucciones del proyecto."
+    ],
+    "siguiente": "Funciona · siguiente paso →"
+   },
+   {
+    "n": "06",
+    "titulo": "Un encargo fijo para tu revisor",
+    "clase": "En clase: slide 25",
+    "capa": "Roles",
+    "tarea": "Tu revisor ya existe. Ahora le das **un encargo fijo**, para usarlo siempre.",
+    "que": [],
+    "pruebas": [
+     "Guarda este encargo en tu carpeta, en 00_estado:",
+     "Abre tu revisor, en una conversación nueva.",
+     "Pégale el encargo y la respuesta de Cinfa de la primera ronda."
+    ],
+    "copiar": {
+     "tras": 0,
+     "txt": "Señala las afirmaciones que no tienen fuente y las que valdrían igual para cualquier marca de la categoría. Si no encuentras ninguna, dime qué has revisado."
+    },
+    "grupos": [
+     {
+      "tipo": "campo",
+      "campos": [
+       {
+        "k": "m_revisor",
+        "label": "Lo que ha marcado tu revisor y tú no habías visto",
+        "rows": 3,
+        "ph": "Una o dos cosas, con sus palabras"
+       }
+      ]
+     },
+     {
+      "tipo": "checks",
+      "campos": [
+       {
+        "k": "h06",
+        "txt": "Hecho"
+       }
+      ]
+     }
+    ],
+    "check": [
+     "Si marca algo, funciona. Si dice que todo está bien, pídele qué ha revisado: un control que nunca dice que no, no controla nada."
+    ],
+    "plantilla": [
+     "3 · LO QUE MARCÓ MI REVISOR",
+     "  {m_revisor}"
+    ],
+    "siguiente": "Funciona · siguiente paso →"
+   },
+   {
+    "n": "07",
+    "titulo": "La pauta de investigación",
+    "clase": "En clase: slides 29 y 30",
+    "tarea": "Pídele a la IA qué habría que investigar, ahora **con tus dos líneas delante**, y cuenta cuánto podrías hacer tú.",
+    "que": [],
+    "pruebas": [
+     "Vuelve a la conversación de Cinfa.",
+     "Pega esto: tus dos líneas nuevas y el encargo, todo junto:",
+     "Copia la pauta en tu documento de Drive, tal cual.",
+     "Al lado de cada estudio o método, escribe sí o no: ¿podrías hacerlo tú en una semana, con tus recursos?"
+    ],
+    "copiar": {
+     "tras": 1,
+     "txt": "Separa en cada frase lo que sale de mis documentos, lo que es un patrón general de la categoría y lo que supones. Márcalo.\nAntes de entregar, marca como genérica cualquier frase que valdría igual para otra marca de la misma categoría.\n\nPara construir esta plataforma con fundamento, ¿qué investigación habría que hacer? Dame una pauta completa: objetivos, preguntas, métodos, públicos y fuentes."
+    },
+    "grupos": [
+     {
+      "tipo": "fila2",
+      "campos": [
+       {
+        "k": "m_si",
+        "label": "Cuántos «sí»",
+        "rows": 1,
+        "ph": "Ej. 2"
+       },
+       {
+        "k": "m_no",
+        "label": "Cuántos «no»",
+        "rows": 1,
+        "ph": "Ej. 14"
+       }
+      ]
+     },
+     {
+      "tipo": "checks",
+      "campos": [
+       {
+        "k": "h07",
+        "txt": "Hecho"
+       }
+      ]
+     }
+    ],
+    "check": [
+     "Las dos líneas van delante del encargo: en esta conversación no está tu asesor."
+    ],
+    "plantilla": [
+     "4 · LA PAUTA DE LA IA",
+     "  Lo que podría hacer yo en una semana: {m_si} sí · {m_no} no"
+    ],
+    "siguiente": "Hecho · siguiente paso →"
+   },
+   {
+    "n": "08",
+    "titulo": "Tus tres preguntas",
+    "clase": "En clase: slides 34 y 35",
+    "tarea": "**Sin IA.** De toda la pauta, elige las tres preguntas que más necesitarías contestar antes de dar por buena la plataforma.",
+    "que": [],
+    "pruebas": [
+     "Para cada una, la prueba: si la respuesta te sorprendiera, ¿qué cambiarías del propósito, la propuesta de valor o los valores? Si nada, cámbiala por otra.",
+     "Para cada una, cómo la contestarías: con qué método, a quién preguntarías o qué fuente mirarías."
+    ],
+    "grupos": [
+     {
+      "tipo": "fila2",
+      "campos": [
+       {
+        "k": "m_p1",
+        "label": "Pregunta 1 · y qué cambiaría",
+        "rows": 3,
+        "ph": "La pregunta, y qué cambiarías si la respuesta saliera distinta"
+       },
+       {
+        "k": "m_c1",
+        "label": "Cómo la contestaría",
+        "rows": 3,
+        "ph": "Método, a quién o qué fuente"
+       }
+      ]
+     },
+     {
+      "tipo": "fila2",
+      "campos": [
+       {
+        "k": "m_p2",
+        "label": "Pregunta 2 · y qué cambiaría",
+        "rows": 3,
+        "ph": ""
+       },
+       {
+        "k": "m_c2",
+        "label": "Cómo la contestaría",
+        "rows": 3,
+        "ph": ""
+       }
+      ]
+     },
+     {
+      "tipo": "fila2",
+      "campos": [
+       {
+        "k": "m_p3",
+        "label": "Pregunta 3 · y qué cambiaría",
+        "rows": 3,
+        "ph": ""
+       },
+       {
+        "k": "m_c3",
+        "label": "Cómo la contestaría",
+        "rows": 3,
+        "ph": ""
+       }
+      ]
+     },
+     {
+      "tipo": "campo",
+      "campos": [
+       {
+        "k": "m_fuera",
+        "label": "Qué dejas fuera, y por qué",
+        "rows": 2,
+        "ph": "Dos líneas"
+       }
+      ]
+     },
+     {
+      "tipo": "checks",
+      "campos": [
+       {
+        "k": "h08",
+        "txt": "Hecho"
+       }
+      ]
+     }
+    ],
+    "check": [
+     "Cada pregunta cambia algo si la respuesta sale distinta.",
+     "Cada una se puede contestar en una semana."
+    ],
+    "plantilla": [
+     "5 · MIS TRES PREGUNTAS",
+     "",
+     "  1 · {m_p1}",
+     "      Cómo: {m_c1}",
+     "",
+     "  2 · {m_p2}",
+     "      Cómo: {m_c2}",
+     "",
+     "  3 · {m_p3}",
+     "      Cómo: {m_c3}",
+     "",
+     "  Lo que dejo fuera: {m_fuera}"
+    ],
+    "siguiente": "Hecho · siguiente paso →"
+   },
+   {
+    "n": "09",
+    "titulo": "Tu mapa de inteligencia",
+    "clase": "En clase: slide 36",
+    "tarea": "Lo que acabas de hacer es un mapa de inteligencia. **Completa las dos columnas que faltan.** La tercera son tus tres preguntas.",
+    "que": [],
+    "pruebas": [
+     "**Lo que sé:** solo lo que tiene fuente, fecha y alcance. Si no sabes de dónde sale, no va aquí.",
+     "**Lo que supongo:** plausible, sin prueba. Lo que tu asesor ya marca como supuesto."
+    ],
+    "grupos": [
+     {
+      "tipo": "fila2",
+      "campos": [
+       {
+        "k": "m_se",
+        "label": "Lo que sé de Cinfa, con su fuente",
+        "rows": 4,
+        "ph": "Ej. … (fuente: el caso, página …)"
+       },
+       {
+        "k": "m_supongo",
+        "label": "Lo que supongo",
+        "rows": 4,
+        "ph": ""
+       }
+      ]
+     },
+     {
+      "tipo": "checks",
+      "campos": [
+       {
+        "k": "h09",
+        "txt": "Hecho"
+       }
+      ]
+     }
+    ],
+    "check": [
+     "Nada en «Lo que sé» sin su fuente.",
+     "¿Alguna línea podría estar igual en el mapa de un compañero? Reescríbela o tírala."
+    ],
+    "plantilla": [
+     "6 · LO QUE SÉ",
+     "  {m_se}",
+     "",
+     "7 · LO QUE SUPONGO",
+     "  {m_supongo}"
+    ],
+    "siguiente": "Hecho · siguiente paso →"
+   },
+   {
+    "n": "10",
+    "titulo": "Tu frase y tu regla",
+    "clase": "En clase: slides 39 y 42",
+    "tarea": "Vuelve a tu frase del principio, y **decide qué haces con la regla que se te había roto**.",
+    "que": [],
+    "pruebas": [
+     "Relee tu frase a ciegas, del paso 2. Compárala con lo que sabes ahora.",
+     "Decide qué haces con tu regla rota. Si la cambias, cámbiala también en la hoja 1 y vuelve a pegarla en tu asesor."
+    ],
+    "grupos": [
+     {
+      "tipo": "campo",
+      "campos": [
+       {
+        "k": "m_cambio",
+        "label": "Qué ha cambiado de tu frase",
+        "rows": 2,
+        "ph": "Si es la misma, di si es porque tenías razón"
+       }
+      ]
+     },
+     {
+      "tipo": "opciones",
+      "k": "m_decision",
+      "label": "Qué haces con tu regla",
+      "opciones": [
+       "La reescribo",
+       "La mantengo",
+       "La quito"
+      ]
+     },
+     {
+      "tipo": "checks",
+      "campos": [
+       {
+        "k": "h10",
+        "txt": "Hecho"
+       }
+      ]
+     }
+    ],
+    "check": [
+     "Decídelo ahora, no en junio."
+    ],
+    "plantilla": [
+     "8 · MI FRASE, DESPUÉS",
+     "  {m_cambio}",
+     "",
+     "9 · MI REGLA ROTA",
+     "  {m_decision}"
+    ],
+    "siguiente": "Hecho · al último paso →"
+   }
+  ],
+  "pie": "IA-Lab 2 · MMDD31 · UPF-BSM",
+  "nota": [],
+  "apertura": {
+   "titulo": "Antes de empezar",
+   "que": [],
+   "grupos": [],
+   "mapa": {
+    "kicker": "IA-Lab 2 · 13 de noviembre",
+    "clase": "En clase: slides 2 a 4",
+    "titulo": "Hoy haces tu mapa de inteligencia",
+    "lede": "Esta hoja va a la par que las slides. Lo que te devuelva la IA lo pegas en tu documento de Drive; lo que piensas tú lo escribes aquí.",
+    "tramos": [
+     {
+      "n": "1–2",
+      "t": "Tu sistema y tu frase",
+      "txt": "Compruebas tu asesor y escribes por qué alguien elegiría Cinfa, sin buscar nada."
+     },
+     {
+      "n": "3–4",
+      "t": "Primera ronda",
+      "txt": "La plataforma de marca que hace la IA sin sistema, y dos pruebas para leerla."
+     },
+     {
+      "n": "5–6",
+      "t": "Arréglalo",
+      "txt": "Dos líneas nuevas en tu asesor y un encargo fijo para tu revisor."
+     },
+     {
+      "n": "7–9",
+      "t": "La pauta y tus preguntas",
+      "txt": "Qué habría que investigar, tus tres preguntas sin IA y tu mapa."
+     },
+     {
+      "n": "10–11",
+      "t": "Y después",
+      "txt": "Tu frase revisada, tu regla decidida y tu mapa enviado."
+     }
+    ],
+    "tener": "**Ten abierto:** tu asesor, tu carpeta TFM_ en Drive, tu documento de la carpeta «IA-Lab 2» y esta web, con tu correo.",
+    "boton": "Empezar por el paso 1 →"
+   }
+  },
+  "salidas": [
+   {
+    "doc": "Mi mapa de inteligencia · Cinfa",
+    "fichero": "mapa-de-inteligencia",
+    "titulo": "Tu mapa de inteligencia",
+    "que": "Lo que sabes, lo que supones y lo que tienes que comprobar.",
+    "plantilla": [
+     "LA REGLA QUE SE ME HA ROTO",
+     "  {m_regla}  →  {m_decision}",
+     "",
+     "MI FRASE A CIEGAS",
+     "  {m_ciegas}",
+     "  Después: {m_cambio}",
+     "",
+     "LO QUE DIJO LA IA, SIN SISTEMA",
+     "  Frases que valdrían para cualquier laboratorio:",
+     "     {m_sust}",
+     "  En qué dato se apoya cada elemento:",
+     "     {m_origen}",
+     "",
+     "LO QUE MARCÓ MI REVISOR",
+     "  {m_revisor}",
+     "",
+     "LA PAUTA DE LA IA",
+     "  Lo que podría hacer yo en una semana: {m_si} sí · {m_no} no",
+     "",
+     "MI MAPA DE INTELIGENCIA",
+     "",
+     "  LO QUE SÉ",
+     "     {m_se}",
+     "",
+     "  LO QUE SUPONGO",
+     "     {m_supongo}",
+     "",
+     "  LO QUE TENGO QUE COMPROBAR",
+     "     1 · {m_p1}",
+     "         Cómo: {m_c1}",
+     "     2 · {m_p2}",
+     "         Cómo: {m_c2}",
+     "     3 · {m_p3}",
+     "         Cómo: {m_c3}",
+     "     Lo que dejo fuera: {m_fuera}"
+    ],
+    "cierre": [
+     "",
+     "La tarea: lo mismo sobre tu TFM, con tu asesor. Las tres preguntas van a «Qué falta» de tu documento Estado."
+    ],
+    "claro": {
+     "titulo": "Envía tu mapa",
+     "clase": "En clase: slide 40",
+     "tarea": "Tu mapa de inteligencia, en un documento. **Te lo llevas y lo envías a la dirección del máster.**",
+     "nombre": "Pon tu nombre",
+     "generar": "Genera tu documento",
+     "enviar": "Envíalo a la dirección del máster",
+     "antes": "Primero genera el documento, en el punto 2."
+    }
+   }
+  ],
+  "donde": {
+   "cuando": "En clase, el 13 de noviembre, a la vez que la sesión. Si no terminas, sigue en casa: queda guardada.",
+   "encaja": "Es la segunda de seis. La tercera columna de tu mapa es tu agenda de investigación, y en el TFM sostiene el diagnóstico."
+  },
+  "aperturaSinNumero": true,
+  "claro": true,
+  "tramos": [
+   {
+    "t": "Tu sistema",
+    "de": 1,
+    "a": 2
+   },
+   {
+    "t": "Primera ronda",
+    "de": 3,
+    "a": 4
+   },
+   {
+    "t": "Arréglalo",
+    "de": 5,
+    "a": 6
+   },
+   {
+    "t": "La pauta",
+    "de": 7,
+    "a": 9
+   },
+   {
+    "t": "Y después",
+    "de": 10,
+    "a": 11
+   }
+  ]
+ },
  "hojas/mmdd31/0.json": {
   "titulo": "Encuentra o pon a prueba tu idea de TFM",
   "kicker": "IA-Lab · Máster en Dirección de Marketing Digital (edición 31) · UPF Barcelona School of Management",

@@ -2050,7 +2050,7 @@ ol.hazlo li{margin:0 0 12px;font-size:17px;line-height:1.55;color:var(--ink)}
 ol.hazlo li::marker{color:var(--red);font-weight:700}
 .blk.claro .pegar{margin:10px 0 4px;padding:14px 16px;border-left:4px solid var(--red);background:var(--soft);
   border-radius:0 8px 8px 0;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
-.blk.claro .pegar p{margin:0;font-size:17px;line-height:1.5;color:var(--ink)}
+.blk.claro .pegar p{white-space:pre-line;margin:0;font-size:17px;line-height:1.5;color:var(--ink)}
 .blk.claro .campos{margin-top:0}
 .blk.claro .qc{margin:0;padding:16px 18px;border-left-width:4px}
 .blk.claro .qc li{font-size:17px}
