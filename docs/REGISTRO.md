@@ -500,3 +500,17 @@ Consecuencia práctica: se diseñó, se corrigió y se pegó la plantilla equivo
 **Las otras cuatro plantillas de esa pantalla no se disparan con este montaje** —no hay contraseñas, ni invitaciones, ni forma de cambiar el correo desde la web—. Queda escrito en `SUPABASE.md` para no volver a descubrirlo por correo.
 
 **De la misma tanda, el botón.** En la captura que llegó, «Entrar» aparecía como texto con un recuadro pegado: el tamaño del botón salía del `padding` del `<a>`, y el cliente se lo comió. Rehecho para que salga de la celda —`padding`, `height` y `bgcolor` como atributo, además del estilo— más la altura de línea. Comprobado quitando a la vez el bloque `<style>` y el `padding` del enlace: sigue midiendo 109×48 y sigue pareciendo un botón. Sólo desaparece si un cliente tira las dos cosas, y para eso debajo está el enlace en texto.
+
+---
+
+## 11 de noviembre de 2026 · la hoja 2, primera versión
+
+**La hoja de IA-Lab 2 pasa de «Disponible más adelante» a existir.** Es una primera versión, pendiente de la firma de Albert antes de publicarse.
+
+**Es la tarea para casa, no la hoja de clase.** En la sesión del 13 de noviembre, con Caterina Alonso, los alumnos trabajan el caso Cinfa en un documento de Drive por alumno, en una carpeta que comparte Albert, porque es lo que se proyecta en las puestas en común y la web no deja ver a nadie lo que escribe el alumno. La hoja 2 repite lo mismo sobre su TFM, en casa y con su asesor: frase a ciegas, las dos líneas en el asesor, cliente y competencia según la IA leídos con dos pruebas (cambiar el nombre y de dónde sale), qué habría que investigar, tres preguntas sin IA, el mapa y guardarlo en su carpeta. Siete pasos y la salida, «Mi mapa de inteligencia · TFM», que se envía a la dirección.
+
+**Un cambio de estilo que toca a las dos hojas:** el texto para copiar (`.pegar p`) respeta los saltos de línea. En la hoja 1 no cambia nada porque sus textos son de una línea; en la 2 hace falta, porque el encargo tiene cinco apartados.
+
+**Castellano neutro**: muchos alumnos son de Latinoamérica. Sin «vosotros».
+
+**Lo que queda abierto.** `scripts/medir.mjs` ya no consigue abrir pasos pulsando la tira en las hojas con tramos (la 1 y la 2): avisa «¡sin punto N!» y mide el paso 1. La primera versión de la hoja se midió con una copia que entra por `?paso=N`: 0 fallos AAA y táctiles. Falta llevar ese cambio al script.

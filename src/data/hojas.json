@@ -976,6 +976,515 @@
   ],
   "sinSalida": true
  },
+ "hojas/mmdd31/2.json": {
+  "titulo": "Mi mapa de inteligencia",
+  "kicker": "IA-Lab 2 · Máster en Dirección de Marketing Digital (edición 31) · UPF Barcelona School of Management",
+  "lede": "La tarea de la sesión del 13 de noviembre: **lo de Cinfa, sobre tu TFM.**",
+  "facts": [
+   "En casa, con tu asesor"
+  ],
+  "bloques": [
+   {
+    "n": "01",
+    "titulo": "Tu frase a ciegas",
+    "tarea": "Antes de abrir la IA: **¿por qué alguien elegiría tu proyecto?** Una frase, sin buscar nada.",
+    "que": [],
+    "pruebas": [
+     "Escríbela aquí. No la toques hasta el paso 7."
+    ],
+    "grupos": [
+     {
+      "tipo": "campo",
+      "campos": [
+       {
+        "k": "t_ciegas",
+        "label": "Por qué alguien elegiría mi proyecto",
+        "rows": 2,
+        "ph": "Una frase"
+       }
+      ]
+     },
+     {
+      "tipo": "checks",
+      "campos": [
+       {
+        "k": "h01",
+        "txt": "Hecho"
+       }
+      ]
+     }
+    ],
+    "check": [
+     "Es una sola frase y no has buscado nada."
+    ],
+    "plantilla": [
+     "1 · MI FRASE A CIEGAS",
+     "  {t_ciegas}"
+    ],
+    "siguiente": "Hecho · siguiente paso →"
+   },
+   {
+    "n": "02",
+    "titulo": "Tu asesor, con las dos líneas",
+    "capa": "Controles",
+    "tarea": "Comprueba que tu asesor tiene **las dos líneas que añadiste en clase**. Si no las tiene, añádelas ahora.",
+    "que": [],
+    "pruebas": [
+     "Abre las instrucciones de tu asesor.",
+     "Si no están, pega estas dos líneas al final, debajo de tus reglas:",
+     "Guarda."
+    ],
+    "copiar": {
+     "tras": 1,
+     "txt": "En cada frase, marca si sale de mis documentos, si vale para todo el sector o si lo supones tú.\nAntes de entregarme algo, marca cualquier frase que valdría igual para otra marca del mismo sector."
+    },
+    "grupos": [
+     {
+      "tipo": "checks",
+      "campos": [
+       {
+        "k": "h02",
+        "txt": "Hecho"
+       }
+      ]
+     }
+    ],
+    "check": [
+     "En una conversación nueva, pregúntale: «¿Qué haces antes de entregarme algo?». Si nombra las dos, está bien."
+    ],
+    "siFalla": [
+     "**No encuentras dónde se editan.** Gemini: Gems → tu Gem → editar. ChatGPT: tu proyecto → ••• → Ajustes del proyecto. Claude: tu proyecto → Instrucciones del proyecto."
+    ],
+    "siguiente": "Funciona · siguiente paso →"
+   },
+   {
+    "n": "03",
+    "titulo": "Tu cliente y tu competencia, según la IA",
+    "tarea": "Pídele a tu asesor quién es tu cliente y con quién compites, y **léelo con las dos pruebas de clase**.",
+    "que": [],
+    "pruebas": [
+     "En una conversación nueva con tu asesor, pega este encargo:",
+     "**Cambia el nombre.** Pon el de tu competidor principal donde sale tu proyecto. ¿Qué frases seguirían valiendo igual? Cópialas.",
+     "**¿De dónde sale?** ¿Qué frases salen de tus documentos y cuáles son suposiciones de la IA?"
+    ],
+    "copiar": {
+     "tras": 0,
+     "txt": "CONTEXTO\nMi TFM es el que tienes en mis documentos.\n\nOBJETIVO\nNecesito material de partida para entender a mi cliente y a mi competencia. No es una estrategia: son pistas que después voy a comprobar yo.\n\nQUÉ NO ES\nNo quiero un perfil de cliente con nombre y aficiones. No quiero recomendaciones.\n\nCRITERIOS\nDame, por separado: quién es mi cliente, por qué me elegiría, qué le frena y con quién compito de verdad, incluido no hacer nada. En cada frase, marca si sale de mis documentos, si vale para todo el sector o si lo supones tú.\n\nCONDICIÓN DE PARADA\nSi te falta un dato, no lo inventes: pregúntamelo y para."
+    },
+    "grupos": [
+     {
+      "tipo": "fila2",
+      "campos": [
+       {
+        "k": "t_sust",
+        "label": "Las frases que valdrían para tu competidor",
+        "rows": 4,
+        "ph": "Cópialas tal cual. Si no hay ninguna, escribe «ninguna»"
+       },
+       {
+        "k": "t_origen",
+        "label": "Lo que sale de tus documentos y lo que supone",
+        "rows": 4,
+        "ph": ""
+       }
+      ]
+     },
+     {
+      "tipo": "checks",
+      "campos": [
+       {
+        "k": "h03",
+        "txt": "Hecho"
+       }
+      ]
+     }
+    ],
+    "check": [
+     "Has copiado frases de la respuesta, no has escrito frases nuevas."
+    ],
+    "plantilla": [
+     "2 · LO QUE DICE LA IA DE MI CLIENTE Y MI COMPETENCIA",
+     "",
+     "  Frases que valdrían para mi competidor:",
+     "     {t_sust}",
+     "",
+     "  De dónde sale cada cosa:",
+     "     {t_origen}"
+    ],
+    "siguiente": "Hecho · siguiente paso →"
+   },
+   {
+    "n": "04",
+    "titulo": "Qué habría que investigar",
+    "tarea": "Pídele a tu asesor qué habría que investigar para comprobarlo, y **cuenta cuánto podrías hacer tú**.",
+    "que": [],
+    "pruebas": [
+     "En la misma conversación, pega este encargo:",
+     "Al lado de cada estudio o método, escribe sí o no: ¿podrías hacerlo tú en una semana, con tus recursos?"
+    ],
+    "copiar": {
+     "tras": 0,
+     "txt": "Para comprobar lo que me acabas de decir, ¿qué habría que investigar? Dame una lista completa: preguntas, métodos, a quién preguntar y fuentes."
+    },
+    "grupos": [
+     {
+      "tipo": "fila2",
+      "campos": [
+       {
+        "k": "t_si",
+        "label": "Cuántos «sí»",
+        "rows": 1,
+        "ph": "Ej. 2"
+       },
+       {
+        "k": "t_no",
+        "label": "Cuántos «no»",
+        "rows": 1,
+        "ph": "Ej. 14"
+       }
+      ]
+     },
+     {
+      "tipo": "checks",
+      "campos": [
+       {
+        "k": "h04",
+        "txt": "Hecho"
+       }
+      ]
+     }
+    ],
+    "check": [
+     "Has marcado todos, no solo los primeros."
+    ],
+    "plantilla": [
+     "3 · LO QUE LA IA PROPONE INVESTIGAR",
+     "  Lo que podría hacer yo en una semana: {t_si} sí · {t_no} no"
+    ],
+    "siguiente": "Hecho · siguiente paso →"
+   },
+   {
+    "n": "05",
+    "titulo": "Tus tres preguntas",
+    "tarea": "**Sin IA.** De todo lo que propone, elige las tres preguntas que más necesitas contestar para tu TFM.",
+    "que": [],
+    "pruebas": [
+     "Para cada una, la prueba: si la respuesta te sorprendiera, ¿qué cambiarías de tu proyecto? Si nada, cámbiala por otra.",
+     "Para cada una, cómo la contestarías: con qué método, a quién preguntarías o qué fuente mirarías."
+    ],
+    "grupos": [
+     {
+      "tipo": "fila2",
+      "campos": [
+       {
+        "k": "t_p1",
+        "label": "Pregunta 1 · y qué cambiaría",
+        "rows": 3,
+        "ph": "La pregunta, y qué cambiarías si la respuesta saliera distinta"
+       },
+       {
+        "k": "t_c1",
+        "label": "Cómo la contestaría",
+        "rows": 3,
+        "ph": "Método, a quién o qué fuente"
+       }
+      ]
+     },
+     {
+      "tipo": "fila2",
+      "campos": [
+       {
+        "k": "t_p2",
+        "label": "Pregunta 2 · y qué cambiaría",
+        "rows": 3,
+        "ph": ""
+       },
+       {
+        "k": "t_c2",
+        "label": "Cómo la contestaría",
+        "rows": 3,
+        "ph": ""
+       }
+      ]
+     },
+     {
+      "tipo": "fila2",
+      "campos": [
+       {
+        "k": "t_p3",
+        "label": "Pregunta 3 · y qué cambiaría",
+        "rows": 3,
+        "ph": ""
+       },
+       {
+        "k": "t_c3",
+        "label": "Cómo la contestaría",
+        "rows": 3,
+        "ph": ""
+       }
+      ]
+     },
+     {
+      "tipo": "campo",
+      "campos": [
+       {
+        "k": "t_fuera",
+        "label": "Qué dejas fuera, y por qué",
+        "rows": 2,
+        "ph": "Dos líneas"
+       }
+      ]
+     },
+     {
+      "tipo": "checks",
+      "campos": [
+       {
+        "k": "h05",
+        "txt": "Hecho"
+       }
+      ]
+     }
+    ],
+    "check": [
+     "Cada pregunta cambia algo si la respuesta sale distinta.",
+     "Cada una se puede contestar en una semana."
+    ],
+    "plantilla": [
+     "4 · MIS TRES PREGUNTAS",
+     "",
+     "  1 · {t_p1}",
+     "      Cómo: {t_c1}",
+     "",
+     "  2 · {t_p2}",
+     "      Cómo: {t_c2}",
+     "",
+     "  3 · {t_p3}",
+     "      Cómo: {t_c3}",
+     "",
+     "  Lo que dejo fuera: {t_fuera}"
+    ],
+    "siguiente": "Hecho · siguiente paso →"
+   },
+   {
+    "n": "06",
+    "titulo": "Tu mapa",
+    "tarea": "Completa las dos columnas que faltan. La tercera son tus tres preguntas.",
+    "que": [],
+    "pruebas": [
+     "**Lo que sé:** solo lo que sabes de dónde sale y de cuándo es. Si no lo sabes, no va aquí.",
+     "**Lo que supongo:** lo que suena bien pero no tiene prueba."
+    ],
+    "grupos": [
+     {
+      "tipo": "fila2",
+      "campos": [
+       {
+        "k": "t_se",
+        "label": "Lo que sé, con su fuente",
+        "rows": 4,
+        "ph": "Ej. … (fuente: …)"
+       },
+       {
+        "k": "t_supongo",
+        "label": "Lo que supongo",
+        "rows": 4,
+        "ph": ""
+       }
+      ]
+     },
+     {
+      "tipo": "checks",
+      "campos": [
+       {
+        "k": "h06",
+        "txt": "Hecho"
+       }
+      ]
+     }
+    ],
+    "check": [
+     "Nada en «Lo que sé» sin su fuente.",
+     "¿Alguna línea podría estar igual en el mapa de un compañero? Reescríbela o quítala."
+    ],
+    "plantilla": [
+     "5 · LO QUE SÉ",
+     "  {t_se}",
+     "",
+     "6 · LO QUE SUPONGO",
+     "  {t_supongo}"
+    ],
+    "siguiente": "Hecho · siguiente paso →"
+   },
+   {
+    "n": "07",
+    "titulo": "Guárdalo en tu sistema",
+    "tarea": "Guarda lo que has hecho en tu carpeta y **vuelve a tu frase del paso 1**.",
+    "que": [],
+    "pruebas": [
+     "Tus tres preguntas, en «Qué falta» de tu documento Estado.",
+     "Lo que encuentres al investigar, en 01_fuentes.",
+     "El error que te ha marcado hoy la IA, con un nombre, en 05_registro_de_errores."
+    ],
+    "grupos": [
+     {
+      "tipo": "campo",
+      "campos": [
+       {
+        "k": "t_cambio",
+        "label": "Tu frase a ciegas, ahora: ¿qué ha cambiado?",
+        "rows": 2,
+        "ph": "Una o dos líneas"
+       }
+      ]
+     },
+     {
+      "tipo": "checks",
+      "campos": [
+       {
+        "k": "t_estado",
+        "txt": "Mis tres preguntas están en mi documento Estado"
+       },
+       {
+        "k": "t_error",
+        "txt": "Mi error, con nombre, está en 05_registro_de_errores"
+       }
+      ]
+     },
+     {
+      "tipo": "checks",
+      "campos": [
+       {
+        "k": "h07",
+        "txt": "Hecho"
+       }
+      ]
+     }
+    ],
+    "check": [
+     "Si cambiaste tu documento Estado, vuelve a dárselo a tu asesor."
+    ],
+    "plantilla": [
+     "7 · MI FRASE, DESPUÉS",
+     "  {t_cambio}"
+    ],
+    "siguiente": "Hecho · al último paso →"
+   }
+  ],
+  "pie": "IA-Lab 2 · MMDD31 · UPF-BSM",
+  "nota": [],
+  "apertura": {
+   "titulo": "Antes de empezar",
+   "que": [],
+   "grupos": [],
+   "mapa": {
+    "kicker": "IA-Lab 2 · tarea para casa",
+    "titulo": "Tu mapa de inteligencia, sobre tu TFM",
+    "lede": "Lo mismo que en clase con Cinfa, ahora con tu proyecto.",
+    "tramos": [
+     {
+      "n": "1–2",
+      "t": "Antes de la IA",
+      "txt": "Tu frase a ciegas y tu asesor con las dos líneas de clase."
+     },
+     {
+      "n": "3–4",
+      "t": "Lo que dice la IA",
+      "txt": "Tu cliente y tu competencia, con las dos pruebas, y qué habría que investigar."
+     },
+     {
+      "n": "5–6",
+      "t": "Lo que decides tú",
+      "txt": "Tus tres preguntas, sin IA, y tu mapa."
+     },
+     {
+      "n": "7–8",
+      "t": "Guárdalo y envíalo",
+      "txt": "En tu carpeta, y tu mapa a la dirección del máster."
+     }
+    ],
+    "tener": "**Ten abierto:** tu asesor, tu carpeta TFM_ en Drive y esta web, con tu correo.",
+    "boton": "Empezar por el paso 1 →"
+   }
+  },
+  "salidas": [
+   {
+    "doc": "Mi mapa de inteligencia · TFM",
+    "fichero": "mapa-de-inteligencia",
+    "titulo": "Tu mapa de inteligencia",
+    "que": "Lo que sabes, lo que supones y lo que tienes que comprobar de tu cliente y tu competencia.",
+    "plantilla": [
+     "MI FRASE A CIEGAS",
+     "  {t_ciegas}",
+     "  Después: {t_cambio}",
+     "",
+     "LO QUE DICE LA IA DE MI CLIENTE Y MI COMPETENCIA",
+     "  Frases que valdrían para mi competidor:",
+     "     {t_sust}",
+     "  De dónde sale cada cosa:",
+     "     {t_origen}",
+     "",
+     "LO QUE LA IA PROPONE INVESTIGAR",
+     "  Lo que podría hacer yo en una semana: {t_si} sí · {t_no} no",
+     "",
+     "MI MAPA DE INTELIGENCIA",
+     "",
+     "  LO QUE SÉ",
+     "     {t_se}",
+     "",
+     "  LO QUE SUPONGO",
+     "     {t_supongo}",
+     "",
+     "  LO QUE TENGO QUE COMPROBAR",
+     "     1 · {t_p1}",
+     "         Cómo: {t_c1}",
+     "     2 · {t_p2}",
+     "         Cómo: {t_c2}",
+     "     3 · {t_p3}",
+     "         Cómo: {t_c3}",
+     "     Lo que dejo fuera: {t_fuera}"
+    ],
+    "cierre": [
+     ""
+    ],
+    "claro": {
+     "titulo": "Envía tu mapa",
+     "tarea": "Tu mapa de inteligencia, en un documento. **Te lo llevas y lo envías a la dirección del máster.**",
+     "nombre": "Pon tu nombre",
+     "generar": "Genera tu documento",
+     "enviar": "Envíalo a la dirección del máster",
+     "antes": "Primero genera el documento, en el punto 2."
+    }
+   }
+  ],
+  "donde": {
+   "cuando": "En casa, después de la sesión del 13 de noviembre. No hace falta hacerla de una vez: queda guardada.",
+   "encaja": "En el TFM, la tercera columna es la base del diagnóstico."
+  },
+  "aperturaSinNumero": true,
+  "claro": true,
+  "tramos": [
+   {
+    "t": "Antes de la IA",
+    "de": 1,
+    "a": 2
+   },
+   {
+    "t": "Lo que dice la IA",
+    "de": 3,
+    "a": 4
+   },
+   {
+    "t": "Lo que decides tú",
+    "de": 5,
+    "a": 6
+   },
+   {
+    "t": "Guárdalo y envíalo",
+    "de": 7,
+    "a": 8
+   }
+  ]
+ },
  "hojas/mmdd31/0.json": {
   "titulo": "Encuentra o pon a prueba tu idea de TFM",
   "kicker": "IA-Lab · Máster en Dirección de Marketing Digital (edición 31) · UPF Barcelona School of Management",
