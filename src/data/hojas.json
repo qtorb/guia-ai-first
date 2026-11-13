@@ -1025,17 +1025,17 @@
    },
    {
     "n": "02",
-    "titulo": "Tu asesor, con las dos líneas",
+    "titulo": "Las dos frases de tu asesor",
     "capa": "Controles",
-    "tarea": "Comprueba que tu asesor tiene **las dos líneas que añadiste en clase**. Si no las tiene, añádelas ahora.",
+    "tarea": "Tu asesor es el asistente de IA que configuraste en octubre, con tus siete reglas. Comprueba que tiene **las dos frases que añadiste en clase**. Si no, añádelas ahora.",
     "que": [],
     "pruebas": [
-     "Abre las instrucciones de tu asesor.",
-     "Si no están, pega estas dos líneas al final, debajo de tus reglas:",
-     "Guarda."
+     "Abre tu asesor: el Gem de Gemini o el proyecto de ChatGPT o Claude.",
+     "Entra donde pusiste tus siete reglas. Se llama «Instrucciones».",
+     "Si no están, pega estas dos frases al final y guarda:"
     ],
     "copiar": {
-     "tras": 1,
+     "tras": 2,
      "txt": "En cada frase, marca si sale de mis documentos, si vale para todo el sector o si lo supones tú.\nAntes de entregarme algo, marca cualquier frase que valdría igual para otra marca del mismo sector."
     },
     "grupos": [
@@ -1050,7 +1050,7 @@
      }
     ],
     "check": [
-     "En una conversación nueva, pregúntale: «¿Qué haces antes de entregarme algo?». Si nombra las dos, está bien."
+     "En una conversación nueva, pregúntale: «¿Qué haces antes de darme una respuesta?». Si habla de las dos frases, funciona."
     ],
     "siFalla": [
      "**No encuentras dónde se editan.** Gemini: Gems → tu Gem → editar. ChatGPT: tu proyecto → ••• → Ajustes del proyecto. Claude: tu proyecto → Instrucciones del proyecto."
@@ -1120,7 +1120,7 @@
     "que": [],
     "pruebas": [
      "En la misma conversación, pega este encargo:",
-     "Al lado de cada estudio o método, escribe sí o no: ¿podrías hacerlo tú en una semana, con tus recursos?"
+     "Al lado de cada estudio, escribe SÍ si podrías hacerlo tú esta semana, con tu tiempo y sin presupuesto. Si no, escribe NO."
     ],
     "copiar": {
      "tras": 0,
@@ -1155,7 +1155,8 @@
      }
     ],
     "check": [
-     "Has marcado todos, no solo los primeros."
+     "Has marcado todos, no solo los primeros.",
+     "Ejemplo: «Encuesta a 1.000 clientes» → NO. «Hablar con cinco clientes» → SÍ."
     ],
     "plantilla": [
      "3 · LO QUE LA IA PROPONE INVESTIGAR",
@@ -1166,11 +1167,11 @@
    {
     "n": "05",
     "titulo": "Tus tres preguntas",
-    "tarea": "**Sin IA.** De todo lo que propone, elige las tres preguntas que más necesitas contestar para tu TFM.",
+    "tarea": "**Sin IA.** No puedes investigarlo todo: elige las tres preguntas que cambiarían tu decisión.",
     "que": [],
     "pruebas": [
-     "Para cada una, la prueba: si la respuesta te sorprendiera, ¿qué cambiarías de tu proyecto? Si nada, cámbiala por otra.",
-     "Para cada una, cómo la contestarías: con qué método, a quién preguntarías o qué fuente mirarías."
+     "Pruébalas: si la respuesta te sorprendiera, ¿cambiarías algo de tu proyecto? Si no cambiarías nada, elige otra.",
+     "Para cada una, escribe cómo la contestarías: a quién preguntarías o dónde lo buscarías."
     ],
     "grupos": [
      {
@@ -1247,7 +1248,8 @@
     ],
     "check": [
      "Cada pregunta cambia algo si la respuesta sale distinta.",
-     "Cada una se puede contestar en una semana."
+     "Cada una se puede contestar en una semana.",
+     "Pregunta que no sirve: «¿En qué año se fundó mi competidor?». Si te sorprendiera, no cambiarías nada."
     ],
     "plantilla": [
      "4 · MIS TRES PREGUNTAS",
@@ -1384,7 +1386,7 @@
      {
       "n": "1–2",
       "t": "Antes de la IA",
-      "txt": "Tu frase a ciegas y tu asesor con las dos líneas de clase."
+      "txt": "Tu frase a ciegas y las dos frases de tu asesor."
      },
      {
       "n": "3–4",

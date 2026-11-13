@@ -514,3 +514,9 @@ Consecuencia práctica: se diseñó, se corrigió y se pegó la plantilla equivo
 **Castellano neutro**: muchos alumnos son de Latinoamérica. Sin «vosotros».
 
 **Lo que queda abierto.** `scripts/medir.mjs` ya no consigue abrir pasos pulsando la tira en las hojas con tramos (la 1 y la 2): avisa «¡sin punto N!» y mide el paso 1. La primera versión de la hoja se midió con una copia que entra por `?paso=N`: 0 fallos AAA y táctiles. Falta llevar ese cambio al script.
+
+---
+
+## 13 de noviembre de 2026 · la hoja 2, alineada con el deck v9
+
+Mismos textos que el deck de la sesión (`MMDD31_IALab2_13nov_v9.pptx`): «las dos frases» en lugar de «las dos líneas», el asesor explicado en una línea, «SÍ si podrías hacerlo esta semana, con tu tiempo y sin presupuesto», y un ejemplo de pregunta que no sirve. La tarjeta de la sesión 2 dice ahora que en clase se trabaja un caso y en casa el TFM. Medido sobre build local, lista y nueve pasos × 3 anchos × claro/oscuro: 0 fallos.
